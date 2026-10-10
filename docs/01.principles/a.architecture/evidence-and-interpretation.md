@@ -26,5 +26,5 @@ CBA June mortgage CR6 reports aggregate RWA density of 22%. Dividing displayed R
 
 ## References
 
-- [Initial data model](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md), sections 7–11.
+- [Initial data model — values and evidence](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#6-values-evidence-and-partial-knowledge).
 - [CBA/Westpac source review](../../00.ideation/2025-disclosure-spike.md).

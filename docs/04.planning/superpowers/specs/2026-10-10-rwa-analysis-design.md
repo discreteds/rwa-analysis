@@ -10,6 +10,8 @@ Governing principles: [Principles and architecture](../../../01.principles/READM
 
 Build a Python research application to acquire Australian banks' APS 330 / Pillar 3 disclosures, preserve source evidence, extract mortgage risk observations, and calculate reproducible standardised capital metrics.
 
+The governing objective is faithful capture and useful tagging, not perfect accounting. Partial semantic knowledge and unavailable detail are normal. Downstream research can use explicit assumptions, approximations and imperfectly aligned comparisons without discarding accurately captured source observations.
+
 The initial user is a single researcher operating locally. Mountainash is the tabular analytics and data-access interface. A persistent DuckDB database holds structured observations and results. The project-root `raw/` folder holds source PDFs and `raw/index.md` catalogues them. Here `/raw` means this project's raw folder, not the filesystem-root directory.
 
 The first delivery covers two suitable CBA and Westpac disclosures and one end-to-end comparison. Historical coverage targets half-year observations over 2016–2026, limited to published, available disclosures. Broader acquisition follows a validated first slice.
@@ -25,7 +27,7 @@ The research hypothesis and mathematical definitions in `docs/00.ideation/initia
 One repository contains versioned agent workflow instructions and an installable package, `rwa_analysis`, with three independently understandable components:
 
 1. **Disclosure processing:** agent-led discovery and retrieval, followed by LLM scrutiny of every PDF and LLM-authored bespoke Python extraction code for that file. Structured outputs and evidence references form the handoff to data processing. A shared extraction library grows from recurring needs across these per-file extractions.
-2. **Data preparation:** Mountainash contracts, persistence, normalisation, validation and comparable portfolio selection.
+2. **Data preparation:** Mountainash contracts, persistence, normalisation, validation and semantic tagging through a durable, versioned catalogue. Analytical selection is task-specific.
 3. **Capital analytics:** pure numerical functions for mortgage capital, PD Differentiation Benefit (PDB) and subsequent sensitivity and decomposition methods.
 
 Capital functions accept numerical arrays and explicit parameter sets. They do not fetch documents or query a database. Application orchestration selects and materialises analytical inputs through Mountainash, invokes numerical calculations, and persists the results and lineage.
@@ -35,7 +37,7 @@ The medallion architecture describes data quality and lineage, not a requirement
 ```text
 Official archives / targeted web searches
                     |
-         Source registry and discovery
+         Agent-led source discovery
                     |
          Retrieval and classification
                     |
@@ -43,7 +45,7 @@ Official archives / targeted web searches
                     |
     Bronze: per-script outputs by jurisdiction/org/date
                     |
-    Silver: canonical, validated observations
+    Silver: conformed observations and interpretation tags
                     |
      Gold: analytical datasets and results
                     |
@@ -211,36 +213,38 @@ A single file's extractor may emit several portfolio/jurisdiction blocks into it
 
 The same bundle may also contain multiple data domains, represented as named typed record collections or related tables. Adding provisions, market share or another selected disclosure expands the file's golden set and extractor; it does not require a new source download or a duplicate domain-specific source bundle. Golden expectations and diagnostics identify domain/table/record/field, and conformance operates through the applicable domain's Mountainash contract. No universal PD-band or portfolio requirement applies to the bundle as a whole.
 
-The LLM interprets each layout and writes its bespoke extractor. Running that Python code produces the structured extraction artifacts. The handoff contract requires source locations and original values. Schema and reconciliation checks validate those artifacts before analytical publication; a revised extractor produces a new extraction version rather than overwriting prior observations.
+The LLM interprets each layout and writes its bespoke extractor. Running that Python code produces the structured extraction artifacts. The handoff contract requires source locations and original values. Schema and source-backed golden checks validate faithful capture; reconciliation is diagnostic unless established semantics and precision justify an exact constraint. A revised extractor produces a new extraction version rather than overwriting prior observations.
 
-### 5.2 Silver: canonical observations
+### 5.2 Silver: conformed and semantically tagged observations
 
-Silver is produced by conforming versioned Bronze extraction datasets through Mountainash, interpreting their evidence without replacing it. Silver processing reads the saved Bronze outputs rather than reopening PDFs or rerunning extraction. It may combine multiple Bronze datasets when scope and definitions permit, retaining their individual lineage:
+Silver is produced by conforming versioned Bronze extraction datasets through Mountainash using selected semantic catalogue and mapping revisions, interpreting evidence without replacing it. Silver reads saved Bronze rather than reopening PDFs or rerunning extraction. Full regeneration from empty candidate tables is the primary workflow. Partial mappings and unresolved semantic attributes remain publishable with tags. Silver may combine multiple Bronze datasets while retaining their individual lineage and scope differences:
 
-- Canonical metric identifiers, units, currencies and denominator conventions.
+- Canonical concepts, measure-definition revisions, units, currencies and denominator conventions where established; source metadata remains available when canonical interpretation is partial.
 - Reporting entity, date, regulatory approach and portfolio scope.
 - Original and canonical portfolio labels, connected by versioned mappings.
 - Explicit PD-band boundaries, units, inclusivity and open-ended ranges.
-- Row roles: detail, subtotal and total.
+- Source row/column roles and canonical roles where mapped, including explicit subset/aggregate relationships and multi-level header paths.
 - Defaulted/non-defaulted classification.
 - Missing-value reasons, validation outcomes and source references.
 
-Each segmentation belongs to a disclosed breakdown. Only explicitly identified mutually exclusive, sufficiently complete partitions can be aggregated into a portfolio total. PD, LVR and borrower-type breakdowns are not combined as if they were disjoint exposures.
+Each segmentation belongs to a disclosed breakdown. Exact portfolio aggregation requires supported coverage and disjointness; parent rows and their subsets are not additive siblings. PD, LVR and borrower-type breakdowns are not combined as if they were disjoint exposures. Analyses can use incomplete breakdowns or approximate alignment with explicit selection and assumptions, without relabelling inferred results as published totals.
 
-Manual corrections append records referencing the replaced interpretation or value, with a reason. They do not modify source evidence. Mapping and observation versions remain addressable after correction.
+Corrections belong to durable inputs: extraction fixes produce new Bronze versions, semantic fixes revise catalogue/mapping decisions, and source restatements retain new published evidence. Record reasons and supersession relationships. A manual Silver-only edit is not a durable correction. Mapping and observation versions remain addressable after correction.
 
 Observed/derived/estimated status, verification status and extraction confidence are separate concepts. Statistical uncertainty belongs to estimated analytical results, not to extraction confidence.
 
-Validation includes unit and percentage interpretation, band validity, EAD/RWA reconciliation, RWA density, and EAD-weighted PD where source data permits. Tolerances reflect disclosed rounding and are recorded. A check that cannot be performed is distinguished from one that passed.
+Validation includes unit and percentage interpretation, reference and band validity, and source-appropriate checks on EAD/RWA, density and weighted PD. Reconciliation tolerances reflect disclosed rounding and scope. A check that cannot be performed is distinguished from one that passed; analytical residuals and absent definitions are not automatically extraction errors.
 
-Failed or ambiguous records remain inspectable. Explicit eligibility rules prevent them from silently entering published analytical datasets.
+Structural defects require correction; partial semantics and ambiguous mappings remain inspectable and tagged. Analytical suitability is task-specific, with assumptions and limitations visible. There is no universal comparable/not-comparable gate on source observations.
+
+Keep Bronze versions, semantic definitions, mappings, curated corrections and rebuild manifests outside disposable Silver. Each manifest identifies input versions and conformance code/contracts/configuration. Validate a candidate revision and publish atomically through supported transaction/staging mechanisms. A failed rebuild leaves the prior revision available. Incremental upserts are later optimisations and must yield the same logical result as a full rebuild. Gold outputs identify their Silver revision and become stale when their dependencies change.
 
 ### 5.3 Gold: versioned research products
 
 Initial products:
 
 1. Disclosure and metric coverage by bank and reporting date.
-2. Eligible mortgage portfolio observations with comparability metadata.
+2. Selected mortgage portfolio observations with comparability tags and explicit analytical assumptions.
 3. Native-band exposure-weighted PD distributions.
 4. Standardised mortgage risk weights, PDB and absolute differentiation benefit.
 5. A two-bank comparison chart and reproducible data export.
@@ -251,20 +255,20 @@ Distribution reconstruction, common-band estimates, statistical inferences and m
 
 ## 6. Logical data model
 
-The approved initial Python/domain model is detailed in [Initial disclosure data model](2026-10-10-initial-data-model.md): shared source/context/metric/segmentation/provenance contracts, a multi-dataset extraction bundle, and a general CR6 `CreditRiskExposureRow` as the first typed domain record.
+The consolidated model is detailed in [Initial disclosure data model](2026-10-10-initial-data-model.md), with [worked CR6, CR1/CR2 and LIQ2 examples](2026-10-10-data-model-worked-examples.md). It separates source capture, the durable semantic catalogue and rebuildable conformance. A general CR6 `CreditRiskExposureRow` remains the first production domain record; the consolidated logical contracts await written review.
 
 The initial model comprises the following groups. Physical schemas are versioned by application-owned migrations executed through the storage boundary.
 
 | Group | Principal records |
 |---|---|
 | Operations | Processing runs and stage outcomes; acquisition is catalogued in `index.md` |
-| Reference | Institution, reporting entity, metric definition, framework/parameter version |
-| Evidence | Source file reference, extraction run, table/cell source reference |
-| Observations | Disclosure row/version, metric value/version, breakdown, segment membership, band definition |
-| Interpretation | Mapping version, correction, validation outcome, eligibility decision |
-| Analysis | Input manifest, calculation run, derived metric, export manifest |
+| Semantic catalogue | Stable concepts and relationships, measure definitions, researcher decisions, framework/parameter versions |
+| Evidence | Source file, extraction run, published field, axes/header paths, qualifications and source relationships |
+| Observations | Typed domain records/values, breakdown, segment membership, band definition and source lineage |
+| Interpretation | Contextual mapping revisions, corrections, interpretation tags and validation outcomes |
+| Retained analysis | Selected input manifests, calculations, outputs and assumptions when useful; not a mandatory record of every exploratory result |
 
-The observation grain is one disclosed row in a particular document, table and reporting context. Metric values attach to that row and retain metric semantics and cell-level evidence. Important financial quantities and dimensions use typed fields rather than opaque JSON. JSON may hold uncommon source metadata or complete run configuration.
+Source values are addressable through their dataset, typed record and field, including non-cell locations for narrative observations. Effective meaning combines dataset context, row definition, column definition and qualifications. A source row can contain multiple measure types or identify a particular stock/flow measure. Preserve merged spans and subset relationships rather than forcing every source into one rectangular grain. Important quantities and dimensions use typed fields; JSON may hold source metadata or complete run configuration.
 
 Store source quantities as decimal/fixed-point values with explicit units. Convert to floating point deliberately when preparing numerical inputs. Identifiers remain stable; revisions and run identifiers distinguish history. Referential and uniqueness requirements are enforced through database facilities where supported and application contracts where necessary.
 
@@ -338,6 +342,9 @@ extractions/
         review.md
         extract.py
 docs/
+    00.ideation/
+    01.principles/
+    04.planning/superpowers/
     workflows/       # Agent instructions for discovery, acquisition and extraction
 data/
     bronze/
@@ -349,7 +356,7 @@ data/
         reports/
 ```
 
-DuckDB namespaces are `ops`, `bronze`, `silver` and `gold`. The `raw/` folder holds source documents; the jurisdiction/org/date-organised Bronze files hold the extraction outputs used for Silver conformance. Database Bronze representations, where useful, refer to those saved datasets and their producing scripts. Downloaded PDFs, the live warehouse, secrets and generated outputs are excluded from Git; `raw/index.md`, per-file review notes, bespoke extraction scripts, shared dataclasses, golden sets and their tests are versioned. Notebooks consume the package rather than owning reusable processing logic.
+DuckDB namespaces are `ops`, `bronze`, `silver` and `gold`. The `raw/` folder holds source documents; the jurisdiction/org/date-organised Bronze files hold the extraction outputs used for Silver conformance. Database Bronze representations, where useful, refer to those saved datasets and their producing scripts. Source PDFs and `raw/index.md` are currently tracked in Git, along with documentation; future review notes, extractors, dataclasses, golden sets and tests are versioned. The live warehouse, secrets and generated data are ignored. Durable generated Bronze versions and rebuild manifests still require retention/backup independently of disposable Silver. Keep catalogue definitions and decisions in versioned source files outside generated tables; physical catalogue paths are selected during implementation planning. Notebooks consume the package rather than owning reusable processing logic.
 
 The hierarchy below `tests/bronze/` mirrors the logical dataset hierarchy below `data/bronze/`, through extraction ID. It does not duplicate output-version directories. This permits targeted pytest execution by jurisdiction, organisation, reporting date or individual extraction. Use pytest's importlib import mode so repeated `test_extraction.py` filenames can coexist without turning date-named folders into Python packages. Source PDFs must be available locally for these tests; missing PDFs produce a clear prerequisite failure rather than triggering network retrieval or silently skipping validation.
 
@@ -362,7 +369,7 @@ uv run pytest tests/bronze/au/cba/2025-06-30/
 uv run pytest tests/bronze/au/cba/2025-06-30/aps330/
 ```
 
-Back up the source folder including `index.md` and a consistent closed/checkpointed warehouse together with configuration and analytical input manifests. Gold outputs can be regenerated from pinned structured inputs and code.
+Back up source files/index, retained Bronze versions, semantic catalogue/mappings, run manifests and implementation/configuration versions. A consistent closed/checkpointed warehouse is a useful snapshot but not a required input to reconstruct Silver. Retained Gold outputs can be regenerated from pinned inputs and code.
 
 ## 10. Delivery sequence and acceptance criteria
 
@@ -400,11 +407,12 @@ Acceptance:
 - The shared extraction model supports multiple portfolios and jurisdictions in one script's Bronze bundle. The folder jurisdiction does not override record-level portfolio or regulatory-rule context; a golden-set expansion to another jurisdiction remains within the same extractor/dataset relationship.
 - A source bundle can expand to other data domains without forcing those records into the mortgage schema. Each added domain has typed records, source-backed golden expectations and a corresponding Silver conformance contract; previously selected domains remain covered by tests.
 - Silver conformance runs from saved Bronze datasets independently of PDF access or extractor execution and preserves Bronze dataset/version lineage.
-- Relevant totals reconcile within documented rounding tolerances.
+- Source-appropriate reconciliation diagnostics retain tolerances and limitations; incomplete disclosures or unexplained analytical residuals alone do not prevent publication of faithful capture.
 - Every analytical input is traceable to its source cell or explicit derivation.
 - One command produces the two-bank comparison and coverage summary from pinned structured inputs, archived source references and assumptions, without rerunning agent discovery or interpretation.
 - Repeating the run does not duplicate published data.
 - A correction creates new Silver/Gold versions while prior results retain their original lineage.
+- Full Silver rebuilds from pinned durable inputs preserve logical results independently of existing Silver rows; partial semantic mappings remain available with tags.
 - Missing or rejected inputs produce visible coverage/eligibility outcomes rather than plausible-looking invented results.
 
 ### E. Historical expansion

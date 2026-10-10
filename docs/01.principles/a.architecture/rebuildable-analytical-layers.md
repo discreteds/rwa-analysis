@@ -28,6 +28,6 @@ If a glossary establishes that a previously assumed borrower count measures agre
 
 ## References
 
-- [Initial data model](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md), sections 11.2–11.3.
+- [Initial data model — Silver lifecycle](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#11-silver-conformance-and-rebuild-lifecycle).
 - [Platform design](../../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md).
 - [Correction-safe identity](../b.data-semantics/correction-safe-identity.md).

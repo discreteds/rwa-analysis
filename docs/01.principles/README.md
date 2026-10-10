@@ -6,14 +6,15 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 ## Categories
 
-- [a. Architecture](a.architecture/INDEX.md): evidence boundaries, multi-domain source bundles and rebuildable analytical layers.
+- [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
 - [b. Data semantics](b.data-semantics/INDEX.md): layered metric definitions, contextual mappings and correction-safe identity.
 - [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction and independently authored golden sets.
 
 ## Supporting material
 
 - [Platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): detailed architecture and intended workflows.
-- [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): initial contracts and conformance design.
+- [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): consolidated source capture, semantic catalogue and conformance contracts.
+- [Worked model examples](../04.planning/superpowers/specs/2026-10-10-data-model-worked-examples.md): source-backed CR6, CR1/CR2 and LIQ2 design exercises.
 - [CBA/Westpac discovery](../00.ideation/2025-disclosure-spike.md) and [NAB/ANZ discovery](../00.ideation/2025-nab-anz-metadata-spike.md): source evidence and examples.
 - [Raw index](../../raw/index.md): saved disclosure catalogue.
 

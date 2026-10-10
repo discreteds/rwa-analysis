@@ -28,5 +28,5 @@ Changing an observation's canonical portfolio classification must update or repl
 
 ## References
 
-- [Initial data model](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md), sections 11.2–11.3.
+- [Initial data model — identity](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#2-relationships-identity-and-ownership) and [Silver lifecycle](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#11-silver-conformance-and-rebuild-lifecycle).
 - [Rebuildable analytical layers](../a.architecture/rebuildable-analytical-layers.md).

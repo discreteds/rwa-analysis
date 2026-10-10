@@ -2,282 +2,300 @@
 
 Date: 2026-10-10
 
-Status: Approved conceptual model; written specification awaiting review.
+Status: Consolidated design for review. Incorporates agreed principles and discovery; logical record shapes and binding representation below are the proposed first implementation contract, not implemented classes.
 
-Parent design: [Research platform architecture](2026-10-10-rwa-analysis-design.md).
+Parent: [Platform architecture](2026-10-10-rwa-analysis-design.md). Governance: [Principles and architecture](../../../01.principles/README.md).
 
-Governing principles: [Principles and architecture](../../../01.principles/README.md). This specification provides the detailed contracts behind those durable decisions.
+Worked review: [CR6, CR1/CR2 and LIQ2 examples](2026-10-10-data-model-worked-examples.md).
 
-Evidence: [CBA/Westpac source review](../../../00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata review](../../../00.ideation/2025-nab-anz-metadata-spike.md).
+Evidence: [CBA/Westpac](../../../00.ideation/2025-disclosure-spike.md), [NAB/ANZ](../../../00.ideation/2025-nab-anz-metadata-spike.md), [credit quality/provisions](../../../00.ideation/2025-credit-quality-provisions-discovery.md), [liquidity](../../../00.ideation/2025-liquidity-metadata-discovery.md).
 
-## 1. Design decision
+## 1. Purpose and boundaries
 
-Use shared disclosure metadata and provenance with small typed domain models. The first domain model is a general CR6 `CreditRiskExposureRow`, initially exercised against Australian residential mortgage tables. Mortgage analysis must not determine the structure of all future data domains.
+Capture published data faithfully and tag what we understand. PDFs do not disclose every measure, dimension, cell or calculation input. Partial semantics, approximations and comparisons of related but imperfectly aligned measures are normal research conditions, not reasons to discard source observations.
 
-A document identifies the source. An extracted dataset identifies the meaning, scope and grain of its observations. A single extraction bundle can contain multiple datasets, portfolios, jurisdictions and observation dates.
+The model has three connected parts:
 
-The models below describe the initial logical Python dataclass contracts. Persisted representations preserve decimal values and explicitly convert to corresponding Mountainash tabular contracts. Implement fields required by the first source-backed golden sets, extending these contracts as requirements grow.
+1. **Source capture:** documents, source structure, typed domain records, values and evidence in versioned Bronze bundles.
+2. **Semantic catalogue:** long-lived concepts, composable measure definitions, researcher decisions and contextual mappings, retained independently of Silver.
+3. **Conformance:** Mountainash resolves and tags the selected evidence, applies justified conversions, and produces rebuildable Silver observations.
 
-## 2. Relationships and identity
+Reconciliations, residuals and inferred relationships emerge through analysis. Persist useful outputs selectively with reproducible inputs and assumptions; no universal reconciliation or inference entity is required.
+
+Australian mortgage CR6 is the first production slice. Credit-quality and liquidity examples exercise shared contracts without committing to production extractors for every explored template. Use Python dataclasses and explicit Mountainash tabular conversions. A typed record for each supported domain shares context and provenance; neither a mortgage-shaped universal record nor an opaque metadata dictionary is the core model.
+
+## 2. Relationships, identity and ownership
 
 ```text
 SourceDocument
-    |
-ExtractionBundle — one logical bundle per bespoke extraction script
-    |
-    +-- ExtractedDataset[CreditRiskExposureRow]
-    |       +-- DatasetContext
-    |       +-- MetricDefinition references
-    |       +-- SegmentationDefinition and BandDefinition records
-    |       +-- CreditRiskExposureRow records containing ReportedValue fields
-    |
-    +-- Other typed domain datasets as required
+    -> ExtractionBundle version
+        -> ExtractedDataset[T]
+            context + source rows/columns/header paths
+            published fields + segmentation + source relationships
+            typed records containing ReportedValue fields
+            evidence + qualifications
 
-Contexts, definitions and values reference SourceReference/Qualification records.
+Semantic catalogue revision
+    concepts + concept relationships
+    composable measure definitions
+    interpretation decisions + source mappings
+                       |
+Selected Bronze versions + catalogue/mappings + conformance code/configuration
+                       |
+                 Silver revision
+                       |
+               research / Gold
 ```
 
-An extraction bundle's identity is the source-reporting jurisdiction, organisation, document reporting date and extraction ID already used in the folder hierarchy. Output versions belong to the same logical bundle. IDs are readable catalogue identifiers; no content hash or file-identity proof is required.
+One PDF's bespoke extractor owns one logical Bronze bundle. The bundle may include multiple domains, portfolios, jurisdictions and observation periods. Adding selected content extends its golden set and extractor rather than duplicating the PDF into domain-specific bundles.
 
-Dataset IDs distinguish coherent table blocks, including comparative periods and separate portfolio/regulatory scopes. Band IDs are scoped to their segmentation definition; row IDs are scoped to their dataset. Identical labels in unrelated tables do not imply shared identity or equivalent meaning.
+The logical bundle key is the existing reporting-jurisdiction/org/document-date/extraction-ID path. Output versions belong to that bundle. Dataset, row, field, axis and relationship IDs are readable local identifiers; they do not require content hashes or registration machinery.
 
-## 3. SourceDocument
+A source observation occurrence is addressable by bundle, dataset, record and field IDs, with output version selecting its revision. A row-oriented measure such as CR2 still has a typed value field. Source occurrences in repeated tables or later comparative documents remain separately addressable even when they support the same logical observation.
 
-| Field | Meaning |
-|---|---|
-| `document_id` | Source catalogue identifier |
-| `local_path` | Project-relative path to the saved PDF in `raw/` |
-| `organisation_id` | Institution/brand identifier |
-| `reporting_entity` | Legal reporting entity as disclosed |
-| `title` | Source document title |
-| `document_reporting_date` | Date described by the report as a whole |
-| `publication_date` | Publication date when known |
-| `reporting_jurisdiction` | Jurisdiction of the source disclosure |
-| `source_url` | Download/source URL |
+Use deterministic source keys that do not depend on current canonical labels, monetary values or generated database IDs. If a corrected extraction splits or merges source records, retain explicit replacement lineage rather than pretending the old grain is unchanged. Source IDs are not themselves proof that two published occurrences represent distinct economic amounts.
 
-`raw/index.md` remains the acquisition catalogue. Structured document context is populated as extraction begins; no registration workflow is introduced. A table can have a different observation date, portfolio jurisdiction or entity scope from its containing document.
+## 3. Source documents and extraction bundles
 
-## 4. ExtractionBundle and ExtractedDataset
-
-`ExtractionBundle` contains:
-
-- `document`: its `SourceDocument`.
-- `extraction_id` and `script_path`: the corresponding bespoke extractor.
-- `schema_version`: version of its output contract.
-- `output_version`: version of the saved extraction output.
-- `datasets`: named typed datasets emitted by that script.
-
-Each `ExtractedDataset[T]` contains its `DatasetContext`, applicable metric definitions, optional segmentation definitions, records of type `T`, and source references/qualifications needed to interpret them.
-
-Dataset collections can be represented as related persisted tables; they need not be flattened into one universal wide table. A future domain introduces a typed record and its conformance contract, rather than filling most of a mortgage record with nulls.
-
-Example: an ANZ September report's single bundle can contain Australian AIRB September CR6, NZ September CR6, March comparative CR6, and subsequently provisions or capital datasets. The bundle remains under `au/anz/`; its contents retain their actual scopes.
-
-## 5. DatasetContext
+### SourceDocument
 
 | Field | Meaning |
 |---|---|
-| `dataset_id` | Identifier for this coherent source table/block |
-| `domain` | Data domain, initially credit-risk exposures |
-| `source_template` | Template identifier such as CR6, where present |
-| `source_table_title` | Original title |
-| `reporting_entity` | Entity represented by this block |
-| `consolidation_scope` | Disclosed consolidation/perimeter |
-| `observation_date` | Date of a stock or snapshot measure |
-| `period_start`, `period_end` | Period covered by a period measure, where applicable |
-| `portfolio` | Source portfolio classification and relevant scope, if applicable |
-| `geographical_scope` | Country/countries or source-defined aggregate region |
-| `regulatory_basis` | Applicable regulator, rules and approach, if applicable |
-| `qualifications` | Source-backed explanations and limitations |
+| `document_id`, `local_path` | Readable identity and project-relative saved PDF path |
+| `organisation_id`, `reporting_entity` | Institution and disclosed legal reporting entity |
+| `title`, `source_url` | Original title and acquisition source |
+| `document_reporting_date` | Date of the report as a whole |
+| `publication_date` | When known; distinct from reporting date |
+| `reporting_jurisdiction` | Jurisdiction of the disclosure |
 
-Portfolio geography, entity domicile, reporting jurisdiction, regulatory-rule jurisdiction and currency are distinct concepts. Do not infer one from another.
+`raw/index.md` remains the acquisition catalogue. Populate structured source context during extraction; no new acquisition registration workflow is introduced. Retain deliberately acquired revised editions as distinct sources with their relationship recorded.
 
-A multi-country aggregate remains one observation unless the source discloses a breakdown. Do not copy its amount into each included country. Source labels remain available even when Silver later supplies canonical classifications.
+### ExtractionBundle and ExtractedDataset[T]
 
-Context applies to a coherent block of records. Split different periods or scopes into distinct datasets instead of introducing hidden row overrides. Domains such as CR9 may subsequently add explicit observation/cohort timing fields to their typed record model where the table contains measures with different temporal meanings.
+The bundle contains its document reference, extraction ID/script path, schema version, output version and named datasets. A dataset contains its context, relevant source structure and definitions, typed records and supporting evidence references. Related collections can persist as separate tables or structured files; this is not a requirement for one flattened universal table.
 
-## 6. SegmentationDefinition and BandDefinition
-
-`SegmentationDefinition` contains:
-
-- `segmentation_id`.
-- `dimension`: PD initially; other numeric or categorical dimensions as required.
-- Ordered `bands`.
-- `coverage_status` and `mutual_exclusivity_status`, supported by qualifications or explicitly unresolved.
-- Applicable source/template expectations when established.
-- Qualifications and source references.
-
-`BandDefinition` contains:
-
-| Field | Meaning |
-|---|---|
-| `band_id` | Identifier within the segmentation |
-| `source_label` | Verbatim band/category label |
-| `position` | Source order |
-| `kind` | Interval, category or default category |
-| `lower_bound`, `upper_bound` | Decimal numeric bounds for an interval |
-| `lower_inclusive`, `upper_inclusive` | Endpoint membership where established |
-| `unit` | Source unit of the segmentation dimension |
-
-Categorical and default buckets do not require interval fields. Distinguish an explicitly unbounded endpoint from a missing or unresolved endpoint; a null alone must not ambiguously mean all of these. Preserve the source label and a qualification when endpoint meaning is unresolved.
-
-Expose the displayed non-default band count, default category count and total band-row count. Keep subtotal/total counts separately. Counts derived from the extracted structure are derived metadata; source-stated counts, if any, are separately attributable observations. The golden set independently specifies expected counts and bands.
-
-Example: `0.15 to <0.25` in percent means a lower bound of Decimal `0.15`, inclusive, and upper bound of Decimal `0.25`, exclusive. Silver can convert those bounds to probability fractions. `100.00 (Default)` is a default category, not an ordinary interval.
-
-NAB's BNZ mortgage CR9 block demonstrates that displayed intervals can omit parts of the standard template. Preserve omitted-band status when an expected template has been established. Do not manufacture zero values, extend neighbouring bounds or assert complete coverage without evidence.
-
-## 7. MetricDefinition
-
-Metric definitions describe fields in a dataset; definitions can be reused when the source establishes equivalent meaning.
-
-| Field | Meaning |
-|---|---|
-| `metric_id` | Identifier of the applicable metric definition |
-| `source_label` | Original column/metric label |
-| `unit`, `scale` | Currency/count/percent/etc. and source magnitude |
-| `weighting_basis` | EAD, borrower arithmetic or other disclosed convention |
-| `denominator_basis` | Definition of a ratio's denominator |
-| `counting_unit` | Agreements, counterparties, borrowers or unspecified |
-| `exposure_basis` | Gross/net and pre/post CRM/CCF where relevant |
-| `adjustment_treatment` | Overlay/floor inclusion or exclusion, where established |
-| `qualifications` | Relevant source-backed explanations |
-
-Retain displayed precision alongside the original value representation, rather than treating the rounded number as exact at arbitrary precision. Some definitions apply at portfolio grain only, such as total provisions. Missing-value semantics can also be qualified by the applicable source definition.
-
-Unknown convention is distinct from not applicable. For example, preserve an original “Average PD” label without assigning EAD weighting until its definition has been established. Do not infer unique borrowers merely from a column title.
-
-Accounting provisions/ECL and regulatory expected loss are different metrics. Market share, when added, requires the relevant market, numerator/denominator definitions and date or period; a calculated share is a derivation rather than a source-reported observation.
-
-## 8. ReportedValue, SourceReference and Qualification
-
-`ReportedValue[T]` contains:
-
-- `value`: a typed value such as Decimal, integer or text; absent when unavailable.
-- `original_text`: the source representation, including a dash or blank.
-- `missing_reason`: when applicable, the established explanation or unresolved status.
-- `source_reference`: location of the evidence for that field.
-
-Metric semantics are supplied by the dataset's field-to-definition mapping. Do not repeat complete definition objects in every cell.
-
-`SourceReference` identifies the document, one-based PDF page, printed page label where present, table, source row and source column. Coordinates are optional. Preserve original row numbers/column letters alongside semantic identifiers when provided.
-
-`Qualification` carries the source-backed explanation, its reference and its applicability to a dataset, definition, band or field. Context may come from another table, introduction or appendix. For example, ANZ's mortgage overlay is explained in CMS2 and must retain that location when it qualifies CR6 interpretation.
-
-Blank, dash, zero, not applicable, not disclosed at this grain and unresolved are not interchangeable. Store the original representation even when a missing reason has been established. Dataclass validation should reject contradictory states such as a zero value labelled missing.
-
-## 9. First domain record: CreditRiskExposureRow
-
-This general CR6 record initially supports the selected mortgage blocks:
+Paths remain:
 
 ```text
-CreditRiskExposureRow
-    row_id
-    row_role                        detail / subtotal / total
-    band_id                         for band rows
-    on_balance_exposure
-    off_balance_exposure
-    average_ccf
-    ead
-    average_pd
-    reported_borrower_count
-    average_lgd
-    average_maturity
-    rwa
-    rwa_density
-    regulatory_expected_loss
-    provisions
+extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/
+data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/
 ```
 
-Every metric field uses `ReportedValue` with the applicable dataset metric definition. Monetary amounts, percentages and maturity use Decimal; reported counts use integer. Preserve percentages and monetary scale as disclosed in Bronze. Numerical conversion for analytical calculations happens after explicit conformance.
+An `au/anz/` source bundle can contain NZ mortgage observations reported in AUD. Path keys never override dataset context.
 
-The initial mortgage blocks have eight band rows and one total/subtotal, but that row count is a golden-set expectation for those datasets, not a class invariant. Mortgage maturity and band-level provisions can be unavailable for different reasons. Totals have no PD-band identifier and are excluded from summing the detail rows.
+## 4. Context, population and time
 
-Other retail/non-retail CR6 blocks can reuse this model if its semantics fit. New domains such as provisions by accounting stage or market share receive distinct record types with shared context and provenance.
+`DatasetContext` supplies dataset ID, domain, source template/title, reporting entity, consolidation scope, source portfolio label, geography, regulatory basis and applicable temporal context. Distinguish geography, entity domicile, reporting jurisdiction, rule jurisdiction and currency. Preserve aggregates over multiple countries as aggregates rather than copying their value into each country.
 
-## 10. Golden sets and evolution
+Rows and fields contribute explicit context where needed. A coherent CR2 schedule can contain opening stock, movements and closing stock; it does not force every record to inherit one snapshot date. Separate comparative blocks may instead become distinct datasets. Either representation must resolve each selected observation's source period unambiguously where disclosed.
 
-Golden sets use the same logical structure as extraction outputs: dataset context, metric definitions, segmentation, source-backed qualifications and expected records. Humans or LLMs author them independently from the source. Expected values must not be produced by the extractor under test.
+Temporal roles include snapshot, opening snapshot, closing snapshot, reporting interval, averaging window and cohort anchor/outcome window. A stress or model horizon is a separate definition attribute, and residual maturity is a segmentation dimension. Do not collapse these into one generic period.
 
-Tests compare metadata and values, excluding execution-specific fields such as output timestamps. A wrong date, counting unit, band bound, missingness reason or overlay basis is a failure even when amounts match.
+Actual dates belong to observation context; reusable rules such as “12 months following the anchor” belong to definitions. Preserve source date labels and the basis for any derived dates. An unknown boundary or calendar convention stays unknown.
 
-When additional data is required, extend the golden set and its scope, update the relevant dataclasses and tests, then iterate on the extractor. Newly requested fields must not disappear silently through an older decoder or comparator. Regenerate Bronze and reconform affected Silver datasets after the tests pass. Previously selected data remains covered unless scope is explicitly revised.
+Population selection combines shared context, row/column segment membership and applicable inclusion rules. CBA's PD definition can apply to seven non-default bands, one default-only band and their combined aggregate without asserting the same default population for every cell.
 
-Test directories retain the agreed mirrored layout:
+## 5. Source axes, published fields and relationships
+
+### Source structure and binding
+
+Keep lightweight source descriptors rather than a full PDF rendering model:
+
+- `SourceAxisItem`: local ID, row/column axis, source label/identifier, order, header-path references, applicable context/qualification references and source location. Section headings can be axis descriptors without pretending to contain numeric values.
+- `PublishedField`: local ID, source measure label or header path, source units/scale where disclosed, and applicable source qualifications. It describes the published field, not a global canonical metric.
+- `ValueBinding`: identifies a typed record field and its published-field/row/column descriptors, relevant context and qualifications. Common CR6 bindings can be shared at dataset-field level; row-defined measures use explicit row bindings.
+
+This replaces the earlier single `MetricDefinition`, which mixed source presentation, canonical concepts and interpreted conventions. Bindings resolve meaning from both axes without making every value a generic key/value record.
+
+`SourceReference` identifies a document, one-based PDF page and printed page label, with optional table, row, column, header, paragraph, footnote and bounding-box locations. It can reference multiple source columns as a span. A narrative value does not require a fabricated table cell.
+
+Merged totals are one observation. A value spanning maturity columns is not duplicated and is not assigned to the nearest visible header. Its semantic scope can be an unsegmented total even when its source location covers only part of the printed grid.
+
+### SegmentationDefinition and BandDefinition
+
+A segmentation contains its local identity, source dimension, ordered bands/categories, applicable context and evidence, plus coverage and mutual-exclusivity information where known. Canonical dimension mappings are separate.
+
+A band has identity, source label/order, interval/category/default kind, unit and applicable bounds/inclusivity. Explicitly unbounded, unresolved and non-applicable endpoints remain distinguishable. A `100.00 (Default)` PD category is not an ordinary interval; `No maturity` is a named category, not a missing value or a zero-duration interval.
+
+Expose derived counts of non-default bands, default categories and aggregate rows separately. Golden sets independently specify expected counts. Source-stated counts, when present, retain their own evidence. Preserve omitted template bands where a template expectation has been established, without filling them with zero exposures.
+
+### SourceRelationship
+
+Capture disclosed `of which`, `comprising`, parent/child and total relationships across either axis. Each relationship has an ID, source label, parent/child references, scope and evidence; known exhaustive coverage or mutual exclusivity is additional information, not an automatic property of a subset link. References can target rows, fields or source blocks. A shared column relationship need not be copied into every cell.
+
+Relationships can form multiple levels and need not describe a strict partition. Keep the source hierarchy separate from canonical `ConceptRelationship` records. Equal values do not establish identity; numbering or indentation alone does not establish parentage where meaning is unclear. Retain uncertain source structure as a qualified interpretation rather than inventing aggregation rules.
+
+These links prevent double-counting a parent and its children. They do not require a universal aggregation engine in the first slice. Analysis selects the relevant level or a supported combination, recording approximations when needed.
+
+## 6. Values, evidence and partial knowledge
+
+### ReportedValue[T]
+
+| Field | Meaning |
+|---|---|
+| `value` | Decimal, integer, text or absent value |
+| `original_text` | Source numeric representation, dash or blank |
+| `displayed_precision` | Source decimal places or explicit precision when relevant |
+| `missing_reason` | When absent: unresolved, not applicable, not disclosed at this grain, or another source-supported reason |
+| `source_reference` | Location of the observation |
+
+Keep monetary amounts, percentages and maturity in Decimal and actual integral counts as integers. Preserve the source scale and sign in Bronze; serialise Decimal losslessly, for example as explicitly decoded decimal strings. Do not use binary floats as the persistence contract. A reported averaged count need not be an integer; its field type follows the source measure.
+
+Source sign and canonical convention are separate. `(4,504)` can parse to `-4504` while retaining its original token; canonical positive-magnitude provisions require an explicit justified conversion. Never apply absolute value globally. A dash becomes numeric zero only when an applicable source convention establishes that meaning. Numeric zero must not be labelled missing.
+
+Keep three things separate: value availability, per-attribute semantic knowledge and structural/extraction validity. A reported LGD with unknown weighting is a usable captured percentage. A blank maturity cell is an absent value; its meaning can remain unresolved. A named `No maturity` segment can contain a present monetary amount.
+
+### Evidence and qualifications
+
+`Qualification` retains source text, evidence references and its applicability to a dataset, row, field, band or relationship. Definitions can occur in introductions, glossaries, footnotes, appendices or related tables. External references need source and version/date context if used.
+
+For interpreted attributes, retain value/status, supporting qualification or researcher decision references, and applicability. A small status vocabulary distinguishes established, provisional, unresolved, conflicting and not applicable. Capture explicit source statements separately from researcher interpretations. These are logical attribute contracts, not a requirement to create an independent database row for every adjective.
+
+Known information can enrich a definition incrementally. Empty unresolved lists never prove exhaustive semantic knowledge. Unmapped labels and conflicts remain visible; preserve the source observation even when canonical fields cannot yet be supplied.
+
+## 7. Durable semantic catalogue
+
+The catalogue lives outside disposable Silver. Its core records are:
+
+| Record | Responsibility |
+|---|---|
+| `Concept` | Stable identity, name, meaning, revision and lifecycle status |
+| `ConceptRelationship` | Versioned, typed relationship between concepts, with rationale |
+| `MeasureDefinition` | Concept plus composable meaning-bearing attributes and result unit |
+| `InterpretationDecision` | Researcher decision, scope, rationale, evidence, date and supersession history |
+| `SourceMapping` | Versioned contextual interpretation of source descriptors into canonical meaning |
+
+Concept IDs are independent of published labels and Python field names. Renames and aliases can preserve identity. Splits, merges and replacements preserve explicit history. Do not reuse an old identity with silently different meaning. Source-effective periods and the dates/revisions of our interpretations are distinct.
+
+### Measure composition
+
+Compose only the attributes needed by actual disclosures and interviews:
+
+- Counted entity or monetary exposure basis; result unit and, when established, currency.
+- Aggregation method; averaging weight measure and weight timing.
+- Regulatory factor adjustment, overlay/floor treatment and other reported adjustments.
+- Numerator/denominator definitions for ratios where established.
+- Population rules: inclusion, exclusion and explicit conditional selection.
+- Temporal aggregation method/calendar and observation-count subject.
+- Cohort eligibility, event definition, relative outcome window and model horizon where relevant.
+
+Reusable components can be referenced as their use recurs. A structured condition may initially retain source text plus known tags; no generic predicate language, taxonomy of every possible combination or universal reasoning engine is required.
+
+Arrangements (#) and monetary exposures ($) are distinct. NAB's mortgage agreement count can map to arrangement count; another portfolio's counterparty count is not automatically equivalent. Result percentages differ from their monetary weights. Ratio denominators differ from averaging weights. Regulatory factor-adjusted amounts differ from weighted means. An average of daily ratios is not generally a ratio of average amounts.
+
+Default state at an anchor and default events over a following interval are different concepts. The researcher-defined forward 12-month default outcome starts with arrangements not in default and identifies qualifying defaults in the following year. Source CR9 measures map to it only when their cohort/window definitions support that interpretation. Exits, cures and repeated defaults remain tagged according to known rules rather than inferred from the word “default”.
+
+### Ongoing discovery and interviews
+
+Inspect evidence, compare with existing concepts, identify uncertainty, interview the researcher where meaning or analytical significance is unclear, and record the agreed decision. New wording does not automatically create a new concept. Researchers and agents maintain the same catalogue through this process during operation as well as initial development.
+
+## 8. Contextual mappings and effective meaning
+
+A `SourceMapping` records ID/revision, applicable source descriptors and context, target concept/measure revision or tags, supporting evidence/decisions and any explicit conversion. Scope can include entity, template, portfolio, approach, observation interval and document restrictions. A later comparative source has both its document context and its actual observation date.
+
+Resolve an effective measurement view from:
 
 ```text
-tests/bronze/<reporting-jurisdiction>/<org>/<document-reporting-date>/<extraction-id>/
+reported value + published field + row/column population and time
+    + applicable qualifications + selected mapping/catalogue revisions
+```
+
+Complementary attributes compose. A documented narrower qualification can refine a broader definition when applicability establishes that relationship. Do not select conflicting interpretations by incidental file order or assume “most specific wins” without a supported scope relationship. Preserve unresolved/conflicting attributes and their evidence.
+
+Every conformed field retains the applied mapping/definition revisions and source context. A transient effective view can assemble those references on demand; it need not duplicate the full semantic object into every cell. Partial mappings produce partial canonical metadata, not fabricated defaults.
+
+A source `Sub-total` and `Total Residential Mortgages` can both map to `portfolio_aggregate` for the appropriate block. Their original labels and roles remain available. A mapping for one occurrence of `Sub-total` does not govern every occurrence in the report.
+
+## 9. Typed domain records and scope of implementation
+
+### First production record: CreditRiskExposureRow
+
+```text
+record_id, source_row_ref, source_row_role
+segment_memberships, aggregation_scope
+on_balance_exposure, off_balance_exposure, average_ccf, ead
+average_pd, reported_borrower_count, average_lgd, average_maturity
+rwa, rwa_density, regulatory_expected_loss, provisions
+```
+
+Each measure field is a `ReportedValue` with a dataset/row-specific binding. Canonical roles and concepts are outputs of mapping, not prerequisites to accepting Bronze. The source-oriented borrower field does not assert that CBA counts arrangements. CR6's eight bands and one aggregate are pilot fixture expectations, not class invariants.
+
+### Additional example shapes for design review
+
+| Shape | Grain and purpose |
+|---|---|
+| `CreditQualityRow` | Source asset category with typed gross-performing, gross-non-performing, allowance and net fields; related allocation records carry the source's available SA/IRB/category detail |
+| `ExposureMovementRecord` | Source movement line, reporting interval/temporal role and monetary value; retains opening/closing snapshots alongside period flows |
+| `FundingRequirementRecord` | Funding item plus source measurement basis and optional maturity membership; a typed monetary amount with binding/evidence |
+
+These shapes are exercises, not a mandate to implement all domains immediately. For LIQ2, maturity-bucket observations and one unsegmented total can be represented without four fabricated cells. “Unsegmented total” is an explicit grain, not an ambiguous null meaning missing, all maturities and no maturity simultaneously. A weighted funding requirement is a different measure, not another unweighted maturity bucket.
+
+Narrative or footnote amounts can use suitable domain records with non-cell source references when selected. A footnote ratio remains reported data even if its numerator and denominator amounts are unavailable.
+
+## 10. Golden sets and contract evolution
+
+Golden sets specify the selected source-facing contract: context, axis/binding metadata, segmentation, source relationships, values, missingness and supporting qualifications. Humans or LLMs author them independently from the extractor and correct them by rereading evidence. Tests run against saved expectations without LLM calls.
+
+Use the agreed mirrored layout:
+
+```text
+tests/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/
     golden.json
     golden-notes.md
     test_extraction.py
 ```
 
-All datasets emitted by the corresponding script can be covered within that directory. A new jurisdiction or domain inside the same file does not require duplicating the source bundle.
+The initial production golden scope remains full CBA June and Westpac September mortgage CR6 blocks. The linked worked examples are specification examples, not completed golden sets or independently verified test fixtures.
 
-## 11. Silver handoff
+Wrong source values, dropped selected fields, incorrect signs, shifted columns or unsupported hierarchy assignments are extraction defects. Faithfully captured unknown semantics and undisclosed categories are legitimate outputs. Golden metadata can explicitly expect unresolved interpretation instead of encoding a guess. Canonical mapping expectations are verified separately against evidence and recorded researcher decisions, so a semantic correction alone need not rewrite an accurate source fixture.
 
-Silver reads saved Bronze outputs, not PDFs. Its domain-specific Mountainash contracts:
+Expand requirements through source review, golden scope/contract changes, focused extractor iteration and a new Bronze output version. Retain existing coverage unless explicitly revised. Shared dataclass/helper changes rerun affected extractors; new fields cannot silently disappear through an older decoder or comparator. Do not manufacture expected values from the extractor under test.
 
-- Map source classifications to canonical classifications through versioned mappings.
-- Convert percentages, currencies/scales where appropriate and other units explicitly.
-- Apply schema conformance, value checks and compatible-basis reconciliation.
-- Preserve original definitions, source references and Bronze dataset/output-version lineage.
-- Record analytical comparability and eligibility separately from successful extraction.
+## 11. Silver conformance and rebuild lifecycle
 
-Final physical Silver tables are designed from the first working, golden-tested Bronze datasets. This specification does not require implementing every possible dimension table before extracting the initial documents.
+### Conformance result
 
-### 11.1 Published labels to canonical roles and variants
+Silver domain tables retain logical observation identity, canonical context/grain where established, typed values and units, measure/mapping revisions, source lineage and per-attribute interpretation tags. They also retain access to original values and definitions. This is a logical contract, not a requirement for one long-form fact table.
 
-Maintain explicit, versioned semantic mappings from published labels and their source context to canonical concepts, roles and variants. Organisations can use different labels for equivalent concepts, and both labels and underlying definitions can change over time. Label equality alone does not establish equivalence.
+Use Mountainash contracts, relations and persistence integration with local DuckDB through `mountainash-data`; retain the independent NumPy/SciPy analytical library. Verify actual API/backend support for Decimal, contracts and transactions against pinned versions. Physical tables and storage encodings are established with the first working Bronze slice, not a prebuilt universal ontology database.
 
-Each mapping records:
+Validation distinguishes:
 
-- Mapping ID and revision, together with the canonical vocabulary version.
-- Source label and mapping target kind (for example row role, metric or portfolio classification).
-- Applicable organisation/reporting entity, domain, table/template, portfolio, regulatory basis and other context needed to disambiguate the label.
-- Applicable observation-date range, with an explicit document/template restriction when needed for comparatives or changed publication conventions.
-- Canonical concept/role and its relevant semantic variant attributes.
-- Supporting source references and the rationale for the interpretation.
+- **Structural/extraction errors:** invalid references, lost observations, contradictory value/missingness states or conversions inconsistent with established units.
+- **Research limitations:** unknown conventions, coarse disclosures, mismatched populations, unresolved mappings and analytical residuals.
 
-For the inspected mortgage blocks, CBA's `Sub-total` and Westpac's `Total Residential Mortgages` both map to the canonical row role `portfolio_aggregate`, with scope `all_disclosed_pd_bands_in_portfolio`. Preserve the original labels and source presentation roles (`subtotal` versus `total`) separately. A different occurrence of `Sub-total` does not inherit this mapping without matching context.
+The second group does not block publication. Apply exact reconciliation only where source definitions and precision justify it; otherwise retain a diagnostic or use a tagged approximation in analysis. There is no global analytical eligibility flag. Calculations state their own needed inputs and assumptions.
 
-Likewise, NAB's `Number of borrowers` can map to a borrower-count concept with counting-unit variant `agreement` for its mortgage CR6 block. Other banks' counting units remain unresolved until established. CBA and NAB RWA can share a canonical RWA concept while retaining distinct overlay-treatment variants. Variants describe semantic differences, not merely spelling differences, and may comprise several attributes rather than one combined enum.
+### Full rebuild inputs and publication
 
-Variant evidence may appear in footnotes, table introductions, methodology notes, glossaries, appendices or explicitly referenced definitions outside the immediate table. Each PDF review must look for applicable definitions in those locations and connect them to the affected fields. Preserve the supporting text and source locations in Bronze, together with the scope that establishes applicability (such as portfolio, table, metric or period). A glossary definition must not automatically override a more specific table qualification; conflicting or insufficient evidence leaves the affected interpretation unresolved. External definitions, when needed, require their own source reference and applicable version/date rather than being silently assumed.
+A durable run manifest selects Bronze bundle/output versions, catalogue and mapping revisions, curated corrections, conformance code/contracts/configuration and relevant environment versions. Persist these inputs independently of the Silver tables being replaced. Golden fixtures are not substitute conformance input.
 
-The semantic mapping can therefore depend on both a published label and multiple evidence-backed qualifications. Record which evidence supports each variant attribute, distinguishing explicit source statements from supported interpretations. Golden expectations cover these qualifications and their applicability as well as cell values; changes to notes or glossaries can require a new mapping even when the column label is unchanged.
+Build from empty candidate tables, validate structural correctness, and publish atomically using a transaction or staging mechanism supported by the selected backend. A failed run leaves the prior published revision available. Semantic incompleteness alone is not a failed rebuild. Gold results identify their consumed Silver revision and become stale when dependencies change.
 
-Bronze preserves published labels, definitions and evidence. Silver applies these mappings through Mountainash conformance and retains the applied mapping ID/revision alongside the canonical result. Distinguish source-effective dates from mapping revisions: correcting our interpretation of an old disclosure creates a new mapping revision without pretending the bank changed its definition on that date. Repeated comparative observations retain their own observation dates and document context.
+Stable logical IDs follow explicit source lineage and source-occurrence selection, not mutable canonical names or auto-increment keys. Repeated evidence, restatements and multiple displays of a total require a selection policy; equal numbers alone never deduplicate observations. Splits/merges/removals replace the affected scope and preserve replacement lineage. Detailed deterministic keys are exercised with the first persisted datasets.
 
-Mapping outcomes explicitly distinguish resolved, unresolved and ambiguous cases. Conflicting applicable rules must not be selected by incidental order; unknown labels or unsupported variants remain inspectable and ineligible for analyses requiring resolved semantics. Published-label mappings do not themselves convert units or make differently defined measures analytically interchangeable. Save the mapping revision used for each conformance run so a later correction can produce a new, reproducible Silver result.
+Incremental upserts are later optimisations and must yield the same logical result as rebuilding identical selected inputs. Reprocessing must not create duplicate active observations. Existing Silver rows or manually patched values are never necessary inputs to regeneration.
 
-### 11.2 Layered metric definitions and revisable conformance
+### Corrections and retention
 
-Metric metadata separates the canonical concept, measurement definition, reporting definition and presentation. Measurement definitions describe population, weighting, denominator, counting unit and adjustment treatment; reporting definitions scope these to the entity, portfolio, regulatory basis and effective period; presentation retains source labels, units, scale, precision and missing-value conventions. Reusable attributes such as geography and currency cut across the concept hierarchy. Inheritance and overrides must be explicit and evidence-backed, with unknown or conflicting attributes remaining unresolved. Each conformed observation identifies the effective definition version used.
+| Change | Durable correction |
+|---|---|
+| Source extraction error | Correct source expectations/extractor, publish new Bronze version |
+| Interpretation error | Revise catalogue/mapping/decision; rebuild selected Bronze |
+| Missing source qualification | Expand source fixture/extraction, then revise interpretation as needed |
+| Bank restatement | Retain new source occurrence with explicit supersession/selection |
+| Analytical assumption change | Revise retained analysis inputs; do not rewrite reported data |
 
-Corrections are expected during development and operation. An extraction error requires corrected source-backed expectations, extractor changes and a new Bronze output version. An interpretation error requires revised metadata/mappings and reconformance of affected saved Bronze. A bank restatement supplies new source evidence with an explicit supersession relationship. These are distinct changes and must remain distinguishable in lineage.
+Retain Bronze versions, semantic revisions, run manifests and implementation/configuration needed for reproducibility. Historical Silver snapshots are optional. Git-ignored generated data still requires an explicit retention/backup location; “ignored” does not mean disposable. Catalogue definitions/decisions must not exist only in generated database tables. Concrete file paths and backup commands belong to implementation planning.
 
-### 11.3 Silver is rebuildable from scratch
+## 12. Worked review and next checkpoint
 
-Full Silver regeneration is a normal, first-class workflow throughout the repository's lifetime. Silver is a derived, replaceable interpretation of retained Bronze outputs and versioned conformance inputs. Its existing rows, generated IDs or manually patched values must never be required to reconstruct it.
+The [worked examples](2026-10-10-data-model-worked-examples.md) exercise:
 
-The authoritative rebuild inputs are:
+1. CBA CR6: twelve field definitions, mixed result units, row populations, missingness and qualifications.
+2. CR1/CR2: nested allocation headers, coarse disclosures, signed allowances, subset links and row-defined stock/flow measures.
+3. NAB LIQ2: hierarchical funding items, categorical/interval maturity, merged totals and factor-adjusted monetary amounts.
 
-- Explicitly selected saved Bronze bundle/output versions, including the policy selecting repeated comparative evidence and restatements without double-counting observations.
-- Versioned canonical definitions, source mappings and any curated corrections or overrides, with their evidence and scope.
-- Conformance code, contracts and configuration versions.
+They establish that the proposed logical model can express the selected cases without inventing unavailable data. They do not establish full extraction accuracy, backend integration or production readiness.
 
-Keep these inputs outside the disposable Silver layer. Golden sets verify extraction; they are not a substitute input for rebuilding Silver. Corrections discovered while using Silver must be captured in the appropriate durable input and replayed, rather than existing only as edits to current Silver rows.
-
-For each rebuild, record the selected input versions and conformance versions in a durable run manifest. Build a candidate Silver revision from empty target tables, validate it with Mountainash contracts and reconciliation checks, and publish it atomically through a supported transactional or staging mechanism. A failed rebuild leaves the last published revision available. Publishing a new revision also makes dependent Gold outputs stale until regenerated against that revision.
-
-Stable source identities and deterministic logical observation identities must survive a rebuild. A mutable canonical interpretation is not the sole observation/upsert key, and database-generated surrogate IDs are not cross-rebuild identities. When a correction changes record grain through splitting, merging or removal, replace the affected dataset scope and preserve its source lineage rather than leaving obsolete rows active.
-
-Incremental updates/upserts are a subsequent efficiency mechanism: given the same selected inputs and definition versions, they must produce the same logical current result as a full rebuild. Reprocessing identical inputs must not duplicate observations. Design and verify the initial conformance path around full regeneration before optimising incremental updates.
-
-Reproducibility requires retaining the relevant Bronze versions, definition/mapping revisions, conformance implementation/configuration and run manifests. Physical historical Silver snapshots may be retained for convenience, but rebuilding the current layer must not depend on them. Gold results identify the Silver revision they consumed so results from different interpretations cannot silently mix.
-
-## 12. First implementation checkpoint
-
-Demonstrate the contracts using the agreed CBA June and Westpac September mortgage CR6 blocks, informed by the NAB/ANZ scope, count and overlay differences. Before implementation planning, review the written model and ensure those distinctions can be expressed without bank-specific changes to shared metadata classes.
-
-This document defines the approved model structure, not completed Python classes, golden fixtures or extraction scripts.
+Review the consolidated contracts and examples before implementation planning. The first implementation checkpoint remains the two agreed full CR6 golden sets and bespoke extractors, followed by Mountainash conformance/rebuild verification. Introduce additional domain classes only as their selected extraction scope becomes concrete.
