@@ -7,6 +7,15 @@ import pytest
 from rwa_analysis.extraction.runner import run_extractor
 
 
+@pytest.fixture(scope="session")
+def project_root():
+    return next(
+        path
+        for path in Path(__file__).resolve().parents
+        if (path / "pyproject.toml").is_file()
+    )
+
+
 def _extract(org, document_date):
     root = Path(__file__).resolve().parents[1]
     pdf = root / f"raw/{org}-{document_date}-aps330.pdf"

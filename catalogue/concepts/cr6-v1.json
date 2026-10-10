@@ -1,0 +1,338 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "exposure.on-balance",
+      "revision_id": "exposure.on-balance@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "On-balance monetary exposure",
+      "definition": "On-balance monetary exposure. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "on_balance_exposure"
+        }
+      ]
+    },
+    {
+      "id": "exposure.off-balance",
+      "revision_id": "exposure.off-balance@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Off-balance monetary exposure",
+      "definition": "Off-balance monetary exposure. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "off_balance_exposure"
+        }
+      ]
+    },
+    {
+      "id": "factor.credit-conversion",
+      "revision_id": "factor.credit-conversion@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Credit conversion factor",
+      "definition": "Credit conversion factor. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_ccf"
+        }
+      ]
+    },
+    {
+      "id": "exposure.at-default",
+      "revision_id": "exposure.at-default@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Monetary exposure at default",
+      "definition": "Monetary exposure at default. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "ead"
+        }
+      ]
+    },
+    {
+      "id": "risk.default-probability",
+      "revision_id": "risk.default-probability@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Probability of default",
+      "definition": "Probability of default. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_pd"
+        }
+      ]
+    },
+    {
+      "id": "count.reported-borrowers",
+      "revision_id": "count.reported-borrowers@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Reported borrower count; counted entity requires source-specific interpretation",
+      "definition": "Reported borrower count; counted entity requires source-specific interpretation. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "reported_borrower_count"
+        }
+      ]
+    },
+    {
+      "id": "risk.loss-given-default",
+      "revision_id": "risk.loss-given-default@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Loss given default",
+      "definition": "Loss given default. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_lgd"
+        }
+      ]
+    },
+    {
+      "id": "duration.effective-maturity",
+      "revision_id": "duration.effective-maturity@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Effective maturity in the CR6 regulatory capital context",
+      "definition": "Effective maturity in the CR6 regulatory capital context. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_maturity"
+        }
+      ]
+    },
+    {
+      "id": "capital.risk-weighted-assets",
+      "revision_id": "capital.risk-weighted-assets@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Risk-weighted assets; adjustments require source-specific interpretation",
+      "definition": "Risk-weighted assets; adjustments require source-specific interpretation. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa"
+        }
+      ]
+    },
+    {
+      "id": "capital.risk-weight-density",
+      "revision_id": "capital.risk-weight-density@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Reported risk-weighted asset density",
+      "definition": "Reported risk-weighted asset density. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa_density"
+        }
+      ]
+    },
+    {
+      "id": "loss.regulatory-expected",
+      "revision_id": "loss.regulatory-expected@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Regulatory expected credit loss, distinct from accounting provisions",
+      "definition": "Regulatory expected credit loss, distinct from accounting provisions. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "regulatory_expected_loss"
+        }
+      ]
+    },
+    {
+      "id": "provision.credit-impairment",
+      "revision_id": "provision.credit-impairment@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Credit impairment provisions; detailed accounting scope remains source-specific",
+      "definition": "Credit impairment provisions; detailed accounting scope remains source-specific. Does not establish cross-source measure equivalence.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "provisions"
+        }
+      ]
+    },
+    {
+      "id": "unit.money",
+      "revision_id": "unit.money@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Monetary unit",
+      "definition": "Unscaled monetary amount; currency is a separate attribute.",
+      "category": "unit"
+    },
+    {
+      "id": "unit.ratio",
+      "revision_id": "unit.ratio@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Ratio",
+      "definition": "Fractional rate; a displayed percent converts with factor 0.01.",
+      "category": "unit"
+    },
+    {
+      "id": "unit.count",
+      "revision_id": "unit.count@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Count",
+      "definition": "Number of counted entities, distinct from monetary exposure.",
+      "category": "unit"
+    },
+    {
+      "id": "unit.year",
+      "revision_id": "unit.year@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Year",
+      "definition": "Duration measured in years.",
+      "category": "unit"
+    },
+    {
+      "id": "count.arrangements",
+      "revision_id": "count.arrangements@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Arrangement count",
+      "definition": "Count of arrangements, not monetary exposure or a count of unique people.",
+      "category": "quantity",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "borrower-definition"
+        }
+      ],
+      "decision_refs": [
+        {
+          "kind": "decision",
+          "revision_id": "agreed.nab-mortgage-agreements@v1"
+        }
+      ]
+    },
+    {
+      "id": "population.residential-mortgages",
+      "revision_id": "population.residential-mortgages@v1",
+      "created_on": "2026-10-10",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Residential mortgage population",
+      "definition": "Source-selected residential mortgage population; reporting perimeter and exclusions remain contextual.",
+      "category": "population",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "context",
+          "ref_id": "context"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "context",
+          "ref_id": "context"
+        },
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "context",
+          "ref_id": "context"
+        },
+        {
+          "bundle_key": "au/anz/2025-09-30/aps330",
+          "document_id": "anz-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "context",
+          "ref_id": "context"
+        }
+      ]
+    }
+  ]
+}
