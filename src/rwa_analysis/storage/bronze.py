@@ -4,6 +4,7 @@ Publication assumes a single writer. A complete validated staging directory is
 renamed on the same filesystem; readers select explicit versions, never latest.
 """
 
+import json
 import re
 import sys
 from dataclasses import asdict, dataclass
@@ -12,7 +13,7 @@ from importlib.metadata import distributions
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from mountainash_files import FileSinkSpec, FileSourceSpec, parse, write
+from mountainash_files import FileSinkSpec, parse_bytes, write
 
 from rwa_analysis.extraction.codec import (
     decode_envelope,
@@ -58,19 +59,21 @@ def read_staged_bundle(
     path: Path, *, expected_reference: BronzeRef | None = None
 ) -> ExtractionBundle:
     """Private shared reader for staged and published bundles."""
-    results = parse(FileSourceSpec(path=str(path), format="json"), output="pydata")
-    if (
-        len(results) != 1
-        or type(results[0].data) is not list
-        or len(results[0].data) != 1
-    ):
-        raise ValueError("Bronze envelope: expected one JSON object")
-    envelope = results[0].data[0]
+    # Validate the original JSON before Arrow unifies nested records: otherwise
+    # an absent required key can be silently restored as a nullable field.
+    # Both decoders consume the same bytes, including during staged readback.
+    raw = path.read_bytes()
+    envelope = json.loads(raw)
     bundle = decode_envelope(
         envelope,
         expected_reference=asdict(expected_reference) if expected_reference else None,
     )
     BronzeRef(**envelope["reference"])
+    result = parse_bytes(raw, "json", output="pydata")
+    if type(result.data) is not list or len(result.data) != 1:
+        raise ValueError("Bronze envelope: expected one JSON object")
+    if result.data[0] != envelope:
+        raise ValueError("Bronze normalization changed source evidence or provenance")
     return bundle
 
 

@@ -68,6 +68,13 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
         (("reference", "extra"), None, False, "extra"),
         (("reference", "output_version"), 1, False, "output_version"),
         (("payload", "datasets"), {}, False, "datasets"),
+        pytest.param(
+            ("payload", "datasets", 0, "records", 0, "ead", "displayed_precision"),
+            None,
+            True,
+            "displayed_precision",
+            id="missing-one-cell-precision-before-arrow-null-fill",
+        ),
     ],
 )
 def test_load_rejects_invalid_envelope(
@@ -81,6 +88,12 @@ def test_load_rejects_invalid_envelope(
     target = envelope
     for field in field_path[:-1]:
         target = target[field]
+    if field_path[-1] == "displayed_precision":
+        # Only one populated cell loses the key. Sibling cells retain it, which
+        # makes Arrow silently restore the omitted field as None.
+        assert target["displayed_precision"] == 0
+        records = envelope["payload"]["datasets"][0]["records"]
+        assert records[1]["ead"]["displayed_precision"] == 0
     if remove:
         del target[field_path[-1]]
     else:
@@ -118,7 +131,7 @@ def test_unsafe_references_cannot_be_saved(
     assert not (tmp_path / "data").exists()
 
 
-@pytest.mark.parametrize("failure", ["write", "changed_evidence"])
+@pytest.mark.parametrize("failure", ["write", "changed_evidence", "missing_field"])
 def test_failed_staging_leaves_previous_version_and_no_partial_output(
     tmp_path, cba_bundle, monkeypatch, failure
 ):
@@ -132,14 +145,20 @@ def test_failed_staging_leaves_previous_version_and_no_partial_output(
     def faulty_write(sink, envelope):
         # Inject an IO/transport fault; real writing, decoding and publication run.
         changed = deepcopy(envelope)
-        changed["payload"]["document"]["title"] += " corrupted"
+        if failure == "missing_field":
+            cell = changed["payload"]["datasets"][0]["records"][0]["ead"]
+            assert cell.pop("missing_reason") is None
+        else:
+            changed["payload"]["document"]["title"] += " corrupted"
         real_write(sink, changed)
         assert not (parent / "v2").exists()
         if failure == "write":
             raise OSError("injected write failure")
 
     monkeypatch.setattr(bronze, "write", faulty_write)
-    with pytest.raises((OSError, ValueError), match="failure|changed source evidence"):
+    with pytest.raises(
+        (OSError, ValueError), match="failure|changed source evidence|missing_reason"
+    ):
         bronze.save_bronze(cba_bundle, "v2", tmp_path, "r2")
     assert sorted(p.name for p in parent.iterdir()) == ["v1"]
     assert (parent / "v1/bundle.json").read_bytes() == previous
