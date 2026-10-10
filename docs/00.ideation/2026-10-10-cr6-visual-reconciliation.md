@@ -5,7 +5,7 @@ Reviewer: **OpenAI GPT-6 Astra, LLM agent**. This is not human sign-off.
 ## Outcome
 
 **All four selected tables reviewed; no unexplained extraction, conformance or
-rendering discrepancy identified.** Both final artifact sets have zero exact-value
+rendering discrepancy identified.** All retained artifact sets have zero exact-value
 and metadata findings. Legitimate unresolved meanings listed below remain tagged.
 
 The primary review reads the actual published `cr6-2025-v1` warehouse. Its
@@ -28,6 +28,34 @@ Manifest SHA-256 (retained run provenance, not PDF acquisition identity):
 
 - `cr6-2025-v1`: `deb1d59064d7516ac9e10bb673a1a00a05cfc86ad9ed7b3a69f19567480178e4`
 - `cr6-2025-task9-v2`: `f08a1c9b363cc74d29723e362f5336929af30c35afce4c9859351d4a48e7e151`
+
+## Final replay fix and current publication
+
+Current runnable publication: `cr6-2025-final-v3`, produced and rendered from clean
+commit `b58eb8d3e34469f2aa0121e7681ccda6fabe205e`. The fix removes the identical-marker
+early return: every validated replay atomically replaces Silver. The existing
+recovery test was observed failing with 0 observations before the fix and passing
+with all 36 restored afterward. Different-input reuse remains rejected.
+
+- Manifest: `data/manifests/cr6-2025-final-v3.json`; SHA-256
+  `298490a26550eb5d9f9433153b934c7783955072b41ad0d591234996303c49f9`.
+- Warehouse: `data/warehouse-cr6-2025-final-v3.duckdb`.
+- Reviewed index: `data/reconciliation/cr6-2025-final-v3/index.html`;
+  adjacent `review.md`, `review-inputs.json` and empty `differences.json` retain
+  review and implementation provenance.
+- Same four immutable Bronze v1 bundles and catalogue cr6-v1. All seven tables
+  equal task9-v2 after excluding revision identity: 4/32/36/432/1,296/432/32 rows
+  for contexts/segments/observations/interpretations/mappings/lineage/relationships.
+- All eight reconstructed HTML tables equal the previously reviewed tables after
+  replacing only revision ID; all 32 source images are byte-identical. All five
+  pages' local links resolve. Prior 432-position visual findings remain applicable
+  by this comparison; no new browser screenshot review is claimed.
+- Focused rebuild suite: **16 passed**. Full suite: **152 passed**, 184.72 seconds;
+  existing Ibis deprecation warnings. Ruff lint/format and diff checks passed.
+
+The historical runs and direct visual findings below remain the review evidence.
+Use the [current rebuild commands](../workflows/silver-rebuild.md) with final-v3;
+historical manifests require matching historical implementation code.
 
 ## Coverage and findings
 

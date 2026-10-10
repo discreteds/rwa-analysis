@@ -3,12 +3,17 @@
 First [extract the reviewed sources](cr6-extraction.md), then run:
 
 ```sh
-uv run rwa manifest --request config/rebuilds/cr6-2025-v1.json
-uv run rwa rebuild --manifest data/manifests/cr6-2025-v1.json
-uv run rwa inspect --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
+uv run rwa manifest --request config/rebuilds/cr6-2025-final-v3.json
+uv run rwa rebuild --manifest data/manifests/cr6-2025-final-v3.json \
+  --warehouse data/warehouse-cr6-2025-final-v3.duckdb
+uv run rwa inspect --warehouse data/warehouse-cr6-2025-final-v3.duckdb \
+  --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
 ```
 
 All commands accept `--project-root`; rebuild and inspect accept `--warehouse`.
+Skip manifest creation if the retained manifest already exists. The current
+publication is `cr6-2025-final-v3`; historical v1 recovery examples below require
+their recorded implementation checkout.
 Relative paths resolve under the project root. The default warehouse is
 `data/warehouse.duckdb`. Inspection emits JSON with exact Decimal strings,
 integer counts, field statuses, mappings, source occurrence references, original
@@ -18,13 +23,15 @@ visible. Reads use Mountainash relations through the pinned DuckDB backend.
 
 ## Retained selection and publication
 
-The strict [request](../../config/rebuilds/cr6-2025-v1.json) selects explicit
+The strict [request](../../config/rebuilds/cr6-2025-final-v3.json) selects explicit
 Bronze versions, catalogue release, schema and unique revision ID. Unknown
 fields are errors. Commit request/catalogue changes before running `manifest`;
 the CLI compares selected bytes and executing code with the committed revision.
 Manifests are immutable. Use a new request/revision ID for changed selections,
 including corrections or changed source scope. Exact manifest replay is
-idempotent; an existing revision with different manifest content is rejected.
+logically idempotent: the validated candidate is atomically republished, restoring
+empty or missing Silver tables and refreshing the publication timestamp. An
+existing revision with different manifest content is rejected.
 
 [Manifests](../../src/rwa_analysis/storage/manifests.py) retain the request,
 full implementation commit, environment, catalogue inventory and input digests.

@@ -22,14 +22,20 @@ uv run ruff format --check src tests extractions
 After running the [four extraction commands](docs/workflows/cr6-extraction.md):
 
 ```sh
-uv run rwa manifest --request config/rebuilds/cr6-2025-v1.json
-uv run rwa rebuild --manifest data/manifests/cr6-2025-v1.json
-uv run rwa inspect --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
-uv run rwa reconcile-tables --manifest data/manifests/cr6-2025-v1.json \
-  --output data/reconciliation/cr6-2025-v1
+uv run rwa manifest --request config/rebuilds/cr6-2025-final-v3.json
+uv run rwa rebuild --manifest data/manifests/cr6-2025-final-v3.json \
+  --warehouse data/warehouse-cr6-2025-final-v3.duckdb
+uv run rwa inspect --warehouse data/warehouse-cr6-2025-final-v3.duckdb \
+  --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
+uv run rwa reconcile-tables --manifest data/manifests/cr6-2025-final-v3.json \
+  --warehouse data/warehouse-cr6-2025-final-v3.duckdb \
+  --output data/reconciliation/cr6-2025-final-v3
 ```
 
 Commands accept `--project-root`; rebuild/inspect/reconcile-tables accept `--warehouse`.
+Skip manifest creation when it already exists; choose a new output directory for
+another reconciliation render. The retained final index is
+`data/reconciliation/cr6-2025-final-v3/index.html`.
 Production publication requires committed producing code/configuration. Saved
 versions are immutable. Silver uses `DECIMAL(22,8)` and integer counts, with
 field-specific status, currency and weighting evidence. Rebuild needs retained
