@@ -120,7 +120,7 @@ def test_source_values_and_partial_semantics_survive(
     maturity = lineage[observation("anz"), "mean_maturity_years"]
     assert maturity["missing_reason"] == "not_applicable"
     assert maturity["qualification_refs"]
-    assert candidate.tables["observations"].schema["ead_amount"] == pl.Decimal(38, 8)
+    assert candidate.tables["observations"].schema["ead_amount"] == pl.Decimal(22, 8)
     assert candidate.tables["observations"].schema["reported_entity_count"] == pl.Int64
 
 
@@ -176,9 +176,9 @@ def test_missing_scale_blocks_only_its_conversion(
     [
         ("average_pd", Decimal("0.123456789")),
         ("average_pd", Decimal("1e-1000100")),
-        ("ead", Decimal("1e30")),
+        ("ead", Decimal(100000000)),  # Million scale exceeds 14 integer digits.
         ("reported_borrower_count", 2**63),
-        ("ead", Decimal("123456789012345678901234.123456789012345")),
+        ("ead", Decimal("9999999.123456789012345")),
     ],
 )
 def test_unrepresentable_values_rejected_before_cast(
@@ -198,24 +198,24 @@ def test_unrepresentable_values_rejected_before_cast(
         (
             "ead",
             "ead_amount",
-            "-123456789012345678901234.12345678",
-            "-123456789012345678901234123456.78",
+            "-9999999.99999912345678",
+            "-9999999999999.12345678",
         ),
         (
             "ead",
             "ead_amount",
-            "123456789012345678901234.123456789",
-            "123456789012345678901234123456.789",
+            "10000000",
+            "10000000000000",
         ),
         (
             "average_pd",
             "mean_pd_fraction",
-            "12345678901234567890123456789012",
-            "123456789012345678901234567890.12",
+            "0.123456",
+            "0.00123456",
         ),
     ],
 )
-def test_high_precision_and_signed_values_do_not_use_ambient_decimal_context(
+def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
     saved_bundles, bronze_refs, catalogue, field, target, source, expected
 ):
     from rwa_analysis.normalization.cr6 import conform_cr6
@@ -225,6 +225,7 @@ def test_high_precision_and_signed_values_do_not_use_ambient_decimal_context(
         ctx.prec = 10
         candidate = conform_cr6(bundles, bronze_refs, catalogue, "r")
     assert candidate.tables["observations"][target][0] == Decimal(expected)
+    assert candidate.tables["observations"].schema[target] == pl.Decimal(22, 8)
 
 
 @pytest.mark.parametrize(

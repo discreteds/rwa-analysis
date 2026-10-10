@@ -2,7 +2,6 @@
 
 from dataclasses import fields
 from decimal import (
-    ROUND_DOWN,
     Decimal,
     DecimalException,
     Inexact,
@@ -65,8 +64,8 @@ def exact_conversion(value, factor, path, *, count=False):
             ):
                 raise ValueError(f"{path}: conversion is not representable as Int64")
             return int(result)
-        if abs(result) >= Decimal("1e30"):
-            raise ValueError(f"{path}: conversion exceeds Decimal(38,8) precision")
+        if abs(result) >= Decimal("1e14"):
+            raise ValueError(f"{path}: conversion exceeds Decimal(22,8) precision")
         try:
             rounded = result.quantize(Decimal("0.00000001"))
         except DecimalException as error:
@@ -284,27 +283,11 @@ def _convert_row(identity, record, meanings):
         # Preserve the source coefficient until relation multiplication. A source
         # can require more than eight places even when its base amount does not.
         scale = max(8, -Decimal(cell.value).as_tuple().exponent)
-        integer_digits = max(0, Decimal(cell.value).adjusted() + 1)
-        if not count and (scale > 8 or integer_digits + scale > 38):
-            # Polars multiplication retains the common operand scale. A valid
-            # base amount can overflow that intermediate (e.g. 30 integer + 9
-            # fractional places). Split only the representation, not the unit
-            # conversion: both source parts are multiplied inside the relation.
-            with localcontext() as ctx:
-                ctx.prec = max(80, len(cell.value.as_tuple().digits) + 10)
-                whole = cell.value.to_integral_value(rounding=ROUND_DOWN)
-                fraction = cell.value - whole
-            fraction_name = f"{source}_fraction"
-            source_values[source], source_values[fraction_name] = whole, fraction
-            source_schema[source] = pl.Decimal(38, 0)
-            source_schema[fraction_name] = pl.Decimal(38, scale)
-            expr = (ma.col(source) * ma.lit(meaning.unit_factor)).cast(dtype) + (
-                ma.col(fraction_name) * ma.lit(meaning.unit_factor)
-            ).cast(dtype)
-        else:
-            source_values[source] = cell.value
-            source_schema[source] = pl.Int64 if count else pl.Decimal(38, scale)
-            expr = (ma.col(source) * ma.lit(meaning.unit_factor)).cast(dtype)
+        # Backend working precision accommodates displayed source scale; the
+        # preflight-guarded final cast defines the persisted Decimal(22,8) contract.
+        source_values[source] = cell.value
+        source_schema[source] = pl.Int64 if count else pl.Decimal(38, scale)
+        expr = (ma.col(source) * ma.lit(meaning.unit_factor)).cast(dtype)
         expressions.append(expr.alias(target))
     source_frame = pl.DataFrame(
         [source_values],

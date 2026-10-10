@@ -168,7 +168,7 @@ The console entry point becomes usable in Task 8. Run `uv lock` then `uv sync --
 - [x] **2. Write the boundary test before the adapter.** Its independent contract is exact transport of a precision-sensitive value and a null; the credible failure is Float64 coercion or all-null type inference. It is the only owner of the generic precision sentinel; extraction tests own source values.
 
 ```python
-def test_decimal_contract_and_persistent_roundtrip(tmp_path):
+def test_domain_decimal_contract_and_persistent_roundtrip(tmp_path):
     import mountainash as ma
     import polars as pl
     from decimal import Decimal
@@ -176,10 +176,10 @@ def test_decimal_contract_and_persistent_roundtrip(tmp_path):
     from rwa_analysis.contracts.frames import conform_frame
 
     frame = pl.DataFrame(
-        {"id": ["present", "missing"],
-         "amount": [Decimal("12345678901234567890.12345678"), None],
-         "count": [742470, None]},
-        schema={"id": pl.String, "amount": pl.Decimal(38, 8), "count": pl.Int64},
+        {"id": ["ten-trillion", "fractional", "missing"],
+         "amount": [Decimal("10000000000000"), Decimal("9999999999999.12345678"), None],
+         "count": [742470, 1, None]},
+        schema={"id": pl.String, "amount": pl.Decimal(22, 8), "count": pl.Int64},
     )
     spec = ma.TypeSpec.from_frictionless({
         "fields": [{"name": "id", "type": "string"},
@@ -590,7 +590,9 @@ The `catalogue` fixture calls `load_catalogue` on the tracked release; `saved_bu
 
 For numeric representability, use a synthetic value requiring more than eight decimal places and a value exceeding the selected Decimal precision: reject with a field-specific conversion error, never silently round. Structural candidate mutations cover a lineage link to an absent source occurrence, a wrong revision on a segment link, and a deleted interpretation for a represented numeric field. `validate_candidate` must reject each by reference/path. These are different risks from correct-value extraction and the generic transport sentinel.
 
-- [ ] **3. Run** `uv run pytest tests/silver/test_cr6_conformance.py -q` red, then implement unit conversion and table projection. Use exact Decimal `0.01` for percent fractions and established source scales for base amounts, retaining sign. Compute exact Python Decimal bounds/representability with sufficient local decimal context before building explicit `pl.Decimal(38,8)` columns; this must happen before any cast can round. Count fields stay `pl.Int64`; reject overflow explicitly. Unit-scale uncertainty differs from currency-code uncertainty: a known million multiplier can produce a base amount with unresolved currency.
+- [ ] **3. Run** `uv run pytest tests/silver/test_cr6_conformance.py -q` red, then implement unit conversion and table projection. Use exact Decimal `0.01` for percent fractions and established source scales for base amounts, retaining sign. Compute exact Python Decimal bounds/representability with sufficient local decimal context before building explicit `pl.Decimal(22,8)` columns; this must happen before any cast can round. Count fields stay `pl.Int64`; reject overflow explicitly. Unit-scale uncertainty differs from currency-code uncertainty: a known million multiplier can produce a base amount with unresolved currency.
+
+Researcher correction (2026-10-10): the persisted numeric contract is `Decimal(22,8)` (14 integer and eight fractional digits), sized for amounts up to 10 trillion. Verify exact 10-trillion and fractional-amount roundtrips rather than giant precision-38 sentinels. This supersedes the original plan's precision 38; historical spike results remain historical. Guard schema representability without introducing an economic 10-trillion rejection rule. Wider backend working dtypes may precede the exact, preflight-guarded final cast.
 
 ```python
 expr = (ma.col(source_field) * ma.lit(factor)).alias(target_field)

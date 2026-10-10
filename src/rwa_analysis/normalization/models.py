@@ -161,7 +161,7 @@ class SilverObservationRelationship:
     evidence: tuple[SourceReference, ...]
 
 
-DECIMAL = pl.Decimal(38, 8)
+DECIMAL = pl.Decimal(22, 8)
 STRINGS = pl.List(pl.String)
 REFERENCE = pl.Struct(
     {

@@ -8,20 +8,24 @@ from mountainash_files import FileSinkSpec, FileSourceSpec, parse, write
 
 
 @pytest.mark.parametrize("all_missing", [False, True])
-def test_decimal_contract_and_persistent_roundtrip(tmp_path, all_missing):
+def test_domain_decimal_contract_and_persistent_roundtrip(tmp_path, all_missing):
     from rwa_analysis.contracts.frames import conform_frame
 
     frame = pl.DataFrame(
         {
-            "id": ["present", "missing"],
-            "amount": [Decimal("12345678901234567890.12345678"), None],
-            "count": [742470, None],
+            "id": ["ten-trillion", "fractional", "missing"],
+            "amount": [
+                Decimal(10000000000000),
+                Decimal("9999999999999.12345678"),
+                None,
+            ],
+            "count": [742470, 1, None],
         },
-        schema={"id": pl.String, "amount": pl.Decimal(38, 8), "count": pl.Int64},
+        schema={"id": pl.String, "amount": pl.Decimal(22, 8), "count": pl.Int64},
     )
     if all_missing:
         frame = frame.with_columns(
-            pl.lit(None, dtype=pl.Decimal(38, 8)).alias("amount"),
+            pl.lit(None, dtype=pl.Decimal(22, 8)).alias("amount"),
             pl.lit(None, dtype=pl.Int64).alias("count"),
         )
     spec = ma.TypeSpec.from_frictionless(

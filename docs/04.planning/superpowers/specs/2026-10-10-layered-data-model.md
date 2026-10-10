@@ -379,6 +379,8 @@ Each represented field has a `value_state`: `present`, `source_missing` or `not_
 
 `SilverContext` retains references to source context, mapped organisation/entity/portfolio/geography/regulatory definitions where available, and unresolved attributes. `SilverSegment` retains source band identity, canonical dimension where mapped, category kind, converted bounds and inclusivity/status. A default category and an aggregate are not synthetic numerical intervals. One source band is not equated with another merely because labels match.
 
+The implemented CR6 numeric contract uses `Decimal(22,8)` for amounts, fractions and years, and `Int64` for counts. This follows the researcher's 2026-10-10 correction: 14 integer digits accommodate 10 trillion while retaining eight fractional digits. Exact representability is checked before casting; this is a storage contract, not an economic upper-bound validation rule. The earlier precision-38 feasibility probe is historical, not the production contract.
+
 ### Other domain contracts
 
 The same layer distinction applies as new extraction scopes are selected:
