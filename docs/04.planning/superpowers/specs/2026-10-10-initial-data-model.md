@@ -8,6 +8,8 @@ Parent: [Platform architecture](2026-10-10-rwa-analysis-design.md). Governance: 
 
 Worked review: [CR6, CR1/CR2 and LIQ2 examples](2026-10-10-data-model-worked-examples.md).
 
+**Layer-specific schemas and E–R diagrams:** [Bronze capture, semantic catalogue and Silver conformed model](2026-10-10-layered-data-model.md). This companion supplies explicit entity relationships, proposed layer-specific record names, Silver field conventions and Bronze-to-Silver examples.
+
 Evidence: [CBA/Westpac](../../../00.ideation/2025-disclosure-spike.md), [NAB/ANZ](../../../00.ideation/2025-nab-anz-metadata-spike.md), [credit quality/provisions](../../../00.ideation/2025-credit-quality-provisions-discovery.md), [liquidity](../../../00.ideation/2025-liquidity-metadata-discovery.md).
 
 ## 1. Purpose and boundaries
@@ -25,6 +27,8 @@ Reconciliations, residuals and inferred relationships emerge through analysis. P
 Australian mortgage CR6 is the first production slice. Credit-quality and liquidity examples exercise shared contracts without committing to production extractors for every explored template. Use Python dataclasses and explicit Mountainash tabular conversions. A typed record for each supported domain shares context and provenance; neither a mortgage-shaped universal record nor an opaque metadata dictionary is the core model.
 
 ## 2. Relationships, identity and ownership
+
+See the [Bronze E–R diagram](2026-10-10-layered-data-model.md#2-bronze-er-source-oriented-capture), [catalogue E–R diagram](2026-10-10-layered-data-model.md#3-catalogue-er-durable-semantic-knowledge) and [Silver E–R diagram](2026-10-10-layered-data-model.md#4-silver-er-the-conformed-cr6-domain) for cardinalities and proposed keys. The following is only a layer-dependency overview, not an E–R diagram.
 
 ```text
 SourceDocument
@@ -210,6 +214,8 @@ A source `Sub-total` and `Total Residential Mortgages` can both map to `portfoli
 
 ### First production record: CreditRiskExposureRow
 
+This is the **Bronze** source-capture contract. The layer-explicit proposed name is `BronzeCreditRiskExposureRow`. Its Silver counterpart is `SilverCreditRiskExposureObservation`, with conformed numeric fields and separate interpretation/lineage metadata; the [layered model](2026-10-10-layered-data-model.md#silver-record-contract-and-units) specifies the distinction. The two are not the same class reused at different storage locations.
+
 ```text
 record_id, source_row_ref, source_row_role
 segment_memberships, aggregation_scope
@@ -254,6 +260,8 @@ Expand requirements through source review, golden scope/contract changes, focuse
 ## 11. Silver conformance and rebuild lifecycle
 
 ### Conformance result
+
+The [Silver logical schema](2026-10-10-layered-data-model.md#4-silver-er-the-conformed-cr6-domain) defines revision-scoped context, segments, typed domain observations, field interpretations, applied mappings, source lineage and observation relationships. Its CR6 numeric record has explicit fraction, base-currency-amount and count columns. Published labels and raw numeric strings remain Bronze evidence, linked from Silver; long-lived concepts/mappings are authoritative catalogue inputs rather than Silver-owned definitions. Canonical value availability and semantic resolution are distinct statuses.
 
 Silver domain tables retain logical observation identity, canonical context/grain where established, typed values and units, measure/mapping revisions, source lineage and per-attribute interpretation tags. They also retain access to original values and definitions. This is a logical contract, not a requirement for one long-form fact table.
 

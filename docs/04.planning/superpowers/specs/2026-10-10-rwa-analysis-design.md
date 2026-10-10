@@ -257,6 +257,8 @@ Distribution reconstruction, common-band estimates, statistical inferences and m
 
 The consolidated model is detailed in [Initial disclosure data model](2026-10-10-initial-data-model.md), with [worked CR6, CR1/CR2 and LIQ2 examples](2026-10-10-data-model-worked-examples.md). It separates source capture, the durable semantic catalogue and rebuildable conformance. A general CR6 `CreditRiskExposureRow` remains the first production domain record; the consolidated logical contracts await written review.
 
+The [layered E–R models](2026-10-10-layered-data-model.md) make that boundary explicit: `BronzeCreditRiskExposureRow` retains source-form values and bindings; `SilverCreditRiskExposureObservation` has conformed typed columns with revision-scoped context, per-field interpretation and source lineage. Canonical definitions and mappings are durable catalogue inputs, not owned by disposable Silver. These proposed layer-specific contracts await review.
+
 The initial model comprises the following groups. Physical schemas are versioned by application-owned migrations executed through the storage boundary.
 
 | Group | Principal records |

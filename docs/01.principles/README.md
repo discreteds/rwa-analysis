@@ -14,6 +14,7 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 - [Platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): detailed architecture and intended workflows.
 - [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): consolidated source capture, semantic catalogue and conformance contracts.
+- [Layered schemas and E–R diagrams](../04.planning/superpowers/specs/2026-10-10-layered-data-model.md): explicit Bronze/catalogue/Silver relationships and conformed field contracts.
 - [Worked model examples](../04.planning/superpowers/specs/2026-10-10-data-model-worked-examples.md): source-backed CR6, CR1/CR2 and LIQ2 design exercises.
 - [CBA/Westpac discovery](../00.ideation/2025-disclosure-spike.md) and [NAB/ANZ discovery](../00.ideation/2025-nab-anz-metadata-spike.md): source evidence and examples.
 - [Raw index](../../raw/index.md): saved disclosure catalogue.

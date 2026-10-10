@@ -39,6 +39,7 @@ Current detailed specifications:
 
 - [Platform architecture](docs/04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md).
 - [Initial data model](docs/04.planning/superpowers/specs/2026-10-10-initial-data-model.md).
+- [Layered schemas and E–R diagrams](docs/04.planning/superpowers/specs/2026-10-10-layered-data-model.md): distinct Bronze capture and Silver conformed contracts, with the durable semantic catalogue between them.
 - [Worked model examples](docs/04.planning/superpowers/specs/2026-10-10-data-model-worked-examples.md): design exercises, not production fixtures.
 
 ## Source and extraction workflow
