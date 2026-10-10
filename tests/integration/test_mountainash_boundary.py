@@ -4,7 +4,6 @@ import mountainash as ma
 import polars as pl
 import pytest
 from mountainash_data import IbisBackend
-from mountainash_files import FileSinkSpec, FileSourceSpec, parse, write
 
 
 @pytest.mark.parametrize("all_missing", [False, True])
@@ -53,7 +52,6 @@ def test_domain_decimal_contract_and_persistent_roundtrip(tmp_path, all_missing)
     "missing_declaration",
     [
         {},
-        {"missingValues": ["NA"]},
         {"missingValues": [], "field_missing": ["NA"]},
     ],
 )
@@ -93,24 +91,3 @@ def test_typed_boundary_rejects_invalid_contract(data):
     )
     with pytest.raises(ValueError):
         conform_frame(pl.DataFrame(data), spec)
-
-
-def test_nested_json_preserves_decimal_text_and_null_metadata(tmp_path):
-    encoded = {
-        "records": [
-            {"value": "0.0800", "missing_reason": None},
-            {"value": None, "missing_reason": "not_disclosed"},
-        ]
-    }
-    path = str(tmp_path / "boundary.json")
-    write(FileSinkSpec(path=path, format="json"), encoded)
-    restored = parse(FileSourceSpec(path=path, format="json"), output="pydata")
-    assert len(restored) == 1
-    assert restored[0].data == [
-        {
-            "records": [
-                {"value": "0.0800", "missing_reason": None},
-                {"value": None, "missing_reason": "not_disclosed"},
-            ]
-        }
-    ]

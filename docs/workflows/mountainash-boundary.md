@@ -1,6 +1,6 @@
 # Mountainash boundary workflow
 
-Task 1 establishes the install and transport boundary for the
+The implemented install and transport boundaries support the
 [CR6 plan](../04.planning/superpowers/plans/2026-10-10-cr6-bronze-to-silver.md).
 The [README](../../README.md) lists verified revisions and commands.
 
@@ -18,32 +18,27 @@ receives its own `Config` with `coerce=False`; the shared dependency base is not
 mutated. Failed contracts or changed physical schemas raise `ValueError`.
 This boundary does not parse numeric strings or determine semantic units.
 
-The integration test owns the generic precision sentinel, an all-null variant,
-and actual database closure/reopening using `IbisBackend`, Arrow and DuckDB.
-Source-backed extraction expectations belong to their later extraction tests.
+[`test_mountainash_boundary.py`](../../tests/integration/test_mountainash_boundary.py)
+owns exact domain Decimal/Int64 transport, its all-null variant, missing-sentinel
+rejection, and database closure/reopening using `IbisBackend`, Arrow and DuckDB.
+The four source golden tests under `tests/bronze/` own PDF extraction expectations,
+including blank/dash values and their source-specific metadata.
 
 ## Nested JSON transport
 
-The pinned signatures are:
+[`storage/bronze.py`](../../src/rwa_analysis/storage/bronze.py) writes with
+`write(FileSinkSpec(path=..., format="json"), envelope)` and reads the saved bytes
+with `parse_bytes(raw, "json", output="pydata")`. The reader validates the original
+JSON before Arrow normalization, then checks that the result's `.data` is a
+singleton list containing the unchanged envelope.
 
-```python
-write(sink, data, *, params=None) -> None
-parse(source, *, params=None, output="arrow") -> list[ParseResult]
-```
-
-Use `FileSinkSpec(path=..., format="json")` and the matching `FileSourceSpec`.
-`parse(..., output="pydata")` returns a list of parse results; for a single JSON
-object its first result's `.data` is a **singleton list containing the object**,
-not the bare object. The tested envelope is:
-
-```json
-{"records": [{"value": "0.0800", "missing_reason": null}, {"value": null, "missing_reason": "not_disclosed"}]}
-```
-
-The complete envelope, decimal text and null metadata survive. Task 4's wrapper
-must validate result/cardinality and unwrap this documented shape before strict
-schema decoding. No codec or Bronze persistence wrapper is implemented here.
-Other envelope shapes still require their owning codec/round-trip checks.
+[`test_bronze_storage.py`](../../tests/integration/test_bronze_storage.py) owns
+complete nested JSON transport through all four exact, immutable saved-bundle
+roundtrips. Its missing-cell-precision load regression and missing-field staging
+regression protect against Arrow restoring omitted keys as nulls; staging also
+owns failed-publication cleanup.
+[`test_extraction_contract.py`](../../tests/test_extraction_contract.py) retains
+the explicit `0.0800` Decimal exponent assertion and unknown nested-field rejection.
 
 ## Clean installation findings
 

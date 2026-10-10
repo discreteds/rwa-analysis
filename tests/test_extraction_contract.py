@@ -80,16 +80,12 @@ def test_rejects_invalid_saved_contract(payload, path, replacement):
         decode_payload(payload)
 
 
-@pytest.mark.parametrize("extra", [False, True])
-def test_decoder_rejects_changed_nested_schema(payload, extra):
+def test_decoder_rejects_unknown_nested_field(payload):
     from rwa_analysis.extraction.codec import decode_payload
 
     cell = payload["datasets"][0]["records"][0]["ead"]
-    if extra:
-        cell["unknown"] = "lost metadata"
-    else:
-        del cell["displayed_precision"]
-    with pytest.raises(ValueError, match="unknown|displayed_precision"):
+    cell["unknown"] = "lost metadata"
+    with pytest.raises(ValueError, match="unknown"):
         decode_payload(payload)
 
 

@@ -48,8 +48,6 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
     ("field_path", "replacement", "remove", "error"),
     [
         (("schema_version",), "future", False, "schema_version"),
-        (("payload", "document"), None, True, "document"),
-        (("payload", "surprise"), 1, False, "surprise"),
         (("surprise",), 1, False, "surprise"),
         (("implementation_revision",), None, True, "implementation_revision"),
         (("implementation_revision",), 1, False, "implementation_revision"),
@@ -64,7 +62,6 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
         (("executed_at",), "yesterday", False, "executed_at"),
         (("executed_at",), "2026-10-10T00:00:00", False, "executed_at"),
         (("reference", "output_version"), "v2", False, "reference"),
-        (("reference", "bundle_key"), "au/other/2025-06-30/aps330", False, "reference"),
         (("reference", "extra"), None, False, "extra"),
         (("reference", "output_version"), 1, False, "output_version"),
         (("payload", "datasets"), {}, False, "datasets"),

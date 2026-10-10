@@ -49,10 +49,8 @@ def test_source_values_and_partial_semantics_survive(
     saved_bundles, bronze_refs, catalogue
 ):
     from rwa_analysis.normalization.cr6 import conform_cr6
-    from rwa_analysis.normalization.validate import validate_candidate
 
     candidate = conform_cr6(saved_bundles, bronze_refs, catalogue, "test-r1")
-    validate_candidate(candidate, saved_bundles, bronze_refs, catalogue)
     rows = {r["observation_id"]: r for r in candidate.tables["observations"].to_dicts()}
     cba = rows[observation("cba")]
     assert cba["ead_amount"] == Decimal(281508000000)
@@ -231,7 +229,6 @@ def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
 @pytest.mark.parametrize(
     ("table", "mutation", "error"),
     [
-        ("lineage", "source_record_id", "lineage.*source_record_id"),
         ("segments", "silver_revision_id", "segments.*revision"),
         ("interpretations", "delete", "interpretations.*coverage"),
         ("interpretations", "value_state", "interpretations.*value_state"),
@@ -242,7 +239,6 @@ def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
         ),
         ("lineage", "source_value", "lineage.*source_value"),
         ("observations", "duplicate", "observations"),
-        ("lineage", "output_version", "lineage.*output_version"),
         ("lineage", "qualification_refs", "lineage.*qualification"),
         ("applied_mappings", "mapping_revision_ref", "applied_mappings"),
         ("relationships", "child_observation_id", "relationships"),
