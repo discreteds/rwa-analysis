@@ -121,6 +121,8 @@ def validate_candidate(
     bundles: tuple[ExtractionBundle, ...],
     bronze_refs: tuple[BronzeRef, ...],
     catalogue: CatalogueRelease,
+    *,
+    evidence_bundles: tuple[ExtractionBundle, ...] = (),
 ) -> None:
     check_inputs(bundles, bronze_refs)
     tables, revision = candidate.tables, candidate.revision_id
@@ -137,10 +139,16 @@ def validate_candidate(
             f"{name}.silver_revision_id: wrong revision",
         )
 
-    # Source closure is selected-version-specific. Identical local IDs in
-    # different banks cannot satisfy another bundle's evidence reference.
+    # Canonical definitions may cite retained evidence outside the publication
+    # scope. Supporting bundles validate those citations, never contribute rows.
+    # Their exact versions are pinned separately by the rebuild manifest.
     source_sets, sources = {}, {}
-    for bundle, ref in zip(bundles, bronze_refs, strict=True):
+    all_bundles = (*bundles, *evidence_bundles)
+    _require(
+        len({b.bundle_key for b in all_bundles}) == len(all_bundles),
+        "evidence_bundles: duplicate or overlapping source scope",
+    )
+    for bundle in all_bundles:
         for ds in bundle.datasets:
             prefix = (bundle.bundle_key, bundle.document.document_id, ds.id)
             for kind, ids in {
@@ -152,6 +160,8 @@ def validate_candidate(
                 "relationship": {r.id for r in ds.relationships},
             }.items():
                 source_sets[(*prefix, kind)] = ids
+    for bundle, ref in zip(bundles, bronze_refs, strict=True):
+        for ds in bundle.datasets:
             for record in ds.records:
                 sources[source_ids(bundle, ds, record)] = (bundle, ref, ds, record)
 

@@ -1,0 +1,11 @@
+{
+  "revision_id": "cr6-2025-v1",
+  "bronze_refs": [
+    {"bundle_key": "au/cba/2025-06-30/aps330", "output_version": "v1"},
+    {"bundle_key": "au/westpac/2025-09-30/aps330", "output_version": "v1"},
+    {"bundle_key": "au/nab/2025-09-30/aps330", "output_version": "v1"},
+    {"bundle_key": "au/anz/2025-09-30/aps330", "output_version": "v1"}
+  ],
+  "catalogue_release_path": "catalogue/releases/cr6-v1.json",
+  "conformance_schema_version": "cr6-v1"
+}

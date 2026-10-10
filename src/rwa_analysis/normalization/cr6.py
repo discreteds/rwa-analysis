@@ -313,6 +313,8 @@ def conform_cr6(
     bronze_refs: tuple[BronzeRef, ...],
     catalogue: CatalogueRelease,
     revision_id: str,
+    *,
+    evidence_bundles: tuple[ExtractionBundle, ...] = (),
 ) -> SilverCandidate:
     check_inputs(bundles, bronze_refs)
     rows = {name: [] for name in SCHEMAS} | metadata_rows(
@@ -386,5 +388,7 @@ def conform_cr6(
     )
     from .validate import validate_candidate
 
-    validate_candidate(candidate, bundles, bronze_refs, catalogue)
+    validate_candidate(
+        candidate, bundles, bronze_refs, catalogue, evidence_bundles=evidence_bundles
+    )
     return candidate
