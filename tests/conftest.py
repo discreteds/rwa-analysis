@@ -1,5 +1,7 @@
 """Real extractor inputs shared by downstream boundary tests, never expectations."""
 
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -44,3 +46,66 @@ def nab_bundle():
 @pytest.fixture(scope="session")
 def anz_bundle():
     return _extract("anz", "2025-09-30")
+
+
+@pytest.fixture
+def retained(
+    tmp_path, project_root, cba_bundle, westpac_bundle, nab_bundle, anz_bundle
+):
+    from rwa_analysis.storage.bronze import save_bronze
+
+    root = tmp_path / "project"
+    root.mkdir()
+    for directory in ("catalogue", "src"):
+        shutil.copytree(
+            project_root / directory,
+            root / directory,
+            ignore=shutil.ignore_patterns("__pycache__"),
+        )
+    for name in ("uv.lock", "pyproject.toml"):
+        shutil.copyfile(project_root / name, root / name)
+
+    def git(*args):
+        return subprocess.check_output(
+            ["git", "-C", str(root), *args], text=True
+        ).strip()
+
+    git("init", "-q")
+    git("add", ".")
+    git(
+        "-c",
+        "user.name=Test",
+        "-c",
+        "user.email=test@example.org",
+        "commit",
+        "-qm",
+        "Retained implementation and catalogue",
+    )
+    code = git("rev-parse", "HEAD")
+    refs = tuple(
+        save_bronze(b, "v1", root, code)
+        for b in (cba_bundle, westpac_bundle, nab_bundle, anz_bundle)
+    )
+    return root, refs, code
+
+
+@pytest.fixture
+def published_cr6(retained, project_root):
+    from rwa_analysis.storage.manifests import RebuildRequest, save_manifest
+    from rwa_analysis.storage.silver import rebuild
+
+    root, refs, code = retained
+    (root / "raw").symlink_to(project_root / "raw", target_is_directory=True)
+    path = save_manifest(
+        RebuildRequest(
+            revision_id="r1",
+            bronze_refs=refs,
+            catalogue_release_path="catalogue/releases/cr6-v1.json",
+            conformance_schema_version="cr6-v1",
+        ),
+        root,
+        code,
+    )
+    warehouse = root / "warehouse.duckdb"
+    rebuild(path, root, warehouse)
+    return path, root, warehouse

@@ -73,7 +73,7 @@ snapshot="$RWA_BACKUP_ROOT/cr6-2025-v1"
 mkdir "$snapshot"
 git bundle create "$snapshot/rwa-code-cr6-2025-v1.bundle" --all
 tar -czf "$snapshot/rwa-inputs-cr6-2025-v1.tar.gz" \
-  raw data/bronze data/manifests catalogue config uv.lock
+  raw data/bronze data/manifests data/reconciliation catalogue config uv.lock
 git bundle verify "$snapshot/rwa-code-cr6-2025-v1.bundle"
 tar -tzf "$snapshot/rwa-inputs-cr6-2025-v1.tar.gz"
 tar -xOzf "$snapshot/rwa-inputs-cr6-2025-v1.tar.gz" \
@@ -85,6 +85,10 @@ reopening archives verifies readability; rehearse restoration before calling
 recovery verified. The automated [CLI integration test](../../tests/integration/test_cr6_cli.py)
 creates these two archive types, restores a different root, removes PDFs and
 extractors, and compares observations, interpretations, lineage and relationships.
+
+Include `data/reconciliation` after the final visual review (omit it only when
+no review artifacts exist yet). Restored HTML and page images can be opened
+directly; compare their bytes with the retained originals during recovery.
 
 ## Restore to a different root
 

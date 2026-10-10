@@ -71,6 +71,28 @@ def rooted(root: Path, path: Path) -> Path:
     return path if path.is_absolute() else root / path
 
 
+@app.command()
+def reconcile_tables(
+    manifest: Annotated[Path, typer.Option()],
+    output: Annotated[Path, typer.Option()],
+    project_root: Root = Path("."),
+    warehouse: Warehouse = None,
+):
+    """Render local source/Bronze/persisted-Silver pages without publication."""
+    from rwa_analysis.reporting.cr6_reconciliation import render_cr6_reconciliation
+
+    with errors(f"reconcile {manifest}"):
+        root = project_root.resolve(strict=True)
+        typer.echo(
+            render_cr6_reconciliation(
+                rooted(root, manifest),
+                root,
+                rooted(root, warehouse or Path("data/warehouse.duckdb")),
+                rooted(root, output),
+            )
+        )
+
+
 def committed_selection(root: Path, paths: tuple[str, ...]) -> str:
     """Verify executing package and selected input bytes against a real commit.
 

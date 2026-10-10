@@ -247,16 +247,24 @@ def save_manifest(
     return destination
 
 
-def load_manifest(manifest_path: Path, project_root: Path):
-    """Return manifest, selected bundles, catalogue and supporting evidence."""
+def load_manifest(manifest_path: Path, project_root: Path, *, verify_runtime=True):
+    """Load retained inputs, verifying runtime for execution by default.
+
+    Read-only historical review may use a newer renderer: it validates the same
+    retained bytes without claiming to execute the publication's implementation.
+    Rebuild callers must retain the default runtime verification.
+    """
     root = project_root.resolve(strict=True)
     manifest = RebuildManifest.model_validate_json(manifest_path.read_bytes())
     expected = _path(root, f"data/manifests/{manifest.request.revision_id}.json")
     if manifest_path.resolve() != expected.resolve():
         raise ValueError("Manifest must use its retained revision path")
-    _implementation(root, manifest.implementation_revision)
-    if _environment() != manifest.environment:
-        raise ValueError("Environment changed; restore the recorded lock/environment")
+    if verify_runtime:
+        _implementation(root, manifest.implementation_revision)
+        if _environment() != manifest.environment:
+            raise ValueError(
+                "Environment changed; restore the recorded lock/environment"
+            )
     # Check bytes before decoding, so even edits which remain valid cannot reuse
     # the recorded revision. Then ensure the inventory itself is complete.
     for relative, digest in manifest.input_digests.items():

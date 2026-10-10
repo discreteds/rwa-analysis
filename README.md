@@ -25,13 +25,22 @@ After running the [four extraction commands](docs/workflows/cr6-extraction.md):
 uv run rwa manifest --request config/rebuilds/cr6-2025-v1.json
 uv run rwa rebuild --manifest data/manifests/cr6-2025-v1.json
 uv run rwa inspect --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
+uv run rwa reconcile-tables --manifest data/manifests/cr6-2025-v1.json \
+  --output data/reconciliation/cr6-2025-v1
 ```
 
-Commands accept `--project-root`; rebuild/inspect accept `--warehouse`.
+Commands accept `--project-root`; rebuild/inspect/reconcile-tables accept `--warehouse`.
 Production publication requires committed producing code/configuration. Saved
 versions are immutable. Silver uses `DECIMAL(22,8)` and integer counts, with
 field-specific status, currency and weighting evidence. Rebuild needs retained
 Bronze and catalogue, not PDFs or goldens.
+
+Open the generated reconciliation `index.html` locally. Four pages place original
+PDF images alongside all captured Bronze tokens and persisted Silver values
+converted back to source scale. Exact pre-rounding differences and metadata
+findings are retained separately. A newer renderer can read an older published
+revision; its code provenance is separate from that revision's manifest.
+See the [visual review](docs/00.ideation/2026-10-10-cr6-visual-reconciliation.md).
 
 Follow [retention and source-only recovery](docs/workflows/silver-rebuild.md)
 before relying on ignored generated inputs. Supply an existing external durable

@@ -31,41 +31,6 @@ def git(root, *args):
     return subprocess.check_output(["git", "-C", str(root), *args], text=True).strip()
 
 
-@pytest.fixture
-def retained(
-    tmp_path, project_root, cba_bundle, westpac_bundle, nab_bundle, anz_bundle
-):
-    from rwa_analysis.storage.bronze import save_bronze
-
-    root = tmp_path / "project"
-    root.mkdir()
-    for directory in ("catalogue", "src"):
-        shutil.copytree(
-            project_root / directory,
-            root / directory,
-            ignore=shutil.ignore_patterns("__pycache__"),
-        )
-    for name in ("uv.lock", "pyproject.toml"):
-        shutil.copyfile(project_root / name, root / name)
-    git(root, "init", "-q")
-    git(root, "add", ".")
-    git(
-        root,
-        "-c",
-        "user.name=Test",
-        "-c",
-        "user.email=test@example.org",
-        "commit",
-        "-qm",
-        "Retained implementation and catalogue",
-    )
-    refs = tuple(
-        save_bronze(b, "v1", root, git(root, "rev-parse", "HEAD"))
-        for b in (cba_bundle, westpac_bundle, nab_bundle, anz_bundle)
-    )
-    return root, refs, git(root, "rev-parse", "HEAD")
-
-
 def manifest(
     retained, revision="r1", refs=None, release="catalogue/releases/cr6-v1.json"
 ):

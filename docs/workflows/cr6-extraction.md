@@ -1,7 +1,7 @@
 # Reviewed CR6 extraction
 
 Install using the [locked environment](../../README.md#install-and-check).
-Run from the project root, with one writer. All four commands accept
+Run from the project root, with one writer. Commands accept
 `--project-root /path/to/project`; paths printed on success identify saved inputs.
 
 ```sh
@@ -56,3 +56,39 @@ geography or currency.
 
 Consult each bank's source review linked from the raw index before changing
 capture or interpretation. Partial semantics do not prevent faithful retention.
+
+## Final visual reconciliation
+
+After publication, render the saved selection and actual persisted values:
+
+```sh
+uv run rwa reconcile-tables --manifest data/manifests/cr6-2025-v1.json \
+  --output data/reconciliation/cr6-2025-v1
+```
+
+`--project-root` and `--warehouse` have the same path rules as rebuild. Open
+`index.html` in the output directory; no server or network is needed. Each bank
+has an original source image plus Bronze and Silver tables with all nine rows
+and twelve fields. Scroll the paired numeric views horizontally; hover cells
+for exact values, precision, status and source identifiers. Expand metadata and
+notes to inspect qualifications, unresolved meanings, bands and relationships.
+Full source-page images include the surrounding table and footnotes; additional
+evidence pages retain their actual PDF and captured printed labels.
+
+Silver display uses persisted numeric columns divided by the recorded unit
+factor, never captured numeric strings. `differences.json` compares exact values
+before rounding and checks retained metadata, lineage and mappings. Missing rows,
+fields and non-conformed values remain explicit. Findings are review evidence,
+not automatic corrections or accounting constraints.
+
+The warehouse publication marker and manifest digest must match. Read-only
+rendering validates retained input bytes but permits a newer executing renderer;
+`review-inputs.json` records the actual publication manifest and renderer commit,
+dirty status and source digests separately. Rebuild still requires matching
+producing code/environment. Never reuse the old manifest for a changed-code run:
+commit a new request with a new revision identity and use a fresh warehouse.
+
+Existing output directories are never overwritten. After review, retain the
+review record alongside the artifacts and archive `data/reconciliation` with
+the other [retained inputs](silver-rebuild.md#back-up-retained-inputs). Record LLM
+review as such; automated zero differences do not establish human approval.
