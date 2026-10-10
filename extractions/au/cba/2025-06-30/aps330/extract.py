@@ -30,6 +30,7 @@ from rwa_analysis.extraction.models import (
     SourceRelationship,
     ValueBinding,
 )
+from rwa_analysis.extraction.values import parse_count_token, parse_decimal_token
 
 DOCUMENT_ID = "cba-2025-06-30-aps330"
 DATASET_ID = "cr6-residential-mortgages"
@@ -62,29 +63,10 @@ FIELD_QUALIFICATIONS = {
 }
 
 
-def parse_decimal_token(token: str) -> Decimal | None:
-    text = token.strip()
-    if text in {"", "-", "–"}:
-        return None
-    negative = text.startswith("(") and text.endswith(")")
-    numeric = text[1:-1] if negative else text
-    value = Decimal(numeric.replace(",", "").removesuffix("%"))
-    if not value.is_finite():
-        raise ValueError(f"Nonfinite source token: {token!r}")
-    return -value if negative else value
-
-
-def parse_count_token(token: str) -> int | None:
-    value = parse_decimal_token(token)
-    if value is None:
-        return None
-    if value != value.to_integral_value():
-        raise ValueError(f"Count must be integral: {token!r}")
-    return int(value)
-
-
 def reference(page=55, location="CR6", row=None, column=None):
-    return SourceReference(DOCUMENT_ID, page, str(page), location, row, column)
+    # The cover has no printed page label; PDF position is still one-based.
+    printed_page = "" if page == 1 else str(page)
+    return SourceReference(DOCUMENT_ID, page, printed_page, location, row, column)
 
 
 def window(words, left, right, top, bottom, *, multiline=False):

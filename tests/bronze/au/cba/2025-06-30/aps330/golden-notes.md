@@ -39,3 +39,9 @@ The complete JSON includes context, every axis/field/binding, all bands,
 qualifications, aggregate relationships and per-cell references. No keys are
 ignored by the comparator. Future corrections require rereading source evidence
 and recording the rationale here.
+
+Task 3 provenance correction (2026-10-10): directly rendered and inspected the
+saved PDF cover. It has no printed page label. Corrected its `printed_page` from
+the invented `"1"` to `""` (absent-label convention in the existing string
+contract), retaining `pdf_page=1` and `location="Cover"`. This addresses Task 2
+review M1 using source evidence; all other page references remain source-backed.
