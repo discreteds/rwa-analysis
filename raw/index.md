@@ -49,4 +49,4 @@ All four archives also link quantitative Excel files. Those links were observed 
 
 ## Review status
 
-See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). These are source reviews, not completed golden sets or bespoke extractions. All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.
+See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). Those discovery notes are not production extractions. CBA June 2025 now has a [direct source review](../extractions/au/cba/2025-06-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/cba/2025-06-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/cba/2025-06-30/aps330/golden.json). All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.

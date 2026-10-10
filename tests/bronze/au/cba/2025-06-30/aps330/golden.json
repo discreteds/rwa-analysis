@@ -1,0 +1,3444 @@
+{
+  "document": {
+    "document_id": "cba-2025-06-30-aps330",
+    "local_path": "raw/cba-2025-06-30-aps330.pdf",
+    "organisation_id": "cba",
+    "reporting_entity": "Commonwealth Bank of Australia",
+    "title": "Basel III Pillar 3 Capital Adequacy and Risk Disclosures as at 30 June 2025",
+    "document_reporting_date": "2025-06-30",
+    "publication_date": "2025-08-13",
+    "reporting_jurisdiction": "au",
+    "source_url": "https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/fy25/basel-iii-pillar-3%E2%80%93capital-adequacy-risk-disclosures-30-june-2025.pdf"
+  },
+  "bundle_key": "au/cba/2025-06-30/aps330",
+  "extractor_path": "extractions/au/cba/2025-06-30/aps330/extract.py",
+  "schema_version": "cr6-v1",
+  "datasets": [
+    {
+      "id": "cr6-residential-mortgages",
+      "context": {
+        "id": "context",
+        "document_date": "2025-06-30",
+        "observation_date": "2025-06-30",
+        "source_date_label": "30 June 2025",
+        "source_template": "CR6",
+        "source_title": "CR6: IRB – Credit risk exposures by portfolio and PD range",
+        "source_portfolio_label": "Residential mortgage",
+        "reporting_entity": {
+          "value": "CBA and its subsidiaries (the Group)",
+          "status": "established",
+          "qualification_refs": [
+            "report-entity"
+          ]
+        },
+        "consolidation_scope": {
+          "value": "Level 2",
+          "status": "established",
+          "qualification_refs": [
+            "level-2"
+          ]
+        },
+        "regulatory_scope": {
+          "value": "Subject to AIRB approach",
+          "status": "established",
+          "qualification_refs": [
+            "cr6-introduction"
+          ]
+        },
+        "geography": {
+          "value": null,
+          "status": "unresolved",
+          "qualification_refs": []
+        },
+        "currency": {
+          "value": null,
+          "status": "unresolved",
+          "qualification_refs": []
+        },
+        "qualification_refs": [
+          "report-entity",
+          "level-2",
+          "portfolio-definition",
+          "cr6-introduction"
+        ],
+        "evidence": [
+          {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 1,
+            "printed_page": "1",
+            "location": "Cover",
+            "row": null,
+            "column": null
+          },
+          {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 date, approach and portfolio headings",
+            "row": null,
+            "column": null
+          }
+        ]
+      },
+      "axes": [
+        {
+          "id": "date",
+          "axis": "header",
+          "source_label": "30 June 2025",
+          "order": 0,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "approach",
+          "axis": "header",
+          "source_label": "Subject to AIRB approach",
+          "order": 1,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "portfolio-heading",
+          "axis": "header",
+          "source_label": "Portfolio Type",
+          "order": 2,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "pd-heading",
+          "axis": "header",
+          "source_label": "PD Range",
+          "order": 3,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "mortgage-block",
+          "axis": "block",
+          "source_label": "Residential mortgage",
+          "order": 4,
+          "header_path_refs": [
+            "approach",
+            "portfolio-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "column-on_balance_exposure",
+          "axis": "column",
+          "source_label": "Original\non-balance\nsheet\ngross\nexposure",
+          "order": 0,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Original\non-balance\nsheet\ngross\nexposure"
+          }
+        },
+        {
+          "id": "column-off_balance_exposure",
+          "axis": "column",
+          "source_label": "Off-\nbalance\nsheet\nexposures\npre CCF",
+          "order": 1,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+          }
+        },
+        {
+          "id": "column-average_ccf",
+          "axis": "column",
+          "source_label": "Average\nCCF",
+          "order": 2,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ccf-definition"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nCCF"
+          }
+        },
+        {
+          "id": "column-ead",
+          "axis": "column",
+          "source_label": "EAD post\nCRM and\npost-CCF",
+          "order": 3,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ead-definition",
+            "ccf-definition"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "EAD post\nCRM and\npost-CCF"
+          }
+        },
+        {
+          "id": "column-average_pd",
+          "axis": "column",
+          "source_label": "Average\nPD ¹",
+          "order": 4,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "pd-weighting",
+            "pd-definition",
+            "pd-long-run"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nPD ¹"
+          }
+        },
+        {
+          "id": "column-reported_borrower_count",
+          "axis": "column",
+          "source_label": "Number\nof\nborrowers",
+          "order": 5,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Number\nof\nborrowers"
+          }
+        },
+        {
+          "id": "column-average_lgd",
+          "axis": "column",
+          "source_label": "Average\nLGD",
+          "order": 6,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "lgd-definition",
+            "lgd-downturn"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nLGD"
+          }
+        },
+        {
+          "id": "column-average_maturity",
+          "axis": "column",
+          "source_label": "Average\nmaturity",
+          "order": 7,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nmaturity"
+          }
+        },
+        {
+          "id": "column-rwa",
+          "axis": "column",
+          "source_label": "RWA ²",
+          "order": 8,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "rwa-overlays"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "RWA ²"
+          }
+        },
+        {
+          "id": "column-rwa_density",
+          "axis": "column",
+          "source_label": "RWA\ndensity ³",
+          "order": 9,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "density-rounding"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "RWA\ndensity ³"
+          }
+        },
+        {
+          "id": "column-regulatory_expected_loss",
+          "axis": "column",
+          "source_label": "Expected\nLoss",
+          "order": 10,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "el-performing",
+            "el-default"
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Expected\nLoss"
+          }
+        },
+        {
+          "id": "column-provisions",
+          "axis": "column",
+          "source_label": "Provisions",
+          "order": 11,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Provisions"
+          }
+        },
+        {
+          "id": "band-1",
+          "axis": "row",
+          "source_label": "0.00 to <0.15",
+          "order": 0,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "0.00 to <0.15",
+            "column": null
+          }
+        },
+        {
+          "id": "band-2",
+          "axis": "row",
+          "source_label": "0.15 to <0.25",
+          "order": 1,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "0.15 to <0.25",
+            "column": null
+          }
+        },
+        {
+          "id": "band-3",
+          "axis": "row",
+          "source_label": "0.25 to <0.50",
+          "order": 2,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "0.25 to <0.50",
+            "column": null
+          }
+        },
+        {
+          "id": "band-4",
+          "axis": "row",
+          "source_label": "0.50 to <0.75",
+          "order": 3,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "0.50 to <0.75",
+            "column": null
+          }
+        },
+        {
+          "id": "band-5",
+          "axis": "row",
+          "source_label": "0.75 to <2.50",
+          "order": 4,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "0.75 to <2.50",
+            "column": null
+          }
+        },
+        {
+          "id": "band-6",
+          "axis": "row",
+          "source_label": "2.50 to <10.00",
+          "order": 5,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "2.50 to <10.00",
+            "column": null
+          }
+        },
+        {
+          "id": "band-7",
+          "axis": "row",
+          "source_label": "10.00 to <100.00",
+          "order": 6,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "10.00 to <100.00",
+            "column": null
+          }
+        },
+        {
+          "id": "band-8",
+          "axis": "row",
+          "source_label": "100.00 (Default)",
+          "order": 7,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "100.00 (Default)",
+            "column": null
+          }
+        },
+        {
+          "id": "portfolio-aggregate",
+          "axis": "row",
+          "source_label": "Sub-total",
+          "order": 8,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 Residential mortgage",
+            "row": "Sub-total",
+            "column": null
+          }
+        }
+      ],
+      "published_fields": [
+        {
+          "id": "on_balance_exposure",
+          "source_label": "Original\non-balance\nsheet\ngross\nexposure",
+          "header_path_refs": [
+            "date",
+            "column-on_balance_exposure"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Original\non-balance\nsheet\ngross\nexposure"
+          }
+        },
+        {
+          "id": "off_balance_exposure",
+          "source_label": "Off-\nbalance\nsheet\nexposures\npre CCF",
+          "header_path_refs": [
+            "date",
+            "column-off_balance_exposure"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+          }
+        },
+        {
+          "id": "average_ccf",
+          "source_label": "Average\nCCF",
+          "header_path_refs": [
+            "date",
+            "column-average_ccf"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "ccf-definition"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nCCF"
+          }
+        },
+        {
+          "id": "ead",
+          "source_label": "EAD post\nCRM and\npost-CCF",
+          "header_path_refs": [
+            "date",
+            "column-ead"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [
+            "ead-definition",
+            "ccf-definition"
+          ],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "EAD post\nCRM and\npost-CCF"
+          }
+        },
+        {
+          "id": "average_pd",
+          "source_label": "Average\nPD ¹",
+          "header_path_refs": [
+            "date",
+            "column-average_pd"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "pd-weighting",
+            "pd-definition",
+            "pd-long-run"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": "EAD at the end of the period",
+              "status": "established",
+              "qualification_refs": [
+                "pd-weighting"
+              ]
+            }
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nPD ¹"
+          }
+        },
+        {
+          "id": "reported_borrower_count",
+          "source_label": "Number\nof\nborrowers",
+          "header_path_refs": [
+            "date",
+            "column-reported_borrower_count"
+          ],
+          "source_unit": "",
+          "source_scale": "1",
+          "qualification_refs": [],
+          "attributes": [
+            {
+              "name": "counted_entity",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Number\nof\nborrowers"
+          }
+        },
+        {
+          "id": "average_lgd",
+          "source_label": "Average\nLGD",
+          "header_path_refs": [
+            "date",
+            "column-average_lgd"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "lgd-definition",
+            "lgd-downturn"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nLGD"
+          }
+        },
+        {
+          "id": "average_maturity",
+          "source_label": "Average\nmaturity",
+          "header_path_refs": [
+            "date",
+            "column-average_maturity"
+          ],
+          "source_unit": "Years",
+          "source_scale": "1",
+          "qualification_refs": [],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Average\nmaturity"
+          }
+        },
+        {
+          "id": "rwa",
+          "source_label": "RWA ²",
+          "header_path_refs": [
+            "date",
+            "column-rwa"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [
+            "rwa-overlays"
+          ],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "RWA ²"
+          }
+        },
+        {
+          "id": "rwa_density",
+          "source_label": "RWA\ndensity ³",
+          "header_path_refs": [
+            "date",
+            "column-rwa_density"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "density-rounding"
+          ],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "RWA\ndensity ³"
+          }
+        },
+        {
+          "id": "regulatory_expected_loss",
+          "source_label": "Expected\nLoss",
+          "header_path_refs": [
+            "date",
+            "column-regulatory_expected_loss"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [
+            "el-performing",
+            "el-default"
+          ],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Expected\nLoss"
+          }
+        },
+        {
+          "id": "provisions",
+          "source_label": "Provisions",
+          "header_path_refs": [
+            "date",
+            "column-provisions"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "cba-2025-06-30-aps330",
+            "pdf_page": 55,
+            "printed_page": "55",
+            "location": "CR6 header",
+            "row": null,
+            "column": "Provisions"
+          }
+        }
+      ],
+      "bindings": [
+        {
+          "id": "binding-on_balance_exposure",
+          "typed_field_name": "on_balance_exposure",
+          "published_field_ref": "on_balance_exposure",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-on_balance_exposure"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-off_balance_exposure",
+          "typed_field_name": "off_balance_exposure",
+          "published_field_ref": "off_balance_exposure",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-off_balance_exposure"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-average_ccf",
+          "typed_field_name": "average_ccf",
+          "published_field_ref": "average_ccf",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-average_ccf"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ccf-definition"
+          ]
+        },
+        {
+          "id": "binding-ead",
+          "typed_field_name": "ead",
+          "published_field_ref": "ead",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-ead"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ead-definition",
+            "ccf-definition"
+          ]
+        },
+        {
+          "id": "binding-average_pd",
+          "typed_field_name": "average_pd",
+          "published_field_ref": "average_pd",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-average_pd"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "pd-weighting",
+            "pd-definition",
+            "pd-long-run"
+          ]
+        },
+        {
+          "id": "binding-reported_borrower_count",
+          "typed_field_name": "reported_borrower_count",
+          "published_field_ref": "reported_borrower_count",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-reported_borrower_count"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-average_lgd",
+          "typed_field_name": "average_lgd",
+          "published_field_ref": "average_lgd",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-average_lgd"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "lgd-definition",
+            "lgd-downturn"
+          ]
+        },
+        {
+          "id": "binding-average_maturity",
+          "typed_field_name": "average_maturity",
+          "published_field_ref": "average_maturity",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-average_maturity"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-rwa",
+          "typed_field_name": "rwa",
+          "published_field_ref": "rwa",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-rwa"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "rwa-overlays"
+          ]
+        },
+        {
+          "id": "binding-rwa_density",
+          "typed_field_name": "rwa_density",
+          "published_field_ref": "rwa_density",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-rwa_density"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "density-rounding"
+          ]
+        },
+        {
+          "id": "binding-regulatory_expected_loss",
+          "typed_field_name": "regulatory_expected_loss",
+          "published_field_ref": "regulatory_expected_loss",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-regulatory_expected_loss"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "el-performing",
+            "el-default"
+          ]
+        },
+        {
+          "id": "binding-provisions",
+          "typed_field_name": "provisions",
+          "published_field_ref": "provisions",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-provisions"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        }
+      ],
+      "segmentations": [
+        {
+          "id": "pd-segmentation",
+          "source_dimension": "PD Range",
+          "bands": [
+            {
+              "id": "pd-band-1",
+              "source_label": "0.00 to <0.15",
+              "order": 0,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.00",
+              "upper": "0.15",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "0.00 to <0.15",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-2",
+              "source_label": "0.15 to <0.25",
+              "order": 1,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.15",
+              "upper": "0.25",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "0.15 to <0.25",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-3",
+              "source_label": "0.25 to <0.50",
+              "order": 2,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.25",
+              "upper": "0.50",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "0.25 to <0.50",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-4",
+              "source_label": "0.50 to <0.75",
+              "order": 3,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.50",
+              "upper": "0.75",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "0.50 to <0.75",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-5",
+              "source_label": "0.75 to <2.50",
+              "order": 4,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.75",
+              "upper": "2.50",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "0.75 to <2.50",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-6",
+              "source_label": "2.50 to <10.00",
+              "order": 5,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "2.50",
+              "upper": "10.00",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "2.50 to <10.00",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-7",
+              "source_label": "10.00 to <100.00",
+              "order": 6,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "10.00",
+              "upper": "100.00",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "10.00 to <100.00",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-8",
+              "source_label": "100.00 (Default)",
+              "order": 7,
+              "kind": "default",
+              "unit": "%",
+              "lower": null,
+              "upper": null,
+              "lower_inclusive": null,
+              "upper_inclusive": null,
+              "lower_status": "not_applicable",
+              "upper_status": "not_applicable",
+              "category": "100.00 (Default)",
+              "source_reference": {
+                "document_id": "cba-2025-06-30-aps330",
+                "pdf_page": 55,
+                "printed_page": "55",
+                "location": "CR6 Residential mortgage",
+                "row": "100.00 (Default)",
+                "column": null
+              }
+            }
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "completeness": {
+            "value": "Displayed PD ranges and default category cover the subtotal",
+            "status": "established",
+            "qualification_refs": [
+              "cr6-introduction"
+            ]
+          },
+          "disjointness": {
+            "value": "Non-overlapping printed intervals and separate default category",
+            "status": "established",
+            "qualification_refs": [
+              "cr6-introduction"
+            ]
+          },
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage PD Range and Sub-total",
+              "row": null,
+              "column": null
+            }
+          ]
+        }
+      ],
+      "qualifications": [
+        {
+          "id": "report-entity",
+          "source_text": "This document is prepared for CBA and its subsidiaries (the Group) in accordance with the Board approved policy and APRA’s revised Prudential Standard for Public Disclosures (APS 330), that came into effect from 1 January 2025.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 6,
+              "printed_page": "6",
+              "location": "Introduction",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "level-2",
+          "source_text": "The level at which the Group reports its capital adequacy to APRA, being the Consolidated Banking Group comprising the ADI and all of its subsidiary entities other than the insurance business and certain entities through which securitisation of Group assets is conducted. This is the basis on which this report has been produced.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 115,
+              "printed_page": "115",
+              "location": "Glossary: Level 2",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "portfolio-definition",
+          "source_text": "Basel asset class – retail exposures secured by residential mortgage property.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 116,
+              "printed_page": "116",
+              "location": "Glossary: Residential Mortgage",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "cr6-introduction",
+          "source_text": "The table below shows the detailed key parameters used for the calculation of capital requirements of credit risk exposure under the IRB approach, broken down by asset class and PD range.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 54,
+              "printed_page": "54",
+              "location": "CR6 introduction",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "pd-weighting",
+          "source_text": "Average PD is calculated using EAD at the end of the period.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 footnote 1",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_pd"
+            }
+          ]
+        },
+        {
+          "id": "rwa-overlays",
+          "source_text": "Includes RWA overlays.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 footnote 2",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "rwa"
+            }
+          ]
+        },
+        {
+          "id": "density-rounding",
+          "source_text": "RWA density is calculated based on unrounded numbers.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 footnote 3",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "rwa_density"
+            }
+          ]
+        },
+        {
+          "id": "pd-definition",
+          "source_text": "The PD, expressed as a percentage, is the estimate of the population of borrowers or counterparties assigned to a PD grade that will default within a one year period.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 50,
+              "printed_page": "50",
+              "location": "Probability of Default (PD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_pd"
+            }
+          ]
+        },
+        {
+          "id": "pd-long-run",
+          "source_text": "PD estimates are based on a long-run average default rate based on the Group’s historical data, supplemented with external data where applicable.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 50,
+              "printed_page": "50",
+              "location": "Probability of Default (PD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_pd"
+            }
+          ]
+        },
+        {
+          "id": "lgd-definition",
+          "source_text": "LGD is estimated as the net present value of the post default loss, including an allowance for internal and external costs, expressed as a percentage of the EAD.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Loss Given Default (LGD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_lgd"
+            }
+          ]
+        },
+        {
+          "id": "lgd-downturn",
+          "source_text": "For calculating regulatory capital an estimated downturn LGD is used that reflects likely recovery rates under stressed economic conditions.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Loss Given Default (LGD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_lgd"
+            }
+          ]
+        },
+        {
+          "id": "ead-definition",
+          "source_text": "EAD is the estimate of the amount of the facility that will be outstanding at default. For facilities already in default, it is the actual amount outstanding.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Exposure at Default (EAD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "ead"
+            }
+          ]
+        },
+        {
+          "id": "ccf-definition",
+          "source_text": "EAD for loans and commitments is based on the amount outstanding, plus the amount undrawn multiplied by a Credit Conversion Factor (CCF). The CCF represents the amount by which the undrawn limit is expected to be drawn as a facility enters default.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Exposure at Default (EAD)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "ead"
+            },
+            {
+              "kind": "field",
+              "id": "average_ccf"
+            }
+          ]
+        },
+        {
+          "id": "el-performing",
+          "source_text": "Regulatory EL is a hybrid measure of expected stressed loss and is calculated by multiplying PD, Downturn LGD and EAD for non-defaulted exposures.",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Expected Loss (EL)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "regulatory_expected_loss"
+            }
+          ]
+        },
+        {
+          "id": "el-default",
+          "source_text": "the Best Estimate of Expected Loss (BEEL) for exposures under the advanced approaches. For CBA this is estimated as the provisions assigned to defaulted exposure; and",
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 52,
+              "printed_page": "52",
+              "location": "Expected Loss (EL): defaulted exposures",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "regulatory_expected_loss"
+            },
+            {
+              "kind": "row",
+              "id": "band-8"
+            }
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "id": "mortgage-subtotal",
+          "kind": "total",
+          "source_label": "Sub-total",
+          "parent": {
+            "kind": "row",
+            "id": "portfolio-aggregate"
+          },
+          "children": [
+            {
+              "kind": "row",
+              "id": "band-1"
+            },
+            {
+              "kind": "row",
+              "id": "band-2"
+            },
+            {
+              "kind": "row",
+              "id": "band-3"
+            },
+            {
+              "kind": "row",
+              "id": "band-4"
+            },
+            {
+              "kind": "row",
+              "id": "band-5"
+            },
+            {
+              "kind": "row",
+              "id": "band-6"
+            },
+            {
+              "kind": "row",
+              "id": "band-7"
+            },
+            {
+              "kind": "row",
+              "id": "band-8"
+            }
+          ],
+          "scope": [
+            {
+              "kind": "block",
+              "id": "mortgage-block"
+            }
+          ],
+          "exhaustive": true,
+          "mutually_exclusive": true,
+          "evidence": [
+            {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage PD Range and Sub-total",
+              "row": null,
+              "column": null
+            }
+          ]
+        }
+      ],
+      "records": [
+        {
+          "record_id": "band-1",
+          "source_row_ref": "band-1",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-1"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "227654",
+            "original_text": "227,654",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "53855",
+            "original_text": "53,855",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "281508",
+            "original_text": "281,508",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "0.08",
+            "original_text": "0.08",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 742470,
+            "original_text": "742,470",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "14",
+            "original_text": "14",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "18014",
+            "original_text": "18,014",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "6",
+            "original_text": "6",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "31",
+            "original_text": "31",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.00 to <0.15",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-2",
+          "source_row_ref": "band-2",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-2"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "101884",
+            "original_text": "101,884",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "12498",
+            "original_text": "12,498",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "114382",
+            "original_text": "114,382",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "0.18",
+            "original_text": "0.18",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 302015,
+            "original_text": "302,015",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "16",
+            "original_text": "16",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "11223",
+            "original_text": "11,223",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "10",
+            "original_text": "10",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "32",
+            "original_text": "32",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.15 to <0.25",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-3",
+          "source_row_ref": "band-3",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-3"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "88288",
+            "original_text": "88,288",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "6877",
+            "original_text": "6,877",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "95166",
+            "original_text": "95,166",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "0.34",
+            "original_text": "0.34",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 249481,
+            "original_text": "249,481",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "17",
+            "original_text": "17",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "15803",
+            "original_text": "15,803",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "17",
+            "original_text": "17",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "54",
+            "original_text": "54",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.25 to <0.50",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-4",
+          "source_row_ref": "band-4",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-4"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "52563",
+            "original_text": "52,563",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "2107",
+            "original_text": "2,107",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "54671",
+            "original_text": "54,671",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "0.57",
+            "original_text": "0.57",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 151009,
+            "original_text": "151,009",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "18",
+            "original_text": "18",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "13767",
+            "original_text": "13,767",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "25",
+            "original_text": "25",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "54",
+            "original_text": "54",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.50 to <0.75",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-5",
+          "source_row_ref": "band-5",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-5"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "99351",
+            "original_text": "99,351",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "2277",
+            "original_text": "2,277",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "101627",
+            "original_text": "101,627",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "1.34",
+            "original_text": "1.34",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 282242,
+            "original_text": "282,242",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "17",
+            "original_text": "17",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "44472",
+            "original_text": "44,472",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "44",
+            "original_text": "44",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "236",
+            "original_text": "236",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "0.75 to <2.50",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-6",
+          "source_row_ref": "band-6",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-6"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "36294",
+            "original_text": "36,294",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "153",
+            "original_text": "153",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "36447",
+            "original_text": "36,447",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "3.82",
+            "original_text": "3.82",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 109963,
+            "original_text": "109,963",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "18",
+            "original_text": "18",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "31087",
+            "original_text": "31,087",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "85",
+            "original_text": "85",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "257",
+            "original_text": "257",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "2.50 to <10.00",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-7",
+          "source_row_ref": "band-7",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-7"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "1012",
+            "original_text": "1,012",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "5",
+            "original_text": "5",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "1017",
+            "original_text": "1,017",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "16.66",
+            "original_text": "16.66",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 3216,
+            "original_text": "3,216",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "16",
+            "original_text": "16",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "1388",
+            "original_text": "1,388",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "137",
+            "original_text": "137",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "27",
+            "original_text": "27",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "10.00 to <100.00",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "band-8",
+          "source_row_ref": "band-8",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-8"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "6187",
+            "original_text": "6,187",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "15",
+            "original_text": "15",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "6202",
+            "original_text": "6,202",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "100.00",
+            "original_text": "100.00",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 16499,
+            "original_text": "16,499",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "20",
+            "original_text": "20",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "13389",
+            "original_text": "13,389",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "216",
+            "original_text": "216",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "285",
+            "original_text": "285",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "100.00 (Default)",
+              "column": "Provisions"
+            }
+          }
+        },
+        {
+          "record_id": "portfolio-aggregate",
+          "source_row_ref": "portfolio-aggregate",
+          "source_row_role": "Sub-total",
+          "source_segment_memberships": [],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "613233",
+            "original_text": "613,233",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Original\non-balance\nsheet\ngross\nexposure"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "77787",
+            "original_text": "77,787",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Off-\nbalance\nsheet\nexposures\npre CCF"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Average\nCCF"
+            }
+          },
+          "ead": {
+            "value": "691020",
+            "original_text": "691,020",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "EAD post\nCRM and\npost-CCF"
+            }
+          },
+          "average_pd": {
+            "value": "1.47",
+            "original_text": "1.47",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Average\nPD ¹"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 1856895,
+            "original_text": "1,856,895",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Number\nof\nborrowers"
+            }
+          },
+          "average_lgd": {
+            "value": "16",
+            "original_text": "16",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Average\nLGD"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "blank_unresolved",
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Average\nmaturity"
+            }
+          },
+          "rwa": {
+            "value": "149143",
+            "original_text": "149,143",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "RWA ²"
+            }
+          },
+          "rwa_density": {
+            "value": "22",
+            "original_text": "22",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "RWA\ndensity ³"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "976",
+            "original_text": "976",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Expected\nLoss"
+            }
+          },
+          "provisions": {
+            "value": "1768",
+            "original_text": "1,768",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "cba-2025-06-30-aps330",
+              "pdf_page": 55,
+              "printed_page": "55",
+              "location": "CR6 Residential mortgage",
+              "row": "Sub-total",
+              "column": "Provisions"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
