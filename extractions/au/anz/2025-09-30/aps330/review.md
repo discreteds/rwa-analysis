@@ -8,6 +8,7 @@ and 119–120. Renderings were produced from the saved PDF with pdfplumber at
 130 dpi, retained as temporary inspection artifacts under
 `/tmp/opencode/anz-task3b/`. The [independent golden notes](../../../../../tests/bronze/au/anz/2025-09-30/aps330/golden-notes.md)
 record authorship and coverage.
+Self-review also rendered the cover at 80 dpi: PDF p. 1 has no printed page label.
 
 Selected **Sep 25 AIRB Residential Mortgages, source rows 10–18**, on p. 57
 (`pages[56]`). Seven non-default intervals, one default category and a named

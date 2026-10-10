@@ -26,6 +26,9 @@ errors. No test-only production interface is needed.
   cells and sole subtotal disclosure. No broader provisioning policy is inferred.
 - Amounts: AUD millions (p. 7), integral displayed precision; count: integer;
   average PD: two decimals; other reported percentages: whole percent.
+- Self-review rendered the cover separately: PDF p. 1 has no printed page label.
+  Corrected that evidence reference to an empty printed label from the image,
+  then reran the contract red before fixing the extractor reference helper.
 - Subtotal: on-balance **339,108**, off-balance **34,373**, EAD **373,535**,
   borrowers **921,055**, RWA **94,135**, EL **801**, provisions **841**.
   Default row: EAD **4,316**, PD **100.00%**, RWA **12,184**, density **282%**.
