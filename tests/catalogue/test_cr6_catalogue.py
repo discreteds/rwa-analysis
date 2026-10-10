@@ -320,6 +320,11 @@ def test_unknown_scale_keeps_semantics_without_inventing_conversion(
         "not_unit",
         "bad_population",
         "unsupported_override",
+        "alternative_population",
+        "alternative_decision",
+        "alternative_unit",
+        "alternative_known_null",
+        "alternative_unknown_value",
     ],
 )
 def test_strict_typed_release_rejects_malformed_meaning(editable_catalogue, change):
@@ -353,6 +358,35 @@ def test_strict_typed_release_rejects_malformed_meaning(editable_catalogue, chan
             pd["attributes"] = [
                 {"name": "population", "value": True, "status": "established"}
             ]
+        elif change.startswith("alternative_"):
+            assertion = {
+                "value": {
+                    "kind": "concept",
+                    "revision_id": "population.residential-mortgages@v1",
+                },
+                "status": "established",
+            }
+            name = "population"
+            if change == "alternative_population":
+                assertion["value"] = True
+            elif change == "alternative_decision":
+                assertion["decision_refs"] = [
+                    {"kind": "concept", "revision_id": "unit.money@v1"}
+                ]
+            elif change == "alternative_unit":
+                name = "result_unit"
+            elif change == "alternative_known_null":
+                assertion["value"] = None
+            else:
+                assertion["status"] = "unresolved"
+            pd["attributes"] = [
+                {
+                    "name": name,
+                    "value": None,
+                    "status": "conflicting",
+                    "alternatives": [assertion],
+                }
+            ]
         else:
             pd["overrides_refs"] = [
                 {"kind": "mapping", "revision_id": "cba.cr6.average_lgd@v1"}
@@ -361,3 +395,122 @@ def test_strict_typed_release_rejects_malformed_meaning(editable_catalogue, chan
     edit_members(root, relative, edit)
     with pytest.raises(ValueError):
         load_catalogue(root / "releases/cr6-v1.json")
+
+
+@pytest.mark.parametrize("effective_from", ["2025-06-30", "2025-07-01"])
+def test_correction_retains_history_without_executing_superseded_mapping(
+    editable_catalogue, cba_bundle, effective_from
+):
+    from rwa_analysis.catalogue.load import load_catalogue
+    from rwa_analysis.catalogue.models import RevisionRef
+
+    root = editable_catalogue
+    relative = "mappings/cba-2025-06-30-v1.json"
+    old_release = root / "releases/cr6-v1.json"
+    old = load_catalogue(old_release)
+    old_ref = RevisionRef("mapping", "cba.cr6.on_balance_exposure@v1")
+    new_ref = RevisionRef("mapping", "cba.cr6.on_balance_exposure@v2")
+
+    def edit(members):
+        prior = next(m for m in members if m["revision_id"] == old_ref.revision_id)
+        correction = deepcopy(prior)
+        correction.update(
+            revision_id=new_ref.revision_id,
+            effective_from=effective_from,
+            effective_to="2025-07-31",
+        )
+        correction["scope"]["observation_to"] = "2025-07-31"
+        correction["supersedes_refs"] = [
+            {"kind": "mapping", "revision_id": old_ref.revision_id}
+        ]
+        next(a for a in correction["attributes"] if a["name"] == "exposure_basis")[
+            "value"
+        ] = "synthetic_corrected_basis"
+        members.append(correction)
+
+    edit_members(root, relative, edit)
+    new_release = root / "releases/correction.json"
+    payload = json.loads(old_release.read_text())
+    payload["id"] = "synthetic-correction"
+    payload["selection"].append(
+        {"path": relative, "kind": "mapping", "revision_id": new_ref.revision_id}
+    )
+    new_release.write_text(json.dumps(payload))
+    corrected = load_catalogue(new_release)
+    # Closure and old release reproducibility survive retention of the predecessor.
+    assert corrected.member(old_ref) == old.member(old_ref)
+    assert meaning(
+        load_catalogue(old_release), cba_bundle, "on_balance_exposure"
+    ) == meaning(old, cba_bundle, "on_balance_exposure")
+    result = meaning(corrected, cba_bundle, "on_balance_exposure")
+    applies = effective_from == "2025-06-30"
+    assert result.attribute("exposure_basis").value == (
+        "synthetic_corrected_basis" if applies else "original_gross_exposure"
+    )
+    assert result.attribute("exposure_basis").status == "established"
+    assert (old_ref in result.mapping_refs) is not applies
+    assert (new_ref in result.mapping_refs) is applies
+    assert result.unit_factor == Decimal(1000000)
+
+
+@pytest.mark.parametrize(
+    "definition", ["measure.cba.cr6.average_pd", "measure.cba.cr6.ead"]
+)
+@pytest.mark.parametrize(
+    "interval",
+    [
+        ("2025-01-01", "2025-06-29", False),
+        ("2025-07-01", "2025-12-31", False),
+        ("2025-06-30", "2025-06-30", True),
+    ],
+)
+def test_definition_and_weight_dependency_effective_boundaries(
+    editable_catalogue, cba_bundle, definition, interval
+):
+    from rwa_analysis.catalogue.load import load_catalogue
+
+    start, end, applies = interval
+
+    def edit(members):
+        measure = next(m for m in members if m["id"] == definition)
+        measure.update(effective_from=start, effective_to=end)
+
+    edit_members(editable_catalogue, "measures/cr6-v1.json", edit)
+    cat = load_catalogue(editable_catalogue / "releases/cr6-v1.json")
+    result = meaning(cat, cba_bundle, "average_pd")
+    assert result.attribute("weighting").status == (
+        "established" if applies else "unresolved"
+    )
+    assert (result.measure_ref is not None) is applies
+    assert result.concept_ref is not None
+    assert result.unit_factor == Decimal("0.01")
+
+
+def test_valid_nested_conflict_retains_alternative_support(
+    editable_catalogue, cba_bundle
+):
+    from rwa_analysis.catalogue.load import load_catalogue
+
+    def edit(members):
+        pd = next(m for m in members if m["id"] == "cba.cr6.average_pd")
+        support = pd["evidence_refs"]
+        pd["measure_ref"] = None
+        pd["attributes"] = [
+            {
+                "name": "weighting",
+                "value": None,
+                "status": "conflicting",
+                "alternatives": [
+                    {"value": value, "status": "provisional", "evidence_refs": support}
+                    for value in ("synthetic_a", "synthetic_b")
+                ],
+            }
+        ]
+
+    edit_members(editable_catalogue, "mappings/cba-2025-06-30-v1.json", edit)
+    cat = load_catalogue(editable_catalogue / "releases/cr6-v1.json")
+    weighting = meaning(cat, cba_bundle, "average_pd").attribute("weighting")
+    assert weighting.status == "conflicting"
+    assert {a.value for a in weighting.alternatives} == {"synthetic_a", "synthetic_b"}
+    assert all(a.evidence_refs for a in weighting.alternatives)
+    assert weighting.evidence_refs  # Summary retains nested support too.

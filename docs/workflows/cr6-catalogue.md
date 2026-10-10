@@ -57,6 +57,13 @@ no shared extraction contract changed.
   selections; `members` contains their fully decoded frozen records in the
   same order. `member(ref)` resolves an internal reference. Loading checks
   reference closure, kinds, result-unit categories and dependency cycles.
+  Selection retains history as well as executable revisions. At resolution an
+  occurrence-matching, source-effective mapping supersedes its explicitly named
+  predecessor mappings (transitively) for that occurrence. Historical members
+  stay resolvable, and releases that select only the predecessors reproduce the
+  earlier interpretation. Future or out-of-scope corrections do not deactivate
+  an otherwise applicable predecessor. Supersession replaces the whole mapping;
+  attribute-specific narrower overrides remain a separate mechanism.
 - `EvidenceRef(bundle_key, document_id, dataset_id, kind, ref_id)` identifies
   a qualification, field, band, axis, context or relationship occurrence.
   Source text and page locations remain in Bronze, reached through this
@@ -82,8 +89,20 @@ no shared extraction contract changed.
   known information; any provisional supporting assertion keeps the combined
   status provisional. A narrower mapping overrides only attributes it actually
   asserts, and only with declared, supported `overrides_refs`. File order does
-  not choose an interpretation. `mapping_refs` retains all applicable mappings,
-  including broader contributions, for reproducible lineage.
+  not choose an interpretation. `mapping_refs` retains applicable,
+  non-superseded mappings, including broader override contributions, for
+  reproducible lineage. Alternative assertions undergo the same status/value,
+  decision-kind, attribute-reference and unit-category checks as their enclosing
+  attribute. Their supports are retained both individually and in the combined
+  conflict's support summary.
+- Referenced definitions and their semantic dependencies must be source-effective
+  on the observation date. This includes a measure's weight measure, concepts,
+  units and supporting decisions. An inapplicable measure or dependency leaves
+  its measure binding/attributes unresolved; independently applicable mapping
+  concepts, attributes and explicit conversion can still contribute. Pinned
+  references are never redirected to a newer definition implicitly. Historical
+  supersession/override links remain closure requirements but are excluded from
+  semantic effective-date dependency checks.
 - `unit_factor` is an exact Decimal multiplier from the displayed value to
   unscaled money, fractional rates, integral counts or years. It is supplied
   only when both source unit and scale match the explicit conversion. Unknown

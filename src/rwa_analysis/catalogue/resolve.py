@@ -1,6 +1,7 @@
 """Conjunctive occurrence matching; attribute-level composition and conflicts."""
 
 from dataclasses import replace
+from functools import cache
 
 from rwa_analysis.extraction.cr6 import (
     CR6_FIELDS,
@@ -15,6 +16,7 @@ from .models import (
     RevisionRef,
     SemanticAttribute,
     SourceMappingRevision,
+    revision_references,
 )
 
 
@@ -59,8 +61,12 @@ def _unique(values):
 
 
 def _combine(name, assertions):
-    evidence = _unique(e for a in assertions for e in a.evidence_refs)
-    decisions = _unique(d for a in assertions for d in a.decision_refs)
+    evidence = _unique(
+        e for a in assertions for s in a.assertions() for e in s.evidence_refs
+    )
+    decisions = _unique(
+        d for a in assertions for s in a.assertions() for d in s.decision_refs
+    )
     # Unknown information does not contradict a supported assertion, but its
     # evidence remains attached. Provisional support never becomes established.
     known = [a for a in assertions if a.status != "unresolved"]
@@ -120,20 +126,49 @@ def resolve_field(
     published = next(
         f for f in dataset.published_fields if f.id == binding.published_field_ref
     )
+    observation_date = dataset.context.observation_date
+
+    @cache
+    def definition_applies(ref):
+        member = catalogue.member(ref)
+        return (
+            (member.effective_from is None or member.effective_from <= observation_date)
+            and (member.effective_to is None or observation_date <= member.effective_to)
+            and all(
+                definition_applies(dependency)
+                for dependency in revision_references(member, include_history=False)
+            )
+        )
+
     mappings = sorted(
         (
             m
             for m in catalogue.members
             if isinstance(m, SourceMappingRevision)
             and _matches(m, dataset, record, field_key, binding)
+            and all(definition_applies(ref) for ref in m.decision_refs)
         ),
         key=lambda m: m.revision_id,
     )
+    # A correction replaces a whole predecessor mapping for this occurrence.
+    # Keep every historical member available through catalogue.member(), but
+    # never execute superseded ancestors alongside an applicable correction.
+    superseded = set()
+
+    def retain_history(mapping):
+        for ref in mapping.supersedes_refs:
+            if ref.kind == "mapping" and ref.revision_id not in superseded:
+                superseded.add(ref.revision_id)
+                retain_history(catalogue.member(ref))
+
+    for mapping in mappings:
+        retain_history(mapping)
+    mappings = [m for m in mappings if m.revision_id not in superseded]
     candidates = {}
     conversions = []
     for mapping in mappings:
         attrs = list(mapping.attributes)
-        if mapping.measure_ref:
+        if mapping.measure_ref and definition_applies(mapping.measure_ref):
             measure = catalogue.member(mapping.measure_ref)
             attrs.extend(measure.attributes)
             attrs.extend(
@@ -151,13 +186,15 @@ def resolve_field(
                     ),
                 ]
             )
-        if mapping.concept_ref:
+        if mapping.concept_ref and definition_applies(mapping.concept_ref):
             attrs.append(
                 SemanticAttribute(
                     name="concept", value=mapping.concept_ref, status="established"
                 )
             )
         for attr in attrs:
+            if not all(definition_applies(ref) for ref in revision_references(attr)):
+                continue
             # Only the mapping's own source support is added; unrelated field
             # qualifiers are not propagated from neighboring measures.
             if attr.name in ("concept", "measure", "result_unit"):

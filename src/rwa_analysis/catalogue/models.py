@@ -1,6 +1,6 @@
 """Immutable CR6 catalogue contracts. References always pin a revision."""
 
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, fields, is_dataclass
 from datetime import date
 from decimal import Decimal
 from typing import Literal
@@ -34,6 +34,14 @@ class Assertion:
     evidence_refs: tuple[EvidenceRef, ...] = ()
     decision_refs: tuple[RevisionRef, ...] = ()
 
+    def __post_init__(self):
+        if self.status in ("unresolved", "conflicting") and self.value is not None:
+            raise ValueError("Unknown/conflicting assertion has a value")
+        if self.status in ("established", "provisional") and self.value is None:
+            raise ValueError("Known assertion requires a value")
+        if any(ref.kind != "decision" for ref in self.decision_refs):
+            raise ValueError("decision_refs require decision revisions")
+
 
 @dataclass(frozen=True)
 class SemanticAttribute(Assertion):
@@ -41,14 +49,12 @@ class SemanticAttribute(Assertion):
     alternatives: tuple[Assertion, ...] = ()
 
     def __post_init__(self):
+        super().__post_init__()
         if not self.name:
             raise ValueError("Empty semantic attribute name")
-        if self.status in ("unresolved", "conflicting") and self.value is not None:
-            raise ValueError(f"{self.name}: unknown/conflicting attribute has a value")
-        if self.status in ("established", "provisional") and self.value is None:
-            raise ValueError(f"{self.name}: known attribute requires a value")
-        if any(ref.kind != "decision" for ref in self.decision_refs):
-            raise ValueError("decision_refs require decision revisions")
+
+    def assertions(self) -> tuple[Assertion, ...]:
+        return (self, *self.alternatives)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -132,22 +138,43 @@ def validate_attributes(attributes):
         "measure": "measure",
         "population": "concept",
     }
-    for a in attributes:
-        if (
-            a.name in reference_kinds
-            and a.value is not None
-            and (
-                not isinstance(a.value, RevisionRef)
-                or a.value.kind != reference_kinds[a.name]
-            )
-        ):
-            raise ValueError(f"{a.name} requires a {reference_kinds[a.name]} reference")
-        if (
-            a.name == "pd_band"
-            and a.value is not None
-            and (not isinstance(a.value, EvidenceRef) or a.value.kind != "band")
-        ):
-            raise ValueError("pd_band requires a source band reference")
+    for attribute in attributes:
+        for a in attribute.assertions():
+            if (
+                attribute.name in reference_kinds
+                and a.value is not None
+                and (
+                    not isinstance(a.value, RevisionRef)
+                    or a.value.kind != reference_kinds[attribute.name]
+                )
+            ):
+                raise ValueError(
+                    f"{attribute.name} requires a {reference_kinds[attribute.name]} reference"
+                )
+            if (
+                attribute.name == "pd_band"
+                and a.value is not None
+                and (not isinstance(a.value, EvidenceRef) or a.value.kind != "band")
+            ):
+                raise ValueError("pd_band requires a source band reference")
+
+
+def revision_references(value, *, include_history=True):
+    """Walk typed dependencies; historical links prove closure, not applicability."""
+    if isinstance(value, RevisionRef):
+        yield value
+    elif is_dataclass(value):
+        for field in fields(value):
+            if include_history or field.name not in (
+                "supersedes_refs",
+                "overrides_refs",
+            ):
+                yield from revision_references(
+                    getattr(value, field.name), include_history=include_history
+                )
+    elif isinstance(value, tuple):
+        for item in value:
+            yield from revision_references(item, include_history=include_history)
 
 
 @dataclass(frozen=True, kw_only=True)

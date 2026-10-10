@@ -15,8 +15,8 @@ from .models import (
     InterpretationDecisionRevision,
     MeasureRevision,
     MemberSelection,
-    RevisionRef,
     SourceMappingRevision,
+    revision_references,
 )
 
 TYPES = {
@@ -80,17 +80,6 @@ def _decode(value, annotation):
     return value
 
 
-def _references(value):
-    if isinstance(value, RevisionRef):
-        yield value
-    elif is_dataclass(value):
-        for field in fields(value):
-            yield from _references(getattr(value, field.name))
-    elif isinstance(value, tuple):
-        for item in value:
-            yield from _references(item)
-
-
 def load_catalogue(release_path: Path) -> CatalogueRelease:
     release_path = Path(release_path)
     root = release_path.parent.parent.resolve()
@@ -132,15 +121,16 @@ def load_catalogue(release_path: Path) -> CatalogueRelease:
     )
     graph = {}
     for selected, member in zip(selection, members, strict=True):
-        refs = tuple(_references(member))
+        refs = tuple(revision_references(member))
         for ref in refs:
             cat.member(ref)
         graph[selected.revision_id] = tuple(r.revision_id for r in refs)
         for attribute in getattr(member, "attributes", ()):
-            if attribute.name == "result_unit" and attribute.value is not None:
-                unit = cat.member(attribute.value)
-                if not isinstance(unit, ConceptRevision) or unit.category != "unit":
-                    raise ValueError(f"Invalid result unit: {attribute.value}")
+            for assertion in attribute.assertions():
+                if attribute.name == "result_unit" and assertion.value is not None:
+                    unit = cat.member(assertion.value)
+                    if not isinstance(unit, ConceptRevision) or unit.category != "unit":
+                        raise ValueError(f"Invalid result unit: {assertion.value}")
         if isinstance(member, MeasureRevision):
             unit = cat.member(member.result_unit_ref)
             if not isinstance(unit, ConceptRevision) or unit.category != "unit":
