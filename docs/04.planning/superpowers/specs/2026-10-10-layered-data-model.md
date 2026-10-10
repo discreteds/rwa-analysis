@@ -2,13 +2,46 @@
 
 Date: 2026-10-10
 
-Status: Proposed logical schema for review; not implemented database DDL.
+Status: CR6 slice implemented and verified as described below; broader domain
+schemas remain proposed logical models.
 
 Companion to the [consolidated specification](2026-10-10-initial-data-model.md) and [worked source examples](2026-10-10-data-model-worked-examples.md). This document makes the layer ownership, entity relationships and first Silver domain contract explicit.
 
 Feasibility evidence: [CBA/Westpac Mountainash and DuckDB spike](../../../00.ideation/2026-10-10-layered-model-feasibility-spike.md), including Decimal conformance findings and rebuild/publication checks. This is a throwaway experiment, not implementation of these contracts.
 
-Implementation proposal: [First CR6 Bronze-to-Silver plan](../plans/2026-10-10-cr6-bronze-to-silver.md), awaiting review before execution.
+Implementation plan: [First CR6 Bronze-to-Silver plan](../plans/2026-10-10-cr6-bronze-to-silver.md).
+
+### Implemented CR6 physical choices
+
+- [Bronze contracts and codec](../../../../src/rwa_analysis/extraction/): frozen
+  source dataclasses in an immutable versioned JSON envelope; Decimal values
+  serialize as strings with original tokens, precision and evidence retained.
+- [Catalogue contracts](../../../../src/rwa_analysis/catalogue/models.py) and
+  [release cr6-v1](../../../../catalogue/releases/cr6-v1.json): durable revisioned
+  definitions, scoped mappings and interpretation decisions outside Silver.
+- [Silver dataclasses and schemas](../../../../src/rwa_analysis/normalization/models.py):
+  seven tables (`contexts`, `segments`, `observations`, `interpretations`,
+  `applied_mappings`, `lineage`, `relationships`) with typed nested structs/lists.
+  Numeric measures and bounds use `DECIMAL(22,8)`; counts use `BIGINT`.
+- [Conformance](../../../../src/rwa_analysis/normalization/cr6.py) uses Mountainash
+  relation projections plus exact conversion preflight and source-aware contracts.
+  [Storage](../../../../src/rwa_analysis/storage/silver.py) uses mountainash-data's
+  pinned Ibis/DuckDB backend, atomically replacing the seven tables and
+  `ops.silver_publication` in one owned transaction.
+- [Manifests](../../../../src/rwa_analysis/storage/manifests.py) freeze saved Bronze,
+  catalogue membership, committed implementation, environment and input digests.
+  Supporting provenance bundles are pinned separately as `evidence_bronze_refs`;
+  full catalogue evidence closure survives removal of a bank from Silver scope.
+- Verification: [conformance tests](../../../../tests/silver/test_cr6_conformance.py),
+  [transaction/rebuild tests](../../../../tests/integration/test_silver_rebuild.py)
+  and [CLI recovery at a different root](../../../../tests/integration/test_cr6_cli.py).
+  Operator commands: [extraction](../../../workflows/cr6-extraction.md) and
+  [rebuild/backup/recovery](../../../workflows/silver-rebuild.md).
+
+The implemented slice has four source bundles, 36 CR6 observations, 432 field
+interpretations and lineage rows, and 32 total-to-band relationships. No generic
+incremental upsert API, Gold regeneration, other-domain storage or automatic
+comparative deduplication is claimed. Broader principle statuses remain AGREED.
 
 The researcher expanded the planned initial extraction scope to the Australian mortgage CR6 blocks from CBA June 2025 and Westpac, NAB and ANZ September 2025. NAB/ANZ add source-backed counting, exposure-basis, overlay, entity/perimeter and missingness cases; the CBA/Westpac-only spike does not establish those new extractors or mappings.
 
@@ -379,6 +412,8 @@ Each represented field has a `value_state`: `present`, `source_missing` or `not_
 
 `SilverContext` retains references to source context, mapped organisation/entity/portfolio/geography/regulatory definitions where available, and unresolved attributes. `SilverSegment` retains source band identity, canonical dimension where mapped, category kind, converted bounds and inclusivity/status. A default category and an aggregate are not synthetic numerical intervals. One source band is not equated with another merely because labels match.
 
+The implemented CR6 numeric contract uses `Decimal(22,8)` for amounts, fractions and years, and `Int64` for counts. This follows the researcher's 2026-10-10 correction: 14 integer digits accommodate 10 trillion while retaining eight fractional digits. Exact representability is checked before casting; this is a storage contract, not an economic upper-bound validation rule. The earlier precision-38 feasibility probe is historical, not the production contract.
+
 ### Other domain contracts
 
 The same layer distinction applies as new extraction scopes are selected:
@@ -414,4 +449,7 @@ An observation can have more than one supporting source occurrence. Lineage dist
 
 An interpretation correction changes mappings or catalogue revisions and can regenerate canonical roles, units or definition links while source evidence remains unchanged. A faithful Bronze fixture does not need rewriting for that correction. If new source notes are required, expand Bronze first. Retaining every historical Silver snapshot is optional; retaining the inputs needed to reproduce it is required.
 
-This proposal is ready for model review, not yet for claiming implemented conformance. The next implementation plan must establish dataclass/table encodings, exact backend contracts and supported transactional publication without changing these layer boundaries implicitly.
+The CR6 encodings, exact backend contracts and transactional publication are
+implemented in the linked contracts and tests above. Other domain extensions and
+multi-source comparative selection still require their own source-backed design
+and verification within these layer boundaries.

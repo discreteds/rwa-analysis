@@ -36,7 +36,7 @@ The DuckDB projection has seven tables:
 | `lineage` | 216 | Selected source occurrences, captured cell evidence and conversions |
 | `relationships` | 16 | Portfolio-aggregate-to-band links |
 
-Each table carries its Silver revision. Aggregates have no individual segment reference; defaults have no invented interval bounds. Monetary/rate/duration columns use `DECIMAL(38,8)` for this sample; counts use 64-bit integers. This scale is a probe choice, not a universal production precision policy.
+Each table carries its Silver revision. Aggregates have no individual segment reference; defaults have no invented interval bounds. Monetary/rate/duration columns use `DECIMAL(38,8)` for this sample; counts use 64-bit integers. This scale is a probe choice, not a universal production precision policy. Historical result: the researcher subsequently selected `Decimal(22,8)` for production CR6, with 10-trillion-scale exact roundtrip tests; the original probe and its precision sentinel below remain recorded as executed.
 
 Mappings intentionally retain null complete-measure references. They establish useful partial tags without pretending to implement the full semantic catalogue. Currency codes and counted-entity conventions remain unresolved; CBA PD has the captured period-end EAD-weighting qualification, while LGD weighting remains unresolved. Source definitions and qualification text remain saved outside Silver.
 

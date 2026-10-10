@@ -138,18 +138,18 @@ def conform_frame(frame: pl.DataFrame, spec: ma.TypeSpec) -> pl.DataFrame:
 
 **Deliverable:** a locked install from immutable sources that validates and round-trips a Decimal/missing/count frame through the intended libraries. No PDF extraction is needed to establish this boundary.
 
-- [ ] **1. Resolve the environment from clean commits.** Start with the following candidate revisions, observed during planning. Mountainash and mountainash-data working trees were dirty during the spike, so these commits are candidates, not a verified equivalent of that environment. Confirm remote availability and run this task's checks using the locked install. If a required public API is absent at these commits, identify the needed released/committed change and obtain the revised pin; do not silently require a sibling checkout.
+- [x] **1. Resolve the environment from clean commits.** The revisions below are now verified by Task 1's locked installation and integration checks. The original Mountainash candidate `9f43cf818223c02793a6e5f516edaf2924f5339f` was a disposable local commit unavailable remotely; the controller approved evaluating published develop commit `3c25bbffe0a3998ef56a9092e54898b3219ce9a2`, which passed. No sibling checkout or dependency patch is required. See [boundary workflow findings](../../../workflows/mountainash-boundary.md).
 
-| Repository (`https://github.com/mountainash-io/…`) | Candidate revision |
+| Repository (`https://github.com/mountainash-io/…`) | Verified revision |
 |---|---|
-| `mountainash` | `9f43cf818223c02793a6e5f516edaf2924f5339f` |
+| `mountainash` | `3c25bbffe0a3998ef56a9092e54898b3219ce9a2` |
 | `mountainash-data` | `36f4f4a68bc17de51bfc22bbfbd9dd9191db2701` |
 | `mountainash-files` | `13721c33fa5876ba8ee1e69917f3e9ce9f781fc2` |
 | `mountainash-settings` | `e81750960b3fb078ae239696b848054568af6c72` |
 | `mountainash-auth-client` | `1b57247f17deb68c1178635486c05a8bfc6fa83b` |
 | `mountainash-transport` | `f79e3a3729f31c88f148f4c8443657ae68c652ce` |
 
-Use `[tool.uv.sources]` Git entries with exact `rev` values for all six. Declare these ecosystem dependencies explicitly to make transitive source overrides unambiguous. Add `mountainash-data[duckdb]`, `pdfplumber`, `polars`, `pyarrow`, `pydantic`, `typer`; dev dependencies `pytest`, `ruff`. Pin `polars==2.0.0`, `duckdb==1.5.6` and `ibis-framework==12.0.0` initially to match the probed backend combination; commit resolved transitive versions in `uv.lock`. Set Python `>=3.12`, Hatchling build backend, and:
+Use `[tool.uv.sources]` Git entries with exact `rev` values for all six. Declare these ecosystem dependencies explicitly to make transitive source overrides unambiguous. Add `mountainash-data[duckdb]`, `pdfplumber`, `polars`, `pyarrow`, `pydantic`, `typer`; dev dependencies `pytest`, `ruff`. The verified pins are `polars==1.44.2`, `duckdb==1.5.6` and `ibis-framework==12.0.0`; commit resolved transitive versions in `uv.lock`. The initially proposed Polars 2.0.0 cannot resolve against the published Mountainash requirement `>=1.35.1,<2`; 1.44.2 passes the real boundary tests. Set Python `>=3.12`, Hatchling build backend, and:
 
 ```toml
 [project.scripts]
@@ -165,10 +165,10 @@ target-version = "py312"
 
 The console entry point becomes usable in Task 8. Run `uv lock` then `uv sync --locked`; record the actual verified pins in README. Install-time repository credentials, if needed, stay outside tracked configuration.
 
-- [ ] **2. Write the boundary test before the adapter.** Its independent contract is exact transport of a precision-sensitive value and a null; the credible failure is Float64 coercion or all-null type inference. It is the only owner of the generic precision sentinel; extraction tests own source values.
+- [x] **2. Write the boundary test before the adapter.** Its independent contract is exact transport of a precision-sensitive value and a null; the credible failure is Float64 coercion or all-null type inference. It is the only owner of the generic precision sentinel; extraction tests own source values.
 
 ```python
-def test_decimal_contract_and_persistent_roundtrip(tmp_path):
+def test_domain_decimal_contract_and_persistent_roundtrip(tmp_path):
     import mountainash as ma
     import polars as pl
     from decimal import Decimal
@@ -176,10 +176,10 @@ def test_decimal_contract_and_persistent_roundtrip(tmp_path):
     from rwa_analysis.contracts.frames import conform_frame
 
     frame = pl.DataFrame(
-        {"id": ["present", "missing"],
-         "amount": [Decimal("12345678901234567890.12345678"), None],
-         "count": [742470, None]},
-        schema={"id": pl.String, "amount": pl.Decimal(38, 8), "count": pl.Int64},
+        {"id": ["ten-trillion", "fractional", "missing"],
+         "amount": [Decimal("10000000000000"), Decimal("9999999999999.12345678"), None],
+         "count": [742470, 1, None]},
+        schema={"id": pl.String, "amount": pl.Decimal(22, 8), "count": pl.Int64},
     )
     spec = ma.TypeSpec.from_frictionless({
         "fields": [{"name": "id", "type": "string"},
@@ -197,7 +197,7 @@ def test_decimal_contract_and_persistent_roundtrip(tmp_path):
     assert restored.equals(frame.sort("id"))
 ```
 
-- [ ] **3. Run** `uv run pytest tests/integration/test_mountainash_boundary.py -q`; confirm the intended missing adapter failure. Implement the adapter using the verified public API:
+- [x] **3. Run** `uv run pytest tests/integration/test_mountainash_boundary.py -q`; confirm the intended missing adapter failure. Implement the adapter using the verified public API:
 
 ```python
 def conform_frame(frame, spec):
@@ -216,9 +216,9 @@ def conform_frame(frame, spec):
 
 Also reject nonempty field-level missing sentinels in this typed boundary. Do not mutate the dependency's shared base `Config`. This adapter validates already-typed data; it does not parse numeric strings or establish semantic units.
 
-- [ ] **4. Extend the same boundary test module to write/read a small nested JSON record through `mountainash_files.write(FileSinkSpec(...), encoded)` and `parse(FileSourceSpec(...), output="pydata")`.** Use encoded `{"value": "0.0800", "missing_reason": null}` and a second absent-value record; compare against those literal records, including null fields. Inspect the pinned `parse` signature. The library may normalize object shapes through Arrow; ensure the intended envelope survives before selecting its wrapper in Task 4. A failed representation check is a blocker for that encoding, not permission to omit metadata.
+- [x] **4. Extend the same boundary test module to write/read a small nested JSON record through `mountainash_files.write(FileSinkSpec(...), encoded)` and `parse(FileSourceSpec(...), output="pydata")`.** Use encoded `{"value": "0.0800", "missing_reason": null}` and a second absent-value record; compare against those literal records, including null fields. Inspect the pinned `parse` signature. The library normalizes a JSON object to a singleton list in `ParseResult.data`; the full tested envelope survives, including both null fields. Task 4 must validate and unwrap this shape. A failed representation check is a blocker for that encoding, not permission to omit metadata.
 
-- [ ] **5. Run** the boundary module, `uv run ruff check src tests`, and `uv run ruff format --check src tests`. Commit the working environment and adapter as `build: establish pinned Mountainash integration boundary`. Record any difference from the spike APIs in the workflow documentation; do not keep tests requiring a known dependency bug to remain broken.
+- [x] **5. Run** the boundary module, `uv run ruff check src tests`, and `uv run ruff format --check src tests`. Commit the working environment and adapter as `build: establish pinned Mountainash integration boundary`. Record any difference from the spike APIs in the workflow documentation; do not keep tests requiring a known dependency bug to remain broken.
 
 ## Task 2: Source-author CBA goldens and implement its complete Bronze extraction
 
@@ -590,7 +590,9 @@ The `catalogue` fixture calls `load_catalogue` on the tracked release; `saved_bu
 
 For numeric representability, use a synthetic value requiring more than eight decimal places and a value exceeding the selected Decimal precision: reject with a field-specific conversion error, never silently round. Structural candidate mutations cover a lineage link to an absent source occurrence, a wrong revision on a segment link, and a deleted interpretation for a represented numeric field. `validate_candidate` must reject each by reference/path. These are different risks from correct-value extraction and the generic transport sentinel.
 
-- [ ] **3. Run** `uv run pytest tests/silver/test_cr6_conformance.py -q` red, then implement unit conversion and table projection. Use exact Decimal `0.01` for percent fractions and established source scales for base amounts, retaining sign. Compute exact Python Decimal bounds/representability with sufficient local decimal context before building explicit `pl.Decimal(38,8)` columns; this must happen before any cast can round. Count fields stay `pl.Int64`; reject overflow explicitly. Unit-scale uncertainty differs from currency-code uncertainty: a known million multiplier can produce a base amount with unresolved currency.
+- [ ] **3. Run** `uv run pytest tests/silver/test_cr6_conformance.py -q` red, then implement unit conversion and table projection. Use exact Decimal `0.01` for percent fractions and established source scales for base amounts, retaining sign. Compute exact Python Decimal bounds/representability with sufficient local decimal context before building explicit `pl.Decimal(22,8)` columns; this must happen before any cast can round. Count fields stay `pl.Int64`; reject overflow explicitly. Unit-scale uncertainty differs from currency-code uncertainty: a known million multiplier can produce a base amount with unresolved currency.
+
+Researcher correction (2026-10-10): the persisted numeric contract is `Decimal(22,8)` (14 integer and eight fractional digits), sized for amounts up to 10 trillion. Verify exact 10-trillion and fractional-amount roundtrips rather than giant precision-38 sentinels. This supersedes the original plan's precision 38; historical spike results remain historical. Guard schema representability without introducing an economic 10-trillion rejection rule. Wider backend working dtypes may precede the exact, preflight-guarded final cast.
 
 ```python
 expr = (ma.col(source_field) * ma.lit(factor)).alias(target_field)
