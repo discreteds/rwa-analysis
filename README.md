@@ -1,8 +1,9 @@
 # RWA disclosure research
 
-Python tools for source-traceable disclosure research. The first implemented
-boundary validates already-typed frames through Mountainash and preserves
-Decimal values, integer counts and missing values in persistent DuckDB.
+Python tools for source-traceable disclosure research. Four reviewed mortgage
+CR6 extractors preserve published evidence in immutable Bronze bundles. A
+versioned semantic catalogue conforms 36 observations into rebuildable DuckDB
+Silver through Mountainash, preserving partial meanings and source lineage.
 
 ## Install and check
 
@@ -11,13 +12,30 @@ configured outside this repository. Install from the committed lockfile:
 
 ```sh
 uv sync --locked
-uv run pytest tests/integration/test_mountainash_boundary.py -q
-uv run ruff check src tests
-uv run ruff format --check src tests
+uv run pytest -q
+uv run ruff check src tests extractions
+uv run ruff format --check src tests extractions
 ```
 
-The declared `rwa` console entry point becomes usable when Task 8 implements
-`rwa_analysis.cli`.
+## Run
+
+After running the [four extraction commands](docs/workflows/cr6-extraction.md):
+
+```sh
+uv run rwa manifest --request config/rebuilds/cr6-2025-v1.json
+uv run rwa rebuild --manifest data/manifests/cr6-2025-v1.json
+uv run rwa inspect --observation au/cba/2025-06-30/aps330/cr6-residential-mortgages/band-1
+```
+
+Commands accept `--project-root`; rebuild/inspect accept `--warehouse`.
+Production publication requires committed producing code/configuration. Saved
+versions are immutable. Silver uses `DECIMAL(22,8)` and integer counts, with
+field-specific status, currency and weighting evidence. Rebuild needs retained
+Bronze and catalogue, not PDFs or goldens.
+
+Follow [retention and source-only recovery](docs/workflows/silver-rebuild.md)
+before relying on ignored generated inputs. Supply an existing external durable
+destination through `RWA_BACKUP_ROOT`; no backup location is assumed.
 
 ## Verified dependency boundary
 
