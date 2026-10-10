@@ -249,4 +249,4 @@ The three example families fit the consolidated model using typed domain records
 
 Implementation still needs to establish actual dataclass ergonomics, serialisation/Decimal round-trips, Mountainash table contracts and backend-supported atomic publication. The first persisted slice will exercise deterministic source identities and repeated-evidence selection. These are implementation checks, not missing financial data to invent.
 
-The examples do not expand the initial golden-set commitment beyond CBA/Westpac CR6. Their role is to keep that first implementation extensible enough for the source diversity already observed.
+These examples are design exercises, not approved golden fixtures. The researcher subsequently expanded the initial production scope to Australian mortgage CR6 from CBA June 2025 and Westpac, NAB and ANZ September 2025; the [implementation plan](../plans/2026-10-10-cr6-bronze-to-silver.md) defines the four independent source reviews and golden sets. CR1/CR2 and LIQ2 remain examples for extensibility rather than additional production extraction commitments.

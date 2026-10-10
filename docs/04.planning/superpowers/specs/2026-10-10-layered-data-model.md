@@ -6,6 +6,14 @@ Status: Proposed logical schema for review; not implemented database DDL.
 
 Companion to the [consolidated specification](2026-10-10-initial-data-model.md) and [worked source examples](2026-10-10-data-model-worked-examples.md). This document makes the layer ownership, entity relationships and first Silver domain contract explicit.
 
+Feasibility evidence: [CBA/Westpac Mountainash and DuckDB spike](../../../00.ideation/2026-10-10-layered-model-feasibility-spike.md), including Decimal conformance findings and rebuild/publication checks. This is a throwaway experiment, not implementation of these contracts.
+
+Implementation proposal: [First CR6 Bronze-to-Silver plan](../plans/2026-10-10-cr6-bronze-to-silver.md), awaiting review before execution.
+
+The researcher expanded the planned initial extraction scope to the Australian mortgage CR6 blocks from CBA June 2025 and Westpac, NAB and ANZ September 2025. NAB/ANZ add source-backed counting, exposure-basis, overlay, entity/perimeter and missingness cases; the CBA/Westpac-only spike does not establish those new extractors or mappings.
+
+The implementation plan ends with recreation of each selected table from saved Bronze and persisted Silver alongside its source-page images, followed by recorded visual reconciliation. Silver values are returned to source units for display; this review complements independent goldens and does not require exact accounting reconciliation.
+
 ## 1. Three models with different responsibilities
 
 | Concern | Bronze: published evidence | Durable semantic catalogue | Silver: conformed observations |

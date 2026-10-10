@@ -251,7 +251,7 @@ tests/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/
     test_extraction.py
 ```
 
-The initial production golden scope remains full CBA June and Westpac September mortgage CR6 blocks. The linked worked examples are specification examples, not completed golden sets or independently verified test fixtures.
+The initial production golden scope covers the full Australian mortgage CR6 blocks from CBA June 2025 and Westpac, NAB and ANZ September 2025. The researcher expanded the original CBA/Westpac scope to NAB/ANZ during implementation-plan review. Each added PDF requires its own independent golden set, source review and bespoke extractor; ANZ's selected block is AIRB, with separate NZ/comparative blocks outside this initial selection. The linked worked examples are specification examples, not completed golden sets or independently verified test fixtures.
 
 Wrong source values, dropped selected fields, incorrect signs, shifted columns or unsupported hierarchy assignments are extraction defects. Faithfully captured unknown semantics and undisclosed categories are legitimate outputs. Golden metadata can explicitly expect unresolved interpretation instead of encoding a guess. Canonical mapping expectations are verified separately against evidence and recorded researcher decisions, so a semantic correction alone need not rewrite an accurate source fixture.
 
@@ -306,4 +306,4 @@ The [worked examples](2026-10-10-data-model-worked-examples.md) exercise:
 
 They establish that the proposed logical model can express the selected cases without inventing unavailable data. They do not establish full extraction accuracy, backend integration or production readiness.
 
-Review the consolidated contracts and examples before implementation planning. The first implementation checkpoint remains the two agreed full CR6 golden sets and bespoke extractors, followed by Mountainash conformance/rebuild verification. Introduce additional domain classes only as their selected extraction scope becomes concrete.
+Review the consolidated contracts and examples before implementation planning. The first implementation checkpoint now covers four agreed full Australian mortgage CR6 golden sets and bespoke extractors, followed by Mountainash conformance/rebuild verification. The [implementation plan](../plans/2026-10-10-cr6-bronze-to-silver.md) details the CBA/Westpac/NAB/ANZ scope. Introduce additional domain classes only as their selected extraction scope becomes concrete.

@@ -14,7 +14,7 @@ The governing objective is faithful capture and useful tagging, not perfect acco
 
 The initial user is a single researcher operating locally. Mountainash is the tabular analytics and data-access interface. A persistent DuckDB database holds structured observations and results. The project-root `raw/` folder holds source PDFs and `raw/index.md` catalogues them. Here `/raw` means this project's raw folder, not the filesystem-root directory.
 
-The first delivery covers two suitable CBA and Westpac disclosures and one end-to-end comparison. Historical coverage targets half-year observations over 2016–2026, limited to published, available disclosures. Broader acquisition follows a validated first slice.
+The first evidence-to-Silver delivery covers Australian mortgage CR6 from CBA June 2025 and Westpac, NAB and ANZ September 2025, following the researcher's expansion of the original two-bank scope during implementation planning. The [CR6 implementation plan](../plans/2026-10-10-cr6-bronze-to-silver.md) owns that delivery; capital analytics and an end-to-end comparison follow separately. Historical coverage targets half-year observations over 2016–2026, limited to published, available disclosures. Broader acquisition follows a validated first slice.
 
 Australian residential mortgages are the first portfolio implementation. The extraction and metadata model must accommodate other retail, non-retail and other portfolios, and other jurisdictions, as subsequent research requires. A single source file may disclose multiple portfolios and jurisdictions. Source documents, extraction datasets and their folder locations do not impose a single portfolio or exposure jurisdiction on their contents.
 
@@ -80,7 +80,7 @@ Polars or Arrow may be used as interchange/materialisation formats. Shared tabul
 
 ### 4.1 Agent workflow and source index
 
-Maintain `raw/index.md` as the source catalogue. Initial institutions are CBA and Westpac; subsequent expansion includes NAB, ANZ, Macquarie and ING Australia where relevant. Useful archive links and discovery notes can be included in the same index or the agent workflow instructions.
+Maintain `raw/index.md` as the source catalogue. Initial institutions are CBA, Westpac, NAB and ANZ; subsequent expansion includes Macquarie and ING Australia where relevant. Useful archive links and discovery notes can be included in the same index or the agent workflow instructions.
 
 An agent follows a documented workflow to find the requested disclosures, save the PDFs and create or update the index. Bank-specific notes can guide the agent without requiring a discovery adapter, candidate database or search-provider integration.
 
@@ -389,9 +389,9 @@ Acceptance: independently sourced reference calculations agree within declared t
 
 ### C. Discovery and trusted evidence
 
-Write and follow an agent workflow to find suitable CBA and Westpac disclosures, save the PDFs in `raw/` and create/update `raw/index.md`. Individually scrutinise each PDF with an LLM and save its page/table review. Create and save independent golden sets, authored by a human or LLM, with source locations for the selected tables and the current data requirements.
+Write and follow an agent workflow to find suitable disclosures, save the PDFs in `raw/` and create/update `raw/index.md`. The initial selected sources are the already saved CBA June 2025 and Westpac/NAB/ANZ September 2025 disclosures. Individually scrutinise each PDF with an LLM and save its page/table review. Create and save independent golden sets, authored by a human or LLM, with source locations for the selected tables and the current data requirements.
 
-Acceptance: both PDFs are saved and linked in the index with their banks, reporting dates, titles and source URLs. For the analytical slice, each has adequate non-defaulted EAD and mean-PD data for the chosen comparison. The exact documents are selected by inspecting their contents, not assumed in advance.
+Acceptance: all four PDFs are saved and linked in the index with their banks, reporting dates, titles and source URLs. The source-to-Silver slice retains all selected CR6 fields and partial interpretations. For a subsequent analytical comparison, establish sufficient non-defaulted EAD and mean-PD semantics for each selected input or record explicit assumptions; publication of faithful Silver does not require complete analytical suitability.
 
 ### D. Complete the medallion slice
 
