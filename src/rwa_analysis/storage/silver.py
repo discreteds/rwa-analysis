@@ -96,15 +96,12 @@ def publish_candidate(
             if (
                 previous.height == 1
                 and previous["silver_revision_id"][0] == candidate.revision_id
+                and previous.drop("published_at").to_dicts()
+                != marker.drop("published_at").to_dicts()
             ):
-                if (
-                    previous.drop("published_at").to_dicts()
-                    != marker.drop("published_at").to_dicts()
-                ):
-                    raise ValueError(
-                        "Published revision has a different manifest selection"
-                    )
-                return
+                raise ValueError(
+                    "Published revision has a different manifest selection"
+                )
         with db.transaction():
             for name in TABLE_ORDER:
                 db.create_table(

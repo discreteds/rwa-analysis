@@ -102,7 +102,13 @@ def test_fresh_rebuild_identity_and_exact_manifest_repeat(retained, tmp_path):
     assert marker["status"] == "published" and marker["silver_revision_id"] == "r1"
     assert marker["manifest_path"] == "data/manifests/r1.json"
     assert rebuild(m1, root, a) == "r1"
-    compare(first, read_snapshot(a))  # Includes unchanged publication timestamp.
+    compare(first, read_snapshot(a), logical=True)
+    with IbisBackend(dialect="duckdb", database=str(a)) as db:
+        db.raw_driver_connection().execute("DELETE FROM silver.observations")
+    assert rebuild(m1, root, a) == "r1"
+    restored = read_snapshot(a)
+    assert len(restored["observations"]) == 36
+    compare(first, restored, logical=True)
     a.unlink()
     assert rebuild(m1, root, a) == "r1"
     compare(first, read_snapshot(a), logical=True)
@@ -216,7 +222,7 @@ def test_mapping_revision_and_selected_scope_replacement(retained, tmp_path):
     # version must not alter the separately pinned supporting-evidence input.
     save_bronze(load_bronze(refs[0], root), "v2", root, retained[2])
     rebuild(september, root, warehouse)
-    compare(selected, read_snapshot(warehouse))
+    compare(selected, read_snapshot(warehouse), logical=True)
     with pytest.raises(ValueError, match="unambiguous"):
         manifest(retained, "ambiguous-support", refs=refs[1:])
     assert not (root / "data/manifests/ambiguous-support.json").exists()
