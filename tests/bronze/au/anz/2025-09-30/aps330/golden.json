@@ -1,0 +1,3511 @@
+{
+  "document": {
+    "document_id": "anz-2025-09-30-aps330",
+    "local_path": "raw/anz-2025-09-30-aps330.pdf",
+    "organisation_id": "anz",
+    "reporting_entity": "ANZ BH Pty Ltd",
+    "title": "2025 Basel III Pillar 3 Disclosure As at 30 September 2025 APS 330: Public Disclosure",
+    "document_reporting_date": "2025-09-30",
+    "publication_date": "2025-11-10",
+    "reporting_jurisdiction": "au",
+    "source_url": "https://www.anz.com/content/dam/anzcom/shareholder/full-year-results-announcement/2025-september-pillar-3-disclosure.pdf"
+  },
+  "bundle_key": "au/anz/2025-09-30/aps330",
+  "extractor_path": "extractions/au/anz/2025-09-30/aps330/extract.py",
+  "schema_version": "cr6-v1",
+  "datasets": [
+    {
+      "id": "cr6-residential-mortgages",
+      "context": {
+        "id": "context",
+        "document_date": "2025-09-30",
+        "observation_date": "2025-09-30",
+        "source_date_label": "Sep 25",
+        "source_template": "CR6",
+        "source_title": "CR6: IRB – Credit risk exposures by portfolio and PD range",
+        "source_portfolio_label": "Residential Mortgages",
+        "reporting_entity": {
+          "value": "ANZ BH Pty Ltd",
+          "status": "established",
+          "qualification_refs": [
+            "report-entity",
+            "entity-hierarchy"
+          ]
+        },
+        "consolidation_scope": {
+          "value": "Level 2",
+          "status": "established",
+          "qualification_refs": [
+            "level-2"
+          ]
+        },
+        "regulatory_scope": {
+          "value": "AIRB",
+          "status": "established",
+          "qualification_refs": [
+            "cr6-introduction",
+            "suncorp-exclusion"
+          ]
+        },
+        "geography": {
+          "value": "Australia",
+          "status": "provisional",
+          "qualification_refs": [
+            "nz-separate",
+            "suncorp-exclusion"
+          ]
+        },
+        "currency": {
+          "value": "AUD",
+          "status": "established",
+          "qualification_refs": [
+            "currency-rounding"
+          ]
+        },
+        "qualification_refs": [
+          "report-entity",
+          "entity-hierarchy",
+          "level-2",
+          "suncorp-entity",
+          "suncorp-exclusion",
+          "currency-rounding",
+          "cr6-introduction",
+          "slotting-exclusion",
+          "cms2-suncorp-context",
+          "nz-separate"
+        ],
+        "evidence": [
+          {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 1,
+            "printed_page": "1",
+            "location": "Cover reporting date",
+            "row": null,
+            "column": null
+          },
+          {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 6,
+            "printed_page": "6",
+            "location": "Introduction: entity and perimeter",
+            "row": null,
+            "column": null
+          },
+          {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 date, AIRB and portfolio headings",
+            "row": null,
+            "column": null
+          }
+        ]
+      },
+      "axes": [
+        {
+          "id": "date",
+          "axis": "header",
+          "source_label": "Sep 25",
+          "order": 0,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "approach",
+          "axis": "header",
+          "source_label": "AIRB",
+          "order": 1,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "pd-heading",
+          "axis": "header",
+          "source_label": "Portfolio/\nPD scale",
+          "order": 2,
+          "header_path_refs": [],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "mortgage-block",
+          "axis": "block",
+          "source_label": "Residential Mortgages",
+          "order": 3,
+          "header_path_refs": [
+            "approach"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6",
+            "row": null,
+            "column": null
+          }
+        },
+        {
+          "id": "column-1",
+          "axis": "column",
+          "source_label": "Original on-\nbalance\nsheet gross\nexposure",
+          "order": 0,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-1"
+          }
+        },
+        {
+          "id": "column-2",
+          "axis": "column",
+          "source_label": "Off-balance\nsheet\nexposures",
+          "order": 1,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-2"
+          }
+        },
+        {
+          "id": "column-3",
+          "axis": "column",
+          "source_label": "Average\nCCF",
+          "order": 2,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-3"
+          }
+        },
+        {
+          "id": "column-4",
+          "axis": "column",
+          "source_label": "EAD\npost CRM\nand post-\nCCF",
+          "order": 3,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ead-definition"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-4"
+          }
+        },
+        {
+          "id": "column-5",
+          "axis": "column",
+          "source_label": "Average\nPD",
+          "order": 4,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "pd-definition"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-5"
+          }
+        },
+        {
+          "id": "column-6",
+          "axis": "column",
+          "source_label": "Number of\nBorrowers",
+          "order": 5,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "borrower-definition"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-6"
+          }
+        },
+        {
+          "id": "column-7",
+          "axis": "column",
+          "source_label": "Average\nLGD",
+          "order": 6,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "lgd-definition"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-7"
+          }
+        },
+        {
+          "id": "column-8",
+          "axis": "column",
+          "source_label": "Average\nmaturity",
+          "order": 7,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "maturity-definition",
+            "maturity-modification"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-8"
+          }
+        },
+        {
+          "id": "column-9",
+          "axis": "column",
+          "source_label": "RWA",
+          "order": 8,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-9"
+          }
+        },
+        {
+          "id": "column-10",
+          "axis": "column",
+          "source_label": "RWA density",
+          "order": 9,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-10"
+          }
+        },
+        {
+          "id": "column-11",
+          "axis": "column",
+          "source_label": "EL",
+          "order": 10,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-11"
+          }
+        },
+        {
+          "id": "column-12",
+          "axis": "column",
+          "source_label": "Provisions",
+          "order": 11,
+          "header_path_refs": [
+            "date"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-12"
+          }
+        },
+        {
+          "id": "band-1",
+          "axis": "row",
+          "source_label": "0.00 to <0.15",
+          "order": 0,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "10",
+            "column": null
+          }
+        },
+        {
+          "id": "band-2",
+          "axis": "row",
+          "source_label": "0.15 to <0.25",
+          "order": 1,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "11",
+            "column": null
+          }
+        },
+        {
+          "id": "band-3",
+          "axis": "row",
+          "source_label": "0.25 to <0.50",
+          "order": 2,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "12",
+            "column": null
+          }
+        },
+        {
+          "id": "band-4",
+          "axis": "row",
+          "source_label": "0.50 to <0.75",
+          "order": 3,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "13",
+            "column": null
+          }
+        },
+        {
+          "id": "band-5",
+          "axis": "row",
+          "source_label": "0.75 to <2.50",
+          "order": 4,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "14",
+            "column": null
+          }
+        },
+        {
+          "id": "band-6",
+          "axis": "row",
+          "source_label": "2.50 to <10.00",
+          "order": 5,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "15",
+            "column": null
+          }
+        },
+        {
+          "id": "band-7",
+          "axis": "row",
+          "source_label": "10.00 to <100.00",
+          "order": 6,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "16",
+            "column": null
+          }
+        },
+        {
+          "id": "band-8",
+          "axis": "row",
+          "source_label": "100.00 (Default)",
+          "order": 7,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "17",
+            "column": null
+          }
+        },
+        {
+          "id": "portfolio-aggregate",
+          "axis": "row",
+          "source_label": "Sub-Total AIRB Residential Mortgages",
+          "order": 8,
+          "header_path_refs": [
+            "mortgage-block",
+            "pd-heading"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 Residential Mortgages",
+            "row": "18",
+            "column": null
+          }
+        }
+      ],
+      "published_fields": [
+        {
+          "id": "on_balance_exposure",
+          "source_label": "Original on-\nbalance\nsheet gross\nexposure",
+          "header_path_refs": [
+            "date",
+            "column-1"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-1"
+          }
+        },
+        {
+          "id": "off_balance_exposure",
+          "source_label": "Off-balance\nsheet\nexposures",
+          "header_path_refs": [
+            "date",
+            "column-2"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-2"
+          }
+        },
+        {
+          "id": "average_ccf",
+          "source_label": "Average\nCCF",
+          "header_path_refs": [
+            "date",
+            "column-3"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-3"
+          }
+        },
+        {
+          "id": "ead",
+          "source_label": "EAD\npost CRM\nand post-\nCCF",
+          "header_path_refs": [
+            "date",
+            "column-4"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [
+            "ead-definition"
+          ],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-4"
+          }
+        },
+        {
+          "id": "average_pd",
+          "source_label": "Average\nPD",
+          "header_path_refs": [
+            "date",
+            "column-5"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "pd-definition"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-5"
+          }
+        },
+        {
+          "id": "reported_borrower_count",
+          "source_label": "Number of\nBorrowers",
+          "header_path_refs": [
+            "date",
+            "column-6"
+          ],
+          "source_unit": "",
+          "source_scale": "1",
+          "qualification_refs": [
+            "borrower-definition"
+          ],
+          "attributes": [
+            {
+              "name": "counted_entity",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": [
+                "borrower-definition"
+              ]
+            },
+            {
+              "name": "distinctness",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": [
+                "borrower-definition"
+              ]
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-6"
+          }
+        },
+        {
+          "id": "average_lgd",
+          "source_label": "Average\nLGD",
+          "header_path_refs": [
+            "date",
+            "column-7"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "lgd-definition"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-7"
+          }
+        },
+        {
+          "id": "average_maturity",
+          "source_label": "Average\nmaturity",
+          "header_path_refs": [
+            "date",
+            "column-8"
+          ],
+          "source_unit": "Yr",
+          "source_scale": "1",
+          "qualification_refs": [
+            "maturity-definition",
+            "maturity-modification"
+          ],
+          "attributes": [
+            {
+              "name": "weighting",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": []
+            },
+            {
+              "name": "missing_cell_presentation",
+              "value": "dash",
+              "status": "established",
+              "qualification_refs": [
+                "maturity-definition",
+                "maturity-modification"
+              ]
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-8"
+          }
+        },
+        {
+          "id": "rwa",
+          "source_label": "RWA",
+          "header_path_refs": [
+            "date",
+            "column-9"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ],
+          "attributes": [
+            {
+              "name": "overlay_treatment",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": [
+                "cms2-overlay-context"
+              ]
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-9"
+          }
+        },
+        {
+          "id": "rwa_density",
+          "source_label": "RWA density",
+          "header_path_refs": [
+            "date",
+            "column-10"
+          ],
+          "source_unit": "%",
+          "source_scale": "1",
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ],
+          "attributes": [
+            {
+              "name": "overlay_treatment",
+              "value": null,
+              "status": "unresolved",
+              "qualification_refs": [
+                "cms2-overlay-context"
+              ]
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-10"
+          }
+        },
+        {
+          "id": "regulatory_expected_loss",
+          "source_label": "EL",
+          "header_path_refs": [
+            "date",
+            "column-11"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-11"
+          }
+        },
+        {
+          "id": "provisions",
+          "source_label": "Provisions",
+          "header_path_refs": [
+            "date",
+            "column-12"
+          ],
+          "source_unit": "$M",
+          "source_scale": "1000000",
+          "qualification_refs": [],
+          "attributes": [
+            {
+              "name": "band_cell_presentation",
+              "value": "blank",
+              "status": "established",
+              "qualification_refs": []
+            }
+          ],
+          "source_reference": {
+            "document_id": "anz-2025-09-30-aps330",
+            "pdf_page": 57,
+            "printed_page": "57",
+            "location": "CR6 header",
+            "row": null,
+            "column": "column-12"
+          }
+        }
+      ],
+      "bindings": [
+        {
+          "id": "binding-on_balance_exposure",
+          "typed_field_name": "on_balance_exposure",
+          "published_field_ref": "on_balance_exposure",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-1"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-off_balance_exposure",
+          "typed_field_name": "off_balance_exposure",
+          "published_field_ref": "off_balance_exposure",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-2"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-average_ccf",
+          "typed_field_name": "average_ccf",
+          "published_field_ref": "average_ccf",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-3"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-ead",
+          "typed_field_name": "ead",
+          "published_field_ref": "ead",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-4"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "ead-definition"
+          ]
+        },
+        {
+          "id": "binding-average_pd",
+          "typed_field_name": "average_pd",
+          "published_field_ref": "average_pd",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-5"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "pd-definition"
+          ]
+        },
+        {
+          "id": "binding-reported_borrower_count",
+          "typed_field_name": "reported_borrower_count",
+          "published_field_ref": "reported_borrower_count",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-6"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "borrower-definition"
+          ]
+        },
+        {
+          "id": "binding-average_lgd",
+          "typed_field_name": "average_lgd",
+          "published_field_ref": "average_lgd",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-7"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "lgd-definition"
+          ]
+        },
+        {
+          "id": "binding-average_maturity",
+          "typed_field_name": "average_maturity",
+          "published_field_ref": "average_maturity",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-8"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "maturity-definition",
+            "maturity-modification"
+          ]
+        },
+        {
+          "id": "binding-rwa",
+          "typed_field_name": "rwa",
+          "published_field_ref": "rwa",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-9"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ]
+        },
+        {
+          "id": "binding-rwa_density",
+          "typed_field_name": "rwa_density",
+          "published_field_ref": "rwa_density",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-10"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": [
+            "cms2-overlay-context"
+          ]
+        },
+        {
+          "id": "binding-regulatory_expected_loss",
+          "typed_field_name": "regulatory_expected_loss",
+          "published_field_ref": "regulatory_expected_loss",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-11"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        },
+        {
+          "id": "binding-provisions",
+          "typed_field_name": "provisions",
+          "published_field_ref": "provisions",
+          "row_refs": [
+            "band-1",
+            "band-2",
+            "band-3",
+            "band-4",
+            "band-5",
+            "band-6",
+            "band-7",
+            "band-8",
+            "portfolio-aggregate"
+          ],
+          "column_refs": [
+            "column-12"
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "qualification_refs": []
+        }
+      ],
+      "segmentations": [
+        {
+          "id": "pd-segmentation",
+          "source_dimension": "Portfolio/\nPD scale",
+          "bands": [
+            {
+              "id": "pd-band-1",
+              "source_label": "0.00 to <0.15",
+              "order": 0,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.00",
+              "upper": "0.15",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "10",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-2",
+              "source_label": "0.15 to <0.25",
+              "order": 1,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.15",
+              "upper": "0.25",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "11",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-3",
+              "source_label": "0.25 to <0.50",
+              "order": 2,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.25",
+              "upper": "0.50",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "12",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-4",
+              "source_label": "0.50 to <0.75",
+              "order": 3,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.50",
+              "upper": "0.75",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "13",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-5",
+              "source_label": "0.75 to <2.50",
+              "order": 4,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "0.75",
+              "upper": "2.50",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "14",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-6",
+              "source_label": "2.50 to <10.00",
+              "order": 5,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "2.50",
+              "upper": "10.00",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "15",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-7",
+              "source_label": "10.00 to <100.00",
+              "order": 6,
+              "kind": "interval",
+              "unit": "%",
+              "lower": "10.00",
+              "upper": "100.00",
+              "lower_inclusive": true,
+              "upper_inclusive": false,
+              "lower_status": "established",
+              "upper_status": "established",
+              "category": null,
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "16",
+                "column": null
+              }
+            },
+            {
+              "id": "pd-band-8",
+              "source_label": "100.00 (Default)",
+              "order": 7,
+              "kind": "default",
+              "unit": "%",
+              "lower": null,
+              "upper": null,
+              "lower_inclusive": null,
+              "upper_inclusive": null,
+              "lower_status": "not_applicable",
+              "upper_status": "not_applicable",
+              "category": "100.00 (Default)",
+              "source_reference": {
+                "document_id": "anz-2025-09-30-aps330",
+                "pdf_page": 57,
+                "printed_page": "57",
+                "location": "CR6 Residential Mortgages",
+                "row": "17",
+                "column": null
+              }
+            }
+          ],
+          "context_refs": [
+            "context"
+          ],
+          "completeness": {
+            "value": "Displayed PD ranges and default category cover the subtotal",
+            "status": "established",
+            "qualification_refs": [
+              "cr6-introduction"
+            ]
+          },
+          "disjointness": {
+            "value": "Non-overlapping printed intervals and separate default category",
+            "status": "established",
+            "qualification_refs": [
+              "cr6-introduction"
+            ]
+          },
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages PD scale and Sub-Total",
+              "row": "10–18",
+              "column": null
+            }
+          ]
+        }
+      ],
+      "qualifications": [
+        {
+          "id": "report-entity",
+          "source_text": "This document is prepared for ANZ BH Pty Ltd (ANZ Bank HoldCo) in accordance with ANZ Board policy and the APS 330 reporting standard requirements.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 6,
+              "printed_page": "6",
+              "location": "Introduction: reporting entity",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "entity-hierarchy",
+          "source_text": "Australia and New Zealand Banking Group Limited (ANZBGL) is an authorised deposit-taking institution (ADI) and a wholly owned subsidiary of ANZ Bank Holdco. The ultimate parent entity is ANZ Group Holdings Limited (ANZGHL). ANZGHL and its subsidiaries are collectively referred to as the ANZGHL Group.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 6,
+              "printed_page": "6",
+              "location": "Introduction: entity hierarchy",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "level-2",
+          "source_text": "The APS 330 disclosure has been prepared on the Level 2 basis being ANZ Bank HoldCo as the head of ANZ’s Level 2 Banking Group. Any reference to ANZ / the Group refers to ANZ’s Level 2 Banking Group.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 6,
+              "printed_page": "6",
+              "location": "Introduction: Level 2",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "suncorp-entity",
+          "source_text": "Suncorp Bank is the trading name of Norfina Limited ABN 66 010 831 722 (formerly Suncorp-Metway Limited). Norfina Limited is an ADI and a wholly owned subsidiary of Australia and New Zealand Banking Group Limited (ANZBGL).",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 6,
+              "printed_page": "6",
+              "location": "Suncorp Bank Acquisition",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "suncorp-exclusion",
+          "source_text": "On 31 July 2024 ANZ added Suncorp Bank to the ANZ Banking Group. Suncorp Bank is a standardised ADI with Credit RWA calculated based on APS 112 and as such will not be reflected in IRB specific disclosure tables.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 54,
+              "printed_page": "54",
+              "location": "CRE: Suncorp IRB exclusion",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "currency-rounding",
+          "source_text": "Unless otherwise stated, all amounts are rounded to AUD millions.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 7,
+              "printed_page": "7",
+              "location": "Currency statement",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "cr6-introduction",
+          "source_text": "The table below provides the key parameters used for the calculation of capital requirements for credit risk exposures under the IRB approach.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 introduction",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "slotting-exclusion",
+          "source_text": "Excludes Specialised Lending subject to supervisory slotting.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 footnote 1",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "maturity-definition",
+          "source_text": "Average maturity has been excluded for retail as it is not used in the RWA calculation.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 footnote 2",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_maturity"
+            }
+          ]
+        },
+        {
+          "id": "borrower-definition",
+          "source_text": "The definition of a “borrower” differs across portfolios. In some instances, a wholesale borrower can be reported across more than one PD band.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 footnote 3",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "reported_borrower_count"
+            }
+          ]
+        },
+        {
+          "id": "maturity-modification",
+          "source_text": "Average maturity has been excluded for Retail, consistently with industry practice, as it does not add relevant information for users.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 116,
+              "printed_page": "116",
+              "location": "Appendix 1: CR6, column h, rationale",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_maturity"
+            }
+          ]
+        },
+        {
+          "id": "cms2-overlay-context",
+          "source_text": "Retail Residential Mortgages RWA include a $3.1 billion overlay for the PD model introduced from 30 June 2024 reporting period.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 23,
+              "printed_page": "23",
+              "location": "CMS2 Sep 25 footnote 2 (cross-table context)",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "rwa"
+            },
+            {
+              "kind": "field",
+              "id": "rwa_density"
+            }
+          ]
+        },
+        {
+          "id": "cms2-suncorp-context",
+          "source_text": "Suncorp Bank is a standardised ADI with Credit RWA calculated based on APS 112 and as such is reflected in the above table under RWA for portfolios where standardised approaches are used, predominantly in the Corporates and Residential Mortgages Asset Classes.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 23,
+              "printed_page": "23",
+              "location": "CMS2: Suncorp standardised scope",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "nz-separate",
+          "source_text": "RBNZ regulated entities",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 60,
+              "printed_page": "60",
+              "location": "CR6 separate NZ block heading",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "dataset",
+              "id": "cr6-residential-mortgages"
+            }
+          ]
+        },
+        {
+          "id": "pd-definition",
+          "source_text": "Probability of Default (PD) is an estimate of the level of risk of borrower defaulting over a 12-month horizon;",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 36,
+              "printed_page": "36",
+              "location": "CRA: PD definition",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_pd"
+            }
+          ]
+        },
+        {
+          "id": "ead-definition",
+          "source_text": "Exposure at Default (EAD) represents the expected outstanding at the time of default, including current outstandings, and an estimate of additional drawings prior to default under committed limits); and",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 36,
+              "printed_page": "36",
+              "location": "CRA: EAD definition",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "ead"
+            }
+          ]
+        },
+        {
+          "id": "lgd-definition",
+          "source_text": "Loss Given Default (LGD) is an estimate of the economic loss on a credit exposure, incurred as a consequence of obligor default, expressed as a percentage of the facility’s EAD.",
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 36,
+              "printed_page": "36",
+              "location": "CRA: LGD definition",
+              "row": null,
+              "column": null
+            }
+          ],
+          "scope": [
+            {
+              "kind": "field",
+              "id": "average_lgd"
+            }
+          ]
+        }
+      ],
+      "relationships": [
+        {
+          "id": "mortgage-subtotal",
+          "kind": "total",
+          "source_label": "Sub-Total AIRB Residential Mortgages",
+          "parent": {
+            "kind": "row",
+            "id": "portfolio-aggregate"
+          },
+          "children": [
+            {
+              "kind": "row",
+              "id": "band-1"
+            },
+            {
+              "kind": "row",
+              "id": "band-2"
+            },
+            {
+              "kind": "row",
+              "id": "band-3"
+            },
+            {
+              "kind": "row",
+              "id": "band-4"
+            },
+            {
+              "kind": "row",
+              "id": "band-5"
+            },
+            {
+              "kind": "row",
+              "id": "band-6"
+            },
+            {
+              "kind": "row",
+              "id": "band-7"
+            },
+            {
+              "kind": "row",
+              "id": "band-8"
+            }
+          ],
+          "scope": [
+            {
+              "kind": "block",
+              "id": "mortgage-block"
+            }
+          ],
+          "exhaustive": true,
+          "mutually_exclusive": true,
+          "evidence": [
+            {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages PD scale and Sub-Total",
+              "row": "10–18",
+              "column": null
+            }
+          ]
+        }
+      ],
+      "records": [
+        {
+          "record_id": "band-1",
+          "source_row_ref": "band-1",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-1"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "133419",
+            "original_text": "133,419",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "21576",
+            "original_text": "21,576",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "155041",
+            "original_text": "155,041",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "0.07",
+            "original_text": "0.07%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 412929,
+            "original_text": "412,929",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "13",
+            "original_text": "13%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "10594",
+            "original_text": "10,594",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "7",
+            "original_text": "7%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "16",
+            "original_text": "16",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "10",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-2",
+          "source_row_ref": "band-2",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-2"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "22691",
+            "original_text": "22,691",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "1374",
+            "original_text": "1,374",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "24067",
+            "original_text": "24,067",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "0.18",
+            "original_text": "0.18%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 43664,
+            "original_text": "43,664",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "14",
+            "original_text": "14%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "2369",
+            "original_text": "2,369",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "10",
+            "original_text": "10%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "6",
+            "original_text": "6",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "11",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-3",
+          "source_row_ref": "band-3",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-3"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "71521",
+            "original_text": "71,521",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "2728",
+            "original_text": "2,728",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "74251",
+            "original_text": "74,251",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "0.36",
+            "original_text": "0.36%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 176571,
+            "original_text": "176,571",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "14",
+            "original_text": "14%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "11728",
+            "original_text": "11,728",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "16",
+            "original_text": "16%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "39",
+            "original_text": "39",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "12",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-4",
+          "source_row_ref": "band-4",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-4"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "14299",
+            "original_text": "14,299",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "1234",
+            "original_text": "1,234",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "15536",
+            "original_text": "15,536",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "0.64",
+            "original_text": "0.64%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 40739,
+            "original_text": "40,739",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "16",
+            "original_text": "16%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "4031",
+            "original_text": "4,031",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "26",
+            "original_text": "26%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "16",
+            "original_text": "16",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "13",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-5",
+          "source_row_ref": "band-5",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-5"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "67079",
+            "original_text": "67,079",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "7306",
+            "original_text": "7,306",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "74385",
+            "original_text": "74,385",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "1.26",
+            "original_text": "1.26%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 173808,
+            "original_text": "173,808",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "17",
+            "original_text": "17%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "31632",
+            "original_text": "31,632",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "43",
+            "original_text": "43%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "155",
+            "original_text": "155",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "14",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-6",
+          "source_row_ref": "band-6",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-6"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "23235",
+            "original_text": "23,235",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "115",
+            "original_text": "115",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "23350",
+            "original_text": "23,350",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "4.15",
+            "original_text": "4.15%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 56808,
+            "original_text": "56,808",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "15",
+            "original_text": "15%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "17476",
+            "original_text": "17,476",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "75",
+            "original_text": "75%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "148",
+            "original_text": "148",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "15",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-7",
+          "source_row_ref": "band-7",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-7"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "2564",
+            "original_text": "2,564",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "25",
+            "original_text": "25",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "2589",
+            "original_text": "2,589",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "18.90",
+            "original_text": "18.90%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 6472,
+            "original_text": "6,472",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "18",
+            "original_text": "18%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "4121",
+            "original_text": "4,121",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "159",
+            "original_text": "159%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "90",
+            "original_text": "90",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "16",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "band-8",
+          "source_row_ref": "band-8",
+          "source_row_role": "band",
+          "source_segment_memberships": [
+            "pd-band-8"
+          ],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "4300",
+            "original_text": "4,300",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "15",
+            "original_text": "15",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "4316",
+            "original_text": "4,316",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "100.00",
+            "original_text": "100.00%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 10064,
+            "original_text": "10,064",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "28",
+            "original_text": "28%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "12184",
+            "original_text": "12,184",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "282",
+            "original_text": "282%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "331",
+            "original_text": "331",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": null,
+            "original_text": "",
+            "displayed_precision": null,
+            "missing_reason": "not_disclosed_at_this_grain",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "17",
+              "column": "column-12"
+            }
+          }
+        },
+        {
+          "record_id": "portfolio-aggregate",
+          "source_row_ref": "portfolio-aggregate",
+          "source_row_role": "Sub-Total AIRB Residential Mortgages",
+          "source_segment_memberships": [],
+          "source_aggregation_scope": [
+            "mortgage-block"
+          ],
+          "on_balance_exposure": {
+            "value": "339108",
+            "original_text": "339,108",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-1"
+            }
+          },
+          "off_balance_exposure": {
+            "value": "34373",
+            "original_text": "34,373",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-2"
+            }
+          },
+          "average_ccf": {
+            "value": "100",
+            "original_text": "100%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-3"
+            }
+          },
+          "ead": {
+            "value": "373535",
+            "original_text": "373,535",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-4"
+            }
+          },
+          "average_pd": {
+            "value": "1.94",
+            "original_text": "1.94%",
+            "displayed_precision": 2,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-5"
+            }
+          },
+          "reported_borrower_count": {
+            "value": 921055,
+            "original_text": "921,055",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-6"
+            }
+          },
+          "average_lgd": {
+            "value": "15",
+            "original_text": "15%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-7"
+            }
+          },
+          "average_maturity": {
+            "value": null,
+            "original_text": "-",
+            "displayed_precision": null,
+            "missing_reason": "not_applicable",
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-8"
+            }
+          },
+          "rwa": {
+            "value": "94135",
+            "original_text": "94,135",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-9"
+            }
+          },
+          "rwa_density": {
+            "value": "25",
+            "original_text": "25%",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-10"
+            }
+          },
+          "regulatory_expected_loss": {
+            "value": "801",
+            "original_text": "801",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-11"
+            }
+          },
+          "provisions": {
+            "value": "841",
+            "original_text": "841",
+            "displayed_precision": 0,
+            "missing_reason": null,
+            "source_reference": {
+              "document_id": "anz-2025-09-30-aps330",
+              "pdf_page": 57,
+              "printed_page": "57",
+              "location": "CR6 Residential Mortgages",
+              "row": "18",
+              "column": "column-12"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
