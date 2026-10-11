@@ -24,6 +24,8 @@ Before architectural decisions or changes to extraction contracts, metadata, map
 
 Principle documents own their decisions, statuses and scopes; category indexes own the navigation inventory. `AGREED` means an accepted design constraint, not implemented functionality. If new evidence conflicts with an agreed principle, surface the conflict and obtain a revised decision rather than silently overriding it. Update the principle, category index and affected specifications together when a decision changes.
 
+Follow [validation is a separate process](docs/01.principles/c.extraction-and-validation/validation-is-a-separate-process.md). Validation is not defined yet: do not embed validators, precision/consistency checks or validation gates in processing, including at input/output or publication boundaries. Model/schema declarations and conformance do not authorize runtime validation. Earlier boundary-validation instructions are superseded by this principle.
+
 ## Documentation and planning locations
 
 All project documentation belongs in this repository:
@@ -72,7 +74,7 @@ Current detailed specifications:
 - Silver reads saved Bronze. Full regeneration is the primary workflow; incremental upserts must yield the same logical result.
 - Keep definitions, mappings, curated corrections and rebuild manifests outside disposable Silver. A manual Silver edit alone is not a durable correction.
 - Version interpretations and preserve source-effective dates separately from revision history. Mutable canonical classifications and database-generated IDs are not sufficient durable observation identities.
-- Validate candidate revisions before atomic publication. Handle removal, splitting and merging as well as updates; preserve source lineage and avoid double-counting comparative evidence.
+- Publish candidate revisions atomically. Handle removal, splitting and merging as well as updates; preserve source lineage and avoid double-counting comparative evidence. Validation is separate and does not supply an implicit publication gate.
 - Gold identifies the Silver revision it consumed and must be regenerated when its dependencies change.
 - Apply [emergent analysis and selective persistence](docs/01.principles/a.architecture/emergent-analysis-and-selective-persistence.md): do not create core entities or mandatory storage for every possible reconciliation or inference. Compute exploratory relationships as needed, retain useful outputs with reproducible inputs and assumptions, and promote reusable definitions when research warrants them. Missing evidence or unexplained analytical residuals do not automatically indicate extraction errors.
 

@@ -350,7 +350,7 @@ erDiagram
     }
 ```
 
-`BRONZE_REPORTED_VALUE`, `BRONZE_SOURCE_RELATIONSHIP`, `SOURCE_MAPPING_REVISION` and `MEASURE_DEFINITION_REVISION` are external references to the preceding models, not new authoritative Silver copies. Parent and child observation keys in a Silver relationship include its revision; referenced context/segment/field keys are likewise revision-qualified. Referential checks reject accidental cross-revision joins. This diagram's relationships connect CR6 observations; another domain's relationship projection references its own typed observations and can additionally identify parent/child fields for column-level subsets.
+`BRONZE_REPORTED_VALUE`, `BRONZE_SOURCE_RELATIONSHIP`, `SOURCE_MAPPING_REVISION` and `MEASURE_DEFINITION_REVISION` are external references to the preceding models, not new authoritative Silver copies. Parent and child observation keys in a Silver relationship include its revision; referenced context/segment/field keys are likewise revision-qualified. These declarations do not authorize runtime referential checks: [validation is separate and undefined](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md). This diagram's relationships connect CR6 observations; another domain's relationship projection references its own typed observations and can additionally identify parent/child fields for column-level subsets.
 
 The diagram abbreviates the wide CR6 numeric record. All twelve source measures have corresponding typed columns below. `SilverFieldInterpretation` supplies metadata and lineage for those columns, not their numeric storage. Common definitions remain shared through references; metadata need not duplicate the full definition per field.
 

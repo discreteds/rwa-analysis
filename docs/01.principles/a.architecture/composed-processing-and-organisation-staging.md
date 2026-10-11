@@ -7,12 +7,12 @@
 
 Separate domain dataset containers share a fundamental Python protocol and compose
 shared source metadata. Domain pipelines connect Bronze input dataclasses and Silver
-output dataclasses using Mountainash conformance, contracts, rules and relation
+output dataclasses using Mountainash schema declarations, conformance and relation
 operations. Derive common schema declarations from the models and augment them where
 necessary rather than maintaining parallel field inventories.
 
-Configuration supplies execution settings; domain declarations own models, contracts,
-rules and table identities; operations perform extraction, transformation and storage;
+Configuration supplies execution settings; domain declarations own models, schemas
+and table identities; operations perform extraction, transformation and storage;
 an organisation-scoped session owns workflow sequencing. A small construction function
 assembles the concrete operations using resolved settings and declarations.
 
@@ -23,7 +23,8 @@ Settings' native layering.
 
 Each organisation has an independently rebuildable staging Silver database. All
 staging databases implement the same Silver schema and feed a full master Silver
-rebuild, validated and published atomically.
+rebuild, published atomically. [Validation is a separate process](../c.extraction-and-validation/validation-is-a-separate-process.md)
+whose requirements and behaviour have not yet been defined.
 
 ## Rationale and implications
 
@@ -32,9 +33,9 @@ rebuild, validated and published atomically.
   domain containers or one universal record shape.
 - Dataclass collections can enter Mountainash relations and return as dataclasses
   or dataframes. Reuse those facilities rather than implement a local dataframe ORM.
-- Contracts belong at input/output transitions. Check parameters up front; trust
-  framework arithmetic and avoid scattered checks or duplicate numeric ETL.
-- Domain constraints are explicit alongside their models, rather than inferred by
+- Input/output declarations describe the data and its conformance. Do not attach
+  validation calls to these transitions. Trust framework arithmetic and casts.
+- Domain declarations are explicit alongside their models, rather than inferred by
   a shared helper from field names. Named domain results preserve related collections;
   their declared storage associations supply a shared write/read table inventory.
 - The session delegates to operations. Storage owns serialization, paths, manifests,

@@ -278,7 +278,7 @@ The second group does not block publication. Apply exact reconciliation only whe
 
 A durable run manifest selects Bronze bundle/output versions, catalogue and mapping revisions, curated corrections, conformance code/contracts/configuration and relevant environment versions. Persist these inputs independently of the Silver tables being replaced. Golden fixtures are not substitute conformance input.
 
-Build from empty candidate tables, validate structural correctness, and publish atomically using a transaction or staging mechanism supported by the selected backend. A failed run leaves the prior published revision available. Semantic incompleteness alone is not a failed rebuild. Gold results identify their consumed Silver revision and become stale when dependencies change.
+Build from empty candidate tables and publish atomically using a transaction or staging mechanism supported by the selected backend. A failed publication leaves the prior published revision available. [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md), not a rebuild gate; its requirements remain undefined. Semantic incompleteness alone is not a failed rebuild. Gold results identify their consumed Silver revision and become stale when dependencies change.
 
 Stable logical IDs follow explicit source lineage and source-occurrence selection, not mutable canonical names or auto-increment keys. Repeated evidence, restatements and multiple displays of a total require a selection policy; equal numbers alone never deduplicate observations. Splits/merges/removals replace the affected scope and preserve replacement lineage. Detailed deterministic keys are exercised with the first persisted datasets.
 

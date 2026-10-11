@@ -2,7 +2,11 @@
 
 > **For agentic workers:** Use `executing-plans`, with a researcher checkpoint at
 > the first working CBA path. Use existing source goldens and native Mountainash
-> contracts at their owning boundaries. Do not restore the retired defensive suite.
+> schema declarations/conformance. Do not restore the retired defensive suite.
+
+**2026-10-11 decision:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md),
+and has not yet been defined. This supersedes earlier boundary-validation instructions.
+Do not invoke validators or introduce validation gates in this migration.
 
 **Status:** Approved for implementation. The researcher accepted the refined design as settled
 and authorised planning without another spike. During planning, the researcher
@@ -34,9 +38,10 @@ implementation of the simpler workflow, not restoration of the older hardening w
 - Production domain scope remains four-bank CR6. CR1/CR2 are disposable design examples.
 - Money uses `Decimal(16,2)`; rates, band fractions and maturity years use
   `Decimal(16,8)`; counts remain integers. Preserve source precision before conversion.
-- Use Mountainash's dataframe conformance, contracts, rules and arithmetic. Keep
-  necessary parameter checks at entrypoints. Do not add bespoke numeric verification,
-  precision guards, repeated consistency passes or a parallel validation framework.
+- Use Mountainash's schema declarations, dataframe conformance and arithmetic.
+  Do not add embedded validation, including native validator calls at boundaries,
+  precision guards or repeated consistency passes. Working arithmetic types do not
+  impose precision-38 source contracts.
 - Do not restore `test_silver_rebuild.py` from history, its defensive scenarios, or
   the old `normalization/validate.py` checks under new names.
 - Reuse the existing transaction mechanism and source transport. Record selected
@@ -67,9 +72,9 @@ Paths are relative to the project root. Delete superseded code when its callers 
 | Catalogue knowledge and contextual mapping | Existing `catalogue/` | Keep; update model access only where needed |
 | CR6 models and whole-table schemas in `normalization/models.py` | `domains/cr6/models.py`, `contracts.py` | Replace with dataclass-derived, explicitly augmented declarations |
 | `normalization/cr6.py` | `domains/cr6/pipeline.py` | Reuse dataset expressions; remove the old entrypoint/file |
-| `normalization/validate.py` | Native domain input/output contracts | Delete; do not port the old checking layer |
+| `normalization/validate.py` | No processing replacement | Delete; validation is separate and undefined |
 | `reporting/cr6_tables.py` | `domains/cr6/reconstruction.py` | Move persisted-value reconstruction into its domain owner |
-| `contracts/frames.py::conform_frame` policy wrapper | Native contract boundary used by pipelines | Remove obsolete wrapper/checks and their tests |
+| `contracts/frames.py::conform_frame` policy wrapper | Native schema-directed conformance | Remove obsolete wrapper/checks and their tests |
 | Bronze free save/load functions | `storage/bronze.py::BronzeStore` | Move working I/O into the owner; remove obsolete free entrypoints |
 | `storage/silver.py` rebuild/publication orchestration | `SilverStore` plus workflow | Keep transaction/read-write mechanics; remove old orchestration functions |
 | Settings and component assembly scattered in examples | `settings.py`, `composition.py` | Add native settings and a small construction function |
@@ -125,8 +130,8 @@ Retire the normalization/reporting/checking modules listed above as callers swit
 
 - [x] Compose source metadata and move shared dataset/bundle ownership. Preserve
   retained wire format through the existing codec and keep golden files unchanged.
-- [ ] Declare CR6 input/output models and augment their derived Mountainash contracts
-  with field types and domain rules. Keep domain knowledge out of generic helpers.
+- [ ] Declare CR6 input/output models and augment their derived Mountainash schemas
+  with field types. Keep domain knowledge out of generic helpers; do not add validators.
 - [ ] Move the proven dataset-wide transformations and source-binding reconstruction
   into domain operations. Trust Mountainash arithmetic; preserve source values and
   precision until the declared output conversion.
@@ -202,7 +207,13 @@ describe the selected source case, not new generic runtime completeness checks.
 
 ## Completion
 
-### Execution status — 2026-10-11: NO-GO / blocked
+### Execution status — 2026-10-11: incomplete; blocker classification under reassessment
+
+The evidence below predates the separate-validation decision. Runtime validation
+was added outside the intended scope. Item 290 remains a dependency finding, but
+is not a processing delivery gate. Neither an invented source precision declaration
+nor a failing validator establishes a blocker for the approved workflow. Code has
+not yet been corrected or rerun following this documentation decision.
 
 The implementation branch is `feature/organisation-workflow`, seeded from
 `3be5e86`. Approved documentation and dependency pin were carried over in `1fef532`;
@@ -241,24 +252,25 @@ Canonical backlog directory:
 | Central record | Observed failure / disposition | Affected step |
 |---|---|---|
 | 289 — `dataclass-source-schema-structured-join.md` (former GitHub #360) | Reproduced schema loss during structured join lineage | Task 1 relation composition |
-| 290 — `native-array-datacontract-validation.md` (former GitHub #361) | Reproduced rejection of valid native list/list-of-struct columns | Task 1 output contracts; Task 2 publication path |
+| 290 — `native-array-datacontract-validation.md` (former GitHub #361) | Reproduced validator defect; validation is outside processing | Not a migration gate |
 | 291 — `nested-dataclass-ingress-support.md` (former GitHub #362) | Establish supported native ingress API or capability gap; not a confirmed regression | Task 1 metadata ingress |
 | 285 — `polars-decimal-round-panic-upstream.md`, consumer observation (former GitHub #363) | Known owner-approved precision cap; first investigate whether our precision-38 source declaration is necessary | Task 1 source-number conformance |
 
 The measure-specific persisted numeric decision remains unchanged. #363 concerns
 source working columns, not a return to universal precision-22 persisted measures.
 
-**Clearance:** resolve the confirmed defects through their central owners and pin
-the corrected dependency; establish supported ingress and correct consumer input
-declarations for the two triage questions. Pass the relevant reproductions plus
-the domain and organisation/persisted-reconstruction tests. Then run the full suite and the real saved-Bronze
+**Next evidence:** correct the implementation to the agreed processing scope, then
+run the actual path to establish which ingress/schema findings still affect it.
+Resolve genuinely required dependency capabilities through their central owners.
+Run the relevant domain and organisation/persisted-reconstruction tests, adapting
+tests tied to retired checks. Then run the full suite and the real saved-Bronze
 and PDF CBA examples before requesting the researcher checkpoint. Full implementation
 correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
 
 ### Delivery criterion
 
 The supported four-bank workflow runs through the new interfaces; source evidence
-and interpretations survive; native contracts enforce the declared boundaries; old
+and interpretations survive; native conformance produces the declared schemas; old
 implementations are removed. This completes the requested architectural migration.
 Additional hardening is not part of this plan.
 

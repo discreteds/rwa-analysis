@@ -16,8 +16,8 @@ Definitions, assumptions and classifications will be corrected repeatedly throug
 - Rebuild inputs explicitly select saved Bronze output versions, canonical definitions, mappings, curated corrections, conformance code/contracts and configuration.
 - Preserve those inputs outside the disposable Silver layer. Golden sets verify extraction; they do not replace Bronze as the conformance input.
 - Record selected input and implementation versions in a durable run manifest. Avoid relying on an unspecified mutable “latest”.
-- Use Mountainash for tabular conformance, validation, analytics and storage integration, with local persistent DuckDB through `mountainash-data`. The independent capital-calculation library uses NumPy/SciPy.
-- Validate a fresh candidate revision before publishing through an atomic transactional or staging mechanism supported by the backend. Failure leaves the previous published revision available.
+- Use Mountainash for tabular conformance, analytics and storage integration, with local persistent DuckDB through `mountainash-data`. The independent capital-calculation library uses NumPy/SciPy.
+- Publish a fresh candidate revision through an atomic transactional or staging mechanism supported by the backend. Publication failure leaves the previous published revision available. [Validation is a separate process](../c.extraction-and-validation/validation-is-a-separate-process.md); no pre-publication validation gate has been defined.
 - Gold outputs identify their Silver revision and become stale when a replacement revision is published.
 - Historical Silver snapshots are optional conveniences; reproducibility depends on retained inputs and the corresponding implementation/configuration.
 - Design full regeneration before optimising incremental upserts. Idempotency and equivalent logical results govern both paths.

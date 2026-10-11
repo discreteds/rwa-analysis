@@ -8,7 +8,7 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 - [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
 - [b. Data semantics](b.data-semantics/INDEX.md): layered metric definitions, contextual mappings and correction-safe identity.
-- [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction and independently authored golden sets.
+- [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction, independently authored golden sets, and validation as a separate, not-yet-defined process.
 
 ## Supporting material
 

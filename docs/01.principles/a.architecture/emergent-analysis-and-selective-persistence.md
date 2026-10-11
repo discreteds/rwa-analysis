@@ -20,7 +20,7 @@ Reconciliations, residuals and inferred relationships often emerge through analy
 - Distinguish source-reported facts, assumption-dependent inference and calculated results. An inferred relationship does not silently become source evidence or an unconditional conformance rule.
 - Missing inputs are not zero. An unexplained residual is not automatically an extraction failure, and inability to reconcile does not by itself invalidate a source observation.
 - Retained analytical outputs identify input revisions, assumptions and calculation versions. Their storage form and retention follow the research need rather than an obligation to persist every intermediate result.
-- Silver conforms the disclosed observations and their meanings. Gold analyses can connect compatible observations across documents and periods, with explicit alignment and assumptions. Source-backed, applicable validation rules still belong in conformance.
+- Silver conforms the disclosed observations and their meanings. Gold analyses can connect compatible observations across documents and periods, with explicit alignment and assumptions. [Validation is a separate process](../c.extraction-and-validation/validation-is-a-separate-process.md); source evidence does not authorize embedding validation rules in conformance.
 
 ## Example
 

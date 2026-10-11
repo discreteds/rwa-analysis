@@ -7,6 +7,11 @@ The separation of configuration, declarations, operations and workflow, and the
 `OrganisationSession.run()` entrypoint, were agreed after the CBA spike. The
 researcher approved the migration plan; concrete signatures and physical publication
 details are being established during implementation.
+
+**2026-10-11 correction:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md).
+Its scope and behaviour are not defined. Earlier boundary-validation and
+pre-publication checking instructions are superseded, including native validator
+calls; this migration implements processing, not validation.
 Working CR6 baseline: `feature/simple-cr6`, commit `3be5e86`; disposable CBA spike:
 `feature/cba-cr1-cr2-spike`, commit `e943b3f`. Neither implements these refined boundaries.
 
@@ -25,7 +30,8 @@ interfaces in response to its shape review, before implementation planning.
 The [project principles](../../../01.principles/README.md) govern evidence, semantics,
 identity and research limitations. The [composed processing principle](../../../01.principles/a.architecture/composed-processing-and-organisation-staging.md)
 records the decisions from this discussion. The [simple CR6 design](2026-10-10-simple-cr6-research-design.md)
-remains the baseline for source fidelity, direct Python use and restrained validation.
+remains the baseline for source fidelity and direct Python use. Its earlier validation
+instructions are superseded by the separate-validation principle.
 
 ## 2. Agreed architecture
 
@@ -43,20 +49,21 @@ PDF → bespoke extractor → domain datasets → saved Bronze
                                   selected catalogue/mappings
                                                |
                                     domain pipelines
-                       Bronze contract → relation transforms → Silver contract
+                       Bronze conformance → relation transforms → Silver conformance
                                                |
                               organisation staging Silver
 
 CBA staging ─┐
 NAB staging ─┤
-ANZ staging ─┼→ full consolidation → validated candidate → master Silver
+ANZ staging ─┼→ full consolidation → candidate → master Silver
 WBC staging ─┘
 ```
 
 - Separate domain dataset containers satisfy a shared fundamental protocol.
 - Shared metadata is composed into those containers; domain records retain their types.
 - Input and output dataclasses anchor each domain's Mountainash contracts.
-- Transformations operate on whole relations, with contracts at transition boundaries.
+- Transformations operate on whole relations using declared input/output schemas.
+- Validation is a separate, not-yet-defined process; processing does not invoke it.
 - Construction assembles concrete operations using resolved settings and domain declarations.
 - An organisation session orders stage calls and exposes each stage directly.
 - Its thin `run()` entrypoint calls the same stages in order.
@@ -69,7 +76,7 @@ WBC staging ─┘
 | Concern | Owns | Current consumers |
 |---|---|---|
 | Configuration | Typed execution settings: project roots, organisation identity, storage destinations | Component construction and storage operations |
-| Declarations | Domain models, augmented input/output contracts, expression rules, output members and their table identities | Domain pipelines, Silver write/read, master consolidation |
+| Declarations | Domain models, augmented input/output schemas, output members and their table identities | Domain pipelines, Silver write/read, master consolidation |
 | Operations | Extraction, Bronze encoding and access, domain conformance, publication, readback and reconstruction | Independently callable stages and the organisation workflow |
 | Workflow | Explicit input selection, stage ordering and passing results between operations | `OrganisationSession.run()` and targeted reruns |
 
@@ -152,9 +159,9 @@ Each domain has distinct Bronze and Silver record models. A pipeline connects th
 
 ```text
 Bronze record collection
-  → Mountainash input conformance/contract
+  → Mountainash input representation/conformance
   → Mountainash relation transformations with selected mappings
-  → Mountainash output conformance/contract
+  → Mountainash output conformance
   → Silver dataclass collection or dataframe at the consumer boundary
 ```
 
@@ -163,8 +170,8 @@ Bronze record collection
 | Declaration | Authority |
 |---|---|
 | Record fields and Python types | Bronze or Silver dataclass |
-| Additional tabular constraints and physical storage types | Augmentation of that model's derived Mountainash specification |
-| Field/cross-field rules | Mountainash contract declarations and named expression rules |
+| Physical storage types | Augmentation of that model's derived Mountainash specification |
+| Validation rules and their execution | Not yet defined; separate from this processing migration |
 | Applicable source meaning and unit/sign mappings | Durable semantic catalogue |
 | Domain transformation | Mountainash expressions in the domain pipeline |
 
@@ -174,12 +181,10 @@ Polars schema, TypeSpec and validator. Keep an explicit Bronze-to-Silver mapping
 names or meanings genuinely change. Some duplication between layer-specific models
 is appropriate: they describe different contracts.
 
-Domain constraints are explicit declarations beside the models. For example, the
-movement contract declares its permitted temporal roles and required identity;
-the allocation contract declares its parent reference. A shared schema helper may
-apply supplied Mountainash declarations, but must not infer those rules by recognising
-field names such as `temporal_role` or `parent_row`. Reuse Mountainash's TypeSpec,
-FieldConstraints and Rule facilities rather than introduce another schema language.
+Domain schemas are explicit declarations beside the models. A shared schema helper
+may apply supplied Mountainash declarations, but must not infer validation rules
+from field names or turn every intermediate projection into a checked boundary.
+Declaring an identity, relationship or type does not authorize a runtime validator.
 
 Numeric policy, revised with researcher approval on 2026-10-11: use `Decimal(16,2)`
 for base-unit money, `Decimal(16,8)` for rates and other small-valued measures needing
@@ -189,7 +194,7 @@ requiring eight fractional places at that magnitude. Source precision remains in
 Bronze. This supersedes the earlier shared `Decimal(22,8)` storage decision.
 
 Use Mountainash's dataclass ingress and `to_dataclasses` egress. Keep data as a
-relation through transformation and validation; materialize for the caller or store.
+relation through transformation; materialize for the caller or store.
 Do not shuttle through Python records between each relational operation.
 
 Bronze's `ReportedValue` includes value and source evidence. Decimal conformance is
@@ -199,27 +204,19 @@ Keep the source evidence linked to those columns through the existing bindings.
 
 ### Validation ownership
 
-- Check call parameters and required inputs up front.
-- Input contracts validate the source-facing structure being consumed. Conformance
-  must not silently invent a dropped required source field or turn a dash into zero.
-- Output contracts validate domain output types, identities and applicable rules.
-- Publication uses declared Mountainash contracts at the transition boundary.
-  Partial research inputs do not imply a completeness failure. Do not restore the
-  old application checking layer or add separate expected-coverage reconstruction.
-- Source goldens own exact source fidelity, including metadata. Do not duplicate the
-  full golden comparison as a runtime validation pipeline.
-- Trust framework arithmetic and casts. No bespoke precision guards, per-value
-  arithmetic verification, or second ETL implementation to reconstruct expected output.
+Validation is a separate process, not an operation embedded in these pipelines or
+their transitions. Its scope, rules, invocation, outputs and consequences have not
+been defined. Do not add validators, validation modes or publication gates under
+the headings of contracts, conformance, metadata preservation or source fidelity.
 
-Domain pipelines own their input/output contracts and rules; the session invokes
-those pipelines. Nested object structure may require an object-level boundary check,
-but does not justify a second tabular validation framework.
+Schema-directed transformations still preserve source meaning and missingness;
+ordinary parsing, cast and I/O failures propagate. Independent source goldens and
+development tests verify the implementation outside the processing workflow.
 
-Structural defects such as broken references differ from research limitations.
-Unknown weighting, unavailable allocation detail and unexplained accounting residuals
-remain visible. Source-backed reconciliation rules can return diagnostics using
-Mountainash's existing result facilities, without requiring an application-wide
-quality score or complete accounting agreement before publication.
+Trust framework arithmetic and casts. Wider working types used by an arithmetic
+expression are not mandatory source precision declarations or validation checks.
+In particular, the observed `Decimal(38,0)` ingress type does not create a project
+requirement to coerce source values or null columns to precision 38.
 
 ### Verified framework entry points and remaining proof
 
@@ -339,7 +336,7 @@ Proposed method responsibilities:
 | `extract(documents)` | Extraction operation / selected bespoke extractors | Explicit source selections → domain bundles |
 | `save_bronze(bundles, run_name)` | Bronze store | Bundles → saved Bronze references |
 | `load_bronze(refs)` | Bronze store | Explicit saved references → bundles paired with their Bronze references |
-| `conform(inputs, catalogue)` | Domain pipelines | Referenced bundles and interpretations → validated domain results in a Silver candidate carrying its rebuild selection |
+| `conform(inputs, catalogue)` | Domain pipelines | Referenced bundles and interpretations → conformed domain results in a Silver candidate carrying its rebuild selection |
 | `publish(candidate, revision)` | Silver store | Complete candidate → organisation staging publication, with retained manifest |
 | `reconstruct(publication)` | Silver/Bronze read operations, then domain reconstruction | Loaded Silver and linked source metadata → source-shaped numeric tables with metadata |
 | `run(documents=..., catalogue=..., run_name=..., revision=...)` | Workflow: the stage methods above | Explicit run inputs → publication reference and reconstructed tables |
@@ -450,8 +447,8 @@ Retain the three CR6 tables. CR1/CR2 table definitions follow their typed collec
 and contracts; the spike supplies a candidate physical shape. Shared schema does not
 mean one universal observation table or an identical number of tables per domain.
 
-Each staging rebuild consumes a complete explicit input selection, validates the
-candidate and replaces the staging tables in one supported transaction. A failed
+Each staging rebuild consumes a complete explicit input selection and replaces
+the staging tables in one supported transaction. A failed
 publication leaves the previous publication available. The database can also be
 deliberately deleted and regenerated from saved Bronze and catalogue inputs.
 
@@ -459,8 +456,8 @@ deliberately deleted and regenerated from saved Bronze and catalogue inputs.
 
 `SilverConsolidator` accepts explicit organisation staging publications and the
 master destination. It reads each selected publication, combines corresponding
-tables with Mountainash, applies combined schema/key/reference contracts, and replaces
-master Silver atomically through mountainash-data.
+tables with Mountainash under their declared schemas, and replaces master Silver
+atomically through mountainash-data. It does not introduce validation checks.
 
 The operation reads already conformed values; it does not rerun extraction, reinterpret
 catalogue mappings or repeat domain transformations. It does not add together reported
@@ -504,10 +501,10 @@ with explicit declarations; replace table-name dictionaries at domain interfaces
 named results and one declared storage association. Rename the entrypoint to `run()`.
 The retained spike still uses the earlier interfaces and remains disposable.
 
-For subsequent production work, retain the existing tests at their owning boundaries:
-source goldens, Bronze transport, domain conformance, persisted reconstruction and
-transactional rebuild. Extend them for CR1/CR2 and consolidation only where new behavior
-is introduced. Do not repeat framework arithmetic tests throughout the application.
+For this migration, retain the relevant development tests for source goldens, Bronze
+transport, domain transformations and persisted reconstruction. These tests do not
+authorize runtime validation. Production CR1/CR2 and a defensive lifecycle suite are
+outside this migration; do not repeat framework arithmetic tests throughout it.
 
 ## 10. Review checkpoint
 
@@ -517,7 +514,7 @@ without another disposable spike. Production implementation proceeds from the wo
 CR6 baseline, with a CBA checkpoint, rather than promoting spike code.
 
 Planning clarification: implement the simpler interfaces and remove their predecessors.
-Keep native contracts at input/output boundaries, necessary parameter checks and
-existing source goldens. Do not restore the retired application checks, historical
+Keep declarative input/output schemas and existing source goldens. Validation is
+separate and remains undefined. Do not restore the retired application checks, historical
 defensive lifecycle suite or introduce a hardening programme as part of this migration.
 The plan's verification is sized to the real workflow and the declared boundaries.

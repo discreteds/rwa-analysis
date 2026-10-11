@@ -16,6 +16,7 @@ PDF layouts and definitions vary. A parser can produce plausible numbers while m
 - Review relevant tables, surrounding context, notes and glossaries. Inspect rendered pages when text extraction loses meaningful layout or content.
 - Include all selected columns, bands, aggregates and applicable qualifications in the golden scope. Structural and semantic metadata receive the same scrutiny as values.
 - Humans or LLMs may extend or correct expectations from source evidence. Ordinary tests use saved versions without LLM calls.
+- These development tests do not run implicitly in the processing workflow. [Validation is a separate process](validation-is-a-separate-process.md), and its requirements remain undefined.
 - Keep tests under `tests/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/`, mirroring the extractor and Bronze hierarchy.
 - Report mismatches at dataset, row and field level, including metadata mismatches. Dropped fields cannot silently pass through an older comparator.
 - Extend shared dataclasses and helpers from demonstrated requirements across real extractions. Preserve coverage of previously selected datasets when adding domains or jurisdictions.

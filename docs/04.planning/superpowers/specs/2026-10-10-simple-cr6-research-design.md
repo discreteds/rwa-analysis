@@ -6,6 +6,10 @@ Status: **Approved for local execution.** [PR #1](https://github.com/discreteds/
 
 ## 1. The ask
 
+**2026-10-11 correction:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md)
+and remains undefined. Earlier runtime checking instructions are superseded. The
+current migration plan also supersedes historical defensive lifecycle test mandates.
+
 Extract four mortgage disclosure tables faithfully, tag their meaning, transform them through Mountainash into a rebuildable DuckDB dataset, and recreate the tables so the researcher can inspect the result.
 
 Selected sources: CBA June 2025 and Westpac, NAB and ANZ September 2025, using the already reviewed Australian mortgage CR6 blocks. The expected selection is 36 source rows and 432 measure positions. ANZ's block is AIRB; this does not mean all ANZ-group mortgages. CBA's date remains distinct from the September cohort.
@@ -21,7 +25,7 @@ PDF → bespoke extractor → saved Bronze
                               │
                  Mountainash dataset relations
                               │
-                  validated DuckDB Silver
+                  conformed DuckDB Silver
                               │
                  source-shaped dataframes
 ```
@@ -68,15 +72,14 @@ Unknown or conflicting meaning is a tagged research limitation. Source-backed pe
 
 ## 5. Mountainash owns tabular transformation
 
-Python handles PDF parsing, dataclass/file encoding and orchestration. After preparing tables, Mountainash owns the tabular work: mapping joins, selection, unit conversion, band conversion, canonical projections, relationship projection and tabular validation. Polars/Arrow are interchange and materialization formats.
+Python handles PDF parsing, dataclass/file encoding and orchestration. After preparing tables, Mountainash owns the tabular work: mapping joins, selection, unit conversion, band conversion, canonical projections and relationship projection. Polars/Arrow are interchange and materialization formats. Validation is separate and undefined.
 
 The implementation should visibly follow this sequence:
 
 1. Load the selected saved Bronze and catalogue revision.
 2. Prepare dataset-sized typed source and mapping tables once.
 3. Build Mountainash relations that apply the selected mappings and conversions.
-4. Validate the candidate through Mountainash contracts and relevant reference checks.
-5. Materialize and publish through mountainash-data.
+4. Materialize and publish through mountainash-data, without a validation gate.
 
 For CR6, a shared field conversion can be a Mountainash expression over the entire column. Where a mapping varies by row, join the applicable mapping data and use relation expressions. One relation per source record and an additional Python implementation of the same conversions are outside this design.
 
@@ -84,7 +87,7 @@ Use known source scales to produce base monetary units, percentage fractions and
 
 Use supported public Mountainash APIs with a pinned compatible environment. The clean-install demonstration already provides evidence for working APIs; a dependency defect is surfaced upstream rather than hidden behind a new local framework.
 
-Execution clarification: trust framework arithmetic and casts. Keep upfront parameter checks and contracts at layer transitions; do not embed precision guards, repeated numeric verification or a second ETL implementation inside the pipeline.
+Execution clarification: trust framework arithmetic and casts. Schema declarations and conformance do not authorize validation at layer transitions; do not embed validators, precision guards, repeated numeric verification or a second ETL implementation inside the pipeline.
 
 ### A compact Silver shape
 
@@ -108,7 +111,7 @@ Every rebuild constructs a fresh candidate from those inputs and publishes the t
 
 Removing an input removes its outputs on rebuild. Interpretation corrections update the selected catalogue revision. Extraction corrections produce new Bronze versions. Defer changed-grain tooling until an actual source correction requires it; that case must retain explicit old/new replacement lineage under the identity principle. Full replacement already prevents obsolete active rows from surviving a changed selection.
 
-Missing inputs, broken references or failed conversions that violate the declared contract receive concrete diagnostics. Incomplete semantic knowledge and unexplained accounting residuals do not cause whole-dataset rejection. No standalone release-management service, cache/no-op policy, generic migration framework or incremental updater is needed for this workflow.
+Ordinary input, conversion and storage errors propagate from their owning operations; this does not mandate additional checking passes. Incomplete semantic knowledge and unexplained accounting residuals do not cause whole-dataset rejection. No standalone release-management service, cache/no-op policy, generic migration framework or incremental updater is needed for this workflow.
 
 Ordinary experimentation can run in a modified checkout or without a Git repository. Code provenance is optional caller-supplied metadata; extraction, saving Bronze and rebuilding Silver never invoke Git or require a commit identifier. Git remains a development tool, not a runtime prerequisite.
 
@@ -122,7 +125,7 @@ Orchestrate through ordinary Python calls to the existing extraction, manifest a
 
 ## 8. Prove the useful workflow
 
-Use existing tools: four source goldens, Mountainash contracts, pytest, a real DuckDB transaction and reconstructed dataframes. Preserve the few discovered regressions at their owning boundary. The acceptance evidence is:
+Use existing tools: four source goldens, Mountainash conformance, pytest, a real DuckDB transaction and reconstructed dataframes. These development checks do not imply runtime validation. The acceptance evidence is:
 
 - All four complete source payloads match independently authored expectations.
 - Saved Bronze preserves values and metadata, including a missing nested-field failure exposed in the demo.
