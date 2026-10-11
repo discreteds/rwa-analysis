@@ -12,11 +12,11 @@ Do not invoke validators or introduce validation gates in this migration.
 and authorised planning without another spike. During planning, the researcher
 explicitly rejected reintroducing the older checks or bullet-proofing this migration.
 
-**Current checkpoint:** normalised CBA processing is working after the researcher-
-approved temporary metadata ingress adaptation. Full suite: **112 passed**. Both
-real CBA examples ran successfully. Tasks 1/2 are implemented; researcher review
-of this CBA checkpoint precedes Task 3. Earlier blocked-status entries below are
-historical execution evidence, not current delivery gates.
+**Current checkpoint:** the researcher approved CBA and authorised the remaining
+four-bank work. All four staging databases and master now run successfully; full
+suite: **114 passed**. Correctness and complexity reviews found no in-scope defects
+or required cuts. Implementation is ready for PR to `develop`. Earlier blocked-status
+entries below are historical execution evidence, not current delivery gates.
 
 Independent alignment and complexity reviews passed on 2026-10-11 with no requested
 changes. The researcher approved implementation and confirmed the existing checkout,
@@ -207,13 +207,13 @@ checkpoint comes before extending the same pattern to the remaining banks.
 **Files:** organisation settings for Westpac/NAB/ANZ,
 `storage/consolidation.py`, composition and `examples/four_bank_research.py`.
 
-- [ ] Run each organisation's existing CR6 inputs through the same implementation,
+- [x] Run each organisation's existing CR6 inputs through the same implementation,
   into its own staging database with the common declared schema.
-- [ ] Implement a full master rebuild from explicitly selected staging publications.
+- [x] Implement a full master rebuild from explicitly selected staging publications.
   Combine corresponding relations and publish with the existing transaction pattern.
-- [ ] Retain producing revisions and references to their durable manifests. Master
+- [x] Retain producing revisions and references to their durable manifests. Master
   readback uses its saved selection and actual persisted values.
-- [ ] Reconstruct the four source tables. Inspect the existing expected values,
+- [x] Reconstruct the four source tables. Inspect the existing expected values,
   labels, missingness, mappings and relationships using the independent source assets.
 
 ```sh
@@ -226,11 +226,11 @@ describe the selected source case, not new generic runtime completeness checks.
 
 ## Task 4 — Finish retirement and hand over
 
-- [ ] Check active imports/examples against the replacement map. Delete unused old
+- [x] Check active imports/examples against the replacement map. Delete unused old
   code and obsolete tests now, rather than schedule a later cleanup project.
-- [ ] Update README with `run()`, targeted reruns, layered settings and staging/master
+- [x] Update README with `run()`, targeted reruns, layered settings and staging/master
   usage. Keep historical artifacts and label historical instructions appropriately.
-- [ ] Run the relevant existing tests, adapting or removing those tied to retired
+- [x] Run the relevant existing tests, adapting or removing those tied to retired
   checks. Verify the demonstrated workflow and run Ruff plus `git diff --check`.
   Do not restore historical lifecycle/fault-injection suites or invent replacement guards.
 - [ ] Review the implementation for correctness and unnecessary complexity against
@@ -350,6 +350,24 @@ correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
 - Tasks 3/4 and the final migration PR remain after researcher checkpoint review.
   The dependency findings are not gates on this now-executed CBA path; this does not
   claim the upstream nested-dataclass capability is fixed.
+
+### Four-bank completion — 2026-10-11
+
+- Added Westpac/NAB/ANZ settings and executed `examples/four_bank_research.py` using
+  retained `v1` Bronze. Master contains 36 observations, 432 fields, 1,296 mappings
+  and 32 relationships; all four reconstructed tables contain nine rows.
+- `SilverConsolidator` concatenates selected staging relations through Mountainash
+  and reuses the store's atomic replacement operation. Producing row revisions are
+  retained; `MasterManifest` records the selected durable staging manifests.
+- Tests demonstrate preservation of every table, copied persisted numeric changes,
+  reconstruction after staging databases are removed, and full replacement when
+  selecting fewer banks or an empty selection.
+- Full suite: **114 passed**; Ruff passes. Independent correctness review found no
+  concrete defects and confirmed no active imports of retired normalization,
+  reporting or conformance-wrapper modules. Independent complexity review found
+  no required cuts. No additional cleanup layer or runtime guards were introduced.
+- README documents staging/master usage and the mutable publication database paths.
+  The approved temporary metadata ingress adaptation remains tracked for removal.
 
 ### Delivery criterion
 

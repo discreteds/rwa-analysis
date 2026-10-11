@@ -38,16 +38,24 @@ class RebuildManifest(BaseModel):
     implementation_revision: str = "unrecorded"
 
 
+class MasterManifest(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    schema_version: Literal["cr6-normalised-v1"] = "cr6-normalised-v1"
+    revision: str
+    staging_manifests: tuple[Path, ...]
+
+
 def identifier(value: str) -> str:
     if re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", value) is None:
         raise ValueError(f"Expected a single path identifier: {value!r}")
     return value
 
 
-def retain_manifest(path: Path, manifest: RebuildManifest) -> None:
+def retain_manifest(path: Path, manifest: RebuildManifest | MasterManifest) -> None:
     """Retain a selection once; repeated publication can reuse that selection."""
     if path.exists():
-        if RebuildManifest.model_validate_json(path.read_bytes()) != manifest:
+        if type(manifest).model_validate_json(path.read_bytes()) != manifest:
             raise ValueError(f"Revision already names a different selection: {path}")
         return
     path.parent.mkdir(parents=True, exist_ok=True)

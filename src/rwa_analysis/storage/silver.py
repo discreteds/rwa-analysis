@@ -65,12 +65,18 @@ class SilverStore:
             },
         )
         retain_manifest(manifest_path, manifest)
+        return self.write(output, manifest_path, revision, manifest.schema_version)
+
+    def write(
+        self, output: Cr6Output, manifest_path: Path, revision: str, schema_version: str
+    ) -> Publication:
+        """Replace the declared tables atomically, retaining the supplied row revisions."""
         self.database.parent.mkdir(parents=True, exist_ok=True)
         marker = pl.DataFrame(
             {
                 "silver_revision_id": [revision],
                 "manifest_path": [str(manifest_path)],
-                "schema_version": [manifest.schema_version],
+                "schema_version": [schema_version],
             }
         )
         with IbisBackend(dialect="duckdb", database=str(self.database)) as db:

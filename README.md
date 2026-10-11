@@ -1,9 +1,8 @@
 # RWA disclosure research
 
-**Migration status: CBA workflow demonstrated; researcher checkpoint pending.**
-Both the PDF and retained-Bronze examples publish normalised Silver and reconstruct
-the nine-row source table. Four-bank staging configuration and master consolidation
-follow this checkpoint.
+The four-bank CR6 workflow publishes normalised organisation staging databases,
+consolidates master and reconstructs all four source tables. The CBA example also
+demonstrates PDF extraction through publication and reconstruction.
 
 ## CBA workflow
 
@@ -43,6 +42,31 @@ desired saved inputs in the selection. A publication identifies the database and
 its retained rebuild manifest; reconstruction reads persisted numbers and uses
 saved Bronze for labels, order, missing-value tokens and source evidence.
 
+## Four-bank staging and master
+
+```bash
+uv run python -i examples/four_bank_research.py
+```
+
+The example rebuilds CBA, Westpac, NAB and ANZ staging from retained `v1` Bronze,
+then combines those publications into `data/silver/master.duckdb`:
+
+```python
+master = build_consolidator(project_settings)
+publication = master.consolidate(tuple(publications), revision="combined-1")
+output = master.store.read(publication)
+tables = master.reconstruct(publication)
+```
+
+Each consolidation replaces all master tables atomically with the selected staging
+rows. Producing revisions remain on those rows; the master manifest retains the
+selected staging manifests. Reconstruction uses master numbers and retained Bronze
+metadata, without depending on live staging databases. Publications refer to mutable
+database locations; select the current staging publications when rebuilding master.
+
+The demonstrated selection contains 36 observations, 432 fields, 1,296 mapping
+references and 32 source relationships. Each reconstructed table has nine rows.
+
 ## Configuration and ownership
 
 Load `config/project.yaml` followed by `config/organisations/cba.yaml` with
@@ -65,10 +89,6 @@ supporting evidence. `domains/cr6/contracts.py` declares the complete table inve
 Metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
 ingress boundary is tracked for removal in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
 Validation is separate and remains undefined; it is not invoked by this workflow.
-
-The current implementation checkpoint is CBA. Four-bank source extractors and
-goldens remain supported; configured four-bank staging and master consolidation
-follow the CBA review checkpoint.
 
 ## Verification
 
