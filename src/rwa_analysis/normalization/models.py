@@ -304,8 +304,11 @@ PROJECTION_SCHEMAS = {
 SCHEMAS = {
     "cr6_observations": PROJECTION_SCHEMAS["observations"]
     | PROJECTION_SCHEMAS["contexts"]
-    | {k: v for k, v in PROJECTION_SCHEMAS["segments"].items()
-       if k not in ("silver_revision_id", "context_id")},
+    | {
+        k: v
+        for k, v in PROJECTION_SCHEMAS["segments"].items()
+        if k not in ("silver_revision_id", "context_id")
+    },
     "cr6_fields": PROJECTION_SCHEMAS["interpretations"]
     | PROJECTION_SCHEMAS["lineage"]
     | {"mapping_revision_refs": STRINGS},

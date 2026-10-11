@@ -27,15 +27,10 @@ from .models import (
 )
 
 
-def decimal_type(values, path):
+def decimal_type(values):
     """Choose a lossless Arrow working scale from source coefficients, not results."""
     present = [Decimal(v) for v in values if v is not None]
-    if any(not v.is_finite() for v in present):
-        raise ValueError(f"{path}: nonfinite source value")
     scale = max((max(0, -v.as_tuple().exponent) for v in present), default=0)
-    integers = max((max(0, v.adjusted() + 1) for v in present), default=0)
-    if scale + integers > 38:
-        raise ValueError(f"{path}: source exceeds Decimal working precision")
     return pl.Decimal(38, scale)
 
 
@@ -46,21 +41,10 @@ def convert_dataset(source, factors, identity, columns):
     for name, target in columns.items():
         dtype = pl.Int64 if target == "reported_entity_count" else DECIMAL
         scale = source.schema[name].scale + factors.schema[f"{name}__factor"].scale
-        if scale > 38:
-            raise ValueError(f"{name}: conversion exceeds Decimal working scale")
         working = pl.Decimal(38, scale)
         # Polars multiplication retains the operands' common scale; widen it
         # before multiplying so percent fractions are not rounded to source scale.
         value = ma.col(name).cast(working) * ma.col(f"{name}__factor").cast(working)
-        try:
-            check = relation.select(
-                *identity, value.alias("value"), value.cast(dtype).alias("converted")
-            )
-            lost = check.filter(ma.col("value") != ma.col("converted")).to_dicts()
-            if lost:
-                raise ValueError(f"conversion loses precision: {lost}")
-        except Exception as error:
-            raise ValueError(f"{name}: {error}") from error
         expressions.append(value.cast(dtype).alias(target))
     return relation.select(*identity, *expressions).to_polars()
 
@@ -292,90 +276,131 @@ def conform_cr6(
                     "canonical_row_role": role,
                     "row_role_status": status,
                 }
-                source_rows.append(identity | {
-                    source: getattr(record, source).value for source in FIELD_MAP
-                })
-                mapping_rows.append({"observation_id": oid} | {
-                    f"{source}__factor": meanings[source].unit_factor
-                    for source in FIELD_MAP
-                })
+                source_rows.append(
+                    identity
+                    | {source: getattr(record, source).value for source in FIELD_MAP}
+                )
+                mapping_rows.append(
+                    {"observation_id": oid}
+                    | {
+                        f"{source}__factor": meanings[source].unit_factor
+                        for source in FIELD_MAP
+                    }
+                )
                 for source, target in FIELD_MAP.items():
                     meaning = meanings[source]
                     field_rows.append(
-                        tabular(interpretation(
-                            revision_id,
-                            oid,
-                            target,
-                            getattr(record, source),
-                            meaning,
-                            catalogue,
-                        )) | tabular(lineage(
-                            revision_id,
-                            oid,
-                            target,
-                            bundle,
-                            ref,
-                            ds,
-                            record,
-                            source,
-                            meaning,
-                        )) | {"mapping_revision_refs": [m.revision_id for m in meaning.mapping_refs]}
+                        tabular(
+                            interpretation(
+                                revision_id,
+                                oid,
+                                target,
+                                getattr(record, source),
+                                meaning,
+                                catalogue,
+                            )
+                        )
+                        | tabular(
+                            lineage(
+                                revision_id,
+                                oid,
+                                target,
+                                bundle,
+                                ref,
+                                ds,
+                                record,
+                                source,
+                                meaning,
+                            )
+                        )
+                        | {
+                            "mapping_revision_refs": [
+                                m.revision_id for m in meaning.mapping_refs
+                            ]
+                        }
                     )
             identity_schema = {
-                k: v for k, v in PROJECTION_SCHEMAS["observations"].items()
+                k: v
+                for k, v in PROJECTION_SCHEMAS["observations"].items()
                 if k not in FIELD_MAP.values()
             }
             source_schema = identity_schema | {
-                name: decimal_type([r[name] for r in source_rows], name)
-                for name in FIELD_MAP
+                name: decimal_type([r[name] for r in source_rows]) for name in FIELD_MAP
             }
             factor_schema = {"observation_id": pl.String} | {
                 f"{name}__factor": decimal_type(
-                    [r[f"{name}__factor"] for r in mapping_rows], name
-                ) for name in FIELD_MAP
+                    [r[f"{name}__factor"] for r in mapping_rows]
+                )
+                for name in FIELD_MAP
             }
-            # Counts start as exact Decimal too, so the checked final Int64 cast
-            # diagnoses out-of-range/fractional inputs without truncating them.
+            # Use Decimal inputs for the shared expression projection; counts
+            # are cast to Int64 in the result schema.
             for row in source_rows:
                 for name in FIELD_MAP:
                     if row[name] is not None:
                         row[name] = Decimal(row[name])
             source_frame = pl.DataFrame(source_rows, schema=source_schema)
             converted = convert_dataset(
-                source_frame, pl.DataFrame(mapping_rows, schema=factor_schema),
-                ["observation_id"], FIELD_MAP,
+                source_frame,
+                pl.DataFrame(mapping_rows, schema=factor_schema),
+                ["observation_id"],
+                FIELD_MAP,
             )
             observation_frames.append(
-                ma.relation(source_frame).select(*identity_schema)
-                .join(converted, on="observation_id").to_polars()
+                ma.relation(source_frame)
+                .select(*identity_schema)
+                .join(converted, on="observation_id")
+                .to_polars()
             )
-    observations = pl.concat(observation_frames) if observation_frames else frame("observations", [])
+    observations = (
+        pl.concat(observation_frames)
+        if observation_frames
+        else frame("observations", [])
+    )
     contexts = frame("contexts", metadata["contexts"])
     # Bounds use the same relation conversion path, not Python Decimal math.
     segment_rows = [tabular(r) for r in metadata["segments"]]
     segment_schema = PROJECTION_SCHEMAS["segments"] | {
-        k: decimal_type([r[k] for r in segment_rows], k)
+        k: decimal_type([r[k] for r in segment_rows])
         for k in ("lower_fraction", "upper_fraction")
     }
     segments = pl.DataFrame(segment_rows, schema=segment_schema)
     bounds = ("lower_fraction", "upper_fraction")
-    bound_factors = pl.DataFrame([
-        {"segment_id": r["segment_id"], **{f"{k}__factor": Decimal("0.01") for k in bounds}}
-        for r in segment_rows
-    ], schema={"segment_id": pl.String} | {f"{k}__factor": pl.Decimal(38, 2) for k in bounds})
-    converted_bounds = convert_dataset(segments, bound_factors, ["segment_id"], dict(zip(bounds, bounds)))
-    segments = ma.relation(segments).drop(*bounds).join(converted_bounds, on="segment_id")
+    bound_factors = pl.DataFrame(
+        [
+            {
+                "segment_id": r["segment_id"],
+                **{f"{k}__factor": Decimal("0.01") for k in bounds},
+            }
+            for r in segment_rows
+        ],
+        schema={"segment_id": pl.String}
+        | {f"{k}__factor": pl.Decimal(38, 2) for k in bounds},
+    )
+    converted_bounds = convert_dataset(
+        segments, bound_factors, ["segment_id"], dict(zip(bounds, bounds))
+    )
+    segments = (
+        ma.relation(segments).drop(*bounds).join(converted_bounds, on="segment_id")
+    )
     observations = (
-        ma.relation(observations).join(contexts, on=["silver_revision_id", "context_id"])
-        .join(segments.drop("context_id"), on=["silver_revision_id", "segment_id"], how="left")
-        .select(*SCHEMAS["cr6_observations"]).to_polars()
+        ma.relation(observations)
+        .join(contexts, on=["silver_revision_id", "context_id"])
+        .join(
+            segments.drop("context_id"),
+            on=["silver_revision_id", "segment_id"],
+            how="left",
+        )
+        .select(*SCHEMAS["cr6_observations"])
+        .to_polars()
     )
     candidate = SilverCandidate(
-        revision_id, {
+        revision_id,
+        {
             "cr6_observations": observations,
             "cr6_fields": frame("cr6_fields", field_rows),
             "cr6_relationships": frame("cr6_relationships", metadata["relationships"]),
-        }
+        },
     )
     from .validate import validate_candidate
 

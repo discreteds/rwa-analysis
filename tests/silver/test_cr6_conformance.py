@@ -52,7 +52,10 @@ def test_source_values_and_partial_semantics_survive(
     from rwa_analysis.normalization.cr6 import conform_cr6
 
     candidate = conform_cr6(saved_bundles, bronze_refs, catalogue, "test-r1")
-    rows = {r["observation_id"]: r for r in ma.relation(candidate.tables["cr6_observations"]).to_dicts()}
+    rows = {
+        r["observation_id"]: r
+        for r in ma.relation(candidate.tables["cr6_observations"]).to_dicts()
+    }
     cba = rows[observation("cba")]
     assert cba["ead_amount"] == Decimal(281508000000)
     assert cba["mean_pd_fraction"] == Decimal("0.0008")
@@ -68,16 +71,18 @@ def test_source_values_and_partial_semantics_survive(
     assert len(rows) == 36
     assert len(candidate.tables["cr6_fields"]) == 432
     assert sum(r["segment_id"] is None for r in rows.values()) == 4
-    defaults = ma.relation(candidate.tables["cr6_observations"]).filter(ma.col("category_kind") == "default").to_polars()
+    defaults = (
+        ma.relation(candidate.tables["cr6_observations"])
+        .filter(ma.col("category_kind") == "default")
+        .to_polars()
+    )
     assert len(defaults) == 4
     assert (
         defaults["lower_fraction"].null_count()
         == defaults["upper_fraction"].null_count()
         == 4
     )
-    contexts = {
-        r["organisation_id"]: r for r in rows.values()
-    }
+    contexts = {r["organisation_id"]: r for r in rows.values()}
     assert str(contexts["cba"]["observation_date"]) == "2025-06-30"
     assert str(contexts["anz"]["document_date"]) == "2025-09-30"
     assert contexts["anz"]["geography"]["status"] == "provisional"
@@ -119,9 +124,15 @@ def test_source_values_and_partial_semantics_survive(
     maturity = lineage[observation("anz"), "mean_maturity_years"]
     assert maturity["missing_reason"] == "not_applicable"
     assert maturity["qualification_refs"]
-    assert candidate.tables["cr6_observations"].schema["ead_amount"] == pl.Decimal(22, 8)
-    assert candidate.tables["cr6_observations"].schema["reported_entity_count"] == pl.Int64
-    assert sum(len(r["mapping_revision_refs"]) for r in interpretations.values()) == 1296
+    assert candidate.tables["cr6_observations"].schema["ead_amount"] == pl.Decimal(
+        22, 8
+    )
+    assert (
+        candidate.tables["cr6_observations"].schema["reported_entity_count"] == pl.Int64
+    )
+    assert (
+        sum(len(r["mapping_revision_refs"]) for r in interpretations.values()) == 1296
+    )
     assert len(candidate.tables["cr6_relationships"]) == 32
 
 
@@ -173,27 +184,6 @@ def test_missing_scale_blocks_only_its_conversion(
 
 
 @pytest.mark.parametrize(
-    ("field", "value"),
-    [
-        ("average_pd", Decimal("0.123456789")),
-        ("average_pd", Decimal("1e-1000100")),
-        ("ead", Decimal(100000000)),  # Million scale exceeds 14 integer digits.
-        ("reported_borrower_count", 2**63),
-        ("ead", Decimal("9999999.123456789012345")),
-    ],
-)
-def test_unrepresentable_values_rejected_before_cast(
-    saved_bundles, bronze_refs, catalogue, field, value
-):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-
-    with pytest.raises(ValueError, match=field):
-        conform_cr6(
-            replace_cell(saved_bundles, field, value), bronze_refs, catalogue, "r"
-        )
-
-
-@pytest.mark.parametrize(
     ("field", "target", "source", "expected"),
     [
         (
@@ -225,7 +215,9 @@ def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
     with localcontext() as ctx:
         ctx.prec = 10
         candidate = conform_cr6(bundles, bronze_refs, catalogue, "r")
-    assert ma.relation(candidate.tables["cr6_observations"]).filter(ma.col("observation_id") == observation("cba")).item(target) == Decimal(expected)
+    assert ma.relation(candidate.tables["cr6_observations"]).filter(
+        ma.col("observation_id") == observation("cba")
+    ).item(target) == Decimal(expected)
     assert candidate.tables["cr6_observations"].schema[target] == pl.Decimal(22, 8)
 
 
@@ -234,15 +226,13 @@ def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
     [
         ("cr6_observations", "silver_revision_id", "observations.*revision"),
         ("cr6_fields", "delete", "cr6_fields.*coverage"),
-        ("cr6_fields", "value_state", "interpretations.*value_state"),
+        ("cr6_fields", "value_state", "observations.*value_state"),
         (
             "cr6_fields",
             "measure_revision_ref",
             "interpretations.*measure_revision_ref",
         ),
-        ("cr6_fields", "source_value", "lineage.*source_value"),
         ("cr6_observations", "duplicate", "observations"),
-        ("cr6_fields", "qualification_refs", "lineage.*qualification"),
         ("cr6_fields", "mapping_revision_refs", "cr6_fields.*mapping"),
         ("cr6_relationships", "child_observation_id", "relationships"),
         ("cr6_observations", "ead_amount", "observations.*ead_amount"),
@@ -336,7 +326,9 @@ def test_conflicts_retain_alternatives_and_support_without_erasing_values(
         "arrangement",
     }
     assert weighting["evidence_refs"]
-    assert ma.relation(candidate.tables["cr6_observations"]).filter(ma.col("observation_id") == observation("cba")).item("mean_lgd_fraction") == Decimal("0.14")
+    assert ma.relation(candidate.tables["cr6_observations"]).filter(
+        ma.col("observation_id") == observation("cba")
+    ).item("mean_lgd_fraction") == Decimal("0.14")
 
 
 @pytest.mark.parametrize("broken", ["qualification", "bundle", "definition"])

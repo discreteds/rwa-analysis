@@ -79,12 +79,16 @@ def read_staged_bundle(
 
 def save_bronze(
     bundle: ExtractionBundle,
-    output_version: str,
+    run_name: str,
     project_root: Path,
-    implementation_revision: str,
+    implementation_revision: str = "unrecorded",
 ) -> BronzeRef:
-    """Publish a new version only after an exact source-contract readback."""
-    ref = BronzeRef(bundle.bundle_key, output_version)
+    """Save an extraction under a caller-chosen run name, e.g. 'cba-june-rerun'.
+
+    The name identifies its folder, not an extractor or schema version. Existing
+    runs are not overwritten. The saved format calls this field output_version.
+    """
+    ref = BronzeRef(bundle.bundle_key, run_name)
     destination = _destination(ref, project_root)
     if destination.exists() or destination.is_symlink():
         raise FileExistsError(destination)
@@ -95,14 +99,14 @@ def save_bronze(
     dependencies["python"] = sys.version
     envelope = encode_envelope(
         bundle,
-        output_version=output_version,
+        output_version=run_name,
         implementation_revision=implementation_revision,
         dependency_versions=dependencies,
         executed_at=datetime.now(UTC).isoformat(),
     )
     destination.parent.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(
-        prefix=f".{output_version}-", dir=destination.parent
+        prefix=f".{run_name}-", dir=destination.parent
     ) as temp:
         staging = Path(temp)
         write(FileSinkSpec(path=str(staging / "bundle.json"), format="json"), envelope)

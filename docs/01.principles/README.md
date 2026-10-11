@@ -12,6 +12,8 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 ## Supporting material
 
+- [Simpler CR6 research workflow](../04.planning/superpowers/specs/2026-10-10-simple-cr6-research-design.md): candidate replacement implementation direction for review; PR #1 is retained as a working demonstration.
+
 - [Platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): detailed architecture and intended workflows.
 - [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): consolidated source capture, semantic catalogue and conformance contracts.
 - [Layered schemas and E–R diagrams](../04.planning/superpowers/specs/2026-10-10-layered-data-model.md): explicit Bronze/catalogue/Silver relationships and conformed field contracts.
