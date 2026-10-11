@@ -4,6 +4,13 @@ Date: 2026-10-10
 
 Status: Approved architectural direction; written specification awaiting review.
 
+Subsequent decisions: the [simple CR6 workflow](2026-10-10-simple-cr6-research-design.md)
+supersedes the CLI and automatic output-reuse proposals below. The
+[strategic architecture](2026-10-11-strategic-architecture-design.md) records the
+agreed domain contracts, organisation sessions, Mountainash Settings layers and
+staging/master split. Its detailed written design awaits review. Use those later
+decisions for these concerns rather than reinstating the earlier implementation proposals.
+
 Governing principles: [Principles and architecture](../../../01.principles/README.md). The collection captures durable decisions; this specification describes their intended implementation.
 
 ## 1. Purpose and scope
