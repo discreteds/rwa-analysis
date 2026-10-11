@@ -1,11 +1,9 @@
 # RWA disclosure research
 
-**Migration status: blocked, not ready for use.** The new CBA entrypoint is wired,
-but native nested-dataclass metadata ingress currently fails before publication.
-The added CR6 validators and precision-38 source contracts have been removed;
-the real CBA numeric conversion now runs independently. The migration plan records the central
-Mountainash backlog owners and clearance conditions.
-The prior working implementation remains at `feature/simple-cr6` (`3be5e86`).
+**Migration status: CBA workflow demonstrated; researcher checkpoint pending.**
+Both the PDF and retained-Bronze examples publish normalised Silver and reconstruct
+the nine-row source table. Four-bank staging configuration and master consolidation
+follow this checkpoint.
 
 ## CBA workflow
 
@@ -54,12 +52,19 @@ configured project root, including when working in a notebook elsewhere.
 
 - `composition.py` assembles components from resolved settings.
 - `workflow.py` sequences stages and exposes `run()`.
-- `domains/cr6/` owns typed models, native contracts, conformance and reconstruction.
+- `domains/cr6/` owns typed models, schema declarations, conformance and reconstruction.
 - `storage/` owns source transport, retained selections and DuckDB publication.
 - `catalogue/` retains semantic definitions and scoped interpretations.
 
 Money is stored as `Decimal(16,2)`, small-valued rates and bands as
 `Decimal(16,8)`, and counts as integers. Source precision remains in Bronze.
+
+Silver stores shared contexts once, scalar observations and field metadata, and
+related rows for ordered qualifications, mappings, assertions, alternatives and
+supporting evidence. `domains/cr6/contracts.py` declares the complete table inventory.
+Metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
+ingress boundary is tracked for removal in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
+Validation is separate and remains undefined; it is not invoked by this workflow.
 
 The current implementation checkpoint is CBA. Four-bank source extractors and
 goldens remain supported; configured four-bank staging and master consolidation

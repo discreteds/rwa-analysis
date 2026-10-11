@@ -28,7 +28,7 @@ class RebuildSelection(BaseModel):
 class RebuildManifest(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
-    schema_version: Literal["cr6-domain-v2"] = "cr6-domain-v2"
+    schema_version: Literal["cr6-normalised-v1"] = "cr6-normalised-v1"
     revision: str
     organisation_id: str
     selection: RebuildSelection

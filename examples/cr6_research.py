@@ -29,7 +29,7 @@ candidate = session.conform(
         ),
     ),
 )
-publication = session.publish(candidate, revision="cba-retained-review")
+publication = session.publish(candidate, revision="cba-normalised-retained-review")
 tables = session.reconstruct(publication)
 cba = tables["au/cba/2025-06-30/aps330/cr6-residential-mortgages"]
 with pl.Config(trim_decimal_zeros=True, tbl_cols=13, tbl_width_chars=200):

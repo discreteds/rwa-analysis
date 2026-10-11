@@ -52,6 +52,14 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
     assert result.tables[key].row(0)[4] == Decimal(281508)
     assert result.publication.database == tmp_path / "cba.duckdb"
     assert result.bundles[0].datasets[0].metadata.context.source_template == "CR6"
+    stored = session.silver.read(result.publication)
+    assert stored.contexts.count_rows() == 1
+    assert stored.context_evidence.count_rows() == 2
+    assert {r["source_pdf_page"] for r in stored.context_evidence.to_dicts()} == {1, 55}
+    assert (
+        stored.contexts.item("reporting_entity_value")
+        == "CBA and its subsidiaries (the Group)"
+    )
 
     # Another session needs no prior stage history and reads the saved selection.
     other = build_session(settings)
@@ -59,6 +67,21 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
     inputs = other.load_bronze(manifest.selection.bronze_refs)
     candidate = other.conform(inputs, catalogue=manifest.selection.catalogue)
     publication = other.publish(candidate, revision="second")
+    # The storage round-trip must retain every child row, including typed empties.
+    import mountainash as ma
+
+    from rwa_analysis.domains.cr6.contracts import TABLES
+
+    reread = other.silver.read(publication)
+    for table in TABLES:
+        expected = (
+            getattr(candidate.cr6, table.member)
+            .with_columns(ma.lit("second").alias("silver_revision_id"))
+            .to_polars()
+        )
+        actual = getattr(reread, table.member).to_polars()
+        keys = table.spec.primary_key
+        assert actual.sort(keys).equals(expected.sort(keys)), table.member
     assert other.reconstruct(publication)[key].equals(result.tables[key])
     assert result.publication.manifest_path.is_file()
     assert publication.manifest_path.is_file()

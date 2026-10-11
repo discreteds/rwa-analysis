@@ -202,6 +202,50 @@ needed only at the dataframe/relation boundary, where projected numeric values a
 top-level columns. Recursive conversion of source objects is not a requirement.
 Keep the source evidence linked to those columns through the existing bindings.
 
+### Normalised CR6 storage — approved after the CBA spike
+
+The researcher approved the disposable one-row CBA normalisation shape and its
+production implementation. Preserve composed Bronze objects; project flat Silver
+dataclasses and related collections. This is a storage change, not a validation
+workflow. Table count follows actual relationships, not a quota.
+
+- `contexts`: one source dataset context, with scalar knowledge value/status pairs.
+  `context_qualifications` retains each context/knowledge member's ordered references;
+  `context_evidence` retains ordered, flat source locations.
+- `observations`: identity, context reference, band details and twelve typed measures.
+  A band's single source location is flattened beside its bounds. Band definitions
+  remain source-scoped; there is no new cross-document band catalogue.
+- `fields`: existing per-field scalar metadata and a flattened source location.
+  `field_qualifications` and `field_mappings` hold their ordered reference collections.
+- `attributes`: one row per field attribute assertion. `assertion_index=0` identifies
+  the resolved assertion; positive indexes preserve alternatives in order. Scalar
+  text/integer/boolean columns and flattened revision/evidence-reference columns
+  preserve the existing typed value union. Attribute order is retained separately.
+  `attribute_evidence` and `attribute_decisions` preserve supporting references per
+  assertion. These rows store interpretations already produced by the catalogue;
+  they do not implement new interpretation or validation policy.
+- `relationships`: existing parent/child rows, with ordered `relationship_evidence`.
+
+Every table carries `silver_revision_id`; child keys include their owning context,
+observation/field/assertion or relationship and position. Keep existing stable source
+identities. Declare named output members and their physical tables once. Flat row
+models use Mountainash conformance. The researcher subsequently authorised a
+temporary standard-library `asdict()` metadata ingress boundary, with full-record
+inference to handle late non-null values. Mountainash expressions own unnesting,
+collection expansion, selection, renaming and joins; Python supplies objects and
+resolved catalogue meanings, not a parallel field-by-field metadata ETL.
+The [techdebt item](../../a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
+requires revisiting metadata schemas and removing the adaptation. No custom recursive
+serializer or ORM is introduced.
+Store/reload the complete output through the existing transaction. Reconstruction
+continues to read persisted numbers and saved Bronze source bindings.
+
+Concrete proof: saved CBA first-band EAD → persisted `281508000000.00` → reconstructed
+`281508.00000000` in reported millions, with the original evidence and mapping links
+retained. Existing conflict examples must retain their alternatives as child rows.
+The spike exercised six tables for selected fields; production includes the existing
+collections omitted by that probe. No new rejection or runtime gate is introduced.
+
 ### Validation ownership
 
 Validation is a separate process, not an operation embedded in these pipelines or
@@ -443,7 +487,7 @@ Silver schema. Tables for domains not selected by an organisation are empty and 
 The schema expands in concert when another domain is implemented; an empty CR2 table
 does not claim CR2 extraction exists for that organisation.
 
-Retain the three CR6 tables. CR1/CR2 table definitions follow their typed collections
+Use the normalised CR6 relations above. CR1/CR2 table definitions follow their typed collections
 and contracts; the spike supplies a candidate physical shape. Shared schema does not
 mean one universal observation table or an identical number of tables per domain.
 

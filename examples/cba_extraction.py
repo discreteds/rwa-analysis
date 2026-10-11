@@ -22,7 +22,7 @@ settings = OrganisationSettings(
 session = build_session(settings)
 
 # Choose another name for another extraction; saved Bronze is never overwritten.
-run_name = "cba-workflow-review"
+run_name = "cba-normalised-review"
 result = session.run(
     documents=(
         DocumentSelection(

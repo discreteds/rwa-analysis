@@ -33,6 +33,9 @@ whose requirements and behaviour have not yet been defined.
   domain containers or one universal record shape.
 - Dataclass collections can enter Mountainash relations and return as dataclasses
   or dataframes. Reuse those facilities rather than implement a local dataframe ORM.
+- Composed source objects do not dictate nested database columns. Persist flat domain
+  rows, store shared context once, and use related rows for repeated metadata. Flatten
+  small owned objects where appropriate; table count follows the actual relationships.
 - Input/output declarations describe the data and its conformance. Do not attach
   validation calls to these transitions. Trust framework arithmetic and casts.
 - Domain declarations are explicit alongside their models, rather than inferred by

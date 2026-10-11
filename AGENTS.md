@@ -30,6 +30,9 @@ Follow [validation is a separate process](docs/01.principles/c.extraction-and-va
 
 All project documentation belongs in this repository:
 
+- Project backlog: `docs/04.planning/a.backlog/INDEX.md`. Temporary implementation
+  adaptations belong in its `techdebt/` subtype with an explicit removal objective.
+
 - Discovery and source reviews: `docs/00.ideation/`.
 - Durable principles and architecture: `docs/01.principles/`.
 - Superpowers specifications: `docs/04.planning/superpowers/specs/YYYY-MM-DD-<topic>-design.md`.

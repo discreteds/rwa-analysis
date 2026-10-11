@@ -12,6 +12,12 @@ Do not invoke validators or introduce validation gates in this migration.
 and authorised planning without another spike. During planning, the researcher
 explicitly rejected reintroducing the older checks or bullet-proofing this migration.
 
+**Current checkpoint:** normalised CBA processing is working after the researcher-
+approved temporary metadata ingress adaptation. Full suite: **112 passed**. Both
+real CBA examples ran successfully. Tasks 1/2 are implemented; researcher review
+of this CBA checkpoint precedes Task 3. Earlier blocked-status entries below are
+historical execution evidence, not current delivery gates.
+
 Independent alignment and complexity reviews passed on 2026-10-11 with no requested
 changes. The researcher approved implementation and confirmed the existing checkout,
 `feature/organisation-workflow` seeded at `3be5e86`, with `develop` as the PR target.
@@ -81,7 +87,9 @@ Paths are relative to the project root. Delete superseded code when its callers 
 | Stage sequencing | `workflow.py::OrganisationSession` | Add stage methods and thin `run()` |
 | Master build | `storage/consolidation.py::SilverConsolidator` | Combine selected staging outputs and publish through the store |
 
-Keep the current three CR6 physical tables. Declare their associations with the named
+Use flat CR6 rows and normalised child relations, following the approved CBA spike.
+The earlier three-table wording was a simplification, not a table-count constraint.
+Declare their associations with the named
 domain output once; storage and consolidation consume that same declaration. Remove
 empty legacy packages and compatibility aliases when their last callers move.
 
@@ -94,7 +102,8 @@ The spec owns the model detail. These are the implementation handoffs:
   collection. The shared protocol does not impose CR6's snapshot context on other domains.
 - Loaded inputs pair each bundle with its `BronzeRef`. Selected catalogue releases
   and supporting Bronze references remain explicit inputs, retained with the result.
-- `Cr6Output` exposes `observations`, `fields` and `relationships` as Mountainash
+- `Cr6Output` exposes `observations`, `contexts`, `fields`, `relationships` and their
+  normalised metadata collections as Mountainash
   relations. Domain operations receive loaded data and return named results; no I/O.
 - `SilverCandidate` carries those outputs and the rebuild selection.
 - `publish(candidate, revision)` records the producing revision and retained manifest.
@@ -124,20 +133,43 @@ configuration files, construct pipelines, encode JSON or execute database transa
 
 ## Task 1 — Replace domain declarations and operations
 
+**Approved normalisation amendment:** implement fresh against the shape demonstrated
+by `/tmp/opencode/cr6-normalisation-spike.py`; do not promote that disposable script.
+Use the existing four-task plan and CBA checkpoint. First adapt domain tests to read
+context, attribute, mapping and evidence child relations; retain independent numeric
+and source-semantic expectations. Then replace nested Silver models and recursive
+schema augmentation with flat declarations and domain-owned projection. Preserve all
+currently represented collections, including context knowledge qualifications,
+assertion alternatives/typed values, evidence and decisions. Keep band fields on
+observations. All tables participate in the existing publication/readback inventory.
+Cost: changes are confined to CR6 models/declarations/projection, affected tests and
+the Silver format declaration; no new package, ingestion adapter or lifecycle policy.
+
+**Subsequent authorised temporary adaptation:** isolate `asdict()` and full-record
+inference in `domains/cr6/metadata.py`; use Mountainash expressions for metadata
+projection rather than manually constructing flat records field by field. Track its
+removal under [techdebt](../../a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md).
+This replaces the preceding no-ingress-adapter assumption, not the normalised storage
+shape or the separation of validation.
+
+Run `uv run pytest tests/silver tests/integration -q`, then the full suite and the
+real saved-Bronze/PDF CBA examples. Verify related metadata after DuckDB readback,
+not just in-memory projections. Completion is the existing CBA researcher checkpoint.
+
 **Files:** `extraction/{datasets,cr6,codec,runner}.py`, necessary extractor constructor
 and catalogue access changes; new `domains/cr6/{models,contracts,pipeline,reconstruction}.py`.
 Retire the normalization/reporting/checking modules listed above as callers switch.
 
 - [x] Compose source metadata and move shared dataset/bundle ownership. Preserve
   retained wire format through the existing codec and keep golden files unchanged.
-- [ ] Declare CR6 input/output models and augment their derived Mountainash schemas
+- [x] Declare CR6 input/output models and augment their derived Mountainash schemas
   with field types. Keep domain knowledge out of generic helpers; do not add validators.
-- [ ] Move the proven dataset-wide transformations and source-binding reconstruction
+- [x] Move the proven dataset-wide transformations and source-binding reconstruction
   into domain operations. Trust Mountainash arithmetic; preserve source values and
   precision until the declared output conversion.
-- [ ] Replace table-name dictionaries at domain interfaces with named output members
+- [x] Replace table-name dictionaries at domain interfaces with named output members
   and one table association declaration.
-- [ ] Update existing source/semantic proof for changed Python access. Remove tests
+- [x] Update existing source/semantic proof for changed Python access. Remove tests
   whose sole purpose was enforcing the checking layer being retired.
 
 **Useful evidence:** the four independent source goldens still match; a saved CBA
@@ -151,14 +183,14 @@ matrix of synthetic corruptions.
 `storage/{bronze,manifests,silver}.py`, project/CBA settings, both existing examples,
 README and the affected integration fixtures/tests.
 
-- [ ] Move the existing Bronze I/O and Silver transaction/readback into their stores.
+- [x] Move the existing Bronze I/O and Silver transaction/readback into their stores.
   Retain selected-input provenance; use native declarations at the boundaries.
 - [x] Load project defaults and organisation overrides using Mountainash Settings.
   Resolve paths from the project root and construct operations in `build_session`.
-- [ ] Implement independently callable stages and `run()` using those same operations.
-- [ ] Execute CBA from retained Bronze through publication and reconstruction. Also
+- [x] Implement independently callable stages and `run()` using those same operations.
+- [x] Execute CBA from retained Bronze through publication and reconstruction. Also
   execute the full entrypoint using the existing CBA extractor.
-- [ ] Switch examples and callers, then delete the superseded save/load/rebuild/
+- [x] Switch examples and callers, then delete the superseded save/load/rebuild/
   reconstruction entrypoints. Do not leave a second supported route or alias layer.
 
 ```sh
@@ -292,7 +324,34 @@ correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
   with an `AUD` value/type inference error. No failures are skipped. The empty-selection
   and default-path regressions pass. Source goldens and transport tests remain passing.
 
-### Delivery criterion (unchanged)
+### Normalised CBA checkpoint — 2026-10-11
+
+- Production CR6 uses flat persisted row models with shared contexts and ordered
+  child metadata relations. All existing field value union branches, source locations,
+  context knowledge qualifications, alternatives and decision/evidence references
+  remain represented. The selected schema marker is `cr6-normalised-v1`.
+- Mountainash expressions own metadata expansion, unnesting, projection, renaming
+  and value-state derivation. `metadata.py` isolates the approved temporary recursive
+  `asdict()` and full-record inference; its removal objective is in the project's
+  new `a.backlog/techdebt/` subtype. No runtime validators were added.
+- `uv run pytest -q`: **112 passed**. Tests include four-bank numeric reconstruction,
+  a one-cent persisted mutation, source goldens, all CBA normalised tables through
+  DuckDB readback, assertion alternatives/decision links, and typed integer/Boolean
+  metadata. Dependency deprecation warnings remain, not new processing gates.
+- Both `examples/cr6_research.py` (saved v1 Bronze) and `examples/cba_extraction.py`
+  (PDF through `run()`) ran successfully. First CBA band reconstructs EAD `281508`
+  million, PD `0.08` percent and count `742470`; all nine source rows are present.
+  Review publications are `cba-normalised-retained-review` and `cba-normalised-review`.
+- Independent complexity review: keep the normalised relations and local helper;
+  restore readable formatting, defer metadata-schema redesign and master configuration.
+  Applied formatting cut. Independent correctness review found a test fixture using
+  an out-of-period decision; replaced it with an explicitly synthetic applicable
+  decision. No in-scope production defects were reported. Full tests then passed.
+- Tasks 3/4 and the final migration PR remain after researcher checkpoint review.
+  The dependency findings are not gates on this now-executed CBA path; this does not
+  claim the upstream nested-dataclass capability is fixed.
+
+### Delivery criterion
 
 The supported four-bank workflow runs through the new interfaces; source evidence
 and interpretations survive; native conformance produces the declared schemas; old

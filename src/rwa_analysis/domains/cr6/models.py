@@ -7,9 +7,6 @@ from typing import Literal
 
 from mountainash.relations.core.relation_api.relation import Relation
 
-from rwa_analysis.catalogue.models import Assertion, EvidenceRef, RevisionRef
-from rwa_analysis.extraction.models import Knowledge, SourceReference
-
 FIELD_MAP = {
     "on_balance_exposure": "on_balance_amount",
     "off_balance_exposure": "off_balance_amount",
@@ -31,6 +28,15 @@ class Cr6Output:
     observations: Relation
     fields: Relation
     relationships: Relation
+    contexts: Relation
+    context_qualifications: Relation
+    context_evidence: Relation
+    field_qualifications: Relation
+    field_mappings: Relation
+    attributes: Relation
+    attribute_evidence: Relation
+    attribute_decisions: Relation
+    relationship_evidence: Relation
 
 
 @dataclass(frozen=True)
@@ -85,17 +91,46 @@ class SilverContext:
     source_template: str
     source_title: str
     source_portfolio_label: str
-    reporting_entity: Knowledge
-    consolidation_scope: Knowledge
-    regulatory_scope: Knowledge
-    geography: Knowledge
-    currency: Knowledge
-    qualification_refs: tuple[str, ...]
-    evidence: tuple[SourceReference, ...]
+    reporting_entity_value: str | None
+    reporting_entity_status: str
+    consolidation_scope_value: str | None
+    consolidation_scope_status: str
+    regulatory_scope_value: str | None
+    regulatory_scope_status: str
+    geography_value: str | None
+    geography_status: str
+    currency_value: str | None
+    currency_status: str
 
 
 @dataclass(frozen=True)
-class SilverSegment:
+class SourceLocation:
+    source_document_id: str | None
+    source_pdf_page: int | None
+    source_printed_page: str | None
+    source_location: str | None
+    source_row: str | None
+    source_column: str | None
+
+
+@dataclass(frozen=True)
+class ContextQualification:
+    silver_revision_id: str
+    context_id: str
+    member: str
+    position: int
+    qualification_ref: str
+
+
+@dataclass(frozen=True)
+class ContextEvidence(SourceLocation):
+    silver_revision_id: str
+    context_id: str
+    position: int
+
+
+@dataclass(frozen=True)
+class SilverSegment(SourceLocation):
     silver_revision_id: str
     segment_id: str | None
     context_id: str
@@ -110,11 +145,10 @@ class SilverSegment:
     upper_inclusive: bool | None
     lower_status: str | None
     upper_status: str | None
-    source_reference: SourceReference | None
 
 
 @dataclass(frozen=True)
-class SilverObservation(SilverSegment, SilverContext, RowIdentity):
+class SilverObservation(SilverSegment, RowIdentity):
     on_balance_amount: Decimal | None
     off_balance_amount: Decimal | None
     mean_ccf_fraction: Decimal | None
@@ -130,48 +164,7 @@ class SilverObservation(SilverSegment, SilverContext, RowIdentity):
 
 
 @dataclass(frozen=True)
-class AssertionValue:
-    """Typed storage representation of the catalogue's heterogeneous value."""
-
-    text: str | None
-    integer: int | None
-    boolean: bool | None
-    revision_ref: RevisionRef | None
-    evidence_ref: EvidenceRef | None
-
-
-@dataclass(frozen=True)
-class StoredAssertion:
-    value: AssertionValue
-    status: str
-    evidence_refs: tuple[EvidenceRef, ...]
-    decision_refs: tuple[RevisionRef, ...]
-
-
-@dataclass(frozen=True)
-class StoredAttribute(StoredAssertion):
-    name: str
-    alternatives: tuple[StoredAssertion, ...]
-
-
-def stored_assertion(assertion: Assertion) -> StoredAssertion:
-    value = assertion.value
-    return StoredAssertion(
-        AssertionValue(
-            value if type(value) is str else None,
-            value if type(value) is int else None,
-            value if type(value) is bool else None,
-            value if isinstance(value, RevisionRef) else None,
-            value if isinstance(value, EvidenceRef) else None,
-        ),
-        assertion.status,
-        assertion.evidence_refs,
-        assertion.decision_refs,
-    )
-
-
-@dataclass(frozen=True)
-class SilverField:
+class SilverField(SourceLocation):
     silver_revision_id: str
     observation_id: str
     field_key: str
@@ -182,7 +175,6 @@ class SilverField:
     value_state: Literal["present", "source_missing", "not_conformed"]
     currency_code: str | None
     currency_status: str
-    attributes: tuple[StoredAttribute, ...]
     bundle_key: str
     output_version: str
     document_id: str
@@ -201,9 +193,64 @@ class SilverField:
     selection_role: str
     conversion_reason: str | None
     transformation_description: str
-    qualification_refs: tuple[str, ...]
-    source_reference: SourceReference
-    mapping_revision_refs: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class FieldKey:
+    silver_revision_id: str
+    observation_id: str
+    field_key: str
+
+
+@dataclass(frozen=True)
+class FieldQualification(FieldKey):
+    position: int
+    qualification_ref: str
+
+
+@dataclass(frozen=True)
+class FieldMapping(FieldKey):
+    position: int
+    mapping_revision_ref: str
+
+
+@dataclass(frozen=True)
+class AttributeKey(FieldKey):
+    name: str
+    assertion_index: int
+
+
+@dataclass(frozen=True)
+class FieldAttribute(AttributeKey):
+    position: int
+    status: str
+    value_text: str | None
+    value_integer: int | None
+    value_boolean: bool | None
+    value_revision_kind: str | None
+    value_revision_id: str | None
+    value_bundle_key: str | None
+    value_document_id: str | None
+    value_dataset_id: str | None
+    value_ref_kind: str | None
+    value_ref_id: str | None
+
+
+@dataclass(frozen=True)
+class AttributeEvidence(AttributeKey):
+    position: int
+    bundle_key: str
+    document_id: str
+    dataset_id: str
+    kind: str
+    ref_id: str
+
+
+@dataclass(frozen=True)
+class AttributeDecision(AttributeKey):
+    position: int
+    decision_kind: str
+    decision_revision_id: str
 
 
 @dataclass(frozen=True)
@@ -218,4 +265,10 @@ class SilverObservationRelationship:
     relationship_kind: str
     exhaustive: bool | None
     mutually_exclusive: bool | None
-    evidence: tuple[SourceReference, ...]
+
+
+@dataclass(frozen=True)
+class RelationshipEvidence(SourceLocation):
+    silver_revision_id: str
+    relationship_id: str
+    position: int

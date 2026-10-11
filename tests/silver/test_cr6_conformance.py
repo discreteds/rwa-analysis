@@ -72,17 +72,22 @@ def test_source_values_and_partial_semantics_survive(inputs, catalogue):
         == defaults["upper_fraction"].null_count()
         == 4
     )
-    contexts = {r["organisation_id"]: r for r in rows.values()}
+    contexts = {r["organisation_id"]: r for r in output.contexts.to_dicts()}
     assert str(contexts["cba"]["observation_date"]) == "2025-06-30"
     assert str(contexts["anz"]["document_date"]) == "2025-09-30"
-    assert contexts["anz"]["geography"]["status"] == "provisional"
+    assert contexts["anz"]["geography_status"] == "provisional"
     fields = {
         (r["observation_id"], r["field_key"]): r for r in output.fields.to_dicts()
     }
     lgd = fields[observation("cba"), "mean_lgd_fraction"]
     assert lgd["value_state"] == "present"
     assert (
-        next(a for a in lgd["attributes"] if a["name"] == "weighting")["status"]
+        output.attributes.filter(
+            (ma.col("observation_id") == observation("cba"))
+            & (ma.col("field_key") == "mean_lgd_fraction")
+            & (ma.col("name") == "weighting")
+            & (ma.col("assertion_index") == 0)
+        ).item("status")
         == "unresolved"
     )
     assert fields[observation("nab"), "ead_amount"]["currency_code"] == "AUD"
@@ -105,12 +110,18 @@ def test_source_values_and_partial_semantics_survive(inputs, catalogue):
     assert rows[observation("nab")]["rwa_density_fraction"] == Decimal("0.060")
     maturity = fields[observation("anz"), "mean_maturity_years"]
     assert maturity["missing_reason"] == "not_applicable"
-    assert maturity["qualification_refs"]
+    assert (
+        output.field_qualifications.filter(
+            (ma.col("observation_id") == maturity["observation_id"])
+            & (ma.col("field_key") == maturity["field_key"])
+        ).count_rows()
+        > 0
+    )
     schema = output.observations.to_polars().schema
     assert schema["ead_amount"] == pl.Decimal(16, 2)
     assert schema["mean_pd_fraction"] == pl.Decimal(16, 8)
     assert schema["reported_entity_count"] == pl.Int64
-    assert sum(len(r["mapping_revision_refs"]) for r in fields.values()) == 1296
+    assert output.field_mappings.count_rows() == 1296
     assert output.relationships.count_rows() == 32
 
 
@@ -178,22 +189,36 @@ def test_domain_amounts_and_rates_under_small_decimal_context(
 
 
 def test_empty_selection_has_explicit_schemas(catalogue):
+    from rwa_analysis.domains.cr6.contracts import TABLES
+
     output = conform((), catalogue)
     assert all(
         frame.is_empty() and pl.Null not in frame.dtypes
-        for frame in (
-            output.observations.to_polars(),
-            output.fields.to_polars(),
-            output.relationships.to_polars(),
-        )
+        for frame in (getattr(output, table.member).to_polars() for table in TABLES)
     )
 
 
 def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue):
-    from rwa_analysis.catalogue.models import MemberSelection, SemanticAttribute
+    from rwa_analysis.catalogue.models import (
+        InterpretationDecisionRevision,
+        MemberSelection,
+        RevisionRef,
+        SemanticAttribute,
+    )
 
     original = next(
         m for m in catalogue.members if m.revision_id == "cba.cr6.average_lgd@v1"
+    )
+    decision = replace(
+        next(
+            m
+            for m in catalogue.members
+            if isinstance(m, InterpretationDecisionRevision)
+        ),
+        id="synthetic-storage-decision",
+        revision_id="synthetic-storage-decision@v1",
+        effective_from=None,
+        effective_to=None,
     )
     additions = tuple(
         replace(
@@ -206,6 +231,13 @@ def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue)
                     value=value,
                     status="established",
                     evidence_refs=original.evidence_refs,
+                    decision_refs=(RevisionRef("decision", decision.revision_id),),
+                ),
+                SemanticAttribute(
+                    name="calculation_precision", value=8, status="established"
+                ),
+                SemanticAttribute(
+                    name="distinctness", value=False, status="established"
                 ),
             ),
         )
@@ -213,9 +245,10 @@ def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue)
     )
     cat = replace(
         catalogue,
-        members=(*catalogue.members, *additions),
+        members=(*catalogue.members, decision, *additions),
         selection=(
             *catalogue.selection,
+            MemberSelection("synthetic", "decision", decision.revision_id),
             *(
                 MemberSelection("synthetic", "mapping", m.revision_id)
                 for m in additions
@@ -227,14 +260,38 @@ def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue)
         (ma.col("observation_id") == observation("cba"))
         & (ma.col("field_key") == "mean_lgd_fraction")
     ).to_dicts()[0]
-    weighting = next(a for a in field["attributes"] if a["name"] == "weighting")
+    key = (
+        (ma.col("observation_id") == observation("cba"))
+        & (ma.col("field_key") == "mean_lgd_fraction")
+        & (ma.col("name") == "weighting")
+    )
+    weighting = output.attributes.filter(key)
     assert field["value_state"] == "present"
-    assert weighting["status"] == "conflicting"
-    assert {a["value"]["text"] for a in weighting["alternatives"]} >= {
+    assert (
+        weighting.filter(ma.col("assertion_index") == 0).item("status") == "conflicting"
+    )
+    assert {
+        a["value_text"]
+        for a in weighting.filter(ma.col("assertion_index") > 0).to_dicts()
+    } >= {
         "ead",
         "arrangement",
     }
-    assert weighting["evidence_refs"]
+    assert output.attribute_evidence.filter(key).count_rows() > 0
+    assert {
+        r["decision_revision_id"]
+        for r in output.attribute_decisions.filter(key).to_dicts()
+    } == {decision.revision_id}
+    typed = output.attributes.filter(
+        (ma.col("observation_id") == observation("cba"))
+        & (ma.col("field_key") == "mean_lgd_fraction")
+        & (ma.col("assertion_index") == 0)
+    )
+    assert (
+        typed.filter(ma.col("name") == "calculation_precision").item("value_integer")
+        == 8
+    )
+    assert typed.filter(ma.col("name") == "distinctness").item("value_boolean") is False
     assert output.observations.filter(
         ma.col("observation_id") == observation("cba")
     ).item("mean_lgd_fraction") == Decimal("0.14")

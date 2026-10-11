@@ -1,6 +1,6 @@
 """Dataclass-derived CR6 declarations, augmented with native field contracts."""
 
-from dataclasses import dataclass, is_dataclass, replace
+from dataclasses import dataclass, replace
 from decimal import Decimal
 from typing import Literal, get_args, get_origin, get_type_hints
 
@@ -11,6 +11,14 @@ from mountainash.typespec.spec import FieldConstraints
 from mountainash.typespec.universal_types import UniversalType
 
 from .models import (
+    AttributeDecision,
+    AttributeEvidence,
+    ContextEvidence,
+    ContextQualification,
+    FieldAttribute,
+    FieldMapping,
+    FieldQualification,
+    RelationshipEvidence,
     RowIdentity,
     SilverContext,
     SilverField,
@@ -38,11 +46,7 @@ MEASURES = {
 
 
 def model_spec(model, *, decimals=None, keys=()):
-    """Augment native derivation with nested shapes, literals and supplied decimals.
-
-    No domain rules are inferred from field names. Callers declare keys and
-    numeric types; nested dataclasses remain the sole field inventory.
-    """
+    """Augment flat dataclass schemas with declared decimals, literals and keys."""
     spec = extract_from_dataclass(model)
     hints = get_type_hints(model)
     augmented = []
@@ -63,20 +67,6 @@ def model_spec(model, *, decimals=None, keys=()):
                 type=UniversalType.STRING,
                 constraints=FieldConstraints(enum=list(get_args(hint))),
             )
-        elif is_dataclass(hint):
-            field = replace(
-                field, type=UniversalType.OBJECT, object_fields=model_spec(hint).fields
-            )
-        elif get_origin(hint) is tuple:
-            inner = get_args(hint)[0]
-            field = replace(
-                field,
-                type=UniversalType.ARRAY,
-                item_object_fields=model_spec(inner).fields
-                if is_dataclass(inner)
-                else None,
-                backend_type=None if is_dataclass(inner) else "List(String)",
-            )
         if field.name in keys:
             field = replace(
                 field,
@@ -91,7 +81,6 @@ def model_spec(model, *, decimals=None, keys=()):
 
 
 IDENTITY_SPEC = model_spec(RowIdentity, keys=("observation_id",))
-CONTEXT_SPEC = model_spec(SilverContext, keys=("context_id",))
 
 
 @dataclass(frozen=True)
@@ -125,5 +114,76 @@ TABLES = (
         "cr6_relationships",
         SilverObservationRelationship,
         ("silver_revision_id", "relationship_id"),
+    ),
+    table(
+        "contexts", "cr6_contexts", SilverContext, ("silver_revision_id", "context_id")
+    ),
+    table(
+        "context_qualifications",
+        "cr6_context_qualifications",
+        ContextQualification,
+        ("silver_revision_id", "context_id", "member", "position"),
+    ),
+    table(
+        "context_evidence",
+        "cr6_context_evidence",
+        ContextEvidence,
+        ("silver_revision_id", "context_id", "position"),
+    ),
+    table(
+        "field_qualifications",
+        "cr6_field_qualifications",
+        FieldQualification,
+        ("silver_revision_id", "observation_id", "field_key", "position"),
+    ),
+    table(
+        "field_mappings",
+        "cr6_field_mappings",
+        FieldMapping,
+        ("silver_revision_id", "observation_id", "field_key", "position"),
+    ),
+    table(
+        "attributes",
+        "cr6_attributes",
+        FieldAttribute,
+        (
+            "silver_revision_id",
+            "observation_id",
+            "field_key",
+            "name",
+            "assertion_index",
+        ),
+    ),
+    table(
+        "attribute_evidence",
+        "cr6_attribute_evidence",
+        AttributeEvidence,
+        (
+            "silver_revision_id",
+            "observation_id",
+            "field_key",
+            "name",
+            "assertion_index",
+            "position",
+        ),
+    ),
+    table(
+        "attribute_decisions",
+        "cr6_attribute_decisions",
+        AttributeDecision,
+        (
+            "silver_revision_id",
+            "observation_id",
+            "field_key",
+            "name",
+            "assertion_index",
+            "position",
+        ),
+    ),
+    table(
+        "relationship_evidence",
+        "cr6_relationship_evidence",
+        RelationshipEvidence,
+        ("silver_revision_id", "relationship_id", "position"),
     ),
 )
