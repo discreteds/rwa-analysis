@@ -10,6 +10,7 @@ Evidence acquisition and research questions with a defined analytical use live u
 | Item | Status | Objective |
 |---|---|---|
 | [Mortgage distribution evidence and calculation inputs](research/mortgage-distribution-evidence.md) | OPEN | Gather composition, market-share and actual default-outcome evidence; join scoped observations and explicit assumptions into distribution-constraining calculations. |
+| [Cross-bank disclosure table catalogue](research/cross-bank-disclosure-table-catalogue.md) | OPEN | Inventory all tables in the selected four-bank Pillar 3 reports; compare semantics, coverage and analytical join opportunities, then prioritise extraction. |
 
 ## Techdebt
 
