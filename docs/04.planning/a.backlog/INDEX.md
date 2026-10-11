@@ -9,7 +9,7 @@ Evidence acquisition and research questions with a defined analytical use live u
 
 | Item | Status | Objective |
 |---|---|---|
-| [Mortgage distribution evidence and calculation inputs](research/mortgage-distribution-evidence.md) | OPEN | Gather mortgage composition and market-share evidence; join scoped observations and explicit assumptions into distribution-constraining calculations. |
+| [Mortgage distribution evidence and calculation inputs](research/mortgage-distribution-evidence.md) | OPEN | Gather composition, market-share and actual default-outcome evidence; join scoped observations and explicit assumptions into distribution-constraining calculations. |
 
 ## Techdebt
 

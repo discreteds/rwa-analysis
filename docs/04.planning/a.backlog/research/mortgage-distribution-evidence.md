@@ -2,8 +2,9 @@
 
 **Type:** research
 
-**Status:** OPEN — initial official-source leads located; acquisition, detailed review
-and calculation integration remain outstanding.
+**Status:** OPEN — initial official-source leads located; CR9 default-outcome evidence
+reviewed in existing PDFs. Further acquisition, extraction and calculation integration
+remain outstanding.
 
 **Owner:** rwa-analysis disclosure research / analytical inputs
 
@@ -34,6 +35,7 @@ One mean PD and one RWA amount cannot uniquely identify the within-band distribu
 | Floors, overlays and model changes | Separate adjustments from distributional residuals | Effective period, CR6 applicability and any disclosed allocation |
 | Bank housing balances and corresponding market totals | Calculate consistent market shares and understand CR6 coverage | Domestic ADI versus consolidated group; included subsidiaries; stock versus flow; common denominator |
 | Average-PD/LGD weighting and count definitions | Establish the moments used by the inversion | EAD-weighted versus account-weighted; agreements versus distinct borrowers |
+| Published historical default rates and annual default-event counts | Compare assigned PD with realised experience; investigate empirical grouped discrimination | Cohort, observation window, denominator, exits, new entrants and initial rating assignment must be established |
 
 ## Initial official-source leads
 
@@ -56,6 +58,48 @@ Reuse the existing [raw inventory](../../../../raw/index.md) and bank CR6 review
 before acquiring duplicates. Save acquired PDFs under `raw/` and update its index.
 Record native statistical downloads and their release/glossary references alongside
 the acquisition record; do not add a registration framework.
+
+## Published actual default evidence — initial source review
+
+On 2026-10-11, inspected extracted text and rendered mortgage CR9 pages in all four
+already retained PDFs. This establishes published outcome evidence, not implemented
+CR9 extraction or approved conformance mappings. Source files/official acquisition
+URLs are in the [raw inventory](../../../../raw/index.md).
+
+| Bank and retained source | Exact location | Published evidence and qualifications |
+|---|---|---|
+| [CBA June 2025](../../../../raw/cba-2025-06-30-aps330.pdf) | PDF/printed p.60, residential mortgage block and notes | Historical annual default rates use data from 2014, with asset classes under standards applicable at the time. Annual backtesting counts cover 1 April 2024–31 March 2025, not the June CR6 date. Internal grades are mapped to disclosure bands by their midpoints; inspect this before assuming every underlying PD lies inside a printed interval. |
+| [Westpac September 2025](../../../../raw/westpac-2025-09-30-aps330.pdf) | PDF/printed p.55 mortgage block; p.56 notes b–d | Historical rates use ten years. Annual counts track July 2024–June 2025; PD and EAD weights are anchored at June 2024. Default counts include both initially performing borrowers and new borrowers who subsequently default; the latter are separately disclosed. |
+| [NAB September 2025](../../../../raw/nab-2025-09-30-aps330.pdf) | PDF p.60/printed p.58 definitions; PDF p.61/printed p.59 mortgage block | Historical rates use ten years of initially non-defaulted cohorts, with best-efforts retrospective asset-class alignment. Annual defaults include borrowers non-performing at any month-end during the financial year, including those later cured or exited; new borrowers are separately disclosed. Counting refers back to CR6 (mortgage agreements). Weighted PD is at reporting date, so do not assume it is the opening-cohort prediction. |
+| [ANZ September 2025](../../../../raw/anz-2025-09-30-aps330.pdf) | PDF/printed p.66 mortgage block and notes; p.116 modification detail | Mortgage historical rates use five years. The 2.5-year exception is for corporates, not mortgages. Historical-rate numerator excludes technical defaults; denominator excludes exited obligors. Mortgage historical portfolio rate is explicitly 0.62%. Exact annual cohort/rating anchors need further review. |
+
+### Source-reported average historical annual default rates (%)
+
+These are historical outcome rates, not model PDs and not latest-year default rates.
+Different history windows and definitions prevent treating them as a matched-period
+performance comparison. Values below were checked against the rendered source tables.
+
+| Disclosed PD band | CBA | Westpac | NAB | ANZ |
+|---|---:|---:|---:|---:|
+| 0–<0.15% | 0.07 | 0.06 | 0.10 | 0.08 |
+| 0.15–<0.25% | 0.16 | 0.15 | 0.21 | 0.18 |
+| 0.25–<0.50% | 0.29 | 0.27 | 0.38 | 0.34 |
+| 0.50–<0.75% | 0.46 | 0.52 | 0.58 | 0.52 |
+| 0.75–<2.50% | 1.06 | 0.98 | 0.98 | 1.06 |
+| 2.50–<10% | 2.80 | 5.80 | 4.71 | 2.99 |
+| 10–<100% | 13.32 | 17.92 | 23.48 | 11.19 |
+
+Capture annual default counts, new-entrant defaults, opening/closing populations and
+published historical rates as distinct measures. Derive a one-year opening-cohort rate
+only after establishing the matching denominator and band assignment; do not simply
+divide all defaults by closing counts. Do not average historical band rates using
+current CR6 counts to invent a published historical portfolio rate.
+
+Outcome evidence can inform calibration scenarios and, where matched cohort counts
+permit, a grouped realised Gini. Historical averages alone do not establish a current
+cohort's ROC/Gini or identify within-band PD dispersion. Keep count-weighted outcomes
+separate from EAD-weighted PDB and model-implied Gini. Defaulted stock, arrears, losses
+and default-event incidence remain different measures.
 
 ## Incorporation into calculations
 
@@ -106,6 +150,10 @@ or publication gates.
   locations, definitions, denominators and unresolved gaps in a compact evidence inventory.
 - [ ] Prioritise Westpac's property-count evidence and NAB's housing-scope/counting
   definitions; ask the researcher about material scope bridges and uncertain mappings.
+- [ ] Extract the located CR9 mortgage outcome evidence and its cohort/history
+  definitions with independent source expectations. Investigate opening-rating
+  assignment, exits, new entrants and observation dates before deriving annual rates
+  or realised Gini, or joining calibration evidence to CR6 distribution scenarios.
 - [ ] Retain source-backed supporting observations and approved interpretations in
   the existing architecture, with any required model changes separately designed.
 - [ ] Demonstrate one real bank calculation joining supporting evidence to CR6,
