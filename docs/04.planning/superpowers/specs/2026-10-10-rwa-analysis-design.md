@@ -4,7 +4,18 @@ Date: 2026-10-10
 
 Status: Approved architectural direction; written specification awaiting review.
 
+Subsequent decisions: the [simple CR6 workflow](2026-10-10-simple-cr6-research-design.md)
+supersedes the CLI and automatic output-reuse proposals below. The
+[strategic architecture](2026-10-11-strategic-architecture-design.md) records the
+agreed domain contracts, organisation sessions, Mountainash Settings layers and
+staging/master split. Its detailed written design awaits review. Use those later
+decisions for these concerns rather than reinstating the earlier implementation proposals.
+
 Governing principles: [Principles and architecture](../../../01.principles/README.md). The collection captures durable decisions; this specification describes their intended implementation.
+
+**2026-10-11 supersession:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md).
+Validation requirements, outputs and consequences below are historical proposals,
+not agreed requirements. Do not implement them or embed validation in processing.
 
 ## 1. Purpose and scope
 
@@ -233,7 +244,7 @@ Corrections belong to durable inputs: extraction fixes produce new Bronze versio
 
 Observed/derived/estimated status, verification status and extraction confidence are separate concepts. Statistical uncertainty belongs to estimated analytical results, not to extraction confidence.
 
-Validation includes unit and percentage interpretation, reference and band validity, and source-appropriate checks on EAD/RWA, density and weighted PD. Reconciliation tolerances reflect disclosed rounding and scope. A check that cannot be performed is distinguished from one that passed; analytical residuals and absent definitions are not automatically extraction errors.
+The earlier proposed validation inventory (units, references, bands and numerical reconciliation) is superseded. Validation is a separate process whose scope and behaviour remain undefined; none of those proposed checks is authorized for implementation. Analytical residuals and absent definitions are not automatically extraction errors.
 
 Structural defects require correction; partial semantics and ambiguous mappings remain inspectable and tagged. Analytical suitability is task-specific, with assumptions and limitations visible. There is no universal comparable/not-comparable gate on source observations.
 
@@ -379,7 +390,7 @@ Back up source files/index, retained Bronze versions, semantic catalogue/mapping
 
 Establish package tooling, configuration, contracts and storage connectivity.
 
-Acceptance: a small disclosure-shaped dataset preserves decimal values, missingness and identifiers through storage and Mountainash querying; required validation works; a failed write transaction leaves no partially published dataset. Record the tested ecosystem revisions.
+Acceptance: a small disclosure-shaped dataset preserves decimal values, missingness and identifiers through storage and Mountainash querying; a failed write transaction leaves no partially published dataset. Validation is not an implicit acceptance gate. Record the tested ecosystem revisions.
 
 ### B. Numerical core
 

@@ -1,0 +1,27 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "agreed.nab-mortgage-agreements",
+      "revision_id": "agreed.nab-mortgage-agreements@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "interpretation": "NAB CR6 residential mortgage agreements map to arrangement count.",
+      "rationale": "The existing agreed principle distinguishes counted arrangements from monetary exposures and explicitly accepts this scoped NAB mapping. It does not establish distinctness or another bank's counting unit.",
+      "decision_context": "Transcription of an already agreed researcher interpretation recorded in the data-semantics principle, not a new interview. Original decision date was not recorded; created_on is this catalogue revision date.",
+      "authority_refs": [
+        "docs/01.principles/b.data-semantics/layered-metric-definitions.md#examples"
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "borrower-definition"
+        }
+      ]
+    }
+  ]
+}

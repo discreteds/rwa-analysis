@@ -8,9 +8,13 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 - [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
 - [b. Data semantics](b.data-semantics/INDEX.md): layered metric definitions, contextual mappings and correction-safe identity.
-- [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction and independently authored golden sets.
+- [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction, independently authored golden sets, and validation as a separate, not-yet-defined process.
 
 ## Supporting material
+
+- [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved specification separating configuration, declarations, operations and workflow, with the agreed `run()` entrypoint and a linked migration plan.
+
+- [Simpler CR6 research workflow](../04.planning/superpowers/specs/2026-10-10-simple-cr6-research-design.md): candidate replacement implementation direction for review; PR #1 is retained as a working demonstration.
 
 - [Platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): detailed architecture and intended workflows.
 - [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): consolidated source capture, semantic catalogue and conformance contracts.

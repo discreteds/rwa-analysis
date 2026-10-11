@@ -1,0 +1,1450 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "nab.cr6.context",
+      "revision_id": "nab.cr6.context@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB"
+      },
+      "attributes": [
+        {
+          "name": "population",
+          "value": {
+            "kind": "concept",
+            "revision_id": "population.residential-mortgages@v1"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "context",
+              "ref_id": "context"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "reporting_entity",
+          "value": "NAB and its controlled entities",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "report-entity"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "consolidation_scope",
+          "value": "Level 2",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "level-2-definition"
+            },
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "level-2"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "regulatory_scope",
+          "value": "A-IRB",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "regulatory-basis"
+            },
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "approach"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "currency",
+          "value": "AUD",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "currency-rounding"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "geography",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "context",
+          "ref_id": "context"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.on_balance_exposure",
+      "revision_id": "nab.cr6.on_balance_exposure@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "on_balance_exposure",
+        "published_field_ref": "on_balance_exposure"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.on-balance@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.on_balance_exposure@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "on_balance_exposure"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.off_balance_exposure",
+      "revision_id": "nab.cr6.off_balance_exposure@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "off_balance_exposure",
+        "published_field_ref": "off_balance_exposure"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.off-balance@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.off_balance_exposure@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "off_balance_exposure"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.average_ccf",
+      "revision_id": "nab.cr6.average_ccf@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "average_ccf",
+        "published_field_ref": "average_ccf"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "factor.credit-conversion@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_ccf"
+        }
+      ],
+      "conversion": {
+        "source_unit": "%",
+        "source_scale": "1",
+        "unit_factor": "0.01"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.ratio@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        },
+        {
+          "name": "weighting",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.ead",
+      "revision_id": "nab.cr6.ead@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "ead",
+        "published_field_ref": "ead"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.at-default@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.ead@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "ead"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.average_pd",
+      "revision_id": "nab.cr6.average_pd@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "average_pd",
+        "published_field_ref": "average_pd"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.default-probability@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_pd"
+        }
+      ],
+      "conversion": {
+        "source_unit": "%",
+        "source_scale": "1",
+        "unit_factor": "0.01"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.ratio@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        },
+        {
+          "name": "weighting",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.reported_borrower_count",
+      "revision_id": "nab.cr6.reported_borrower_count@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "reported_borrower_count",
+        "published_field_ref": "reported_borrower_count"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.arrangements@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.reported_borrower_count@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "reported_borrower_count"
+        }
+      ],
+      "conversion": {
+        "source_unit": "",
+        "source_scale": "1",
+        "unit_factor": "1"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.average_lgd",
+      "revision_id": "nab.cr6.average_lgd@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "average_lgd",
+        "published_field_ref": "average_lgd"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.loss-given-default@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_lgd"
+        }
+      ],
+      "conversion": {
+        "source_unit": "%",
+        "source_scale": "1",
+        "unit_factor": "0.01"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.ratio@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        },
+        {
+          "name": "weighting",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.average_maturity",
+      "revision_id": "nab.cr6.average_maturity@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "average_maturity",
+        "published_field_ref": "average_maturity"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "duration.effective-maturity@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_maturity"
+        }
+      ],
+      "conversion": {
+        "source_unit": "years",
+        "source_scale": "1",
+        "unit_factor": "1"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.year@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        },
+        {
+          "name": "weighting",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [],
+          "decision_refs": []
+        },
+        {
+          "name": "missingness",
+          "value": "not_used_in_rwa_calculation",
+          "status": "not_applicable",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "maturity-definition"
+            }
+          ],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.rwa",
+      "revision_id": "nab.cr6.rwa@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "rwa",
+        "published_field_ref": "rwa"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weighted-assets@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.rwa@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.rwa_density",
+      "revision_id": "nab.cr6.rwa_density@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "rwa_density",
+        "published_field_ref": "rwa_density"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weight-density@v1"
+      },
+      "measure_ref": {
+        "kind": "measure",
+        "revision_id": "measure.nab.cr6.rwa_density@v1"
+      },
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa_density"
+        }
+      ],
+      "conversion": {
+        "source_unit": "%",
+        "source_scale": "1",
+        "unit_factor": "0.01"
+      },
+      "attributes": []
+    },
+    {
+      "id": "nab.cr6.regulatory_expected_loss",
+      "revision_id": "nab.cr6.regulatory_expected_loss@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "regulatory_expected_loss",
+        "published_field_ref": "regulatory_expected_loss"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "loss.regulatory-expected@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "regulatory_expected_loss"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.money@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.provisions",
+      "revision_id": "nab.cr6.provisions@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "field_key": "provisions",
+        "published_field_ref": "provisions"
+      },
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "provision.credit-impairment@v1"
+      },
+      "measure_ref": null,
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "provisions"
+        }
+      ],
+      "conversion": {
+        "source_unit": "$m",
+        "source_scale": "1000000",
+        "unit_factor": "1000000"
+      },
+      "attributes": [
+        {
+          "name": "result_unit",
+          "value": {
+            "kind": "concept",
+            "revision_id": "unit.money@v1"
+          },
+          "status": "established",
+          "evidence_refs": [],
+          "decision_refs": []
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-1",
+      "revision_id": "nab.cr6.population.band-1@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-1",
+        "row_role": "band",
+        "band_ref": "pd-band-1"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-1"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-1"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-1"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-1"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-1"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-2",
+      "revision_id": "nab.cr6.population.band-2@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-2",
+        "row_role": "band",
+        "band_ref": "pd-band-2"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-2"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-2"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-2"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-2"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-2"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-3",
+      "revision_id": "nab.cr6.population.band-3@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-3",
+        "row_role": "band",
+        "band_ref": "pd-band-3"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-3"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-3"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-3"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-3"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-3"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-4",
+      "revision_id": "nab.cr6.population.band-4@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-4",
+        "row_role": "band",
+        "band_ref": "pd-band-4"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-4"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-4"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-4"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-4"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-4"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-5",
+      "revision_id": "nab.cr6.population.band-5@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-5",
+        "row_role": "band",
+        "band_ref": "pd-band-5"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-5"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-5"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-5"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-5"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-5"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-6",
+      "revision_id": "nab.cr6.population.band-6@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-6",
+        "row_role": "band",
+        "band_ref": "pd-band-6"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-6"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-6"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-6"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-6"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-6"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-7",
+      "revision_id": "nab.cr6.population.band-7@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-7",
+        "row_role": "band",
+        "band_ref": "pd-band-7"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-7"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-7"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-7"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "non_default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-7"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-7"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.band-8",
+      "revision_id": "nab.cr6.population.band-8@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "band-8",
+        "row_role": "band",
+        "band_ref": "pd-band-8"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "band",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-8"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "pd_band",
+          "value": {
+            "bundle_key": "au/nab/2025-09-30/aps330",
+            "document_id": "nab-2025-09-30-aps330",
+            "dataset_id": "cr6-residential-mortgages",
+            "kind": "band",
+            "ref_id": "pd-band-8"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-8"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "default_state",
+          "value": "default",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "band",
+              "ref_id": "pd-band-8"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "band",
+          "ref_id": "pd-band-8"
+        }
+      ]
+    },
+    {
+      "id": "nab.cr6.population.aggregate",
+      "revision_id": "nab.cr6.population.aggregate@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "scope": {
+        "document_id": "nab-2025-09-30-aps330",
+        "document_date": "2025-09-30",
+        "dataset_id": "cr6-residential-mortgages",
+        "template": "CR6",
+        "portfolio": "Residential mortgage",
+        "observation_from": "2025-09-30",
+        "observation_to": "2025-09-30",
+        "reporting_entity": "NAB and its controlled entities",
+        "regulatory_scope": "A-IRB",
+        "record_id": "portfolio-aggregate",
+        "row_role": "Sub-total"
+      },
+      "attributes": [
+        {
+          "name": "row_role",
+          "value": "portfolio_aggregate",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "axis",
+              "ref_id": "portfolio-aggregate"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "axis",
+          "ref_id": "portfolio-aggregate"
+        }
+      ]
+    }
+  ]
+}

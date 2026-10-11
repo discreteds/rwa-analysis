@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rwa-analysis"
+version = "0.1.0"
+description = "Source-traceable disclosure research"
+requires-python = ">=3.12"
+dependencies = [
+    "mountainash",
+    "mountainash-data[duckdb]",
+    "mountainash-files",
+    "mountainash-settings",
+    "mountainash-auth-client",
+    "mountainash-transport",
+    "pdfplumber",
+    "polars==1.44.2",
+    "duckdb==1.5.6",
+    "ibis-framework==12.0.0",
+    "pyarrow",
+    "pydantic",
+]
+
+[dependency-groups]
+dev = ["pytest", "ruff"]
+
+[tool.uv.sources]
+mountainash = { git = "https://github.com/mountainash-io/mountainash", rev = "ee28822d25310a396865a78cba17f2d7cb779d09" }
+mountainash-data = { git = "https://github.com/mountainash-io/mountainash-data", rev = "36f4f4a68bc17de51bfc22bbfbd9dd9191db2701" }
+mountainash-files = { git = "https://github.com/mountainash-io/mountainash-files", rev = "13721c33fa5876ba8ee1e69917f3e9ce9f781fc2" }
+mountainash-settings = { git = "https://github.com/mountainash-io/mountainash-settings", rev = "e81750960b3fb078ae239696b848054568af6c72" }
+mountainash-auth-client = { git = "https://github.com/mountainash-io/mountainash-auth-client", rev = "1b57247f17deb68c1178635486c05a8bfc6fa83b" }
+mountainash-transport = { git = "https://github.com/mountainash-io/mountainash-transport", rev = "f79e3a3729f31c88f148f4c8443657ae68c652ce" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--import-mode=importlib"
+
+[tool.ruff]
+target-version = "py312"

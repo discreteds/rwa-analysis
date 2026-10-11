@@ -1,0 +1,3 @@
+bronze_root: data/bronze
+manifest_root: data/manifests
+master_path: data/silver/master.duckdb
