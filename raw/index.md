@@ -49,4 +49,16 @@ All four archives also link quantitative Excel files. Those links were observed 
 
 ## Review status
 
-See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). These are source reviews, not completed golden sets or bespoke extractions. All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.
+The four reviewed selections below are available through the
+[CR6 extraction commands](../docs/workflows/cr6-extraction.md). Saved Bronze
+versions support [offline Silver rebuild and recovery](../docs/workflows/silver-rebuild.md).
+The [CLI integration test](../tests/integration/test_cr6_cli.py) verifies all four
+dispatches and restored inputs at a different root.
+
+See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). Those discovery notes are not production extractions. CBA June 2025 now has a [direct source review](../extractions/au/cba/2025-06-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/cba/2025-06-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/cba/2025-06-30/aps330/golden.json). All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.
+
+Westpac September 2025 also has a [direct source review](../extractions/au/westpac/2025-09-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/westpac/2025-09-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/westpac/2025-09-30/aps330/golden.json). Its selected p. 48 block retains all 108 positions, including 17 blanks and the default CCF dash, with the density qualification captured from p. 49.
+
+NAB September 2025 has a [direct source review](../extractions/au/nab/2025-09-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/nab/2025-09-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/nab/2025-09-30/aps330/golden.json). Its selected PDF p. 49 / printed p. 47 block retains 108 positions, including nine omitted maturity cells and eight provisions unavailable by PD band. PDF p. 48 definitions establish mortgage agreement counts and excluded overlays for both RWA and density; source EaD labels, columns a–l and one-decimal density precision are preserved.
+
+ANZ September 2025 has a [direct source review](../extractions/au/anz/2025-09-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/anz/2025-09-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/anz/2025-09-30/aps330/golden.json). Its selected AIRB block on PDF / printed p. 57 retains source rows 10–18 and all 108 positions, including nine explained retail maturity dashes and eight blank band provisions. ANZ BH Pty Ltd's Level 2 perimeter is distinguished from standardised Suncorp/Norfina and the separate NZ CR6 block. P. 23's $3.1bn CMS2 overlay statement is retained as cross-table context; CR6 overlay treatment and mortgage counted entity remain unresolved. Appendix 1 p. 116 supplies the actual retail maturity template modification.

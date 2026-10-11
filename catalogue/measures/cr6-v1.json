@@ -1,0 +1,468 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "measure.cba.cr6.ead",
+      "revision_id": "measure.cba.cr6.ead@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-06-30",
+      "effective_to": "2025-06-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.at-default@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "exposure_basis",
+          "value": "ead_post_crm_post_ccf",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "field",
+              "ref_id": "ead"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "ead"
+        }
+      ]
+    },
+    {
+      "id": "measure.cba.cr6.average_pd",
+      "revision_id": "measure.cba.cr6.average_pd@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-06-30",
+      "effective_to": "2025-06-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.default-probability@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "weighting",
+          "value": "period_end_ead",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "pd-weighting"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "weight_measure",
+          "value": {
+            "kind": "measure",
+            "revision_id": "measure.cba.cr6.ead@v1"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "pd-weighting"
+            }
+          ],
+          "decision_refs": []
+        },
+        {
+          "name": "weight_timing",
+          "value": "period_end",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "pd-weighting"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "average_pd"
+        }
+      ]
+    },
+    {
+      "id": "measure.cba.cr6.rwa",
+      "revision_id": "measure.cba.cr6.rwa@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-06-30",
+      "effective_to": "2025-06-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weighted-assets@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "overlay_treatment",
+          "value": "includes_overlays",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "rwa-overlays"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa"
+        }
+      ]
+    },
+    {
+      "id": "measure.cba.cr6.rwa_density",
+      "revision_id": "measure.cba.cr6.rwa_density@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-06-30",
+      "effective_to": "2025-06-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weight-density@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "calculation_precision",
+          "value": "unrounded_inputs",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/cba/2025-06-30/aps330",
+              "document_id": "cba-2025-06-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "density-rounding"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/cba/2025-06-30/aps330",
+          "document_id": "cba-2025-06-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa_density"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.on_balance_exposure",
+      "revision_id": "measure.nab.cr6.on_balance_exposure@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.on-balance@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "exposure_basis",
+          "value": "ead_pre_crm",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "field",
+              "ref_id": "on_balance_exposure"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "on_balance_exposure"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.off_balance_exposure",
+      "revision_id": "measure.nab.cr6.off_balance_exposure@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.off-balance@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "exposure_basis",
+          "value": "ead_pre_ccf_pre_crm",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "field",
+              "ref_id": "off_balance_exposure"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "off_balance_exposure"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.ead",
+      "revision_id": "measure.nab.cr6.ead@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.at-default@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "exposure_basis",
+          "value": "ead_post_ccf_post_crm",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "field",
+              "ref_id": "ead"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "ead"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.reported_borrower_count",
+      "revision_id": "measure.nab.cr6.reported_borrower_count@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.arrangements@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.count@v1"
+      },
+      "attributes": [
+        {
+          "name": "counted_entity",
+          "value": "arrangement",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "borrower-definition"
+            }
+          ],
+          "decision_refs": [
+            {
+              "kind": "decision",
+              "revision_id": "agreed.nab-mortgage-agreements@v1"
+            }
+          ]
+        },
+        {
+          "name": "distinctness",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "borrower-definition"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "reported_borrower_count"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.rwa",
+      "revision_id": "measure.nab.cr6.rwa@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weighted-assets@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "overlay_treatment",
+          "value": "excludes_overlays",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "overlay-exclusion"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa"
+        }
+      ]
+    },
+    {
+      "id": "measure.nab.cr6.rwa_density",
+      "revision_id": "measure.nab.cr6.rwa_density@v1",
+      "created_on": "2026-10-10",
+      "effective_from": "2025-09-30",
+      "effective_to": "2025-09-30",
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "capital.risk-weight-density@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "overlay_treatment",
+          "value": "excludes_overlays",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/nab/2025-09-30/aps330",
+              "document_id": "nab-2025-09-30-aps330",
+              "dataset_id": "cr6-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "overlay-exclusion"
+            }
+          ],
+          "decision_refs": []
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/nab/2025-09-30/aps330",
+          "document_id": "nab-2025-09-30-aps330",
+          "dataset_id": "cr6-residential-mortgages",
+          "kind": "field",
+          "ref_id": "rwa_density"
+        }
+      ]
+    }
+  ]
+}
