@@ -68,6 +68,7 @@ Current detailed specifications:
 
 - Use Mountainash relations/contracts and storage integration; the selected persistent store is local DuckDB through `mountainash-data`. Keep NumPy/SciPy capital calculations independent of persistence.
 - Consult the actual installed/local Mountainash APIs and backend capabilities before implementing an integration. The dependency's documentation does not prove every conformance or transaction path is supported.
+- Record Mountainash dependency findings in `/home/ubuntu/git/mountainash-io/mountainash-central/04.planning/mountainash/a.backlog/`, following its conventions and checking existing owners first. Do not open GitHub issues without explicit researcher approval. Distinguish reproduced defects, capability questions and consumer declaration mistakes.
 - Silver reads saved Bronze. Full regeneration is the primary workflow; incremental upserts must yield the same logical result.
 - Keep definitions, mappings, curated corrections and rebuild manifests outside disposable Silver. A manual Silver edit alone is not a durable correction.
 - Version interpretations and preserve source-effective dates separately from revision history. Mutable canonical classifications and database-generated IDs are not sufficient durable observation identities.

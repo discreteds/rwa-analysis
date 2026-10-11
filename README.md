@@ -1,8 +1,9 @@
 # RWA disclosure research
 
 **Migration status: blocked, not ready for use.** The new CBA entrypoint is wired,
-but native Mountainash ingress/conformance defects prevent the executable review
-checkpoint. See the migration plan's execution status for issues and clearance.
+but native validation/schema defects and unresolved ingress/declaration questions
+prevent the executable review checkpoint. The migration plan records the central
+Mountainash backlog owners and clearance conditions.
 The prior working implementation remains at `feature/simple-cr6` (`3be5e86`).
 
 ## CBA workflow

@@ -220,7 +220,8 @@ the disposable spike was not imported.
   contracts. Subsequent focused execution without those adaptations fails earlier
   on the all-null source Decimal declaration: **1 passed, 7 failed** in the domain/
   organisation tests. The real `examples/cr6_research.py` run confirms #363 before
-  publication. Tests remain failing, not skipped. Ruff and `git diff --check` pass.
+  publication (the known cap; consumer declaration necessity remains unresolved).
+  Tests remain failing, not skipped. Ruff and `git diff --check` pass.
 - A focused storage/workflow review found component construction inside session
   reconstruction; source loading was moved into the storage operation.
 - Review of the domain handoff identified blanket decimal pre-casts and manual
@@ -228,21 +229,29 @@ the disposable spike was not imported.
   removed rather than retain consumer workarounds. Native field rounding is now
   explicit; ordinary arithmetic widening and source-unit reconstruction remain.
 
-Distinct upstream findings have standalone reproductions in these issues:
+**Tracking correction:** the four GitHub reports were filed in the wrong location
+and have been closed as transferred, not fixed. Mountainash Central owns the
+records below (commit `6f2ff8f4`). These are two reproduced defects, one capability
+investigation, and an observation under an existing constraint—not four established
+upstream bugs. No new execution priority or upstream implementation is authorized.
 
-| Issue | Observed failure | Affected step |
+Canonical backlog directory:
+`/home/ubuntu/git/mountainash-io/mountainash-central/04.planning/mountainash/a.backlog/active/`
+
+| Central record | Observed failure / disposition | Affected step |
 |---|---|---|
-| [Mountainash #360](https://github.com/mountainash-io/mountainash/issues/360) | Conformed dataclass source schema disappears during structured join lineage | Task 1 relation composition |
-| [Mountainash #361](https://github.com/mountainash-io/mountainash/issues/361) | Native contracts reject valid list/list-of-struct columns | Task 1 output contracts; Task 2 publication path |
-| [Mountainash #362](https://github.com/mountainash-io/mountainash/issues/362) | Native ingress cannot materialize nested dataclass collections | Task 1 metadata ingress |
-| [Mountainash #363](https://github.com/mountainash-io/mountainash/issues/363) | An all-null source Decimal working column hits the precision-16 conversion limit | Task 1 source-number conformance |
+| 289 — `dataclass-source-schema-structured-join.md` (former GitHub #360) | Reproduced schema loss during structured join lineage | Task 1 relation composition |
+| 290 — `native-array-datacontract-validation.md` (former GitHub #361) | Reproduced rejection of valid native list/list-of-struct columns | Task 1 output contracts; Task 2 publication path |
+| 291 — `nested-dataclass-ingress-support.md` (former GitHub #362) | Establish supported native ingress API or capability gap; not a confirmed regression | Task 1 metadata ingress |
+| 285 — `polars-decimal-round-panic-upstream.md`, consumer observation (former GitHub #363) | Known owner-approved precision cap; first investigate whether our precision-38 source declaration is necessary | Task 1 source-number conformance |
 
 The measure-specific persisted numeric decision remains unchanged. #363 concerns
 source working columns, not a return to universal precision-22 persisted measures.
 
-**Clearance:** obtain supported upstream fixes/native APIs, pin the corrected
-dependency, and pass the issue reproductions plus the domain and organisation/
-persisted-reconstruction tests. Then run the full suite and the real saved-Bronze
+**Clearance:** resolve the confirmed defects through their central owners and pin
+the corrected dependency; establish supported ingress and correct consumer input
+declarations for the two triage questions. Pass the relevant reproductions plus
+the domain and organisation/persisted-reconstruction tests. Then run the full suite and the real saved-Bronze
 and PDF CBA examples before requesting the researcher checkpoint. Full implementation
 correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
 
