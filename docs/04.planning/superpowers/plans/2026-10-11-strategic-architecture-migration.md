@@ -15,7 +15,7 @@ explicitly rejected reintroducing the older checks or bullet-proofing this migra
 **Current checkpoint:** the researcher approved CBA and authorised the remaining
 four-bank work. All four staging databases and master now run successfully; full
 suite: **114 passed**. Correctness and complexity reviews found no in-scope defects
-or required cuts. Implementation is ready for PR to `develop`. Earlier blocked-status
+or required cuts. PR #2 is open against `develop` (not merged). Earlier blocked-status
 entries below are historical execution evidence, not current delivery gates.
 
 Independent alignment and complexity reviews passed on 2026-10-11 with no requested
@@ -233,7 +233,7 @@ describe the selected source case, not new generic runtime completeness checks.
 - [x] Run the relevant existing tests, adapting or removing those tied to retired
   checks. Verify the demonstrated workflow and run Ruff plus `git diff --check`.
   Do not restore historical lifecycle/fault-injection suites or invent replacement guards.
-- [ ] Review the implementation for correctness and unnecessary complexity against
+- [x] Review the implementation for correctness and unnecessary complexity against
   this narrowed scope. Open the implementation PR against the confirmed integration
   branch (`develop` currently); offer local synchronisation after handoff.
 
@@ -368,6 +368,9 @@ correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
   no required cuts. No additional cleanup layer or runtime guards were introduced.
 - README documents staging/master usage and the mutable publication database paths.
   The approved temporary metadata ingress adaptation remains tracked for removal.
+- Migration PR: https://github.com/discreteds/rwa-analysis/pull/2, targeting `develop`.
+  Local synchronisation is offered at handoff; the checkout remains on the feature
+  branch until the researcher chooses it.
 
 ### Delivery criterion
 
