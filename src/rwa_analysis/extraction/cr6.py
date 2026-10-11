@@ -3,18 +3,11 @@
 from dataclasses import dataclass, fields
 from decimal import Decimal
 
+from .datasets import DatasetMetadata
 from .models import (
     DatasetContext,
-    PublishedField,
-    Qualification,
     ReportedValue,
-    SegmentationDefinition,
-    SourceAxisItem,
-    SourceDocument,
     SourceEndpoint,
-    SourceReference,
-    SourceRelationship,
-    ValueBinding,
     source_objects,
     unique_ids,
 )
@@ -56,27 +49,22 @@ CR6_FIELDS = tuple(f.name for f in fields(BronzeCreditRiskExposureRow)[5:])
 @dataclass(frozen=True)
 class Cr6Dataset:
     id: str
-    context: DatasetContext
-    axes: tuple[SourceAxisItem, ...]
-    published_fields: tuple[PublishedField, ...]
-    bindings: tuple[ValueBinding, ...]
-    segmentations: tuple[SegmentationDefinition, ...]
-    qualifications: tuple[Qualification, ...]
-    relationships: tuple[SourceRelationship, ...]
-    records: tuple[BronzeCreditRiskExposureRow, ...]
+    metadata: DatasetMetadata[DatasetContext]
+    exposure_rows: tuple[BronzeCreditRiskExposureRow, ...]
 
     def __post_init__(self):
-        axes = unique_ids(self.axes)
-        published = unique_ids(self.published_fields)
-        notes = unique_ids(self.qualifications)
-        relationships = unique_ids(self.relationships)
-        unique_ids(self.bindings)
-        unique_ids(self.segmentations)
-        unique_ids(self.records, "record_id")
-        bands = unique_ids(tuple(b for s in self.segmentations for b in s.bands))
-        rows = {a.id for a in self.axes if a.axis == "row"}
-        columns = {a.id for a in self.axes if a.axis == "column"}
-        blocks = {a.id for a in self.axes if a.axis == "block"}
+        metadata = self.metadata
+        axes = unique_ids(metadata.axes)
+        published = unique_ids(metadata.published_fields)
+        notes = unique_ids(metadata.qualifications)
+        relationships = unique_ids(metadata.relationships)
+        unique_ids(metadata.bindings)
+        unique_ids(metadata.segmentations)
+        unique_ids(self.exposure_rows, "record_id")
+        bands = unique_ids(tuple(b for s in metadata.segmentations for b in s.bands))
+        rows = {a.id for a in metadata.axes if a.axis == "row"}
+        columns = {a.id for a in metadata.axes if a.axis == "column"}
+        blocks = {a.id for a in metadata.axes if a.axis == "block"}
         endpoints = {
             "row": rows,
             "field": published,
@@ -95,15 +83,15 @@ class Cr6Dataset:
             for attr, allowed in (
                 ("qualification_refs", notes),
                 ("header_path_refs", axes),
-                ("context_refs", {self.context.id}),
+                ("context_refs", {metadata.context.id}),
             ):
                 resolve(getattr(obj, attr, ()), allowed, attr)
             if isinstance(obj, SourceEndpoint):
                 resolve((obj.id,), endpoints.get(obj.kind, set()), obj.kind)
-        for field in self.published_fields:
+        for field in metadata.published_fields:
             unique_ids(field.attributes, "name")
         coverage = set()
-        for binding in self.bindings:
+        for binding in metadata.bindings:
             resolve((binding.typed_field_name,), CR6_FIELDS, "typed_field_name")
             resolve((binding.published_field_ref,), published, "published_field_ref")
             resolve(binding.row_refs, rows, "row_refs")
@@ -113,7 +101,7 @@ class Cr6Dataset:
                 if pair in coverage:
                     raise ValueError(f"Ambiguous binding for {pair}")
                 coverage.add(pair)
-        for record in self.records:
+        for record in self.exposure_rows:
             resolve((record.source_row_ref,), rows, "source_row_ref")
             resolve(
                 record.source_segment_memberships, bands, "source_segment_memberships"
@@ -122,23 +110,3 @@ class Cr6Dataset:
             for name in CR6_FIELDS:
                 if (record.source_row_ref, name) not in coverage:
                     raise ValueError(f"Missing binding for {record.record_id}.{name}")
-
-
-@dataclass(frozen=True)
-class ExtractionBundle:
-    document: SourceDocument
-    bundle_key: str
-    extractor_path: str
-    schema_version: str
-    datasets: tuple[Cr6Dataset, ...]
-
-    def __post_init__(self):
-        if self.schema_version != "cr6-v1":
-            raise ValueError(f"Unsupported schema version: {self.schema_version}")
-        unique_ids(self.datasets)
-        for obj in source_objects(self):
-            if (
-                isinstance(obj, SourceReference)
-                and obj.document_id != self.document.document_id
-            ):
-                raise ValueError(f"Unresolved document: {obj.document_id}")

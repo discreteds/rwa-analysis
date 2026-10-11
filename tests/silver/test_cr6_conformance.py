@@ -1,10 +1,6 @@
-"""Silver owns unit conversion and publication closure, not PDF extraction.
+"""Independent numerical and source-semantic proof at the CR6 domain boundary."""
 
-Real saved inputs catch numeric/metadata loss. Mutations exercise publication
-faults that source goldens and catalogue resolution cannot detect.
-"""
-
-from dataclasses import replace
+from dataclasses import asdict, replace
 from decimal import Decimal, localcontext
 
 import mountainash as ma
@@ -13,25 +9,14 @@ import pytest
 
 
 @pytest.fixture(scope="module")
-def saved_inputs(tmp_path_factory, cba_bundle, westpac_bundle, nab_bundle, anz_bundle):
-    from rwa_analysis.storage.bronze import load_bronze, save_bronze
+def inputs(tmp_path_factory, cba_bundle, westpac_bundle, nab_bundle, anz_bundle):
+    from rwa_analysis.storage.bronze import BronzeStore
 
-    root = tmp_path_factory.mktemp("silver-bronze")
-    refs = tuple(
-        save_bronze(b, "v1", root, "test-r1")
-        for b in (cba_bundle, westpac_bundle, nab_bundle, anz_bundle)
+    store = BronzeStore(tmp_path_factory.mktemp("silver-bronze"))
+    return tuple(
+        store.load(store.save(bundle, "v1"))
+        for bundle in (cba_bundle, westpac_bundle, nab_bundle, anz_bundle)
     )
-    return tuple(load_bronze(ref, root) for ref in refs), refs
-
-
-@pytest.fixture
-def saved_bundles(saved_inputs):
-    return saved_inputs[0]
-
-
-@pytest.fixture
-def bronze_refs(saved_inputs):
-    return saved_inputs[1]
 
 
 @pytest.fixture
@@ -41,20 +26,27 @@ def catalogue(project_root):
     return load_catalogue(project_root / "catalogue/releases/cr6-v1.json")
 
 
+def conform(inputs, catalogue):
+    from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
+
+    return Cr6Pipeline().conform(inputs, catalogue)
+
+
 def observation(org, record="band-1"):
     date = "2025-06-30" if org == "cba" else "2025-09-30"
     return f"au/{org}/{date}/aps330/cr6-residential-mortgages/{record}"
 
 
-def test_source_values_and_partial_semantics_survive(
-    saved_bundles, bronze_refs, catalogue
-):
-    from rwa_analysis.normalization.cr6 import conform_cr6
+def test_source_values_and_partial_semantics_survive(inputs, catalogue):
+    from rwa_analysis.domains.cr6.contracts import TABLES
+    from rwa_analysis.domains.cr6.models import SilverObservation
 
-    candidate = conform_cr6(saved_bundles, bronze_refs, catalogue, "test-r1")
+    output = conform(inputs, catalogue)
     rows = {
-        r["observation_id"]: r
-        for r in ma.relation(candidate.tables["cr6_observations"]).to_dicts()
+        r.observation_id: asdict(r)
+        for r in output.observations.to_dataclasses(
+            SilverObservation, spec=TABLES[0].spec
+        )
     }
     cba = rows[observation("cba")]
     assert cba["ead_amount"] == Decimal(281508000000)
@@ -69,13 +61,11 @@ def test_source_values_and_partial_semantics_survive(
         94135000000
     )
     assert len(rows) == 36
-    assert len(candidate.tables["cr6_fields"]) == 432
+    assert output.fields.count_rows() == 432
     assert sum(r["segment_id"] is None for r in rows.values()) == 4
-    defaults = (
-        ma.relation(candidate.tables["cr6_observations"])
-        .filter(ma.col("category_kind") == "default")
-        .to_polars()
-    )
+    defaults = output.observations.filter(
+        ma.col("category_kind") == "default"
+    ).to_polars()
     assert len(defaults) == 4
     assert (
         defaults["lower_fraction"].null_count()
@@ -86,20 +76,18 @@ def test_source_values_and_partial_semantics_survive(
     assert str(contexts["cba"]["observation_date"]) == "2025-06-30"
     assert str(contexts["anz"]["document_date"]) == "2025-09-30"
     assert contexts["anz"]["geography"]["status"] == "provisional"
-    interpretations = {
-        (r["observation_id"], r["field_key"]): r
-        for r in candidate.tables["cr6_fields"].to_dicts()
+    fields = {
+        (r["observation_id"], r["field_key"]): r for r in output.fields.to_dicts()
     }
-    lgd = interpretations[observation("cba"), "mean_lgd_fraction"]
+    lgd = fields[observation("cba"), "mean_lgd_fraction"]
     assert lgd["value_state"] == "present"
     assert (
         next(a for a in lgd["attributes"] if a["name"] == "weighting")["status"]
         == "unresolved"
     )
-    assert interpretations[observation("nab"), "ead_amount"]["currency_code"] == "AUD"
-    assert interpretations[observation("cba"), "ead_amount"]["currency_code"] is None
-    # Independent reviewed source contracts: nine maturity and eight provision
-    # omissions per bank, plus Westpac's default CCF dash (69 positions).
+    assert fields[observation("nab"), "ead_amount"]["currency_code"] == "AUD"
+    assert fields[observation("cba"), "ead_amount"]["currency_code"] is None
+    # Nine maturity and eight provision omissions per bank, plus WBC default CCF.
     expected = {
         (observation(org, row), field)
         for org in ("cba", "westpac", "nab", "anz")
@@ -109,178 +97,100 @@ def test_source_values_and_partial_semantics_survive(
     }
     expected.add((observation("westpac", "band-8"), "mean_ccf_fraction"))
     assert {
-        key
-        for key, r in interpretations.items()
-        if r["value_state"] == "source_missing"
+        key for key, r in fields.items() if r["value_state"] == "source_missing"
     } == expected
-    lineage = {
-        (r["observation_id"], r["field_key"]): r
-        for r in candidate.tables["cr6_fields"].to_dicts()
-    }
-    nab_density = lineage[observation("nab"), "rwa_density_fraction"]
-    assert nab_density["displayed_precision"] == 1
-    assert Decimal(nab_density["source_value"]) == Decimal("6.0")
+    density = fields[observation("nab"), "rwa_density_fraction"]
+    assert density["displayed_precision"] == 1
+    assert Decimal(density["source_value"]) == Decimal("6.0")
     assert rows[observation("nab")]["rwa_density_fraction"] == Decimal("0.060")
-    maturity = lineage[observation("anz"), "mean_maturity_years"]
+    maturity = fields[observation("anz"), "mean_maturity_years"]
     assert maturity["missing_reason"] == "not_applicable"
     assert maturity["qualification_refs"]
-    assert candidate.tables["cr6_observations"].schema["ead_amount"] == pl.Decimal(
-        22, 8
-    )
-    assert (
-        candidate.tables["cr6_observations"].schema["reported_entity_count"] == pl.Int64
-    )
-    assert (
-        sum(len(r["mapping_revision_refs"]) for r in interpretations.values()) == 1296
-    )
-    assert len(candidate.tables["cr6_relationships"]) == 32
+    schema = output.observations.to_polars().schema
+    assert schema["ead_amount"] == pl.Decimal(16, 2)
+    assert schema["mean_pd_fraction"] == pl.Decimal(16, 8)
+    assert schema["reported_entity_count"] == pl.Int64
+    assert sum(len(r["mapping_revision_refs"]) for r in fields.values()) == 1296
+    assert output.relationships.count_rows() == 32
 
 
-def replace_cell(bundles, field, value):
-    bundle = bundles[0]
-    ds = bundle.datasets[0]
-    row = ds.records[0]
-    changed = replace(row, **{field: replace(getattr(row, field), value=value)})
+def replace_dataset(inputs, dataset):
     return (
-        replace(bundle, datasets=(replace(ds, records=(changed, *ds.records[1:])),)),
-        *bundles[1:],
+        replace(inputs[0], bundle=replace(inputs[0].bundle, datasets=(dataset,))),
+        *inputs[1:],
     )
 
 
-def test_missing_scale_blocks_only_its_conversion(
-    saved_bundles, bronze_refs, catalogue
-):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-
-    bundle = saved_bundles[0]
-    ds = bundle.datasets[0]
-    binding = next(b for b in ds.bindings if b.typed_field_name == "ead")
+def test_missing_scale_blocks_only_its_conversion(inputs, catalogue):
+    ds = inputs[0].bundle.datasets[0]
+    binding = next(b for b in ds.metadata.bindings if b.typed_field_name == "ead")
     ds = replace(
         ds,
-        published_fields=tuple(
-            replace(f, source_scale=None) if f.id == binding.published_field_ref else f
-            for f in ds.published_fields
+        metadata=replace(
+            ds.metadata,
+            published_fields=tuple(
+                replace(f, source_scale=None)
+                if f.id == binding.published_field_ref
+                else f
+                for f in ds.metadata.published_fields
+            ),
         ),
     )
-    bundles = (replace(bundle, datasets=(ds,)), *saved_bundles[1:])
-    candidate = conform_cr6(bundles, bronze_refs, catalogue, "r")
-    row = (
-        ma.relation(candidate.tables["cr6_observations"])
-        .filter(ma.col("observation_id") == observation("cba"))
-        .to_dicts()[0]
-    )
+    output = conform(replace_dataset(inputs, ds), catalogue)
+    row = output.observations.filter(
+        ma.col("observation_id") == observation("cba")
+    ).to_dicts()[0]
     assert row["ead_amount"] is None
     assert row["mean_lgd_fraction"] == Decimal("0.14")
-    key = (ma.col("observation_id") == observation("cba")) & (
-        ma.col("field_key") == "ead_amount"
-    )
-    assert (
-        ma.relation(candidate.tables["cr6_fields"]).filter(key).item("value_state")
-        == "not_conformed"
-    )
-    lineage = ma.relation(candidate.tables["cr6_fields"]).filter(key).to_dicts()[0]
-    assert lineage["source_value"] == "281508"
-    assert lineage["conversion_reason"]
+    field = output.fields.filter(
+        (ma.col("observation_id") == observation("cba"))
+        & (ma.col("field_key") == "ead_amount")
+    ).to_dicts()[0]
+    assert field["value_state"] == "not_conformed"
+    assert field["source_value"] == "281508"
+    assert field["conversion_reason"]
 
 
 @pytest.mark.parametrize(
     ("field", "target", "source", "expected"),
     [
-        (
-            "ead",
-            "ead_amount",
-            "-9999999.99999912345678",
-            "-9999999999999.12345678",
-        ),
-        (
-            "ead",
-            "ead_amount",
-            "10000000",
-            "10000000000000",
-        ),
-        (
-            "average_pd",
-            "mean_pd_fraction",
-            "0.123456",
-            "0.00123456",
-        ),
+        ("ead", "ead_amount", "-9999999.99999912345678", "-9999999999999.12"),
+        ("ead", "ead_amount", "10000000", "10000000000000"),
+        ("average_pd", "mean_pd_fraction", "0.123456", "0.00123456"),
     ],
 )
-def test_domain_amounts_and_rates_are_exact_under_small_decimal_context(
-    saved_bundles, bronze_refs, catalogue, field, target, source, expected
+def test_domain_amounts_and_rates_under_small_decimal_context(
+    inputs, catalogue, field, target, source, expected
 ):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-
-    bundles = replace_cell(saved_bundles, field, Decimal(source))
+    ds = inputs[0].bundle.datasets[0]
+    row = ds.exposure_rows[0]
+    row = replace(row, **{field: replace(getattr(row, field), value=Decimal(source))})
+    ds = replace(ds, exposure_rows=(row, *ds.exposure_rows[1:]))
     with localcontext() as ctx:
         ctx.prec = 10
-        candidate = conform_cr6(bundles, bronze_refs, catalogue, "r")
-    assert ma.relation(candidate.tables["cr6_observations"]).filter(
+        output = conform(replace_dataset(inputs, ds), catalogue)
+    assert output.observations.filter(
         ma.col("observation_id") == observation("cba")
     ).item(target) == Decimal(expected)
-    assert candidate.tables["cr6_observations"].schema[target] == pl.Decimal(22, 8)
-
-
-@pytest.mark.parametrize(
-    ("table", "mutation", "error"),
-    [
-        ("cr6_observations", "silver_revision_id", "observations.*revision"),
-        ("cr6_fields", "delete", "cr6_fields.*coverage"),
-        ("cr6_fields", "value_state", "observations.*value_state"),
-        (
-            "cr6_fields",
-            "measure_revision_ref",
-            "interpretations.*measure_revision_ref",
-        ),
-        ("cr6_observations", "duplicate", "observations"),
-        ("cr6_fields", "mapping_revision_refs", "cr6_fields.*mapping"),
-        ("cr6_relationships", "child_observation_id", "relationships"),
-        ("cr6_observations", "ead_amount", "observations.*ead_amount"),
-    ],
-)
-def test_publication_rejects_broken_references_and_values(
-    saved_bundles, bronze_refs, catalogue, table, mutation, error
-):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-    from rwa_analysis.normalization.validate import validate_candidate
-
-    candidate = conform_cr6(saved_bundles, bronze_refs, catalogue, "r")
-    frame = candidate.tables[table]
-    if mutation == "delete":
-        frame = frame.slice(1)
-    elif mutation == "duplicate":
-        frame = pl.concat([frame, frame.head(1)])
-    else:
-        rows = frame.to_dicts()
-        rows[0][mutation] = (
-            ["absent"]
-            if mutation in ("qualification_refs", "mapping_revision_refs")
-            else None
-            if mutation == "ead_amount"
-            else "absent"
-        )
-        frame = pl.DataFrame(rows, schema=frame.schema)
-    candidate = replace(candidate, tables=candidate.tables | {table: frame})
-    with pytest.raises(ValueError, match=error):
-        validate_candidate(candidate, saved_bundles, bronze_refs, catalogue)
-
-
-def test_empty_selection_has_explicit_schemas(catalogue):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-
-    candidate = conform_cr6((), (), catalogue, "empty")
-    assert len(candidate.tables) == 3
-    assert all(
-        frame.is_empty() and pl.Null not in frame.dtypes
-        for frame in candidate.tables.values()
+    assert output.observations.to_polars().schema[target] == pl.Decimal(
+        16, 2 if target == "ead_amount" else 8
     )
 
 
-def test_conflicts_retain_alternatives_and_support_without_erasing_values(
-    saved_bundles, bronze_refs, catalogue
-):
+def test_empty_selection_has_explicit_schemas(catalogue):
+    output = conform((), catalogue)
+    assert all(
+        frame.is_empty() and pl.Null not in frame.dtypes
+        for frame in (
+            output.observations.to_polars(),
+            output.fields.to_polars(),
+            output.relationships.to_polars(),
+        )
+    )
+
+
+def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue):
     from rwa_analysis.catalogue.models import MemberSelection, SemanticAttribute
-    from rwa_analysis.normalization.cr6 import conform_cr6
 
     original = next(
         m for m in catalogue.members if m.revision_id == "cba.cr6.average_lgd@v1"
@@ -312,12 +222,11 @@ def test_conflicts_retain_alternatives_and_support_without_erasing_values(
             ),
         ),
     )
-    candidate = conform_cr6(saved_bundles, bronze_refs, cat, "r")
-    rows = ma.relation(candidate.tables["cr6_fields"]).filter(
+    output = conform(inputs, cat)
+    field = output.fields.filter(
         (ma.col("observation_id") == observation("cba"))
         & (ma.col("field_key") == "mean_lgd_fraction")
-    )
-    field = rows.to_dicts()[0]
+    ).to_dicts()[0]
     weighting = next(a for a in field["attributes"] if a["name"] == "weighting")
     assert field["value_state"] == "present"
     assert weighting["status"] == "conflicting"
@@ -326,39 +235,6 @@ def test_conflicts_retain_alternatives_and_support_without_erasing_values(
         "arrangement",
     }
     assert weighting["evidence_refs"]
-    assert ma.relation(candidate.tables["cr6_observations"]).filter(
+    assert output.observations.filter(
         ma.col("observation_id") == observation("cba")
     ).item("mean_lgd_fraction") == Decimal("0.14")
-
-
-@pytest.mark.parametrize("broken", ["qualification", "bundle", "definition"])
-def test_selected_catalogue_evidence_must_resolve_in_selected_bronze(
-    saved_bundles, bronze_refs, catalogue, broken
-):
-    from rwa_analysis.normalization.cr6 import conform_cr6
-
-    # Load-time closure cannot check external occurrences. Mutate support on a
-    # used mapping or its referenced definition and exercise actual conformance.
-    revision = (
-        "cba.cr6.average_lgd@v1"
-        if broken != "definition"
-        else "risk.loss-given-default@v1"
-    )
-    member = next(m for m in catalogue.members if m.revision_id == revision)
-    support = next(
-        m for m in catalogue.members if m.revision_id == "cba.cr6.average_lgd@v1"
-    ).evidence_refs[0]
-    bad = (
-        replace(support, bundle_key="au/absent/2025-06-30/aps330")
-        if broken == "bundle"
-        else replace(support, kind="qualification", ref_id="absent")
-    )
-    cat = replace(
-        catalogue,
-        members=tuple(
-            replace(m, evidence_refs=(bad,)) if m is member else m
-            for m in catalogue.members
-        ),
-    )
-    with pytest.raises(ValueError, match="interpretations.*absent source evidence"):
-        conform_cr6(saved_bundles, bronze_refs, cat, "r")

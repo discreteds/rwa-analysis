@@ -21,7 +21,7 @@ from .models import (
 
 
 def _matches(mapping, dataset, record, field_key, binding):
-    scope, context = mapping.scope, dataset.context
+    scope, context = mapping.scope, dataset.metadata.context
     observed = {
         "document_id": getattr(record, field_key).source_reference.document_id,
         "document_date": context.document_date,
@@ -116,17 +116,19 @@ def resolve_field(
 ) -> FieldMeaning:
     if field_key not in CR6_FIELDS:
         raise ValueError(f"Unknown CR6 field: {field_key}")
-    if record not in dataset.records:
+    if record not in dataset.exposure_rows:
         raise ValueError("Record does not belong to dataset")
     binding = next(
         b
-        for b in dataset.bindings
+        for b in dataset.metadata.bindings
         if b.typed_field_name == field_key and record.source_row_ref in b.row_refs
     )
     published = next(
-        f for f in dataset.published_fields if f.id == binding.published_field_ref
+        f
+        for f in dataset.metadata.published_fields
+        if f.id == binding.published_field_ref
     )
-    observation_date = dataset.context.observation_date
+    observation_date = dataset.metadata.context.observation_date
 
     @cache
     def definition_applies(ref):

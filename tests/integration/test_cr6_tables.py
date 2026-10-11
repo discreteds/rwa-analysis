@@ -8,9 +8,8 @@ from mountainash_data import IbisBackend
 
 
 def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
-    from rwa_analysis.reporting.cr6_tables import reconstruct_cr6
-
-    manifest, root, warehouse = published_cr6
+    session, publication = published_cr6[0]
+    warehouse = publication.database
     key = "au/cba/2025-06-30/aps330/cr6-residential-mortgages"
     oid = f"{key}/band-1"
     for amount, expected in (
@@ -30,20 +29,23 @@ def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
                     "UPDATE silver.cr6_observations SET ead_amount = ? WHERE observation_id = ?",
                     [amount, oid],
                 )
-        table = reconstruct_cr6(manifest, root, warehouse)[key]
+        table = session.reconstruct(publication)[key]
         # Source position: label then on/off balance, CCF, EAD.
         assert table.height == 9
         assert table.row(0)[4] == expected
 
 
 def test_actual_four_bank_tables_and_revision_guard(published_cr6, project_root):
-    from rwa_analysis.reporting.cr6_tables import reconstruct_cr6
-    from rwa_analysis.storage.silver import rebuild
-
-    manifest, root, warehouse = published_cr6
-    # Reusing a populated warehouse must preserve its schemas and rebuild tables.
-    rebuild(manifest, root, warehouse)
-    tables = reconstruct_cr6(manifest, root, warehouse)
+    tables = {}
+    for session, publication in published_cr6:
+        # Reusing a populated warehouse must preserve its schemas and rebuild tables.
+        manifest = session.silver.read_manifest(publication)
+        candidate = session.conform(
+            session.load_bronze(manifest.selection.bronze_refs),
+            catalogue=manifest.selection.catalogue,
+        )
+        session.publish(candidate, revision=publication.revision)
+        tables.update(session.reconstruct(publication))
     assert len(tables) == 4
     for bank, date in (
         ("cba", "2025-06-30"),
@@ -77,9 +79,9 @@ def test_actual_four_bank_tables_and_revision_guard(published_cr6, project_root)
                 )
             assert actual == tuple(expected)
         assert table.dtypes[6].is_integer()
-    with IbisBackend(dialect="duckdb", database=str(warehouse)) as db:
+    with IbisBackend(dialect="duckdb", database=str(publication.database)) as db:
         db.raw_driver_connection().execute(
             "UPDATE ops.silver_publication SET silver_revision_id = 'different'"
         )
     with pytest.raises(ValueError, match="revision"):
-        reconstruct_cr6(manifest, root, warehouse)
+        session.reconstruct(publication)

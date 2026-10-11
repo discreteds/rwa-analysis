@@ -1,6 +1,6 @@
 """Strict schema-directed JSON codec; Decimal strings never pass through float.
 
-The declared dataclass fields are the complete wire schema, including nulls.
+The cr6-v1 wire keeps flat metadata and records despite Python composition.
 Generic ReportedValue's parameter determines its numeric JSON representation.
 """
 
@@ -10,12 +10,16 @@ from decimal import Decimal, InvalidOperation
 from types import UnionType
 from typing import Literal, Union, get_args, get_origin, get_type_hints
 
-from .cr6 import ExtractionBundle
+from .cr6 import Cr6Dataset
+from .datasets import Dataset, DatasetMetadata, ExtractionBundle
 
 
 def _convert(value, annotation, path, *, decode, parameters=None):
     parameters = parameters or {}
     annotation = parameters.get(annotation, annotation)
+    # cr6-v1 contains only CR6 datasets; shared bundles impose no record shape.
+    if annotation is Dataset:
+        annotation = Cr6Dataset
     origin, args = get_origin(annotation), get_args(annotation)
     if origin in (Union, UnionType):
         for option in args:
@@ -45,6 +49,14 @@ def _convert(value, annotation, path, *, decode, parameters=None):
     if is_dataclass(cls):
         hints = get_type_hints(cls)
         names = {f.name for f in fields(cls)}
+        if cls is Cr6Dataset and decode:
+            metadata_names = {f.name for f in fields(DatasetMetadata)}
+            _object_keys(value, {"id", "records"} | metadata_names, path)
+            value = {
+                "id": value["id"],
+                "metadata": {name: value[name] for name in metadata_names},
+                "exposure_rows": value["records"],
+            }
         if decode:
             if type(value) is not dict:
                 raise TypeError(f"{path}: expected object")
@@ -65,6 +77,12 @@ def _convert(value, annotation, path, *, decode, parameters=None):
             )
             for f in fields(cls)
         }
+        if cls is Cr6Dataset and not decode:
+            return {
+                "id": result["id"],
+                **result["metadata"],
+                "records": result["exposure_rows"],
+            }
         return cls(**result) if decode else result
     if annotation is Decimal:
         if type(value) is not (str if decode else Decimal):
@@ -95,7 +113,10 @@ def encode_payload(bundle: ExtractionBundle) -> dict:
 
 
 def decode_payload(payload: dict) -> ExtractionBundle:
-    return _convert(payload, ExtractionBundle, "bundle", decode=True)
+    bundle = _convert(payload, ExtractionBundle, "bundle", decode=True)
+    if bundle.schema_version != SCHEMA_VERSION:
+        raise ValueError(f"Unsupported schema version: {bundle.schema_version}")
+    return bundle
 
 
 SCHEMA_VERSION = "cr6-v1"

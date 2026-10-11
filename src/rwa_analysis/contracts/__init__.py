@@ -1,1 +1,0 @@
-"""Typed tabular contracts."""

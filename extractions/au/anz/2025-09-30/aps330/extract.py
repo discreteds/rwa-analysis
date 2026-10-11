@@ -11,8 +11,8 @@ from rwa_analysis.extraction.cr6 import (
     CR6_FIELDS,
     BronzeCreditRiskExposureRow,
     Cr6Dataset,
-    ExtractionBundle,
 )
+from rwa_analysis.extraction.datasets import DatasetMetadata, ExtractionBundle
 from rwa_analysis.extraction.models import (
     BandDefinition,
     DatasetContext,
@@ -536,13 +536,15 @@ def extract(pdf_path: Path) -> ExtractionBundle:
         )
         dataset = Cr6Dataset(
             DATASET_ID,
-            context,
-            tuple(axes),
-            tuple(published),
-            tuple(bindings),
-            (segmentation,),
-            notes,
-            (relationship,),
+            DatasetMetadata(
+                context,
+                tuple(axes),
+                tuple(published),
+                tuple(bindings),
+                (segmentation,),
+                notes,
+                (relationship,),
+            ),
             tuple(records),
         )
         document = SourceDocument(

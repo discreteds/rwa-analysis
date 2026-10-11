@@ -20,7 +20,7 @@ from rwa_analysis.extraction.codec import (
     encode_envelope,
     encode_payload,
 )
-from rwa_analysis.extraction.cr6 import ExtractionBundle
+from rwa_analysis.extraction.datasets import ExtractionBundle
 
 
 @dataclass(frozen=True)
@@ -45,14 +45,10 @@ class BronzeRef:
             raise ValueError("output_version: select an explicit version, not latest")
 
 
-def _destination(ref: BronzeRef, project_root: Path) -> Path:
-    root = project_root.resolve(strict=True)
-    if not root.is_dir():
-        raise ValueError("project root must be a directory")
-    destination = root / "data/bronze" / ref.bundle_key / ref.output_version
-    if not (destination / "bundle.json").resolve().is_relative_to(root):
-        raise ValueError("Bronze path escapes project root")
-    return destination
+@dataclass(frozen=True)
+class LoadedBronze:
+    ref: BronzeRef
+    bundle: ExtractionBundle
 
 
 def read_staged_bundle(
@@ -77,52 +73,57 @@ def read_staged_bundle(
     return bundle
 
 
-def save_bronze(
-    bundle: ExtractionBundle,
-    run_name: str,
-    project_root: Path,
-    implementation_revision: str = "unrecorded",
-) -> BronzeRef:
-    """Save an extraction under a caller-chosen run name, e.g. 'cba-june-rerun'.
+@dataclass(frozen=True)
+class BronzeStore:
+    root: Path
 
-    The name identifies its folder, not an extractor or schema version. Existing
-    runs are not overwritten. The saved format calls this field output_version.
-    """
-    ref = BronzeRef(bundle.bundle_key, run_name)
-    destination = _destination(ref, project_root)
-    if destination.exists() or destination.is_symlink():
-        raise FileExistsError(destination)
-    dependencies = {
-        re.sub(r"[-_.]+", "-", d.metadata["Name"]).lower(): d.version
-        for d in distributions()
-    }
-    dependencies["python"] = sys.version
-    envelope = encode_envelope(
-        bundle,
-        output_version=run_name,
-        implementation_revision=implementation_revision,
-        dependency_versions=dependencies,
-        executed_at=datetime.now(UTC).isoformat(),
-    )
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    with TemporaryDirectory(
-        prefix=f".{run_name}-", dir=destination.parent
-    ) as temp:
-        staging = Path(temp)
-        write(FileSinkSpec(path=str(staging / "bundle.json"), format="json"), envelope)
-        restored = read_staged_bundle(staging / "bundle.json", expected_reference=ref)
-        if encode_payload(restored) != envelope["payload"]:
-            raise ValueError("Bronze serialization changed source evidence")
-        # Never replace even an empty version directory. Single-writer ownership
-        # excludes a concurrent creation between this check and rename.
+    def path(self, ref: BronzeRef) -> Path:
+        destination = self.root / ref.bundle_key / ref.output_version / "bundle.json"
+        if not destination.resolve().is_relative_to(self.root.resolve()):
+            raise ValueError("Bronze path escapes store root")
+        return destination
+
+    def save(
+        self,
+        bundle: ExtractionBundle,
+        run_name: str,
+        implementation_revision: str = "unrecorded",
+    ) -> BronzeRef:
+        """Save an immutable extraction under a caller-chosen run namespace."""
+        ref = BronzeRef(bundle.bundle_key, run_name)
+        destination = self.path(ref).parent
         if destination.exists() or destination.is_symlink():
             raise FileExistsError(destination)
-        staging.rename(destination)
-    return ref
+        dependencies = {
+            re.sub(r"[-_.]+", "-", d.metadata["Name"]).lower(): d.version
+            for d in distributions()
+        }
+        dependencies["python"] = sys.version
+        envelope = encode_envelope(
+            bundle,
+            output_version=run_name,
+            implementation_revision=implementation_revision,
+            dependency_versions=dependencies,
+            executed_at=datetime.now(UTC).isoformat(),
+        )
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with TemporaryDirectory(prefix=f".{run_name}-", dir=destination.parent) as temp:
+            staging = Path(temp)
+            write(
+                FileSinkSpec(path=str(staging / "bundle.json"), format="json"), envelope
+            )
+            restored = read_staged_bundle(
+                staging / "bundle.json", expected_reference=ref
+            )
+            if encode_payload(restored) != envelope["payload"]:
+                raise ValueError("Bronze serialization changed source evidence")
+            if destination.exists() or destination.is_symlink():
+                raise FileExistsError(destination)
+            staging.rename(destination)
+        return ref
 
-
-def load_bronze(ref: BronzeRef, project_root: Path) -> ExtractionBundle:
-    """Load exactly the retained version selected by the caller."""
-    return read_staged_bundle(
-        _destination(ref, project_root) / "bundle.json", expected_reference=ref
-    )
+    def load(self, ref: BronzeRef) -> LoadedBronze:
+        """Return the selected source bundle paired with its retained identity."""
+        return LoadedBronze(
+            ref, read_staged_bundle(self.path(ref), expected_reference=ref)
+        )

@@ -2,6 +2,13 @@
 
 Date: 2026-10-11. Baseline: `feat/cr6-bronze-to-silver`, commit `0fc5221` (PR #1).
 
+**Historical inventory.** The preserved research assets remain applicable. The
+implementation and test reuse recommendations below describe the earlier
+simplification, not the current migration. The approved
+[migration-and-retirement plan](../04.planning/superpowers/plans/2026-10-11-strategic-architecture-migration.md)
+supersedes them: remove replaced validators and their checking-only tests; do not
+restore the historical defensive lifecycle suite.
+
 ## Finding
 
 This is a simplification of a completed working demonstration, not a greenfield build. The previous replacement plan unnecessarily proposed new extraction/serialization modules, a new catalogue file format, new goldens plumbing, a new CLI framework and a new renderer. Those are not prerequisites to dataset-wide Mountainash transformations or three-table Silver.

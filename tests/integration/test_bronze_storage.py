@@ -15,12 +15,13 @@ from rwa_analysis.extraction.codec import encode_payload
     "bundle_fixture", ["cba_bundle", "westpac_bundle", "nab_bundle", "anz_bundle"]
 )
 def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
-    from rwa_analysis.storage.bronze import load_bronze, save_bronze
+    from rwa_analysis.storage.bronze import BronzeStore
 
     bundle = request.getfixturevalue(bundle_fixture)
     before = datetime.now(UTC)
-    ref = save_bronze(bundle, "v1", tmp_path, "test-code-revision")
-    assert encode_payload(load_bronze(ref, tmp_path)) == encode_payload(bundle)
+    store = BronzeStore(tmp_path / "data/bronze")
+    ref = store.save(bundle, "v1", "test-code-revision")
+    assert encode_payload(store.load(ref).bundle) == encode_payload(bundle)
     path = tmp_path / "data/bronze" / ref.bundle_key / "v1/bundle.json"
     original = path.read_bytes()
     envelope = json.loads(original)
@@ -37,10 +38,10 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
         before <= datetime.fromisoformat(envelope["executed_at"]) <= datetime.now(UTC)
     )
     with pytest.raises(FileExistsError):
-        save_bronze(bundle, "v1", tmp_path, "different-code-revision")
+        store.save(bundle, "v1", "different-code-revision")
     assert path.read_bytes() == original
-    newer = save_bronze(bundle, "v2", tmp_path, "new-code-revision")
-    assert encode_payload(load_bronze(newer, tmp_path)) == encode_payload(bundle)
+    newer = store.save(bundle, "v2", "new-code-revision")
+    assert encode_payload(store.load(newer).bundle) == encode_payload(bundle)
     assert path.read_bytes() == original
 
 
@@ -77,9 +78,10 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
 def test_load_rejects_invalid_envelope(
     tmp_path, cba_bundle, field_path, replacement, remove, error
 ):
-    from rwa_analysis.storage.bronze import load_bronze, save_bronze
+    from rwa_analysis.storage.bronze import BronzeStore
 
-    ref = save_bronze(cba_bundle, "v1", tmp_path, "test-revision")
+    store = BronzeStore(tmp_path / "data/bronze")
+    ref = store.save(cba_bundle, "v1", "test-revision")
     path = tmp_path / "data/bronze" / ref.bundle_key / "v1/bundle.json"
     envelope = deepcopy(json.loads(path.read_text()))
     target = envelope
@@ -97,7 +99,7 @@ def test_load_rejects_invalid_envelope(
         target[field_path[-1]] = replacement
     path.write_text(json.dumps(envelope))
     with pytest.raises(ValueError, match=error):
-        load_bronze(ref, tmp_path)
+        store.load(ref)
 
 
 @pytest.mark.parametrize(
@@ -117,13 +119,13 @@ def test_load_rejects_invalid_envelope(
 def test_unsafe_references_cannot_be_saved(
     tmp_path, cba_bundle, bundle_key, output_version
 ):
-    from rwa_analysis.storage.bronze import BronzeRef, save_bronze
+    from rwa_analysis.storage.bronze import BronzeRef, BronzeStore
 
     with pytest.raises(ValueError):
         BronzeRef(bundle_key, output_version)
     with pytest.raises(ValueError):
-        save_bronze(
-            replace(cba_bundle, bundle_key=bundle_key), output_version, tmp_path, "r"
+        BronzeStore(tmp_path / "data/bronze").save(
+            replace(cba_bundle, bundle_key=bundle_key), output_version, "r"
         )
     assert not (tmp_path / "data").exists()
 
@@ -134,7 +136,8 @@ def test_failed_staging_leaves_previous_version_and_no_partial_output(
 ):
     from rwa_analysis.storage import bronze
 
-    ref = bronze.save_bronze(cba_bundle, "v1", tmp_path, "r1")
+    store = bronze.BronzeStore(tmp_path / "data/bronze")
+    ref = store.save(cba_bundle, "v1", "r1")
     parent = tmp_path / "data/bronze" / ref.bundle_key
     previous = (parent / "v1/bundle.json").read_bytes()
     real_write = bronze.write
@@ -156,22 +159,23 @@ def test_failed_staging_leaves_previous_version_and_no_partial_output(
     with pytest.raises(
         (OSError, ValueError), match="failure|changed source evidence|missing_reason"
     ):
-        bronze.save_bronze(cba_bundle, "v2", tmp_path, "r2")
+        store.save(cba_bundle, "v2", "r2")
     assert sorted(p.name for p in parent.iterdir()) == ["v1"]
     assert (parent / "v1/bundle.json").read_bytes() == previous
 
 
-def test_symlink_cannot_redirect_bronze_outside_project(tmp_path, cba_bundle):
-    from rwa_analysis.storage.bronze import BronzeRef, load_bronze, save_bronze
+def test_symlink_cannot_redirect_bundle_outside_store(tmp_path, cba_bundle):
+    from rwa_analysis.storage.bronze import BronzeRef, BronzeStore
 
     root = tmp_path / "project"
-    (root / "data").mkdir(parents=True)
+    (root / "data/bronze").mkdir(parents=True)
     outside = tmp_path / "outside"
     outside.mkdir()
-    (root / "data/bronze").symlink_to(outside, target_is_directory=True)
+    (root / "data/bronze/au").symlink_to(outside, target_is_directory=True)
+    store = BronzeStore(root / "data/bronze")
     ref = BronzeRef(cba_bundle.bundle_key, "v1")
-    with pytest.raises(ValueError, match="project root"):
-        save_bronze(cba_bundle, "v1", root, "r")
-    with pytest.raises(ValueError, match="project root"):
-        load_bronze(ref, root)
+    with pytest.raises(ValueError, match="store root"):
+        store.save(cba_bundle, "v1", "r")
+    with pytest.raises(ValueError, match="store root"):
+        store.load(ref)
     assert list(outside.iterdir()) == []

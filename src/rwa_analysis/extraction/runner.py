@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 from uuid import uuid4
 
-from .cr6 import ExtractionBundle
+from .datasets import ExtractionBundle
 
 
 def run_extractor(script_path: Path, pdf_path: Path) -> ExtractionBundle:

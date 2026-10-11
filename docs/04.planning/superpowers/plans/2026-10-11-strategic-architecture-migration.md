@@ -123,7 +123,7 @@ configuration files, construct pipelines, encode JSON or execute database transa
 and catalogue access changes; new `domains/cr6/{models,contracts,pipeline,reconstruction}.py`.
 Retire the normalization/reporting/checking modules listed above as callers switch.
 
-- [ ] Compose source metadata and move shared dataset/bundle ownership. Preserve
+- [x] Compose source metadata and move shared dataset/bundle ownership. Preserve
   retained wire format through the existing codec and keep golden files unchanged.
 - [ ] Declare CR6 input/output models and augment their derived Mountainash contracts
   with field types and domain rules. Keep domain knowledge out of generic helpers.
@@ -148,7 +148,7 @@ README and the affected integration fixtures/tests.
 
 - [ ] Move the existing Bronze I/O and Silver transaction/readback into their stores.
   Retain selected-input provenance; use native declarations at the boundaries.
-- [ ] Load project defaults and organisation overrides using Mountainash Settings.
+- [x] Load project defaults and organisation overrides using Mountainash Settings.
   Resolve paths from the project root and construct operations in `build_session`.
 - [ ] Implement independently callable stages and `run()` using those same operations.
 - [ ] Execute CBA from retained Bronze through publication and reconstruction. Also
@@ -201,6 +201,52 @@ describe the selected source case, not new generic runtime completeness checks.
   branch (`develop` currently); offer local synchronisation after handoff.
 
 ## Completion
+
+### Execution status — 2026-10-11: NO-GO / blocked
+
+The implementation branch is `feature/organisation-workflow`, seeded from
+`3be5e86`. Approved documentation and dependency pin were carried over in `1fef532`;
+the disposable spike was not imported.
+
+- Source composition and retained wire compatibility are verified: 70 source/
+  catalogue tests and 31 Bronze transport tests passed, including all four unchanged
+  source goldens. Six retained Bronze payloads round-tripped unchanged.
+- Domain declarations, named results, stores, settings, construction, stages and
+  `run()` are written, with superseded modules removed in this work-in-progress
+  branch. This is not a completed cutover: Tasks 1/2 remain blocked until the real
+  CBA path passes. The prior working implementation remains at the seed commit.
+- The latest full run before removing provisional ingress adaptations reported
+  **102 passed, 7 failed, 2 setup errors**. The failures/errors reached native array
+  contracts. Subsequent focused execution without those adaptations fails earlier
+  on the all-null source Decimal declaration: **1 passed, 7 failed** in the domain/
+  organisation tests. The real `examples/cr6_research.py` run confirms #363 before
+  publication. Tests remain failing, not skipped. Ruff and `git diff --check` pass.
+- A focused storage/workflow review found component construction inside session
+  reconstruction; source loading was moved into the storage operation.
+- Review of the domain handoff identified blanket decimal pre-casts and manual
+  nested-metadata transport introduced after native ingress failures. Both were
+  removed rather than retain consumer workarounds. Native field rounding is now
+  explicit; ordinary arithmetic widening and source-unit reconstruction remain.
+
+Distinct upstream findings have standalone reproductions in these issues:
+
+| Issue | Observed failure | Affected step |
+|---|---|---|
+| [Mountainash #360](https://github.com/mountainash-io/mountainash/issues/360) | Conformed dataclass source schema disappears during structured join lineage | Task 1 relation composition |
+| [Mountainash #361](https://github.com/mountainash-io/mountainash/issues/361) | Native contracts reject valid list/list-of-struct columns | Task 1 output contracts; Task 2 publication path |
+| [Mountainash #362](https://github.com/mountainash-io/mountainash/issues/362) | Native ingress cannot materialize nested dataclass collections | Task 1 metadata ingress |
+| [Mountainash #363](https://github.com/mountainash-io/mountainash/issues/363) | An all-null source Decimal working column hits the precision-16 conversion limit | Task 1 source-number conformance |
+
+The measure-specific persisted numeric decision remains unchanged. #363 concerns
+source working columns, not a return to universal precision-22 persisted measures.
+
+**Clearance:** obtain supported upstream fixes/native APIs, pin the corrected
+dependency, and pass the issue reproductions plus the domain and organisation/
+persisted-reconstruction tests. Then run the full suite and the real saved-Bronze
+and PDF CBA examples before requesting the researcher checkpoint. Full implementation
+correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
+
+### Delivery criterion
 
 The supported four-bank workflow runs through the new interfaces; source evidence
 and interpretations survive; native contracts enforce the declared boundaries; old

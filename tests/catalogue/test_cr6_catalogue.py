@@ -26,7 +26,7 @@ def meaning(cat, bundle, field, row=0):
     from rwa_analysis.catalogue.resolve import resolve_field
 
     ds = bundle.datasets[0]
-    return resolve_field(cat, ds, ds.records[row], field)
+    return resolve_field(cat, ds, ds.exposure_rows[row], field)
 
 
 def test_cba_pd_evidence_does_not_leak_to_lgd(catalogue, cba_bundle):
@@ -114,7 +114,7 @@ def test_scope_is_conjunctive(catalogue, cba_bundle, westpac_bundle, change):
         )
         # Change only the occurrence document so another scope guard cannot
         # mask a broken document predicate.
-        row = ds.records[0]
+        row = ds.exposure_rows[0]
         pd = replace(
             row.average_pd,
             source_reference=replace(
@@ -122,15 +122,22 @@ def test_scope_is_conjunctive(catalogue, cba_bundle, westpac_bundle, change):
                 document_id=westpac_bundle.document.document_id,
             ),
         )
-        ds = replace(ds, records=(replace(row, average_pd=pd), *ds.records[1:]))
+        ds = replace(
+            ds, exposure_rows=(replace(row, average_pd=pd), *ds.exposure_rows[1:])
+        )
     else:
         updates = {
             "date": {"observation_date": date(2025, 9, 30)},
             "portfolio": {"source_portfolio_label": "Corporate"},
             "template": {"source_template": "CR9"},
         }[change]
-        ds = replace(ds, context=replace(ds.context, **updates))
-    result = resolve_field(catalogue, ds, ds.records[0], "average_pd")
+        ds = replace(
+            ds,
+            metadata=replace(
+                ds.metadata, context=replace(ds.metadata.context, **updates)
+            ),
+        )
+    result = resolve_field(catalogue, ds, ds.exposure_rows[0], "average_pd")
     assert result.attribute("weighting").status == "unresolved"
 
 
@@ -222,7 +229,7 @@ def test_release_edits_resolve_or_fail_structurally(
         return
     cat = load_catalogue(release)
     ds = cba_bundle.datasets[0]
-    result = resolve_field(cat, ds, ds.records[0], "average_pd")
+    result = resolve_field(cat, ds, ds.exposure_rows[0], "average_pd")
     weighting = result.attribute("weighting")
     assert weighting.status == "conflicting"
     assert {e.ref_id for e in weighting.evidence_refs} == {
@@ -240,7 +247,7 @@ def test_release_edits_resolve_or_fail_structurally(
     release.write_text(json.dumps(payload))
     edit_members(root, mapping_path, lambda members: members.reverse())
     assert (
-        resolve_field(load_catalogue(release), ds, ds.records[0], "average_pd")
+        resolve_field(load_catalogue(release), ds, ds.exposure_rows[0], "average_pd")
         == result
     )
 
@@ -301,12 +308,15 @@ def test_unknown_scale_keeps_semantics_without_inventing_conversion(
     ds = cba_bundle.datasets[0]
     ds = replace(
         ds,
-        published_fields=tuple(
-            replace(f, source_scale=None) if f.id == "average_pd" else f
-            for f in ds.published_fields
+        metadata=replace(
+            ds.metadata,
+            published_fields=tuple(
+                replace(f, source_scale=None) if f.id == "average_pd" else f
+                for f in ds.metadata.published_fields
+            ),
         ),
     )
-    result = resolve_field(catalogue, ds, ds.records[0], "average_pd")
+    result = resolve_field(catalogue, ds, ds.exposure_rows[0], "average_pd")
     assert result.unit_factor is None
     assert result.attribute("weighting").value == "period_end_ead"
 

@@ -51,7 +51,7 @@ def anz_bundle():
 def retained(
     tmp_path, project_root, cba_bundle, westpac_bundle, nab_bundle, anz_bundle
 ):
-    from rwa_analysis.storage.bronze import save_bronze
+    from rwa_analysis.storage.bronze import BronzeStore
 
     root = tmp_path / "project"
     root.mkdir()
@@ -59,31 +59,39 @@ def retained(
     for name in ("uv.lock", "pyproject.toml"):
         shutil.copyfile(project_root / name, root / name)
 
+    store = BronzeStore(root / "data/bronze")
     refs = tuple(
-        save_bronze(b, "v1", root)
+        store.save(b, "v1")
         for b in (cba_bundle, westpac_bundle, nab_bundle, anz_bundle)
     )
     return root, refs
 
 
 @pytest.fixture
-def published_cr6(retained, project_root, monkeypatch):
-    from rwa_analysis.storage.manifests import RebuildRequest, save_manifest
-    from rwa_analysis.storage.silver import rebuild
+def published_cr6(retained, monkeypatch):
+    from rwa_analysis.composition import build_session
+    from rwa_analysis.settings import OrganisationSettings
+    from rwa_analysis.storage.manifests import CatalogueSelection
 
     root, refs = retained
     # A research run needs data and the Python environment, not a Git executable.
     monkeypatch.setenv("PATH", "")
-    (root / "raw").symlink_to(project_root / "raw", target_is_directory=True)
-    path = save_manifest(
-        RebuildRequest(
-            revision_id="r1",
-            bronze_refs=refs,
-            catalogue_release_path="catalogue/releases/cr6-v1.json",
-            conformance_schema_version="cr6-simple-v1",
-        ),
-        root,
-    )
-    warehouse = root / "warehouse.duckdb"
-    rebuild(path, root, warehouse)
-    return path, root, warehouse
+    publications = []
+    for ref in refs:
+        org = ref.bundle_key.split("/")[1]
+        session = build_session(
+            OrganisationSettings(
+                project_root=root,
+                organisation_id=org,
+                staging_path=f"data/silver/staging/{org}.duckdb",
+            )
+        )
+        candidate = session.conform(
+            session.load_bronze((ref,)),
+            catalogue=CatalogueSelection(
+                release_path="catalogue/releases/cr6-v1.json",
+                evidence_refs=tuple(r for r in refs if r != ref),
+            ),
+        )
+        publications.append((session, session.publish(candidate, revision="r1")))
+    return publications

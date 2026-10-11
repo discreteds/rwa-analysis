@@ -22,7 +22,12 @@ def test_saved_payload_restores_types_and_decimal_exponent(payload):
 
     payload["datasets"][0]["records"][0]["average_pd"]["value"] = "0.0800"
     bundle = decode_payload(payload)
-    row = bundle.datasets[0].records[0]
+    dataset = bundle.datasets[0]
+    row = dataset.exposure_rows[0]
+    assert dataset.metadata.context.source_template == "CR6"
+    assert dataset.metadata.published_fields[0].source_label == (
+        payload["datasets"][0]["published_fields"][0]["source_label"]
+    )
     assert isinstance(row.average_pd.value, Decimal)
     assert row.average_pd.value.as_tuple().exponent == -4
     assert type(row.reported_borrower_count.value) is int
