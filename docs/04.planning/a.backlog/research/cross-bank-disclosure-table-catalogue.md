@@ -2,7 +2,10 @@
 
 **Type:** research
 
-**Status:** OPEN — requested inventory and comparison; not yet performed.
+**Status:** IN PROGRESS — initial all-domain table-family location matrix and source-backed
+comparisons recorded; detailed per-panel semantic inventory and researcher review remain open.
+
+**Research output:** [Four-bank table catalogue and comparison](../../../00.ideation/2026-10-11-cross-bank-table-catalogue.md).
 
 **Owner:** rwa-analysis disclosure discovery / semantic catalogue
 
@@ -84,7 +87,7 @@ into processing validators or make every discovered table a mandatory core entit
   preserve agreed interpretations separately from source statements.
 - [ ] Identify source-backed join opportunities and prioritise extraction against
   current research questions. Link existing backlog owners before creating new work.
-- [ ] Demonstrate the usefulness of the catalogue with a CR6–CR9 comparison and a
+- [x] Demonstrate the usefulness of the catalogue with a CR6–CR9 comparison and a
   second cross-table connection, recording what can and cannot be inferred.
 
 Completion means the inventory, comparison matrix and prioritised findings are
