@@ -11,13 +11,11 @@ from mountainash.typespec.spec import FieldConstraints
 from mountainash.typespec.universal_types import UniversalType
 
 from .models import (
-    FIELD_MAP,
     RowIdentity,
     SilverContext,
     SilverField,
     SilverObservation,
     SilverObservationRelationship,
-    SourceNumbers,
 )
 
 MONEY = DecimalDtype(16, 2)
@@ -96,37 +94,17 @@ IDENTITY_SPEC = model_spec(RowIdentity, keys=("observation_id",))
 CONTEXT_SPEC = model_spec(SilverContext, keys=("context_id",))
 
 
-def source_numbers_spec(rows):
-    """Preserve the source/factor coefficients' scale before unit conversion."""
-    decimals = {
-        name: DecimalDtype(
-            38,
-            max(
-                (
-                    max(0, -value.as_tuple().exponent)
-                    for row in rows
-                    if (value := getattr(row, name)) is not None
-                ),
-                default=0,
-            ),
-        )
-        for name in FIELD_MAP
-    }
-    return model_spec(SourceNumbers, decimals=decimals, keys=("observation_id",))
-
-
 @dataclass(frozen=True)
 class TableDeclaration:
     member: str
     table: str
     model: type
     spec: ma.TypeSpec
-    contract: type
 
 
 def table(member, name, model, keys):
     spec = model_spec(model, decimals=MEASURES, keys=keys)
-    return TableDeclaration(member, name, model, spec, ma.datacontract(spec))
+    return TableDeclaration(member, name, model, spec)
 
 
 TABLES = (

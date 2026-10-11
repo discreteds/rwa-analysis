@@ -36,17 +36,11 @@ class ExtractionOperation:
 @dataclass(frozen=True)
 class ConformanceOperation:
     project_root: Path
-    organisation_id: str
     cr6: Cr6Pipeline
 
     def conform(
         self, inputs: tuple[LoadedBronze, ...], catalogue: CatalogueSelection
     ) -> SilverCandidate:
-        if any(
-            item.bundle.document.organisation_id != self.organisation_id
-            for item in inputs
-        ):
-            raise ValueError("Selected bundles belong to a different organisation")
         release = load_catalogue(self.project_root / catalogue.release_path)
         return SilverCandidate(
             self.cr6.conform(inputs, release),

@@ -3,14 +3,16 @@
 from pathlib import Path
 
 from mountainash_settings import MountainAshBaseSettings
-from pydantic import ValidationInfo, field_validator
+from pydantic import Field, ValidationInfo, field_validator
 
 
 class ProjectSettings(MountainAshBaseSettings):
     project_root: Path
-    bronze_root: Path = Path("data/bronze")
-    manifest_root: Path = Path("data/manifests")
-    master_path: Path = Path("data/silver/master.duckdb")
+    bronze_root: Path = Field(default=Path("data/bronze"), validate_default=True)
+    manifest_root: Path = Field(default=Path("data/manifests"), validate_default=True)
+    master_path: Path = Field(
+        default=Path("data/silver/master.duckdb"), validate_default=True
+    )
 
     @field_validator("project_root")
     @classmethod

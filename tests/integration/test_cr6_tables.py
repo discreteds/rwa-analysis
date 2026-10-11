@@ -3,7 +3,6 @@
 import json
 from decimal import Decimal
 
-import pytest
 from mountainash_data import IbisBackend
 
 
@@ -35,7 +34,7 @@ def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
         assert table.row(0)[4] == expected
 
 
-def test_actual_four_bank_tables_and_revision_guard(published_cr6, project_root):
+def test_actual_four_bank_tables(published_cr6, project_root):
     tables = {}
     for session, publication in published_cr6:
         # Reusing a populated warehouse must preserve its schemas and rebuild tables.
@@ -79,9 +78,3 @@ def test_actual_four_bank_tables_and_revision_guard(published_cr6, project_root)
                 )
             assert actual == tuple(expected)
         assert table.dtypes[6].is_integer()
-    with IbisBackend(dialect="duckdb", database=str(publication.database)) as db:
-        db.raw_driver_connection().execute(
-            "UPDATE ops.silver_publication SET silver_revision_id = 'different'"
-        )
-    with pytest.raises(ValueError, match="revision"):
-        session.reconstruct(publication)

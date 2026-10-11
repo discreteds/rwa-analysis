@@ -3,6 +3,20 @@
 from decimal import Decimal
 
 
+def test_default_storage_paths_follow_project_root(tmp_path):
+    from rwa_analysis.settings import OrganisationSettings
+
+    settings = OrganisationSettings(
+        project_root=tmp_path,
+        organisation_id="cba",
+        staging_path="data/silver/staging/cba.duckdb",
+    )
+    assert settings.bronze_root == tmp_path / "data/bronze"
+    assert settings.manifest_root == tmp_path / "data/manifests"
+    assert settings.master_path == tmp_path / "data/silver/master.duckdb"
+    assert settings.staging_path == tmp_path / "data/silver/staging/cba.duckdb"
+
+
 def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch):
     from rwa_analysis.composition import build_session
     from rwa_analysis.settings import OrganisationSettings

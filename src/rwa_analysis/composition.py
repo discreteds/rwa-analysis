@@ -13,7 +13,7 @@ def build_session(settings: OrganisationSettings) -> OrganisationSession:
         extraction=ExtractionOperation(settings.project_root),
         bronze=BronzeStore(settings.bronze_root),
         conformance=ConformanceOperation(
-            settings.project_root, settings.organisation_id, Cr6Pipeline()
+            settings.project_root, Cr6Pipeline()
         ),
         silver=SilverStore(
             settings.staging_path,

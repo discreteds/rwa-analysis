@@ -267,7 +267,32 @@ tests tied to retired checks. Then run the full suite and the real saved-Bronze
 and PDF CBA examples before requesting the researcher checkpoint. Full implementation
 correctness/complexity review and PR remain pending; Tasks 3/4 are not started.
 
-### Delivery criterion
+### Processing correction — 2026-10-11 (CBA still blocked)
+
+- Removed `checked()`, generated runtime datacontracts and repeated conformance.
+  Removed source/factor/band precision-38 schema declarations. Wide Decimal
+  arithmetic operands remain expressions, not source validation contracts.
+- Removed the new organisation-content and publication-revision checking passes.
+  Corrected publication to the installed native `Relation.to_pyarrow()` API.
+- Fixed project-root resolution for default settings paths (a failing/passing
+  regression now covers it). Removed the accidental test manifest referencing
+  `/tmp/pytest-of-ubuntu/pytest-259/`; retained research artifacts were preserved.
+  Retired the revision-guard assertion while keeping four-bank reconstruction proof.
+- Executed numeric conversion on the nine retained CBA rows: first-band EAD is
+  `281508000000.00`, PD is `0.00080000`, and maturity remains null. Output types
+  are money `Decimal(16,2)`, small measures `Decimal(16,8)`, and integer counts.
+- The full CBA session still fails materializing nested dataclass metadata with
+  `ComputeError: not yet implemented: Nested object types`. Explicit-schema native
+  `PydataIngress.convert` fails too; item 291 now includes this re-entry evidence.
+  No consumer workaround was added. This is the current observed blocker; the
+  previously reported join finding has not yet been reached on this path.
+- CBA publication/reconstruction and the researcher checkpoint remain incomplete.
+  Full pytest: **103 passed, 7 failed, 2 setup errors**. Eight failures/errors reach
+  nested-object construction; the remaining conflict case fails native construction
+  with an `AUD` value/type inference error. No failures are skipped. The empty-selection
+  and default-path regressions pass. Source goldens and transport tests remain passing.
+
+### Delivery criterion (unchanged)
 
 The supported four-bank workflow runs through the new interfaces; source evidence
 and interpretations survive; native conformance produces the declared schemas; old

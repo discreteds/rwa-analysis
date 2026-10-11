@@ -1,8 +1,9 @@
 # RWA disclosure research
 
 **Migration status: blocked, not ready for use.** The new CBA entrypoint is wired,
-but native validation/schema defects and unresolved ingress/declaration questions
-prevent the executable review checkpoint. The migration plan records the central
+but native nested-dataclass metadata ingress currently fails before publication.
+The added CR6 validators and precision-38 source contracts have been removed;
+the real CBA numeric conversion now runs independently. The migration plan records the central
 Mountainash backlog owners and clearance conditions.
 The prior working implementation remains at `feature/simple-cr6` (`3be5e86`).
 

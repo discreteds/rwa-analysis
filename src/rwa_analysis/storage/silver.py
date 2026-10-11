@@ -81,7 +81,7 @@ class SilverStore:
                 for table in TABLES:
                     db.create_table(
                         table.table,
-                        getattr(output, table.member).to_arrow(),
+                        getattr(output, table.member).to_pyarrow(),
                         namespace="silver",
                         overwrite=True,
                     )
@@ -107,11 +107,6 @@ class SilverStore:
         with IbisBackend(
             dialect="duckdb", database=str(publication.database), read_only=True
         ) as db:
-            marker = ma.relation(db.table("silver_publication", namespace="ops"))
-            if marker.item("silver_revision_id") != publication.revision:
-                raise ValueError(
-                    "Database publication revision differs from selected publication"
-                )
             # Materialize before closing the connection, retaining exact Decimal values.
             return Cr6Output(
                 **{

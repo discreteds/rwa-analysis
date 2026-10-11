@@ -5,7 +5,6 @@ from decimal import Decimal
 
 import mountainash as ma
 import polars as pl
-from mountainash.core.dtypes import DecimalDtype
 from mountainash.typespec.converters import to_polars_schema
 
 from rwa_analysis.catalogue.models import CatalogueRelease, RevisionRef
@@ -18,8 +17,6 @@ from .contracts import (
     IDENTITY_SPEC,
     MEASURES,
     TABLES,
-    model_spec,
-    source_numbers_spec,
 )
 from .models import (
     FIELD_MAP,
@@ -48,31 +45,27 @@ def ingress(rows, spec):
     return relation.conform(spec)
 
 
-def checked(relation, spec, contract=None):
-    """Execute the native contract at the domain transition boundary."""
-    data = relation.conform(spec).to_polars()
-    report = (contract or ma.datacontract(spec)).validate_datacontract(data)
-    if not report.passes:
-        raise ValueError(
-            str(report.check_summaries.filter(pl.col("status") != "passed").to_dicts())
-        )
-    return ma.relation(data)
+def source_scale(rows, name):
+    """Decimal scale needed by the arithmetic operands, without changing inputs."""
+    return max(
+        (
+            max(0, -value.as_tuple().exponent)
+            for row in rows
+            if (value := getattr(row, name)) is not None
+        ),
+        default=0,
+    )
 
 
 def convert_dataset(source, factors, columns):
     """Widen operands before multiplication, then apply declared measure types."""
-    source_spec = source_numbers_spec(source)
-    factor_spec = source_numbers_spec(factors)
-    values = checked(ingress(source, source_spec), source_spec)
-    multipliers = checked(ingress(factors, factor_spec), factor_spec).select(
+    values = ma.relation(source)
+    multipliers = ma.relation(factors).select(
         "observation_id", *(ma.col(name).alias(f"{name}__factor") for name in columns)
     )
     expressions = []
     for name, target in columns.items():
-        scale = (
-            source_spec.get_field(name).dtype.scale
-            + factor_spec.get_field(name).dtype.scale
-        )
+        scale = source_scale(source, name) + source_scale(factors, name)
         working = pl.Decimal(38, scale)
         dtype = (
             pl.Int64
@@ -314,36 +307,22 @@ class Cr6Pipeline:
                         for name, target in FIELD_MAP.items()
                     )
 
+        if not source_rows:
+            return Cr6Output(**{table.member: ingress([], table.spec) for table in TABLES})
+
         values = convert_dataset(source_rows, factor_rows, FIELD_MAP)
         # Bounds retain their source coefficients until the relation conversion.
-        bound_types = {
-            name: DecimalDtype(
-                38,
-                max(
-                    (
-                        max(0, -value.as_tuple().exponent)
-                        for row in segments
-                        if (value := getattr(row, name)) is not None
-                    ),
-                    default=0,
-                ),
-            )
-            for name in ("lower_fraction", "upper_fraction")
-        }
-        segment_input = model_spec(
-            SilverSegment, decimals=bound_types, keys=("segment_id",)
-        )
-        bounds = ingress(segments, segment_input).with_columns(
+        bounds = ma.relation(segments).with_columns(
             *(
                 (
-                    ma.col(name).cast(pl.Decimal(38, bound_types[name].scale + 2))
+                    ma.col(name).cast(pl.Decimal(38, source_scale(segments, name) + 2))
                     * ma.lit(Decimal("0.01")).cast(
-                        pl.Decimal(38, bound_types[name].scale + 2)
+                        pl.Decimal(38, source_scale(segments, name) + 2)
                     )
                 )
                 .cast(pl.Decimal(16, 8))
                 .alias(name)
-                for name in bound_types
+                for name in ("lower_fraction", "upper_fraction")
             )
         )
         observations = (
@@ -361,15 +340,7 @@ class Cr6Pipeline:
             .select(*TABLES[0].spec.field_names)
         )
         return Cr6Output(
-            checked(observations, TABLES[0].spec, TABLES[0].contract),
-            checked(
-                ingress(field_rows, TABLES[1].spec),
-                TABLES[1].spec,
-                TABLES[1].contract,
-            ),
-            checked(
-                ingress(relationships, TABLES[2].spec),
-                TABLES[2].spec,
-                TABLES[2].contract,
-            ),
+            observations.conform(TABLES[0].spec),
+            ingress(field_rows, TABLES[1].spec),
+            ingress(relationships, TABLES[2].spec),
         )
