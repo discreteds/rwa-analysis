@@ -52,7 +52,9 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
     assert result.tables[key].row(0)[4] == Decimal(281508)
     assert result.publication.database == tmp_path / "cba.duckdb"
     assert result.bundles[0].datasets[0].metadata.context.source_template == "CR6"
-    stored = session.silver.read(result.publication)
+    output = session.silver.read(result.publication)
+    stored = output.cr6
+    assert output.cr9.observations.count_rows() == 0
     assert stored.contexts.count_rows() == 1
     assert stored.context_evidence.count_rows() == 2
     assert {r["source_pdf_page"] for r in stored.context_evidence.to_dicts()} == {1, 55}
@@ -72,7 +74,7 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
 
     from rwa_analysis.domains.cr6.contracts import TABLES
 
-    reread = other.silver.read(publication)
+    reread = other.silver.read(publication).cr6
     for table in TABLES:
         expected = (
             getattr(candidate.cr6, table.member)

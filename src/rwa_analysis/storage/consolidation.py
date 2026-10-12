@@ -6,9 +6,8 @@ import mountainash as ma
 import polars as pl
 from mountainash.typespec.converters import to_polars_schema
 
-from rwa_analysis.domains.cr6.contracts import TABLES
-from rwa_analysis.domains.cr6.models import Cr6Output
 from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
+from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
 from rwa_analysis.storage.bronze import BronzeStore
 from rwa_analysis.storage.manifests import (
     MasterManifest,
@@ -16,7 +15,8 @@ from rwa_analysis.storage.manifests import (
     identifier,
     retain_manifest,
 )
-from rwa_analysis.storage.silver import Publication, SilverStore
+from rwa_analysis.storage.silver import Publication, SilverOutput, SilverStore
+from rwa_analysis.storage.tables import DOMAINS
 
 
 @dataclass(frozen=True)
@@ -27,14 +27,24 @@ class SilverConsolidator:
         self, publications: tuple[Publication, ...], *, revision: str
     ) -> Publication:
         outputs = tuple(self.store.read(publication) for publication in publications)
-        combined = Cr6Output(
+        combined = SilverOutput(
             **{
-                table.member: ma.concat(
-                    [getattr(output, table.member) for output in outputs]
+                domain: output_type(
+                    **{
+                        table.member: ma.concat(
+                            [
+                                getattr(getattr(output, domain), table.member)
+                                for output in outputs
+                            ]
+                        )
+                        if outputs
+                        else ma.relation(
+                            pl.DataFrame(schema=to_polars_schema(table.spec))
+                        )
+                        for table in tables
+                    }
                 )
-                if outputs
-                else ma.relation(pl.DataFrame(schema=to_polars_schema(table.spec)))
-                for table in TABLES
+                for domain, output_type, tables in DOMAINS
             }
         )
         manifest = MasterManifest(
@@ -58,4 +68,8 @@ class SilverConsolidator:
             bundles.extend(
                 store.load(ref).bundle for ref in source.selection.bronze_refs
             )
-        return reconstruct_cr6(self.store.read(publication), tuple(bundles))
+        output = self.store.read(publication)
+        return {
+            **reconstruct_cr6(output.cr6, tuple(bundles)),
+            **reconstruct_cr9(output.cr9, tuple(bundles)),
+        }

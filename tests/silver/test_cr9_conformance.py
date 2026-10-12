@@ -120,11 +120,11 @@ def test_reconstruction_preserves_published_measure_column_order(
     # Westpac p.55 puts the historical rate after all four count columns.
     assert table.columns == [
         "source_row",
-        "weighted_average_pd",
-        "arithmetic_average_pd",
-        "previous_year_borrower_count",
-        "current_year_borrower_count",
-        "defaulted_borrower_count",
-        "new_defaulted_borrower_count",
-        "historical_annual_default_rate",
+        "Weighted\naverage PDb",
+        "Arithmetic\naverage PD\nby borrowers",
+        "End of\nprevious year",
+        "End of the year",
+        "Non-performing\nborrowers in\nthe yearc",
+        "of which: new\nNon-performing\nborrowers in\nthe year",
+        "Average\nhistorical annual\ndefault rated",
     ]

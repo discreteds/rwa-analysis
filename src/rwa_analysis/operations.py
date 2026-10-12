@@ -5,6 +5,7 @@ from pathlib import Path
 
 from rwa_analysis.catalogue.load import load_catalogue
 from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
+from rwa_analysis.domains.cr9.pipeline import Cr9Pipeline
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.extraction.runner import run_extractor
 from rwa_analysis.storage.bronze import LoadedBronze
@@ -37,6 +38,7 @@ class ExtractionOperation:
 class ConformanceOperation:
     project_root: Path
     cr6: Cr6Pipeline
+    cr9: Cr9Pipeline
 
     def conform(
         self, inputs: tuple[LoadedBronze, ...], catalogue: CatalogueSelection
@@ -44,6 +46,7 @@ class ConformanceOperation:
         release = load_catalogue(self.project_root / catalogue.release_path)
         return SilverCandidate(
             self.cr6.conform(inputs, release),
+            self.cr9.conform(inputs, release),
             RebuildSelection(
                 bronze_refs=tuple(item.ref for item in inputs), catalogue=catalogue
             ),

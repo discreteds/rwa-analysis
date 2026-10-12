@@ -28,7 +28,9 @@ class RebuildSelection(BaseModel):
 class RebuildManifest(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
-    schema_version: Literal["cr6-normalised-v1"] = "cr6-normalised-v1"
+    schema_version: Literal["cr6-normalised-v1", "disclosure-normalised-v2"] = (
+        "disclosure-normalised-v2"
+    )
     revision: str
     organisation_id: str
     selection: RebuildSelection
@@ -41,7 +43,9 @@ class RebuildManifest(BaseModel):
 class MasterManifest(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
-    schema_version: Literal["cr6-normalised-v1"] = "cr6-normalised-v1"
+    schema_version: Literal["cr6-normalised-v1", "disclosure-normalised-v2"] = (
+        "disclosure-normalised-v2"
+    )
     revision: str
     staging_manifests: tuple[Path, ...]
 

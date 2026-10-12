@@ -14,6 +14,7 @@ def master_store(root):
 
 def test_master_retains_staging_values_metadata_and_sources(published_cr6, retained):
     from rwa_analysis.domains.cr6.contracts import TABLES
+    from rwa_analysis.extraction.cr6 import Cr6Dataset
 
     root, _ = retained
     master = master_store(root)
@@ -26,7 +27,14 @@ def test_master_retains_staging_values_metadata_and_sources(published_cr6, retai
             "WHERE observation_id = ?",
             [f"{cba_key}/band-1"],
         )
-    staging_outputs = [session.silver.read(p) for session, p in published_cr6]
+    staging_outputs = [session.silver.read(p).cr6 for session, p in published_cr6]
+    cr6_keys = {
+        f"{bundle.bundle_key}/{ds.id}"
+        for session, p in published_cr6
+        for bundle in session.silver.read_sources(p)
+        for ds in bundle.datasets
+        if isinstance(ds, Cr6Dataset)
+    }
     expected = {
         table.member: [
             row
@@ -36,7 +44,7 @@ def test_master_retains_staging_values_metadata_and_sources(published_cr6, retai
         for table in TABLES
     }
     publication = master.consolidate(publications, revision="combined")
-    output = master.store.read(publication)
+    output = master.store.read(publication).cr6
     for table in TABLES:
         keys = table.spec.primary_key
         key = lambda row, keys=keys: tuple(row[name] for name in keys)
@@ -51,7 +59,11 @@ def test_master_retains_staging_values_metadata_and_sources(published_cr6, retai
     # Readback uses master values and retained manifests even after staging is gone.
     for staging in publications:
         staging.database.unlink()
-    tables = master.reconstruct(publication)
+    tables = {
+        key: table
+        for key, table in master.reconstruct(publication).items()
+        if key in cr6_keys
+    }
     assert len(tables) == 4
     assert tables[cba_key].row(0)[4] == Decimal(281509)
     manifest = master.read_manifest(publication)
@@ -66,10 +78,10 @@ def test_master_rebuild_replaces_removed_organisations(published_cr6, retained):
     publications = tuple(publication for _, publication in published_cr6)
     master.consolidate(publications, revision="all")
     publication = master.consolidate(publications[:1], revision="cba-only")
-    output = master.store.read(publication)
+    output = master.store.read(publication).cr6
     assert output.contexts.count_rows() == 1
     assert output.contexts.item("organisation_id") == "cba"
-    expected = published_cr6[0][0].silver.read(publications[0])
+    expected = published_cr6[0][0].silver.read(publications[0]).cr6
     for table in TABLES:
         actual = getattr(output, table.member).to_polars().sort(table.spec.primary_key)
         selected = (
@@ -77,6 +89,6 @@ def test_master_rebuild_replaces_removed_organisations(published_cr6, retained):
         )
         assert actual.equals(selected), table.member
     publication = master.consolidate((), revision="empty")
-    output = master.store.read(publication)
+    output = master.store.read(publication).cr6
     assert all(getattr(output, table.member).count_rows() == 0 for table in TABLES)
     assert master.reconstruct(publication) == {}

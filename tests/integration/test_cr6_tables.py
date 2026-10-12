@@ -35,6 +35,8 @@ def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
 
 
 def test_actual_four_bank_tables(published_cr6, project_root):
+    from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
+
     tables = {}
     for session, publication in published_cr6:
         # Reusing a populated warehouse must preserve its schemas and rebuild tables.
@@ -44,7 +46,12 @@ def test_actual_four_bank_tables(published_cr6, project_root):
             catalogue=manifest.selection.catalogue,
         )
         session.publish(candidate, revision=publication.revision)
-        tables.update(session.reconstruct(publication))
+        tables.update(
+            reconstruct_cr6(
+                session.silver.read(publication).cr6,
+                session.silver.read_sources(publication),
+            )
+        )
     assert len(tables) == 4
     for bank, date in (
         ("cba", "2025-06-30"),

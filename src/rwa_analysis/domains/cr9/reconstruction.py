@@ -26,6 +26,11 @@ def reconstruct_cr9(output, bundles):
                 for name in MEASURES
             }
             source_fields = sorted(MEASURES, key=column_order.__getitem__)
+            published = {field.id: field.source_label for field in ds.metadata.published_fields}
+            source_labels = {
+                binding.typed_field_name: published[binding.published_field_ref]
+                for binding in ds.metadata.bindings
+            }
             labels = ma.relation(
                 [
                     {
@@ -55,6 +60,9 @@ def reconstruct_cr9(output, bundles):
                     .select("observation_id", "source_row", "source_order", *MEASURES)
                 )
             tables[f"{bundle.bundle_key}/{ds.id}"] = (
-                result.sort("source_order").select("source_row", *source_fields).to_polars()
+                result.sort("source_order")
+                .select("source_row", *source_fields)
+                .rename(source_labels)
+                .to_polars()
             )
     return tables

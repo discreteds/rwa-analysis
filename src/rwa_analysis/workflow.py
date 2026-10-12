@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import polars as pl
 
 from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
+from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.operations import (
     ConformanceOperation,
@@ -52,9 +53,12 @@ class OrganisationSession:
         return self.silver.publish(candidate, revision)
 
     def reconstruct(self, publication: Publication) -> dict[str, pl.DataFrame]:
-        return reconstruct_cr6(
-            self.silver.read(publication), self.silver.read_sources(publication)
-        )
+        output = self.silver.read(publication)
+        bundles = self.silver.read_sources(publication)
+        return {
+            **reconstruct_cr6(output.cr6, bundles),
+            **reconstruct_cr9(output.cr9, bundles),
+        }
 
     def run(
         self,
