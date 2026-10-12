@@ -6,6 +6,7 @@ import polars as pl
 
 from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
 from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
+from rwa_analysis.domains.source_tables.reconstruction import reconstruct_source_tables
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.operations import (
     ConformanceOperation,
@@ -58,6 +59,12 @@ class OrganisationSession:
         return {
             **reconstruct_cr6(output.cr6, bundles),
             **reconstruct_cr9(output.cr9, bundles),
+            **{
+                key: value.frame
+                for key, value in reconstruct_source_tables(
+                    output.source_tables
+                ).items()
+            },
         }
 
     def run(

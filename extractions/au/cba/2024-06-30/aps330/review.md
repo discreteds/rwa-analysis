@@ -15,6 +15,8 @@ total are categories; lower-bound inclusivity, segment completeness/disjointness
 counting basis of average EAD remain unresolved. Totals retain source relationships
 without asserting summability of weighted averages. Undrawn is an explicit subset
 of total exposure. The overlay note remains attached to the mortgage LGD field.
+PD bands retain the p.43 one-year horizon and long-run default-rate basis. Exposure
+LGD retains p.44's downturn/stressed-recovery definition, alongside the loss basis.
 
 Backtesting retains the old-framework statement, opening non-defaulted cohort
 definition, partial PD history from 2016, retail LGD financial years 2016–2023 and

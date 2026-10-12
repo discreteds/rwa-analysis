@@ -6,6 +6,7 @@ from pathlib import Path
 from rwa_analysis.catalogue.load import load_catalogue
 from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
 from rwa_analysis.domains.cr9.pipeline import Cr9Pipeline
+from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.extraction.runner import run_extractor
 from rwa_analysis.storage.bronze import LoadedBronze
@@ -51,4 +52,5 @@ class ConformanceOperation:
                 bronze_refs=tuple(item.ref for item in inputs), catalogue=catalogue
             ),
             release.id,
+            SourceTablePipeline().conform(inputs, release),
         )

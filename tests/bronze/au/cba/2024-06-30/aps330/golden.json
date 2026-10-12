@@ -38,6 +38,9 @@
       ["ead_ratio","Ratio of estimated EAD to actual EAD","ratio","1.0",1]]}
   ],
   "notes": {
+    "pd-horizon": "The PD, expressed as a percentage, is the estimate of the population of borrowers or counterparties assigned to a PD grade that will default within a one year period. It reflects a borrower’s ability to generate sufficient cash flows in the future to meet the terms of all of its credit obligations to the Group.",
+    "pd-long-run": "PD estimates are based on a long-run average default rate based on the Group’s historical data, supplemented with external data where applicable.",
+    "lgd-downturn": "For calculating regulatory capital an estimated downturn LGD is used that reflects likely recovery rates under stressed economic conditions.",
     "undrawn": "The credit exposure value of undrawn commitments included in Total credit risk exposures above.",
     "scaling": "Includes 1.10 scaling factor.",
     "framework": "The following tables compare credit risk estimates used in calculating regulatory capital to realised outcomes. The risk estimates are based on prudential requirements prior to the revised capital framework. The prudential standard changes have introduced a number of new asset classes which will be reported once there is adequate historical data available.",

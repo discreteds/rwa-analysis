@@ -34,6 +34,20 @@ def test_complete_cba_historical_source(project_root):
         axes = {a.id: a for a in meta.axes}
         assert axes["band-0"].header_path_refs == ("panel", "pd-bands")
         notes = {q.id: q for q in meta.qualifications}
+        for key, page in (
+            ("pd-horizon", 43),
+            ("pd-long-run", 43),
+            ("lgd-downturn", 44),
+        ):
+            assert notes[key].source_text == golden["notes"][key]
+            assert notes[key].evidence[0].pdf_page == page
+            targets = [(s.kind, s.id) for s in notes[key].scope]
+            assert targets == (
+                [("field", "lgd")]
+                if key == "lgd-downturn"
+                else [("band", f"band-{i}") for i in range(7)]
+            )
+        assert axes["band-0"].qualification_refs == ("pd-horizon", "pd-long-run")
         assert notes["undrawn"].source_text == golden["notes"]["undrawn"]
         assert notes["scaling"].source_text == golden["notes"]["scaling"]
         assert notes["overlay"].source_text == (
@@ -67,7 +81,11 @@ def test_complete_cba_historical_source(project_root):
                     expected["page"] - 2
                 )
         assert fields["average_ead"].attributes[0].status == "unresolved"
-        assert fields["lgd"].qualification_refs == ("overlay", "lgd-definition")
+        assert fields["lgd"].qualification_refs == (
+            "overlay",
+            "lgd-definition",
+            "lgd-downturn",
+        )
         assert fields["risk_weight"].qualification_refs == ("scaling",)
         for key, token in (("overlay", "7.4"), ("scaling", "1.10")):
             c = next(c for c in table.cells if c.field_ref == key)

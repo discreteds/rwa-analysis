@@ -1,0 +1,22 @@
+{
+  "id": "historical-mortgages-v1",
+  "schema_version": "cr6-v1",
+  "created_on": "2026-10-12",
+  "selection": [
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun24-million@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun24-percent@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun24-billion@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun24-ratio@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-dec23-million@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-dec23-percent@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-dec23-billion@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-dec23-ratio@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun23-million@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun23-percent@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun23-billion@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-jun23-ratio@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-pd24-percent@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-lgd24-percent@1"},
+    {"path":"mappings/cba-historical-2024-v1.json","kind":"mapping","revision_id":"cba-lgd24-ratio@1"}
+  ]
+}

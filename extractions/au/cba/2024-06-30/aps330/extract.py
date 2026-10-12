@@ -176,7 +176,7 @@ def exposure(text, page, panel_date, label):
             "Exposure - weighted average LGD (%)",
             "%",
             "1",
-            ("overlay", "lgd-definition"),
+            ("overlay", "lgd-definition", "lgd-downturn"),
         ),
         (
             "risk_weight",
@@ -204,7 +204,16 @@ def exposure(text, page, panel_date, label):
     for j, band_label in enumerate(labels):
         bid = f"band-{j}"
         axes.append(
-            axis(bid, "column", band_label, j, page, title, ("panel", "pd-bands"))
+            axis(
+                bid,
+                "column",
+                band_label,
+                j,
+                page,
+                title,
+                ("panel", "pd-bands"),
+                ("pd-horizon", "pd-long-run") if j < 7 else (),
+            )
         )
         bands.append(
             BandDefinition(
@@ -239,6 +248,24 @@ def exposure(text, page, panel_date, label):
         )
     notes.extend(
         (
+            note(
+                "pd-horizon",
+                "The PD, expressed as a percentage, is the estimate of the population of borrowers or counterparties assigned to a PD grade that will default within a one year period. It reflects a borrower’s ability to generate sufficient cash flows in the future to meet the terms of all of its credit obligations to the Group.",
+                43,
+                tuple(SourceEndpoint("band", f"band-{j}") for j in range(7)),
+            ),
+            note(
+                "pd-long-run",
+                "PD estimates are based on a long-run average default rate based on the Group’s historical data, supplemented with external data where applicable.",
+                43,
+                tuple(SourceEndpoint("band", f"band-{j}") for j in range(7)),
+            ),
+            note(
+                "lgd-downturn",
+                "For calculating regulatory capital an estimated downturn LGD is used that reflects likely recovery rates under stressed economic conditions.",
+                44,
+                (SourceEndpoint("field", "lgd"),),
+            ),
             note(
                 "lgd-definition",
                 "LGD is estimated as the net present value of the post default loss, including an allowance for internal and external costs, expressed as a percentage of the EAD.",

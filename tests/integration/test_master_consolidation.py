@@ -80,13 +80,15 @@ def test_master_rebuild_replaces_removed_organisations(published_banks, retained
     publication = master.consolidate(publications[:1], revision="cba-only")
     output = master.store.read(publication)
     expected = published_banks[0][0].silver.read(publications[0])
+    for selected_domain in (output.cr6, output.cr9):
+        assert selected_domain.contexts.count_rows() == 1
+        assert selected_domain.contexts.item("organisation_id") == "cba"
+    assert output.source_tables.tables.count_rows() == 0
     for domain, _, tables in DOMAINS:
         actual_domain, expected_domain = (
             getattr(output, domain),
             getattr(expected, domain),
         )
-        assert actual_domain.contexts.count_rows() == 1
-        assert actual_domain.contexts.item("organisation_id") == "cba"
         for table in tables:
             actual = (
                 getattr(actual_domain, table.member)

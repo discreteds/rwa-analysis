@@ -1,6 +1,6 @@
 """Organisation publication and readback through one owned DuckDB transaction."""
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import mountainash as ma
@@ -9,6 +9,8 @@ from mountainash_data import IbisBackend
 
 from rwa_analysis.domains.cr6.models import Cr6Output
 from rwa_analysis.domains.cr9.models import Cr9Output
+from rwa_analysis.domains.source_tables.contracts import empty_output
+from rwa_analysis.domains.source_tables.models import SourceTableOutput
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.storage.bronze import BronzeStore
 from rwa_analysis.storage.manifests import (
@@ -24,6 +26,7 @@ from rwa_analysis.storage.tables import DOMAINS
 class SilverOutput:
     cr6: Cr6Output
     cr9: Cr9Output
+    source_tables: SourceTableOutput = field(default_factory=empty_output)
 
 
 @dataclass(frozen=True)
@@ -32,6 +35,7 @@ class SilverCandidate:
     cr9: Cr9Output
     selection: RebuildSelection
     catalogue_release_id: str
+    source_tables: SourceTableOutput = field(default_factory=empty_output)
 
 
 @dataclass(frozen=True)
