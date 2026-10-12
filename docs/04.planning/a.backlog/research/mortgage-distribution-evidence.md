@@ -103,6 +103,48 @@ and default-event incidence remain different measures.
 
 ## Incorporation into calculations
 
+### CR9 temporal/interface design — researcher direction, 2026-10-12
+
+Use CR9 as the second concrete domain to establish the shared interfaces with CR6.
+The design must support recognising revised historical calculations across reports
+and extending historical coverage by acquiring earlier and later report vintages.
+This is approval to design, not an implemented CR9 pipeline or approved class layout.
+
+Written proposal: [CR9 capture and shared domain interfaces](../../superpowers/specs/2026-10-12-cr9-domain-design.md).
+The class layout awaits researcher review and a disposable shape spike.
+
+Keep document reporting/publication dates distinct from field-specific measurement
+dates, cohort anchors, outcome intervals and historical calculation windows. Retain
+source calculation/methodology changes separately from our extraction and semantic
+interpretation revisions. Known window length does not always establish exact bounds.
+
+Preserve each published occurrence. A changed value for the same period and measure
+is evidence to investigate, not automatic proof of a bank restatement; a shifted
+rolling window, changed cohort or methodology can also explain differences. Preserve
+unchanged repeated evidence without adding its population twice.
+
+Historical coverage can grow by collecting annual observations and overlapping
+window-level observations at their disclosed grains. A rolling aggregate does not
+provide its individual annual components.
+
+**Confirmed scope, 2026-10-12:** capture and tag each published datapoint appropriately.
+Preserve annual observations where individually identifiable and rolling-window
+observations as published. Temporal meaning must resolve at field/occurrence level:
+adjacent columns in one CR9 row need not share a measurement date or window. Shared
+descriptors may be referenced without duplicating their contents for every cell.
+Keep unknown bounds, source wording, evidence and interpretation status visible.
+
+Aggregation, period alignment, vintage selection, comparisons of possible revisions
+and any assumption-based reconstruction are bespoke analytical choices. This design
+does not introduce an automatic historical-series builder, rolling-window aggregation,
+deduplication policy or rule that newer reports replace older evidence. Explicit bank
+restatement statements and approved interpretation links can be retained as metadata;
+numeric differences alone do not create those links. Derived results remain distinct
+from reported observations.
+
+Metadata ingress and constructor validation refactoring remain on their separate
+techdebt items and are not prerequisites for designing these CR9 interfaces.
+
 Use the existing evidence/catalogue/layer separation. Supporting financial values
 are observations with metadata, not loose attributes copied onto every CR6 row.
 Choose the smallest representation after inspecting the evidence; this item does
@@ -163,8 +205,9 @@ or publication gates.
 - [ ] Extend the evidenced joins/scenarios to the remaining banks and calculate
   market shares only for explicitly matched populations and denominators.
 
-The current approved change is this research backlog and source leads. Acquisition,
-model decisions and executable integration are follow-up work, not completed features.
+Source discovery and the capture-and-tag design scope are recorded. The CR9 interface
+proposal awaits review; acquisition, approved model implementation and executable
+integration remain follow-up work, not completed features.
 
 ## Governing principles
 

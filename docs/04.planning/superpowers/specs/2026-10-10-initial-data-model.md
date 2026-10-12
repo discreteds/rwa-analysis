@@ -100,6 +100,15 @@ Temporal roles include snapshot, opening snapshot, closing snapshot, reporting i
 
 Actual dates belong to observation context; reusable rules such as “12 months following the anchor” belong to definitions. Preserve source date labels and the basis for any derived dates. An unknown boundary or calendar convention stays unknown.
 
+**CR9 clarification, 2026-10-12:** resolve temporal context per datapoint/field through
+explicit bindings; a dataset-level date cannot describe every CR9 column. Distinguish
+measurement date, cohort anchor, outcome interval and historical calculation window
+from publication vintage and our extraction/interpretation revisions. Shared descriptors
+can serve multiple fields; concrete classes remain for CR9 design review. Preserve
+reported windows and successive occurrences without inferring annual components,
+automatic supersession or aggregation. Historical comparisons and combinations are
+bespoke analyses under the [temporal semantics principle](../../../01.principles/b.data-semantics/layered-metric-definitions.md#temporal-and-cohort-semantics).
+
 Population selection combines shared context, row/column segment membership and applicable inclusion rules. CBA's PD definition can apply to seven non-default bands, one default-only band and their combined aggregate without asserting the same default population for every cell.
 
 ## 5. Source axes, published fields and relationships

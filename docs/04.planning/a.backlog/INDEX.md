@@ -20,3 +20,4 @@ Temporary implementation choices with an explicit removal objective live under
 | Item | Status | Removal objective |
 |---|---|---|
 | [Metadata ingress and nested dataclass schemas](techdebt/metadata-ingress-and-nested-dataclasses.md) | OPEN | Revisit the metadata schemas and remove the temporary recursive `asdict()` ingress adaptation. |
+| [Constructor validation separation](techdebt/constructor-validation-separation.md) | DEFERRED | Revisit retained constructor/transport checking responsibilities under the separate-validation principle; outside CR9 interface design. |
