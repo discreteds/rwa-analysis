@@ -14,6 +14,7 @@ Reports will never expose every metric, dimension, cell or underlying arrangemen
 ## Implications
 
 - Capture the selected disclosed values and structure faithfully and retain source evidence. Do not invent unavailable cells or require reconstruction of undisclosed data.
+- Apply [complete capture across evolving disclosures](historical-disclosure-capture.md): the current template or typed field inventory must not restrict which published metrics are retained from a selected historical table.
 - Tag known concepts, scope, units, weighting, timing and qualifications; preserve unresolved or provisional interpretations. Semantic enrichment can improve incrementally without making earlier faithful capture invalid.
 - Silver can publish faithfully captured observations with partial mappings and incomplete semantics. Expose interpretation status and limitations alongside the values rather than dropping them or rejecting an entire dataset solely for incomplete knowledge.
 - Distinguish extraction and structural errors from research limitations. Wrong values, lost rows, invalid references or contradictory units require correction. Missing disclosures, unknown conventions and unreconciled totals may be legitimate limitations, recorded as such.

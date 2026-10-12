@@ -181,6 +181,13 @@ behaviour must be reconciled explicitly with the separate-validation decision.
 
 ## Extending the implementation
 
+The agreed [historical-capture direction](01.principles/a.architecture/historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
+uses source-defined fields/cells composed with reusable metadata definitions and
+distinct source occurrences. It includes querying how report structure changes over
+time. A disposable spike exercised selected 2024/2025 cases; production contracts,
+complete metadata composition and migration are not implemented. The fixed domain
+rows described above remain the current implementation, not the future capture limit.
+
 Follow [Mountainash-first coding practices](01.principles/d.coding-practices/mountainash-first.md).
 Select a real source case, review evidence, extend independent goldens and introduce
 only the domain records/contracts it needs. Preserve the one-source-bundle boundary.

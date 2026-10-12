@@ -21,6 +21,12 @@ Organisations report similar concepts under different labels, while the same lab
 - Reporting definitions establish entity, portfolio, regulatory basis and effective period. Presentation preserves labels, units, scale, precision and missing-value conventions.
 - Conformed financial fields use measure-specific fixed scales: base-unit monetary amounts use `Decimal(16,2)`, rates and other small-valued measures needing eight fractional digits use `Decimal(16,8)`, and actual counts use integers. The researcher agreed this on 2026-10-11: trillion-dollar amounts do not require eight fractional places. Scale belongs to the field contract, not a per-value magnitude heuristic. Bronze retains the original value and displayed precision.
 - Attributes such as geography and currency cut across concept hierarchies and remain reusable rather than generating duplicated branches.
+- Reusable field semantics and shared cell representation types are distinct from
+  published field/cell occurrences. Compose applicable definition revisions and
+  contextual refinements without merging source identities or silently inheriting
+  meaning. Labels, positions and evidence remain occurrence-specific. This also
+  enables [report-structure research](../a.architecture/historical-disclosure-capture.md#report-structure-as-research-data):
+  distinguish presentation changes, semantic changes and unresolved equivalence.
 - Mapping applicability includes organisation/entity, domain, table, portfolio, relevant rules and observation dates; document/template restrictions disambiguate comparatives and changed publication conventions.
 - Footnotes, introductions, glossaries, methodology sections and appendices can establish variant attributes. Preserve the supporting text, location, scope and whether the interpretation is explicit or inferred from evidence.
 - A table-specific qualification can refine a broader definition. Unsupported inheritance or conflicting evidence leaves the affected interpretation unresolved.
@@ -40,6 +46,10 @@ Organisations report similar concepts under different labels, while the same lab
 | CBA CR6 overlay footnote; NAB CR6 exclusion statement | RWA concept with different overlay-treatment variants |
 
 A changed footnote can require a revised mapping even if the published column title stays the same.
+
+Across reporting vintages, do not presume semantic continuity from organisation,
+label or column position. Follow [complete capture across evolving disclosures](../a.architecture/historical-disclosure-capture.md): preserve absence and changed grain,
+and leave gap filling and construction of comparable histories to downstream analysis.
 
 Arrangements are counted entities (#); exposures are monetary amounts ($). An arrangement may carry an exposure amount, but these are distinct concepts. Earlier discussion used the ambiguous term `modelled exposure unit`; the researcher corrected that interpretation. Source borrower, counterparty, loan, agreement and arrangement terminology requires contextual mapping: NAB's mortgage agreement count maps to arrangement count, without asserting that every counterparty count in every portfolio counts arrangements. Preserve each source definition and investigate distinctness and aggregation where relevant.
 

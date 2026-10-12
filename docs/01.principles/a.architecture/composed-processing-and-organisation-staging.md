@@ -11,6 +11,12 @@ output dataclasses using Mountainash schema declarations, conformance and relati
 operations. Derive common schema declarations from the models and augment them where
 necessary rather than maintaining parallel field inventories.
 
+For historical extensions, [source-defined capture](historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
+refines this boundary: compose reusable metadata definitions with independently
+identified source occurrences. Fixed domain row inventories serve projections rather
+than limiting capture. The existing CR6/CR9 containers remain the implemented form;
+the new physical contracts and their integration require a subsequent design.
+
 Configuration supplies execution settings; domain declarations own models, schemas
 and table identities; operations perform extraction, transformation and storage;
 an organisation-scoped session owns workflow sequencing. A small construction function
