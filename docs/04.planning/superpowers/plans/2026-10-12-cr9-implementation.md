@@ -4,8 +4,8 @@
 > checkpoint after task 3. Use `test-driven-development` and `test-audit` for real
 > implementation. Do not reuse the disposable spike as the implementation branch.
 
-**Status:** APPROVED — execution has reached the task-3 Westpac checkpoint.
-The researcher approved that checkpoint and authorised tasks 4–5. Implementation
+**Status:** IMPLEMENTED AND VERIFIED — all five tasks complete on PR #9, awaiting merge.
+The researcher approved the Westpac checkpoint before tasks 4–5. Implementation
 [lessons](../../../00.ideation/2026-10-12-cr9-implementation-lessons.md) are retained
 for future backlog and design decisions.
 
@@ -24,6 +24,9 @@ PR #7 merged at `5190388`; design and disposable spike shape are approved. The
 implementation plan is a new checkpoint, not implicit execution approval.
 
 ## Global constraints and execution
+
+Execution status is recorded in the completion table below; the original task
+checklists preserve the approved plan wording.
 
 - Use the base checkout for docs; reserve a fresh `develop`-seeded worktree for coding.
   Confirm the coding branch/worktree when execution starts. Never base on spike PR #6.
@@ -318,3 +321,42 @@ A failing source-backed regression reproduced it; the repaired projection now at
 the default definition to default-stock counts without leaking it to performing rows.
 The full suite and the real example passed after repair; Ruff and diff checks pass.
 No upstream-dependent blocker was identified for this checkpoint.
+
+## Four-bank completion evidence — 2026-10-12
+
+| Task | Status | Executable evidence |
+|---|---|---|
+| 1 — Westpac source/transport | COMPLETE | Independent source golden and retained legacy-wire fixture; mixed transport roundtrip. |
+| 2 — Shared semantics/CR9 conformance | COMPLETE | Occurrence/date applicability tests; precise rates, missingness, temporal roles and qualifications. |
+| 3 — Mixed staging | COMPLETE, researcher approved | Real Westpac checkpoint above, followed by explicit permission to continue. |
+| 4 — CBA/NAB/ANZ | COMPLETE | Eight/eight/nine rows; independent goldens; bank-specific conformance and actual selected catalogue evidence references. |
+| 5 — Master/delivery | COMPLETE, PR awaiting merge | Persisted mutations copied; reconstruction without staging databases; smaller/empty selections replace both domains. |
+
+Actual command: `uv run python examples/four_bank_cr9.py`.
+
+Artifacts: `/tmp/opencode/cr9-four-bank-8yj05s49/`.
+Log: `/tmp/opencode/cr9-four-bank-final.log`.
+
+The example retained four mixed bundles, four organisation publications and a master
+publication containing 36 CR6 rows and 33 CR9 rows, then reconstructed eight tables
+from master values. Readback Parquet files are under the artifact root's `readback/`.
+The new example exposes research objects for `python -i` and prints its fresh retained
+temporary output root. Existing Westpac interactive-example debt remains tracked.
+
+Full suite: **148 passed**. Independent final correctness review: no repair findings;
+its focused extraction/catalogue/conformance/master run passed 32 tests. Complexity
+review retained the source-specific extraction/code evidence and cut ANZ's temporary
+test release auto-completion so it now exercises the actual integrated release.
+After that test-only cut, the two focused ANZ tests passed. Ruff and diff checks
+passed; 91 local documentation targets resolved against the documentation and
+implementation checkouts.
+
+Source decisions remain faithful and scoped: CBA history starts at year precision
+`2014`; NAB count columns keep their explicit dates and agreement-count evidence;
+ANZ's five-year history excludes technical defaults/exited obligors as disclosed and
+its 0.62% subtotal is retained directly. Unknown annual anchors/denominators stay
+unknown. No automatic aggregation or authoritative-vintage selection was added.
+
+The pinned APIs emit schema-inference and deprecation messages; the separately
+recorded inference-log investigation is not a confirmed upstream correctness defect.
+No upstream-dependent blocker was established for the completed capture scope.

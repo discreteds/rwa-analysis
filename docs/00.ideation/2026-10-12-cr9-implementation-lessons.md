@@ -25,7 +25,27 @@ Evidence: [implementation plan and checkpoint](../04.planning/superpowers/plans/
 | Interactive examples are part of the usable research interface | `uv run python -i examples/westpac_cr9.py` exited for missing arguments; local variables inside `main()` were unavailable for inspection | Concrete [interactive-example debt](../04.planning/a.backlog/techdebt/interactive-research-examples.md). Existing command with explicit flags works, but is not the expected interactive experience. |
 | Schema-inference log messages obscure the useful result | Pinned schema extraction logs unsupported Decimal/Literal hints before explicit augmentation supplies the actual types | Investigation candidate, not a confirmed upstream defect. Inspect pinned native schema APIs and existing upstream findings before proposing a change. Do not hide all logs or invent a second schema system. |
 
-## Boundaries for follow-up
+## Remaining-bank evidence
+
+- **Reused local IDs need source scope even in tests.** Expanding the release exposed
+  a Westpac-only assertion that treated `cr9-residential-mortgages` as globally unique.
+  The evidence-reference check now keys by bundle, document and dataset for all four
+  banks, preserving real reference checking rather than assuming one owner.
+- **Tests must not repair their own release.** ANZ's isolated implementation test
+  temporarily filled a copied release while integration was pending. Complexity
+  review removed that setup after integration; the test now loads the actual release.
+- **A known counting convention need not force a canonical equivalence.** NAB's
+  source supports `counted_entity=agreement`. Its generic count concept is retained
+  with that established attribute; the date-restricted CR6 arrangement concept is
+  not used to bypass CR9's applicability rule. Revisit only with an approved semantic
+  decision, not to make every bank use the same concept ID.
+- **Source order is genuinely bank-specific.** NAB's current-date count precedes
+  its previous-date count. Reconstructing using bindings preserves that ordering.
+- **Subtotal history is a source datum.** ANZ's mortgage 0.62% subtotal and five-year
+  scope are captured directly; neither a mean of band rates nor the separate corporate
+  2.5-year exception is substituted.
+
+## Follow-up rules
 
 - A resolved defect stays recorded as evidence; it does not need an open backlog item.
 - An implementation compromise with a concrete removal objective belongs in techdebt.

@@ -1,7 +1,7 @@
 # RWA disclosure research
 
-The four-bank CR6 workflow publishes normalised organisation staging databases,
-consolidates master and reconstructs all four source tables. The CBA example also
+The four-bank CR6/CR9 workflow publishes normalised organisation staging databases,
+consolidates master and reconstructs all eight source tables. The CBA example also
 demonstrates PDF extraction through publication and reconstruction.
 
 ## Documentation
@@ -11,7 +11,7 @@ demonstrates PDF extraction through publication and reconstruction.
 - [Durable principles](docs/01.principles/README.md)
 - [Mountainash-first coding practices](docs/01.principles/d.coding-practices/mountainash-first.md)
 
-Production scope is the selected four-bank mortgage CR6 blocks. Other disclosure
+Implemented scope is the selected four-bank mortgage CR6 and CR9 blocks. Other disclosure
 domains, a reusable capital engine and Gold persistence are not yet implemented.
 
 ## Environment and retained inputs
@@ -35,7 +35,8 @@ uv run python -i examples/cba_extraction.py
 conforms with the selected catalogue, publishes staging Silver and returns
 source-shaped numeric dataframes. Inspect `result.tables`, `result.publication`,
 or `result.bundles` for the source metadata. In a dataset, rows are
-`dataset.exposure_rows`; descriptors and context are under `dataset.metadata`.
+`dataset.exposure_rows` (CR6) or `dataset.backtesting_rows` (CR9); descriptors and context
+are under `dataset.metadata`. Store readback exposes named `output.cr6` and `output.cr9`.
 
 Change `run_name` for another saved extraction. It names a folder, not a schema
 version. Existing Bronze runs (including `v1`) are retained unchanged.
@@ -64,6 +65,22 @@ its retained rebuild manifest; reconstruction reads persisted numbers and uses
 saved Bronze for labels, order, missing-value tokens and source evidence.
 
 ## Four-bank staging and master
+
+To capture both domains from all four tracked PDFs into a fresh retained temporary
+directory, without needing existing generated Bronze:
+
+```bash
+uv run python -i examples/four_bank_cr9.py
+```
+
+The example prints its output directory and exposes `sessions`, `results`,
+`publications`, `master_publication`, `output` and `tables` for interactive inspection.
+It uses `catalogue/releases/cr6-cr9-v1.json`. The demonstrated master holds 36 CR6
+rows and 33 CR9 rows (CBA/Westpac/NAB eight each; ANZ nine including its subtotal).
+CR9 rates, counts, field timing, evidence and within-row subset relationships remain
+source-specific. No annual rates are inferred from historical averages.
+
+For the earlier retained CR6-only selections:
 
 ```bash
 uv run python -i examples/four_bank_research.py
@@ -99,7 +116,7 @@ configured project root, including when working in a notebook elsewhere.
 
 - `composition.py` assembles components from resolved settings.
 - `workflow.py` sequences stages and exposes `run()`.
-- `domains/cr6/` owns typed models, schema declarations, conformance and reconstruction.
+- `domains/cr6/` and `domains/cr9/` own typed models, schema declarations, conformance and reconstruction.
 - `storage/` owns source transport, retained selections and DuckDB publication.
 - `catalogue/` retains semantic definitions and scoped interpretations.
 
@@ -108,8 +125,10 @@ Money is stored as `Decimal(16,2)`, small-valued rates and bands as
 
 Silver stores shared contexts once, scalar observations and field metadata, and
 related rows for ordered qualifications, mappings, assertions, alternatives and
-supporting evidence. `domains/cr6/contracts.py` declares the complete table inventory.
-Metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
+supporting evidence. Domain `contracts.py` files declare twelve CR6 and fifteen CR9
+tables, associated in `storage/tables.py`. CR9 adds field-level temporal descriptors,
+bindings and evidence and uses flat typed metadata ingress.
+CR6 metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
 ingress boundary is tracked for removal in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
 Validation is separate and remains undefined; it is not invoked by this workflow.
 
