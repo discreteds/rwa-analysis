@@ -110,6 +110,9 @@ The design must support recognising revised historical calculations across repor
 and extending historical coverage by acquiring earlier and later report vintages.
 This is approval to design, not an implemented CR9 pipeline or approved class layout.
 
+Written proposal: [CR9 capture and shared domain interfaces](../../superpowers/specs/2026-10-12-cr9-domain-design.md).
+The class layout awaits researcher review and a disposable shape spike.
+
 Keep document reporting/publication dates distinct from field-specific measurement
 dates, cohort anchors, outcome intervals and historical calculation windows. Retain
 source calculation/methodology changes separately from our extraction and semantic
@@ -202,8 +205,9 @@ or publication gates.
 - [ ] Extend the evidenced joins/scenarios to the remaining banks and calculate
   market shares only for explicitly matched populations and denominators.
 
-The current approved change is this research backlog and source leads. Acquisition,
-model decisions and executable integration are follow-up work, not completed features.
+Source discovery and the capture-and-tag design scope are recorded. The CR9 interface
+proposal awaits review; acquisition, approved model implementation and executable
+integration remain follow-up work, not completed features.
 
 ## Governing principles
 
