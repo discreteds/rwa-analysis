@@ -1,4 +1,4 @@
-# CBA 30 June 2025 — mortgage CR6 source review
+# CBA 30 June 2025 — mortgage CR6/CR9 source review
 
 Reviewed 2026-10-10 with the PDF skill, directly against the
 [saved disclosure](../../../../../raw/cba-2025-06-30-aps330.pdf).
@@ -85,3 +85,65 @@ Run `uv run pytest tests/bronze/au/cba/2025-06-30/aps330 -q` from the project.
 Tests discover the project root by ancestors, so collection does not depend on
 the process working directory. [Extractor](extract.py) returns the typed source
 bundle; it does not read the golden or create persisted Bronze output versions.
+
+## CR9 extension — reviewed 2026-10-12
+
+Reviewed PDF/printed p.60, its introduction and both footnotes against a rendered
+page before authoring `golden-cr9.json`. Re-read PD methodology pp.49–52 and the
+glossary pp.114–117. This extends the same logical bundle with a CR9 dataset using
+`disclosure-v2`; the CR6 golden and existing retained Bronze versions are preserved.
+
+The selected `Residential mortgage` block is under `Subject to AIRB approach`.
+Eight rows have seven numeric positions, plus S&P and `Moodys` rating equivalents.
+The first row reports PDs 0.07/0.07%, counts 718,884/730,204, non-performing 1,045,
+new non-performing 28, historical rate 0.07%. The default row retains PDs 100.00%,
+counts 14,145/16,296, S&P `D` and Moodys `Ca to C`, with three visibly blank cells.
+The 10–100% band's new-non-performing cell is an en dash, not zero or a blank.
+No mortgage subtotal is published here.
+
+Page-60 PDF gutters are x=400/450/506/560/617/673/730/777 for numeric columns;
+rating columns occupy x=275–340 and 340–400. Headers occupy y=132–173, unit labels
+y=176–185. Mortgage PD-label starts are x≈199.8, y≈365.6–433.9. Existing CBA
+`window` and `source_passage` helpers serve this layout without new shared helpers.
+
+### Meaning and time
+
+- The introduction specifies a 12-month computation from **1 April 2024 to
+  31 March 2025**, excluding RWA overlays and risk floors. This is distinct from
+  the June document date and August publication. `End of previous year` and
+  `End of the year` are interpreted with that explicit annual context as
+  31 March 2024 and 31 March 2025; both header and introduction remain evidence.
+- Footnote 1 maps internal PD grade **midpoints** to the fixed disclosure ranges.
+  It is captured as a dataset/band qualification, not a rating-assignment date.
+- Footnote 2 uses data **from 2014**, with asset class determined by regulatory
+  standards applicable at the time. History starts at year precision `2014`;
+  its end and duration remain unresolved. No January date or March history end
+  is inferred from the annual window.
+- CR9 does not establish the weighted-PD weight measure or its measurement date.
+  The CR6 period-end-EAD weighting note does not apply here. Arithmetic PD is
+  explicitly by borrowers, but the exact counted entity and distinctness remain
+  unresolved. PD measurement and weight timing have unresolved descriptors;
+  cohort and rating anchors are not manufactured.
+- Glossary p.116 defines non-performing as an exposure in default. Retail
+  methodology p.51 gives 90 days or more past due or unlikeliness to pay. Both
+  passages qualify the non-performing count fields. They do not establish CR9
+  repeated-event, cure/exit, opening-cohort or exact counting rules.
+- `of which: new non-performing borrowers in the year` establishes a subset of
+  the adjacent non-performing count in each non-default row. Seven row-scoped
+  field relationships preserve it, including the dash cell. “New” does not
+  establish Westpac's new-funding convention. No relationship is manufactured
+  between the three blank default-row cells.
+- Level 2/reporting entity and mortgage-definition evidence remains applicable;
+  geography and currency stay unresolved. The external-rating labels preserve
+  the table's exact spelling and association, without assigning non-retail
+  masterscale rules to mortgage pools.
+
+### Catalogue handoff
+
+Bank-specific members are in `catalogue/measures/cba-cr9-2025-06-30-v1.json`
+and `catalogue/mappings/cba-cr9-2025-06-30-v1.json`. Seven measure definitions reuse
+the existing PD, reported-borrower-count and historical-annual-default-rate
+concepts. Seven exact-document field mappings establish percent/count conversions;
+one context mapping supplies the mortgage population, source band role and overlay
+treatment. No date-restricted definition or canonical forward-cohort equivalence
+is asserted. Shared release selection is owned by the integrating session.

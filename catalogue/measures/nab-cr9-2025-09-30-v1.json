@@ -1,0 +1,117 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "measure.nab.cr9.pd_weight_ead", "revision_id": "measure.nab.cr9.pd_weight_ead@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "exposure.at-default@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.money@v1"},
+      "attributes": [{"name": "exposure_basis", "value": "ead", "status": "established"}],
+      "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}]
+    },
+    {
+      "id": "measure.nab.cr9.weighted_average_pd", "revision_id": "measure.nab.cr9.weighted_average_pd@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "weighting", "value": "ead_weighted", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}]},
+        {"name": "weight_measure", "value": {"kind": "measure", "revision_id": "measure.nab.cr9.pd_weight_ead@v1"}, "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}]},
+        {"name": "weight_timing", "value": "as at the reporting date", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}]}
+      ],
+      "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}]
+    },
+    {
+      "id": "measure.nab.cr9.arithmetic_average_pd", "revision_id": "measure.nab.cr9.arithmetic_average_pd@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "weighting", "value": "arithmetic_by_agreements", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"}, {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "counted_entity", "value": "agreement", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "distinctness", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-weighting"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}
+      ]
+    },
+    {
+      "id": "measure.nab.cr9.current_year_borrower_count", "revision_id": "measure.nab.cr9.current_year_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": "agreement", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "distinctness", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-counting"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}
+      ]
+    },
+    {
+      "id": "measure.nab.cr9.previous_year_borrower_count", "revision_id": "measure.nab.cr9.previous_year_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": "agreement", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "distinctness", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-counting"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}
+      ]
+    },
+    {
+      "id": "measure.nab.cr9.defaulted_borrower_count", "revision_id": "measure.nab.cr9.defaulted_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": "agreement", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": "new borrower or performing borrower at the beginning of the financial year", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-defaults"}]},
+        {"name": "event_definition", "value": "non-performing at any month-end during the financial year; includes subsequent cures and exits", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-defaults"}]}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-defaults"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}
+      ]
+    },
+    {
+      "id": "measure.nab.cr9.new_defaulted_borrower_count", "revision_id": "measure.nab.cr9.new_defaulted_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": "agreement", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}]},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": "new borrowers during the financial year; subset of column (d)", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-new-defaults"}]},
+        {"name": "event_definition", "value": "non-performing at any month-end during the financial year; includes subsequent cures and exits", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-defaults"}]}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-new-defaults"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-defaults"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "borrower-definition"}
+      ]
+    },
+    {
+      "id": "measure.nab.cr9.historical_annual_default_rate", "revision_id": "measure.nab.cr9.historical_annual_default_rate@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.historical-annual-default-rate@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "aggregation", "value": "historical average over a 10-year observation period; exact bounds unresolved", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history"}]},
+        {"name": "cohort_eligibility", "value": "not in default at the beginning of each financial year", "status": "established", "evidence_refs": [{"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history"}]},
+        {"name": "denominator", "value": null, "status": "unresolved"},
+        {"name": "event_definition", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history"},
+        {"bundle_key": "au/nab/2025-09-30/aps330", "document_id": "nab-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-framework"}
+      ]
+    }
+  ]
+}

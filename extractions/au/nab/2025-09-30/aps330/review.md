@@ -1,10 +1,10 @@
-# NAB September 2025 mortgage CR6 source review
+# NAB September 2025 mortgage CR6/CR9 source review
 
 Reviewed 2026-10-10 directly from the saved [PDF](../../../../../raw/nab-2025-09-30-aps330.pdf), before writing the extractor. Rendered PDF pages 48 and 49 (printed 46 and 47) and page 4 (printed 2); also inspected the cover, summary PDF 13 / printed 11 and CMS2 PDF 18 / printed 16. The source-specific golden was independently transcribed from these pages, not from extractor output or another bank's fixture.
 
 ## Selected structure
 
-- One dataset, `cr6-residential-mortgages`, in `au/nab/2025-09-30/aps330`.
+- Original CR6 dataset, `cr6-residential-mortgages`, in `au/nab/2025-09-30/aps330`; the CR9 extension below shares this logical bundle.
 - PDF 49's **Residential mortgage** block: seven explicit PD intervals, `100.00 (Default)`, and `Sub-total`. The Retail SME block above it is separate.
 - All twelve columns **a–l**, including blank positions, are selected: 9 rows, 108 positions, 91 numeric values and 17 blanks. There are no dashes in this selected block. Default CCF is **85%**, not a missing token.
 - The A-IRB heading and CR6 title are on PDF 48; the date on PDF 49 is `As at 30 Sep 25`. The reporting date is 2025-09-30. Printed page numbers are two less than PDF positions; the cover has no printed page label.
@@ -38,3 +38,70 @@ The selected context is A-IRB, Level 2, AUD. Portfolio geography is left unresol
 ## Golden and verification ownership
 
 The [complete golden](../../../../../tests/bronze/au/nab/2025-09-30/aps330/golden.json) owns all values, blanks, labels, field bindings, column IDs, qualifications and page offsets. Its [authoring notes](../../../../../tests/bronze/au/nab/2025-09-30/aps330/golden-notes.md) document independence and the TDD boundary. No shared metadata extension is needed: existing source axes, attributes and scoped qualifications express the observed requirements.
+
+## CR9 extension — source review 2026-10-12
+
+Reviewed retained PDF60–61 (printed58–59), referenced external-rating table PDF46
+(printed44), and CR6 count definition PDF48 (printed46). Rendered PDF61 and PDF46
+to inspect the table geometry and shading. The independent `golden-cr9.json` was
+transcribed before extractor changes; its source contract first failed because
+the existing bundle was still CR6-only.
+
+The selected **Residential mortgage** block is PDF61's first block: eight rows,
+seven measure positions each, no subtotal. The separately labelled **BNZ
+residential mortgage** block is outside this selection. The source says BNZ is
+disclosed separately; this does not prove every selected exposure's geography.
+Geography remains unresolved rather than inferred from the Australian folder.
+
+Column (c) is split into **As at 30 Sep 25** then **As at 30 Sep 24**. First-band
+counts are respectively **198,124** and **215,531**, and keep those measurement
+dates despite being reversed relative to the typed previous/current field order.
+The other columns are weighted PD (a), arithmetic PD (b), defaults in the year
+(d), new-default subset (e), and historical annual default rate (f). Every rate
+retains its percent token and two displayed decimal places. There are 51 numeric
+positions, two dashes in the new-default column, and three shaded blank default-row
+cells (d/e/f). Dashes and blanks remain unresolved missing values, not zero.
+Shading is retained as presentation; there is no local legend establishing a
+stronger missingness reason.
+
+CR9's introduction explicitly directs external-rating equivalents to printed44.
+Its two agency columns are **S&P Global Ratings / Fitch Ratings** and **Moody's
+Investor Services**. All eight band-associated labels, including **D / C** for
+default, are retained as lexical axes with PDF46 evidence. These are band
+equivalents, not per-agreement observed ratings or a rating-assignment date.
+
+PDF60 defines weighted PD as EaD-weighted at the reporting date: measurement and
+weight measurement are 2025-09-30. Arithmetic PD is the sum of PDs divided by the
+number of borrowers; its measurement date is not expressly established and stays
+unresolved. CR9 refers counting back to CR6, which explicitly counts mortgage
+**agreements**. The existing agreed arrangement-count interpretation therefore
+applies, with distinctness unresolved. This interpretation is separate from the
+quoted source and follows the agreed data-semantics principle. The existing
+`agreed.nab-mortgage-agreements@v1` decision is historical context only: its
+CR6-specific effective-date restriction cannot be imported as an unrestricted
+CR9 dependency. `count.arrangements@v1` itself depends on that dated decision.
+The executable mappings therefore use the unrestricted generic
+`count.reported-borrowers@v1` concept with an established `counted_entity=agreement`
+attribute, citing CR9's own count-reference and definition evidence. They preserve
+the agreement semantics without bypassing the existing concept's restriction.
+
+Default counts include a new borrower or a performing borrower at financial-year
+opening who is non-performing at **any month-end**, including subsequent cures
+and exits. The annual descriptor normalises this full-year September2025 report's
+financial year to 2024-10-01–2025-09-30; these ISO dates are contextual
+interpretation, not an invented source quotation. Seven row-scoped relationships
+retain (e) as a subset of (d). The default-stock row's missing event measures do
+not create an eighth disclosed subset observation. No forward opening-cohort
+canonical outcome equivalence or inferred annual rate is asserted.
+
+The historical column uses a **10-year observation period**, with the cohort not
+in default at the beginning of each financial year averaged. Exact history bounds,
+denominator details and whether column(d)'s event rules also govern the historical
+column remain unresolved. Preserve the note about best-endeavours retrospective
+application of revised asset-class definitions effective 1 January2023. Neither
+that policy date nor publication date supplies a history boundary.
+
+The new bundle uses `disclosure-v2` and includes both datasets. The unchanged CR6
+golden is checked through its original wire projection. Catalogue members are in
+`catalogue/{measures,mappings}/nab-cr9-2025-09-30-v1.json`; the parent task owns
+release selection and persisted conformance/bank acceptance.

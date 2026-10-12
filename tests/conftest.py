@@ -8,6 +8,174 @@ import pytest
 from rwa_analysis.extraction.runner import run_extractor
 
 
+@pytest.fixture
+def legacy_payload():
+    """Independently authored synthetic cr6-v1 wire; never a live extractor."""
+    reference = {
+        "document_id": "legacy",
+        "pdf_page": 1,
+        "printed_page": "1",
+        "location": "Synthetic transport fixture",
+        "row": None,
+        "column": None,
+    }
+    knowledge = {"value": None, "status": "unresolved", "qualification_refs": []}
+    names = (
+        "on_balance_exposure",
+        "off_balance_exposure",
+        "average_ccf",
+        "ead",
+        "average_pd",
+        "reported_borrower_count",
+        "average_lgd",
+        "average_maturity",
+        "rwa",
+        "rwa_density",
+        "regulatory_expected_loss",
+        "provisions",
+    )
+    rows = ["band-1", "band-2"]
+
+    def axis(id, kind):
+        return {
+            "id": id,
+            "axis": kind,
+            "source_label": id,
+            "order": 0,
+            "header_path_refs": [],
+            "context_refs": ["context"],
+            "qualification_refs": [],
+            "source_reference": reference.copy(),
+        }
+
+    records = []
+    for row in rows:
+        record = {
+            "record_id": row,
+            "source_row_ref": row,
+            "source_row_role": "band",
+            "source_segment_memberships": [],
+            "source_aggregation_scope": ["block"],
+        }
+        for name in names:
+            record[name] = {
+                "value": None
+                if name == "average_maturity"
+                else 10
+                if name == "reported_borrower_count"
+                else "10",
+                "original_text": "" if name == "average_maturity" else "10",
+                "displayed_precision": None if name == "average_maturity" else 0,
+                "missing_reason": "blank_unresolved"
+                if name == "average_maturity"
+                else None,
+                "source_reference": reference.copy(),
+            }
+        records.append(record)
+    return {
+        "document": {
+            "document_id": "legacy",
+            "local_path": "raw/legacy.pdf",
+            "organisation_id": "legacy",
+            "reporting_entity": "Synthetic",
+            "title": "Synthetic old-wire case",
+            "document_reporting_date": "2025-06-30",
+            "publication_date": None,
+            "reporting_jurisdiction": "au",
+            "source_url": "https://example.org/legacy.pdf",
+        },
+        "bundle_key": "au/legacy/2025-06-30/aps330",
+        "extractor_path": "synthetic",
+        "schema_version": "cr6-v1",
+        "datasets": [
+            {
+                "id": "cr6",
+                "context": dict(
+                    id="context",
+                    document_date="2025-06-30",
+                    observation_date="2025-06-30",
+                    source_date_label="30 June 2025",
+                    source_template="CR6",
+                    source_title="Synthetic",
+                    source_portfolio_label="Mortgages",
+                    **{
+                        k: knowledge.copy()
+                        for k in (
+                            "reporting_entity",
+                            "consolidation_scope",
+                            "regulatory_scope",
+                            "geography",
+                            "currency",
+                        )
+                    },
+                    qualification_refs=[],
+                    evidence=[reference.copy()],
+                ),
+                "axes": [
+                    axis("block", "block"),
+                    *[axis(row, "row") for row in rows],
+                    *[axis(name, "column") for name in names],
+                ],
+                "published_fields": [
+                    {
+                        "id": name,
+                        "source_label": name,
+                        "header_path_refs": [name],
+                        "source_unit": "",
+                        "source_scale": "1",
+                        "qualification_refs": [],
+                        "attributes": [],
+                        "source_reference": reference.copy(),
+                    }
+                    for name in names
+                ],
+                "bindings": [
+                    {
+                        "id": name,
+                        "typed_field_name": name,
+                        "published_field_ref": name,
+                        "row_refs": rows.copy(),
+                        "column_refs": [name],
+                        "context_refs": ["context"],
+                        "qualification_refs": [],
+                    }
+                    for name in names
+                ],
+                "segmentations": [],
+                "qualifications": [
+                    {
+                        "id": "note",
+                        "source_text": "Synthetic",
+                        "evidence": [reference.copy()],
+                        "scope": [{"kind": "dataset", "id": "cr6"}],
+                    }
+                ],
+                "relationships": [
+                    {
+                        "id": "subset",
+                        "kind": "subset",
+                        "source_label": "Synthetic",
+                        "parent": {"kind": "row", "id": "band-1"},
+                        "children": [{"kind": "row", "id": "band-2"}],
+                        "scope": [],
+                        "exhaustive": None,
+                        "mutually_exclusive": None,
+                        "evidence": [reference.copy()],
+                    }
+                ],
+                "records": records,
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def legacy_bundle(legacy_payload):
+    from rwa_analysis.extraction.codec import decode_payload
+
+    return decode_payload(legacy_payload)
+
+
 @pytest.fixture(scope="session")
 def project_root():
     return next(
@@ -68,7 +236,7 @@ def retained(
 
 
 @pytest.fixture
-def published_cr6(retained, monkeypatch):
+def published_banks(retained, monkeypatch):
     from rwa_analysis.composition import build_session
     from rwa_analysis.settings import OrganisationSettings
     from rwa_analysis.storage.manifests import CatalogueSelection
@@ -89,7 +257,7 @@ def published_cr6(retained, monkeypatch):
         candidate = session.conform(
             session.load_bronze((ref,)),
             catalogue=CatalogueSelection(
-                release_path="catalogue/releases/cr6-v1.json",
+                release_path="catalogue/releases/cr6-cr9-v1.json",
                 evidence_refs=tuple(r for r in refs if r != ref),
             ),
         )

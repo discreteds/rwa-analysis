@@ -1,8 +1,10 @@
-"""NAB September 2025 mortgage CR6: source-specific geometry and definitions."""
+"""NAB September 2025 mortgage CR6/CR9: source geometry and definitions."""
 
 import re
+from dataclasses import replace
 from datetime import date, datetime
 from decimal import Decimal
+from itertools import pairwise
 from pathlib import Path
 
 import pdfplumber
@@ -12,6 +14,7 @@ from rwa_analysis.extraction.cr6 import (
     BronzeCreditRiskExposureRow,
     Cr6Dataset,
 )
+from rwa_analysis.extraction.cr9 import Cr9BacktestingRow, Cr9Context, Cr9Dataset
 from rwa_analysis.extraction.datasets import DatasetMetadata, ExtractionBundle
 from rwa_analysis.extraction.models import (
     BandDefinition,
@@ -29,6 +32,7 @@ from rwa_analysis.extraction.models import (
     SourceRelationship,
     ValueBinding,
 )
+from rwa_analysis.extraction.temporal import TemporalBinding, TemporalDescriptor
 from rwa_analysis.extraction.values import parse_count_token, parse_decimal_token
 
 DOCUMENT_ID = "nab-2025-09-30-aps330"
@@ -531,6 +535,403 @@ def extract(pdf_path: Path) -> ExtractionBundle:
             document,
             BUNDLE_KEY,
             f"extractions/{BUNDLE_KEY}/extract.py",
-            "cr6-v1",
-            (dataset,),
+            "disclosure-v2",
+            (dataset, extract_cr9(pdf, dataset)),
         )
+
+
+def extract_cr9(pdf, cr6):
+    """The first PDF61 block excludes the separately labelled BNZ mortgages."""
+    dataset_id = "cr9-residential-mortgages"
+    words = pdf.pages[60].extract_words()
+    intro = " ".join(pdf.pages[59].extract_text().split())
+    title = next(
+        s for s in pdf.pages[59].extract_text().splitlines() if s.startswith("CR9:")
+    )
+    field_names = (
+        "weighted_average_pd",
+        "arithmetic_average_pd",
+        "current_year_borrower_count",
+        "previous_year_borrower_count",
+        "defaulted_borrower_count",
+        "new_defaulted_borrower_count",
+        "historical_annual_default_rate",
+    )
+    edges = (191, 240, 290, 340, 389, 439, 489, 539)
+    headers = tuple(
+        window(
+            words,
+            left,
+            right,
+            128 if i in (2, 3) else 94,
+            145 if i in (2, 3) else 140,
+            multiline=True,
+        )
+        for i, (left, right) in enumerate(pairwise(edges))
+    )
+    counts = field_names[2:6]
+    field_notes = {
+        "weighted_average_pd": ("cr9-weighting",),
+        "arithmetic_average_pd": ("cr9-weighting", "borrower-definition"),
+        **{name: ("cr9-counting", "borrower-definition") for name in counts},
+        "historical_annual_default_rate": ("cr9-history", "cr9-framework"),
+    }
+    field_notes["defaulted_borrower_count"] += ("cr9-defaults",)
+    field_notes["new_defaulted_borrower_count"] += ("cr9-defaults", "cr9-new-defaults")
+    shared = (
+        "report-entity",
+        "currency-rounding",
+        "regulatory-basis",
+        "level-2-definition",
+        "level-2",
+    )
+    notes = [
+        replace(q, scope=(SourceEndpoint("dataset", dataset_id),))
+        for q in cr6.metadata.qualifications
+        if q.id in shared
+    ]
+    notes.append(
+        replace(
+            next(
+                q for q in cr6.metadata.qualifications if q.id == "borrower-definition"
+            ),
+            scope=tuple(
+                SourceEndpoint("field", f) for f in (*counts, "arithmetic_average_pd")
+            ),
+        )
+    )
+    passages = (
+        ("cr9-introduction", "The following tables provide results", "for each ECAI."),
+        (
+            "cr9-weighting",
+            "Weighted average PD in column (a)",
+            "divided by the number of borrowers.",
+        ),
+        ("cr9-counting", "The approach to measure", "probability of default range."),
+        ("cr9-defaults", "A borrower is included", "during the year."),
+        (
+            "cr9-new-defaults",
+            "The number of borrowers in column (e)",
+            "during the financial year.",
+        ),
+        ("cr9-history", "A 10-year observation period", "has been averaged."),
+        (
+            "cr9-framework",
+            "Changes in asset class definitions",
+            "best endeavours basis.",
+        ),
+        (
+            "cr9-bnz-separation",
+            "APS 330 requires information",
+            "represents 91% of credit RWA.",
+        ),
+    )
+    for name, start, end in passages:
+        begin = intro.index(start)
+        text = intro[begin : intro.index(end, begin) + len(end)]
+        scope = tuple(
+            SourceEndpoint("field", f) for f in field_names if name in field_notes[f]
+        )
+        notes.append(
+            Qualification(
+                name,
+                text,
+                (reference(60, name),),
+                scope or (SourceEndpoint("dataset", dataset_id),),
+            )
+        )
+    old = cr6.metadata.context
+    portfolio = window(words, 45, 190, 153, 163)
+    context = Cr9Context(
+        "context",
+        old.document_date,
+        "CR9",
+        title,
+        portfolio,
+        old.reporting_entity,
+        old.consolidation_scope,
+        Knowledge("A-IRB", "established", ("cr9-introduction",)),
+        Knowledge(),
+        old.currency,
+        shared + ("cr9-introduction", "cr9-bnz-separation"),
+        (
+            reference(60, "CR9 introduction and A-IRB heading"),
+            reference(61, "CR9 headings"),
+        ),
+    )
+
+    def item(
+        id, kind, label, order, parents=(), quals=(), page=61, row=None, column=None
+    ):
+        return SourceAxisItem(
+            id,
+            kind,
+            label,
+            order,
+            parents,
+            ("context",),
+            quals,
+            reference(page, "CR9" if page == 61 else "External ratings", row, column),
+        )
+
+    axes = [
+        item("mortgage-block", "block", portfolio, 0),
+        item("pd-heading", "header", window(words, 45, 100, 139, 149), 1),
+        item("borrower-counts", "header", window(words, 290, 389, 94, 102), 2),
+    ]
+    row_ids = tuple(f"band-{i}" for i in range(1, 9))
+    published, bindings = [], []
+    for i, (name, header) in enumerate(zip(field_names, headers)):
+        refs = field_notes[name]
+        parents = ("borrower-counts",) if i in (2, 3) else ()
+        axes.append(
+            item("column-" + name, "column", header, i, parents, refs, column=header)
+        )
+        attrs = ()
+        if name in counts:
+            attrs = (
+                SemanticAttribute(
+                    "counted_entity",
+                    "agreement",
+                    "established",
+                    ("cr9-counting", "borrower-definition"),
+                ),
+                SemanticAttribute("distinctness", None, "unresolved", ()),
+            )
+        elif name == "weighted_average_pd":
+            attrs = (
+                SemanticAttribute(
+                    "weighting", "EAD", "established", ("cr9-weighting",)
+                ),
+            )
+        elif name == "arithmetic_average_pd":
+            attrs = (
+                SemanticAttribute(
+                    "weighting", "arithmetic_by_agreements", "established", refs
+                ),
+            )
+        if i >= 4:
+            attrs += (
+                SemanticAttribute(
+                    "default_cell_presentation", "shaded", "established", ()
+                ),
+            )
+        published.append(
+            PublishedField(
+                name,
+                header,
+                parents + ("column-" + name,),
+                "" if name in counts else "%",
+                Decimal(1),
+                refs,
+                attrs,
+                reference(61, "CR9 header", column=header),
+            )
+        )
+        bindings.append(
+            ValueBinding(
+                "binding-" + name,
+                name,
+                name,
+                row_ids,
+                ("column-" + name,),
+                ("context",),
+                refs,
+            )
+        )
+    rating_words = pdf.pages[45].extract_words()
+    rating_edges = (340, 440, 550)
+    agencies = tuple(
+        window(rating_words, l, r, 139, 157, multiline=True)
+        for l, r in pairwise(rating_edges)
+    )
+    for j, agency in enumerate(agencies):
+        axes.append(
+            item(
+                f"rating-{j}", "column", agency, j, quals=("cr9-introduction",), page=46
+            )
+        )
+    tops = sorted(
+        w["top"] for w in words if 48 <= w["x0"] < 49 and 165 < w["top"] < 260
+    )
+    rating_tops = sorted(
+        w["top"] for w in rating_words if 255 <= w["x0"] < 256 and 159 < w["top"] < 255
+    )
+    rows, bands, relationships = [], [], []
+    for i, top in enumerate(tops):
+        rid = row_ids[i]
+        label = window(words, 45, 190, top - 1, top + 8)
+        axes.append(
+            item(rid, "row", label, i, ("mortgage-block", "pd-heading"), row=label)
+        )
+        for j, (left, right) in enumerate(pairwise(rating_edges)):
+            axes.append(
+                item(
+                    f"{rid}-rating-{j}",
+                    "header",
+                    window(
+                        rating_words,
+                        left,
+                        right,
+                        rating_tops[i] - 1,
+                        rating_tops[i] + 8,
+                    ),
+                    j,
+                    (rid, f"rating-{j}"),
+                    ("cr9-introduction",),
+                    46,
+                    label,
+                    agencies[j],
+                )
+            )
+        interval = re.fullmatch(r"(\d+\.\d+) to <(\d+\.\d+)", label)
+        lower, upper = map(Decimal, interval.groups()) if interval else (None, None)
+        status = "established" if interval else "not_applicable"
+        bands.append(
+            BandDefinition(
+                f"pd-band-{i + 1}",
+                label,
+                i,
+                "interval" if interval else "default",
+                "%",
+                lower,
+                upper,
+                True if interval else None,
+                False if interval else None,
+                status,
+                status,
+                None if interval else label,
+                reference(61, "CR9", row=label),
+            )
+        )
+        cells = {}
+        for name, header, left, right in zip(field_names, headers, edges, edges[1:]):
+            token = window(words, left, right, top - 1, top + 8)
+            value = (
+                parse_count_token(token)
+                if name in counts
+                else parse_decimal_token(token)
+            )
+            precision = (
+                None
+                if value is None
+                else 0
+                if name in counts
+                else max(0, -value.as_tuple().exponent)
+            )
+            cells[name] = ReportedValue(
+                value,
+                token,
+                precision,
+                ("dash_unresolved" if token == "-" else "blank_unresolved")
+                if value is None
+                else None,
+                reference(61, "CR9 Residential mortgage", label, header),
+            )
+        rows.append(
+            Cr9BacktestingRow(
+                rid, rid, "band", (f"pd-band-{i + 1}",), ("mortgage-block",), **cells
+            )
+        )
+        if interval:
+            relationships.append(
+                SourceRelationship(
+                    "new-defaults-" + rid,
+                    "subset",
+                    headers[5],
+                    SourceEndpoint("field", "defaulted_borrower_count"),
+                    (SourceEndpoint("field", "new_defaulted_borrower_count"),),
+                    (SourceEndpoint("row", rid),),
+                    False,
+                    None,
+                    (
+                        reference(60, "cr9-new-defaults"),
+                        reference(61, "CR9", label, headers[5]),
+                    ),
+                )
+            )
+    descriptors = (
+        TemporalDescriptor(
+            "current-year",
+            "As at 30 Sep 25",
+            point="2025-09-30",
+            point_status="established",
+            evidence=(reference(61, "CR9 count header"),),
+        ),
+        TemporalDescriptor(
+            "previous-year",
+            "As at 30 Sep 24",
+            point="2024-09-30",
+            point_status="established",
+            evidence=(reference(61, "CR9 count header"),),
+        ),
+        TemporalDescriptor(
+            "annual",
+            "financial year",
+            start="2024-10-01",
+            end="2025-09-30",
+            start_status="established",
+            end_status="established",
+            duration_amount=Decimal(1),
+            duration_unit="years",
+            duration_status="established",
+            qualification_refs=("cr9-defaults",),
+            evidence=(
+                reference(1, "Full Year report cover"),
+                reference(60, "cr9-defaults"),
+            ),
+        ),
+        TemporalDescriptor(
+            "history",
+            "10-year observation period",
+            duration_amount=Decimal(10),
+            duration_unit="years",
+            duration_status="established",
+            qualification_refs=("cr9-history", "cr9-framework"),
+            evidence=(reference(60, "cr9-history"),),
+        ),
+        TemporalDescriptor(
+            "unspecified", "", evidence=(reference(60, "CR9 definitions"),)
+        ),
+    )
+    roles = (
+        ("weighted_average_pd", "measurement", "current-year"),
+        ("weighted_average_pd", "weight_measurement", "current-year"),
+        ("arithmetic_average_pd", "measurement", "unspecified"),
+        ("current_year_borrower_count", "measurement", "current-year"),
+        ("previous_year_borrower_count", "measurement", "previous-year"),
+        ("defaulted_borrower_count", "outcome_window", "annual"),
+        ("new_defaulted_borrower_count", "outcome_window", "annual"),
+        ("historical_annual_default_rate", "history_window", "history"),
+    )
+    segmentation = SegmentationDefinition(
+        "pd-segmentation",
+        "PD scale",
+        tuple(bands),
+        ("context",),
+        Knowledge(),
+        Knowledge(
+            "Non-overlapping printed intervals and separate default category",
+            "established",
+        ),
+        (reference(61, "CR9 PD scale"),),
+    )
+    return Cr9Dataset(
+        dataset_id,
+        DatasetMetadata(
+            context,
+            tuple(axes),
+            tuple(published),
+            tuple(bindings),
+            (segmentation,),
+            tuple(notes),
+            tuple(relationships),
+            descriptors,
+            tuple(
+                TemporalBinding(rid, f, role, t)
+                for rid in row_ids
+                for f, role, t in roles
+            ),
+        ),
+        tuple(rows),
+    )

@@ -1,4 +1,4 @@
-# ANZ September 2025 mortgage CR6 source review
+# ANZ September 2025 mortgage CR6 and CR9 source review
 
 ## Inspection and selection
 
@@ -66,3 +66,53 @@ Researcher review is needed before promoting a CR6 applicability interpretation.
 The subtotal relationship prevents summing bands alongside their total. It does
 not establish borrower distinctness, averaging formulas or exact reconciliation
 of rounded values. Shared dataclasses already express these source requirements.
+
+## CR9 extension — reviewed 2026-10-12
+
+Read PDF/printed p. 66 and Appendix 1 p. 116 directly; rendered p. 66 at
+100 dpi (`/tmp/opencode/anz66.png`) to inspect the two rating columns, multiline
+subtotal and blank cells. Read pp. 67–69 to establish the separate AIRB, FIRB
+and RBNZ blocks. The selected **AIRB Residential Mortgages** block on p. 66
+contains source rows **11–18 and 20**: seven intervals, a default category and
+`Sub-Total AIRB Residential Mortgage` (singular, split over two lines).
+
+All seven numeric columns are retained in published order, alongside S&P and
+Moody’s rating equivalents. The default row reports 100.00% in both PD columns
+and counts 8,879 / 10,121, with three genuinely blank default-event/history cells.
+Band 7's new-default count is a dash, retained as unresolved missingness rather
+than zero. Subtotal history is the published **0.62%**, not an average of bands.
+Subtotal membership and the eight populated `of which` field relationships
+(seven performing bands plus subtotal) preserve the source hierarchy.
+
+### Applicable notes and unresolved meaning
+
+- Footnote 1 maps external ratings to bands using the midpoint of each PD range.
+  This establishes rating equivalents, not the date of borrower rating assignment.
+- Footnote 2 describes **five-year** default history. Its **2.5-year** exception
+  applies to **corporate exposures only**, following March 2023 capital reforms.
+  Appendix 1 p. 116 explicitly repeats the Corporates-only modification and
+  rationale. Retain it as context clarifying the exception, without applying its
+  period to mortgage history. The known mortgage duration has unknown endpoints.
+- Footnote 3 excludes specialised lending subject to supervisory slotting.
+- Footnote 4 says the historical average excludes **technical defaults from the
+  numerator** and **exited obligors from the denominator**, aligned with APS 113.
+  These exclusions belong to the historical rate; they are not silently applied
+  to the two annual default-count columns. The complete denominator/averaging
+  formula is not established by this text.
+- `Sep 25` is the disclosure label. `End of previous year`, `End of the year`
+  and `in the year` do not independently establish exact annual cohort, PD,
+  weight-measurement or outcome dates. All such anchors remain unresolved;
+  no September-to-September or Westpac July-to-June interval is assigned.
+- The arithmetic heading explicitly says `by Borrowers`. Weighted PD does not
+  identify its weight measure. Counted entity/distinctness remain unresolved;
+  no agreement/arrangement definition or forward-cohort equivalence is imported.
+- P. 69 independently labels the RBNZ block and NZ mortgage subtotal. The p. 66
+  geography is provisionally Australian, with that evidence and p. 54's Suncorp
+  exclusion. Shared entity/Level 2/currency and general PD definition retain their
+  existing source evidence, re-scoped to CR9.
+
+The existing logical bundle now includes CR6 and CR9 using `disclosure-v2`.
+Retained CR6 goldens and old saved versions are unchanged. ANZ-specific catalogue
+assets map supported concepts, units, bands, aggregate role and history exclusions;
+they do not define an inferred annual rate. Parent integration owns release
+selection and persisted conformance/reconstruction evidence.

@@ -1,0 +1,96 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "measure.anz.cr9.weighted_average_pd", "revision_id": "measure.anz.cr9.weighted_average_pd@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "weighting", "value": null, "status": "unresolved"},
+        {"name": "weight_measure", "value": null, "status": "unresolved"},
+        {"name": "weight_timing", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "weighted_average_pd"}]
+    },
+    {
+      "id": "measure.anz.cr9.arithmetic_average_pd", "revision_id": "measure.anz.cr9.arithmetic_average_pd@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "weighting", "value": "arithmetic_by_borrowers", "status": "established", "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "arithmetic_average_pd"}]},
+        {"name": "counted_entity", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "arithmetic_average_pd"}]
+    },
+    {
+      "id": "measure.anz.cr9.historical_annual_default_rate", "revision_id": "measure.anz.cr9.historical_annual_default_rate@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.historical-annual-default-rate@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "aggregation", "value": "historical_average_over_5_years", "status": "established", "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history"}]},
+        {"name": "population_exclusion", "value": "technical defaults excluded from numerator; exited obligors excluded from denominator", "status": "established", "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history-exclusions"}]},
+        {"name": "denominator", "value": null, "status": "unresolved"},
+        {"name": "weighting", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [
+        {"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "historical_annual_default_rate"},
+        {"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history"},
+        {"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-history-exclusions"},
+        {"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-corporate-history-context"}
+      ]
+    },
+    {
+      "id": "measure.anz.cr9.previous_year_borrower_count", "revision_id": "measure.anz.cr9.previous_year_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": null, "status": "unresolved"},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "previous_year_borrower_count"}]
+    },
+    {
+      "id": "measure.anz.cr9.current_year_borrower_count", "revision_id": "measure.anz.cr9.current_year_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": null, "status": "unresolved"},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": null, "status": "unresolved"}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "current_year_borrower_count"}]
+    },
+    {
+      "id": "measure.anz.cr9.defaulted_borrower_count", "revision_id": "measure.anz.cr9.defaulted_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": null, "status": "unresolved"},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": null, "status": "unresolved"},
+        {"name": "event_definition", "value": "Defaulted Borrowers in the year", "status": "established", "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "defaulted_borrower_count"}]}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "defaulted_borrower_count"}]
+    },
+    {
+      "id": "measure.anz.cr9.new_defaulted_borrower_count", "revision_id": "measure.anz.cr9.new_defaulted_borrower_count@v1",
+      "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.count@v1"},
+      "attributes": [
+        {"name": "counted_entity", "value": null, "status": "unresolved"},
+        {"name": "distinctness", "value": null, "status": "unresolved"},
+        {"name": "cohort_eligibility", "value": null, "status": "unresolved"},
+        {"name": "event_definition", "value": "of which: new defaulted Borrowers in the year", "status": "established", "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "new_defaulted_borrower_count"}]}
+      ],
+      "evidence_refs": [{"bundle_key": "au/anz/2025-09-30/aps330", "document_id": "anz-2025-09-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "new_defaulted_borrower_count"}]
+    }
+  ]
+}

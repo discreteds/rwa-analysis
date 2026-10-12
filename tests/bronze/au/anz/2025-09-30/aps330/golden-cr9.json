@@ -1,0 +1,39 @@
+{
+  "title": "CR9: IRB – Back testing of probability of default (PD) per portfolio",
+  "portfolio": "Residential Mortgages",
+  "fields": ["weighted_average_pd", "arithmetic_average_pd", "previous_year_borrower_count", "current_year_borrower_count", "defaulted_borrower_count", "new_defaulted_borrower_count", "historical_annual_default_rate"],
+  "headers": ["Weighted\naverage PD", "Arithmetic\naverage PD by\nBorrowers", "End of previous\nyear", "End of the year", "Defaulted\nBorrowers in the\nyear", "of which: new\ndefaulted Borrowers\nin the year", "Average historical\nannual default rate"],
+  "bands": ["0.00 to <0.15", "0.15 to <0.25", "0.25 to <0.50", "0.50 to <0.75", "0.75 to <2.50", "2.50 to <10.00", "10.00 to <100.00", "100.00 (Default)", "Sub-Total AIRB Residential\nMortgage"],
+  "source_rows": ["11", "12", "13", "14", "15", "16", "17", "18", "20"],
+  "tokens": [
+    ["0.08%", "0.07%", "407,779", "415,956", "542", "27", "0.08%"],
+    ["0.18%", "0.19%", "43,446", "43,990", "154", "11", "0.18%"],
+    ["0.36%", "0.36%", "180,424", "177,353", "953", "40", "0.34%"],
+    ["0.64%", "0.63%", "43,813", "41,658", "331", "8", "0.52%"],
+    ["1.30%", "1.31%", "176,253", "165,613", "2,717", "38", "1.06%"],
+    ["4.13%", "4.12%", "61,172", "57,792", "2,317", "5", "2.99%"],
+    ["18.63%", "19.09%", "6,032", "6,697", "826", "-", "11.19%"],
+    ["100.00%", "100.00%", "8,879", "10,121", "", "", ""],
+    ["0.82%", "0.79%", "927,798", "919,180", "7,840", "129", "0.62%"]
+  ],
+  "agencies": ["S&P", "Moody’s"],
+  "ratings": [["AAA to BBB+", "Aaa to Baa1"], ["BBB", "Baa2"], ["BBB-", "Baa3"], ["BB+", "Ba1"], ["BB to B+", "Ba2 to B1"], ["B to B-", "B2 to B3"], ["CCC+ to C", "Caa1 to C"], ["Default", "Default"], ["", ""]],
+  "notes": {
+    "cr9-ratings": "External Ratings have been mapped to the PD bands reported in table CR9, where the midpoints of the PD range align with the External Rating.",
+    "cr9-history": "The 5-year default rate history requires aligning asset classes prior to the definitions under the APS 113 capital reforms. Corporate exposures are included only from March 2023 onward, resulting in a 2.5-year average for September 2025, building up to a full 5- year average by September 2027.",
+    "cr9-slotting": "Excludes Specialised Lending subject to supervisory slotting.",
+    "cr9-history-exclusions": "The historical average default rate calculation is aligned with APS 113 guidelines, excluding technical defaults from the numerator, and exited obligors from the denominator."
+  },
+  "appendix": "2.5 years of history will be included for Corporates asset class as at September 2025 A minimum period of 5 years is required per the BCBS instructions for this column. Due to changes in asset class definitions arising from the implementation of Capital Reforms, some assumptions are necessary when allocating asset classes across the historical data between the AIRB and FIRB approaches. The Corporates asset class allocation between AIRB and FIRB approaches has been reflected for the period post Capital Reforms (2.5 years as at September 2025). As time passes, additional historical data will become available (e.g., 3.5 years by September 2026) and will be incorporated in future disclosures.",
+  "roles": [
+    ["weighted_average_pd", "measurement", "unspecified"],
+    ["weighted_average_pd", "weight_measurement", "unspecified"],
+    ["arithmetic_average_pd", "measurement", "unspecified"],
+    ["previous_year_borrower_count", "measurement", "previous-year"],
+    ["current_year_borrower_count", "measurement", "current-year"],
+    ["defaulted_borrower_count", "outcome_window", "annual"],
+    ["defaulted_borrower_count", "cohort_anchor", "unspecified"],
+    ["new_defaulted_borrower_count", "outcome_window", "annual"],
+    ["historical_annual_default_rate", "history_window", "history"]
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "title": "CR9: IRB - Backtesting of probability of default (PD) per portfolio",
+  "portfolio": "Residential\nMortgages",
+  "headers": ["Weighted\naverage PDb", "Arithmetic\naverage PD\nby borrowers", "End of\nprevious year", "End of the year", "Non-performing\nborrowers in\nthe yearc", "of which: new\nNon-performing\nborrowers in\nthe year", "Average\nhistorical annual\ndefault rated"],
+  "fields": ["weighted_average_pd", "arithmetic_average_pd", "previous_year_borrower_count", "current_year_borrower_count", "defaulted_borrower_count", "new_defaulted_borrower_count", "historical_annual_default_rate"],
+  "bands": ["0.00 to <0.15", "0.15 to <0.25", "0.25 to <0.50", "0.50 to <0.75", "0.75 to <2.50", "2.50 to <10.00", "10.00 to <100.00", "100.00 (Default)"],
+  "tokens": [
+    ["0.07%", "0.07%", "564,613", "571,083", "385", "7", "0.06%"],
+    ["0.19%", "0.19%", "168,294", "160,875", "272", "10", "0.15%"],
+    ["0.33%", "0.33%", "364,325", "339,661", "991", "63", "0.27%"],
+    ["0.64%", "0.63%", "237,828", "225,942", "1,166", "58", "0.52%"],
+    ["1.19%", "1.18%", "76,669", "71,425", "717", "29", "0.98%"],
+    ["7.93%", "7.66%", "65,511", "63,534", "3,345", "1", "5.80%"],
+    ["24.25%", "23.97%", "21,704", "19,366", "4,189", "-", "17.92%"],
+    ["100.00%", "100.00%", "14,341", "11,650", "", "", ""]
+  ],
+  "ratings": [["N/A", "N/A"], ["N/A", "N/A"], ["N/A", "N/A"], ["N/A", "N/A"], ["N/A", "N/A"], ["N/A", "N/A"], ["N/A", "N/A"], ["", ""]],
+  "notes": {
+    "cr9-introduction": "The following table provides a comparison of the PD used in our IRB models with the effective default rates of the Group’s borrowers in order to validate the reliability of PD calculations for exposures. The data is computed for the 12-month period from 1 July 2024 to 30 June 2025 for all portfolio types.",
+    "cr9-weighting": "Observation point is June 2024, tracking default performance from July 2024 to June 2025. PD estimate and EAD used for weighted average PD is as at June 2024.",
+    "cr9-defaults": "Defaulted borrowers in the year include: - performing borrowers as at June 2024 who default from July 2024 to June 2025; and - new borrowers not funded in June 2024 who default from July 2024 to June 2025 (new defaulted borrowers).",
+    "cr9-history": "Average historical default rate is calculated over 10 years."
+  }
+}

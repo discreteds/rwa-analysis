@@ -1,0 +1,780 @@
+{
+  "id": "cr6-cr9-v1",
+  "schema_version": "cr6-v1",
+  "created_on": "2026-10-12",
+  "selection": [
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.weighted_average_pd@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.arithmetic_average_pd@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.historical_annual_default_rate@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.previous_year_borrower_count@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.current_year_borrower_count@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.defaulted_borrower_count@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.new_defaulted_borrower_count@v1"},
+    {"path": "measures/nab-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.nab.cr9.pd_weight_ead@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.context@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.weighted_average_pd@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.arithmetic_average_pd@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.historical_annual_default_rate@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.previous_year_borrower_count@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.current_year_borrower_count@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.defaulted_borrower_count@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.new_defaulted_borrower_count@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-1@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-2@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-3@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-4@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-5@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-6@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-7@v1"},
+    {"path": "mappings/nab-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "nab.cr9.population.band-8@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.weighted_average_pd@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.arithmetic_average_pd@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.historical_annual_default_rate@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.previous_year_borrower_count@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.current_year_borrower_count@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.defaulted_borrower_count@v1"},
+    {"path": "measures/anz-cr9-2025-09-30-v1.json", "kind": "measure", "revision_id": "measure.anz.cr9.new_defaulted_borrower_count@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.context@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.weighted_average_pd@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.arithmetic_average_pd@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.historical_annual_default_rate@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.previous_year_borrower_count@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.current_year_borrower_count@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.defaulted_borrower_count@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.new_defaulted_borrower_count@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-1@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-2@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-3@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-4@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-5@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-6@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-7@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.band-8@v1"},
+    {"path": "mappings/anz-cr9-2025-09-30-v1.json", "kind": "mapping", "revision_id": "anz.cr9.population.portfolio-aggregate@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.weighted_average_pd@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.arithmetic_average_pd@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.historical_annual_default_rate@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.previous_year_borrower_count@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.current_year_borrower_count@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.defaulted_borrower_count@v1"},
+    {"path": "measures/cba-cr9-2025-06-30-v1.json", "kind": "measure", "revision_id": "measure.cba.cr9.new_defaulted_borrower_count@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.context@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.weighted_average_pd@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.arithmetic_average_pd@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.historical_annual_default_rate@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.previous_year_borrower_count@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.current_year_borrower_count@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.defaulted_borrower_count@v1"},
+    {"path": "mappings/cba-cr9-2025-06-30-v1.json", "kind": "mapping", "revision_id": "cba.cr9.new_defaulted_borrower_count@v1"},
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "exposure.on-balance@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "exposure.off-balance@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "factor.credit-conversion@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "exposure.at-default@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "risk.default-probability@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "count.reported-borrowers@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "risk.loss-given-default@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "duration.effective-maturity@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "capital.risk-weighted-assets@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "capital.risk-weight-density@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "loss.regulatory-expected@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "provision.credit-impairment@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "unit.money@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "unit.ratio@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "unit.count@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "unit.year@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "count.arrangements@v1"
+    },
+    {
+      "path": "concepts/cr6-v1.json",
+      "kind": "concept",
+      "revision_id": "population.residential-mortgages@v1"
+    },
+    {
+      "path": "decisions/cr6-v1.json",
+      "kind": "decision",
+      "revision_id": "agreed.nab-mortgage-agreements@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.context@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.on_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.off_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.average_ccf@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.ead@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.average_pd@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.reported_borrower_count@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.average_lgd@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.average_maturity@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.rwa@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.rwa_density@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.regulatory_expected_loss@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.provisions@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-1@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-2@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-3@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-4@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-5@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-6@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-7@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.band-8@v1"
+    },
+    {
+      "path": "mappings/cba-2025-06-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "cba.cr6.population.aggregate@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.context@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.on_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.off_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.average_ccf@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.ead@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.average_pd@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.reported_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.average_lgd@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.average_maturity@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.rwa@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.rwa_density@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.regulatory_expected_loss@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.provisions@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-1@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-2@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-3@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-4@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-5@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-6@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-7@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.band-8@v1"
+    },
+    {
+      "path": "mappings/westpac-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr6.population.aggregate@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.context@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.on_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.off_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.average_ccf@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.ead@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.average_pd@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.reported_borrower_count@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.average_lgd@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.average_maturity@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.rwa@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.rwa_density@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.regulatory_expected_loss@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.provisions@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-1@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-2@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-3@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-4@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-5@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-6@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-7@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.band-8@v1"
+    },
+    {
+      "path": "mappings/nab-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "nab.cr6.population.aggregate@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.context@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.on_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.off_balance_exposure@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.average_ccf@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.ead@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.average_pd@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.reported_borrower_count@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.average_lgd@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.average_maturity@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.rwa@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.rwa_density@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.regulatory_expected_loss@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.provisions@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-1@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-2@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-3@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-4@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-5@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-6@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-7@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.band-8@v1"
+    },
+    {
+      "path": "mappings/anz-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "anz.cr6.population.aggregate@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.cba.cr6.ead@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.cba.cr6.average_pd@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.cba.cr6.rwa@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.cba.cr6.rwa_density@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.on_balance_exposure@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.off_balance_exposure@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.ead@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.reported_borrower_count@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.rwa@v1"
+    },
+    {
+      "path": "measures/cr6-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.nab.cr6.rwa_density@v1"
+    },
+    {
+      "path": "concepts/cr9-v1.json",
+      "kind": "concept",
+      "revision_id": "risk.historical-annual-default-rate@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.pd_weight_ead@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.weighted_average_pd@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.arithmetic_average_pd@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.historical_annual_default_rate@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.previous_year_borrower_count@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.current_year_borrower_count@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.defaulted_borrower_count@v1"
+    },
+    {
+      "path": "measures/westpac-cr9-2025-09-30-v1.json",
+      "kind": "measure",
+      "revision_id": "measure.westpac.cr9.new_defaulted_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.context@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.weighted_average_pd@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.arithmetic_average_pd@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.historical_annual_default_rate@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.previous_year_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.current_year_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.defaulted_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.new_defaulted_borrower_count@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-1@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-2@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-3@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-4@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-5@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-6@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-7@v1"
+    },
+    {
+      "path": "mappings/westpac-cr9-2025-09-30-v1.json",
+      "kind": "mapping",
+      "revision_id": "westpac.cr9.population.band-8@v1"
+    }
+  ]
+}

@@ -9,3 +9,22 @@ All columns a–l are retained. Nine maturity cells are `not_applicable` in this
 The complete contract test is the primary test owner at the real saved-PDF → runner → strict encoded-payload boundary. It catches omitted or shifted columns, selecting Retail SME instead of mortgages, lost source labels/column letters, incorrect two-page offsets, changed missingness, lost precision, inapplicable counterparty conventions, and dropped or mis-scoped overlay qualifications. Existing CBA/Westpac tests exercise different PDFs and cannot catch these source-specific failures. This test needs no mocks or production-only test seam; inventory assertions duplicating the full fixture are deliberately unnecessary.
 
 Red run: `uv run pytest tests/bronze/au/nab/2025-09-30/aps330 -q` failed at `run_extractor` with `FileNotFoundError` for the not-yet-created NAB `extract.py`; the saved source PDF was present. The independent full fixture was already on disk. The extractor was implemented only after observing this failure.
+# CR9 addition, 2026-10-12
+
+`golden-cr9.json` is independently transcribed from retained PDF61/printed59's
+first Residential mortgage block, PDF60/printed58 notes, PDF46/printed44 ratings,
+and PDF48/printed46 agreement-count definition. Rendered PDF61 and PDF46 confirm
+geometry and labels. No expected value was generated from the extractor.
+
+This fixture owns all 56 measure positions (51 numbers, two dashes, three blanks),
+eight PD bands, sixteen external-rating equivalents, source column order, dated
+count columns, field timing, month-end default/cure/exit rules and ten-year history
+with unresolved exact bounds. The same PDF's separately labelled BNZ mortgage
+block is excluded. The unchanged original golden continues to own all CR6 data.
+
+Test-audit gate: the real PDF-to-bundle boundary catches wrong block selection,
+swapped count dates, dropped missing positions or rating labels, and transplanted
+bank-specific semantics. Existing CR6 tests cannot cover these CR9 regressions;
+the test requires no new production seam. RED: existing extractor returned
+`cr6-v1`, failing the mixed-bundle expectation. GREEN: the NAB source contract
+passes after implementing the CR9 extension.

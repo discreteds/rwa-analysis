@@ -15,6 +15,7 @@ from .models import (
     source_objects,
     unique_ids,
 )
+from .temporal import TemporalBinding, TemporalDescriptor
 
 
 @dataclass(frozen=True)
@@ -26,6 +27,8 @@ class DatasetMetadata[Context]:
     segmentations: tuple[SegmentationDefinition, ...]
     qualifications: tuple[Qualification, ...]
     relationships: tuple[SourceRelationship, ...]
+    temporal_descriptors: tuple[TemporalDescriptor, ...] = ()
+    temporal_bindings: tuple[TemporalBinding, ...] = ()
 
 
 class Dataset(Protocol):

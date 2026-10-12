@@ -1,4 +1,4 @@
-"""Immutable CR6 catalogue contracts. References always pin a revision."""
+"""Immutable semantic catalogue contracts. References always pin a revision."""
 
 from dataclasses import dataclass, fields, is_dataclass
 from datetime import date
@@ -96,7 +96,7 @@ class ConceptRelationshipRevision(Revision):
     rationale: str
 
 
-# Finite CR6 composition vocabulary. Values remain partial and source-scoped.
+# Finite composition vocabulary. Values remain partial and source-scoped.
 ATTRIBUTE_NAMES = frozenset(
     {
         "concept",
@@ -123,6 +123,9 @@ ATTRIBUTE_NAMES = frozenset(
         "population_exclusion",
         "aggregation",
         "loss_basis",
+        "cohort_eligibility",
+        "event_definition",
+        "denominator",
     }
 )
 
@@ -208,8 +211,8 @@ class MappingScope:
     dataset_id: str
     template: str
     portfolio: str
-    observation_from: date
-    observation_to: date
+    observation_from: date | None = None
+    observation_to: date | None = None
     field_key: str | None = None
     published_field_ref: str | None = None
     record_id: str | None = None
@@ -219,7 +222,11 @@ class MappingScope:
     regulatory_scope: str | None = None
 
     def __post_init__(self):
-        if self.observation_from > self.observation_to:
+        if (
+            self.observation_from is not None
+            and self.observation_to is not None
+            and self.observation_from > self.observation_to
+        ):
             raise ValueError("Reversed mapping observation interval")
 
     def narrows(self, other: "MappingScope") -> bool:
@@ -227,8 +234,17 @@ class MappingScope:
         if self == other:
             return False
         if (
-            self.observation_from < other.observation_from
-            or self.observation_to > other.observation_to
+            other.observation_from is not None
+            and (
+                self.observation_from is None
+                or self.observation_from < other.observation_from
+            )
+        ) or (
+            other.observation_to is not None
+            and (
+                self.observation_to is None
+                or self.observation_to > other.observation_to
+            )
         ):
             return False
         return all(

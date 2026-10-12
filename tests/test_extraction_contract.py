@@ -1,18 +1,11 @@
 """Saved payload boundary owns strict types, schema closure and source references."""
 
-import json
-from pathlib import Path
-
 import pytest
 
 
 @pytest.fixture
-def payload():
-    return json.loads(
-        (
-            Path(__file__).parent / "bronze/au/cba/2025-06-30/aps330/golden.json"
-        ).read_text()
-    )
+def payload(legacy_payload):
+    return legacy_payload
 
 
 def test_saved_payload_restores_types_and_decimal_exponent(payload):
@@ -25,8 +18,9 @@ def test_saved_payload_restores_types_and_decimal_exponent(payload):
     dataset = bundle.datasets[0]
     row = dataset.exposure_rows[0]
     assert dataset.metadata.context.source_template == "CR6"
-    assert dataset.metadata.published_fields[0].source_label == (
-        payload["datasets"][0]["published_fields"][0]["source_label"]
+    assert (
+        dataset.metadata.published_fields[0].source_label
+        == (payload["datasets"][0]["published_fields"][0]["source_label"])
     )
     assert isinstance(row.average_pd.value, Decimal)
     assert row.average_pd.value.as_tuple().exponent == -4

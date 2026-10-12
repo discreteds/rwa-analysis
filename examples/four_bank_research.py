@@ -57,8 +57,8 @@ output = master.store.read(master_publication)
 tables = master.reconstruct(master_publication)
 print(f"Master: {master_publication.database}")
 print(
-    f"Observations: {output.observations.count_rows()}, fields: {output.fields.count_rows()}, "
-    f"mappings: {output.field_mappings.count_rows()}, relationships: {output.relationships.count_rows()}"
+    f"Observations: {output.cr6.observations.count_rows()}, fields: {output.cr6.fields.count_rows()}, "
+    f"mappings: {output.cr6.field_mappings.count_rows()}, relationships: {output.cr6.relationships.count_rows()}"
 )
 with pl.Config(trim_decimal_zeros=True, tbl_cols=13, tbl_width_chars=200):
     for name, table in tables.items():

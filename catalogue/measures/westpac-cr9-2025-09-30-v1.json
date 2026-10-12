@@ -1,0 +1,552 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "measure.westpac.cr9.pd_weight_ead",
+      "revision_id": "measure.westpac.cr9.pd_weight_ead@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "exposure.at-default@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.money@v1"
+      },
+      "attributes": [
+        {
+          "name": "exposure_basis",
+          "value": "ead",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-weighting"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-weighting"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.weighted_average_pd",
+      "revision_id": "measure.westpac.cr9.weighted_average_pd@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.default-probability@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "weighting",
+          "value": "ead_weighted",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-weighting"
+            }
+          ]
+        },
+        {
+          "name": "weight_measure",
+          "value": {
+            "kind": "measure",
+            "revision_id": "measure.westpac.cr9.pd_weight_ead@v1"
+          },
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-weighting"
+            }
+          ]
+        },
+        {
+          "name": "weight_timing",
+          "value": "June 2024",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-weighting"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "weighted_average_pd"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-weighting"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.arithmetic_average_pd",
+      "revision_id": "measure.westpac.cr9.arithmetic_average_pd@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.default-probability@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "weighting",
+          "value": "arithmetic_by_borrowers",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "arithmetic_average_pd"
+            }
+          ]
+        },
+        {
+          "name": "counted_entity",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "arithmetic_average_pd"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "arithmetic_average_pd"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.historical_annual_default_rate",
+      "revision_id": "measure.westpac.cr9.historical_annual_default_rate@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "risk.historical-annual-default-rate@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.ratio@v1"
+      },
+      "attributes": [
+        {
+          "name": "aggregation",
+          "value": "historical_average_over_10_years",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-history"
+            }
+          ]
+        },
+        {
+          "name": "denominator",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "historical_annual_default_rate"
+            },
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-history"
+            }
+          ]
+        },
+        {
+          "name": "weighting",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "historical_annual_default_rate"
+            },
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-history"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "historical_annual_default_rate"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-history"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.previous_year_borrower_count",
+      "revision_id": "measure.westpac.cr9.previous_year_borrower_count@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.reported-borrowers@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.count@v1"
+      },
+      "attributes": [
+        {
+          "name": "counted_entity",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "previous_year_borrower_count"
+            }
+          ]
+        },
+        {
+          "name": "distinctness",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "previous_year_borrower_count"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "previous_year_borrower_count"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.current_year_borrower_count",
+      "revision_id": "measure.westpac.cr9.current_year_borrower_count@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.reported-borrowers@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.count@v1"
+      },
+      "attributes": [
+        {
+          "name": "counted_entity",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "current_year_borrower_count"
+            }
+          ]
+        },
+        {
+          "name": "distinctness",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "field",
+              "ref_id": "current_year_borrower_count"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "current_year_borrower_count"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.defaulted_borrower_count",
+      "revision_id": "measure.westpac.cr9.defaulted_borrower_count@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.reported-borrowers@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.count@v1"
+      },
+      "attributes": [
+        {
+          "name": "cohort_eligibility",
+          "value": "performing borrowers as at June 2024 and new borrowers not funded in June 2024",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "event_definition",
+          "value": "default from July 2024 to June 2025",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "counted_entity",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "distinctness",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "defaulted_borrower_count"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-defaults"
+        }
+      ]
+    },
+    {
+      "id": "measure.westpac.cr9.new_defaulted_borrower_count",
+      "revision_id": "measure.westpac.cr9.new_defaulted_borrower_count@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {
+        "kind": "concept",
+        "revision_id": "count.reported-borrowers@v1"
+      },
+      "result_unit_ref": {
+        "kind": "concept",
+        "revision_id": "unit.count@v1"
+      },
+      "attributes": [
+        {
+          "name": "cohort_eligibility",
+          "value": "new borrowers not funded in June 2024",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "event_definition",
+          "value": "default from July 2024 to June 2025",
+          "status": "established",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "counted_entity",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        },
+        {
+          "name": "distinctness",
+          "value": null,
+          "status": "unresolved",
+          "evidence_refs": [
+            {
+              "bundle_key": "au/westpac/2025-09-30/aps330",
+              "document_id": "westpac-2025-09-30-aps330",
+              "dataset_id": "cr9-residential-mortgages",
+              "kind": "qualification",
+              "ref_id": "cr9-defaults"
+            }
+          ]
+        }
+      ],
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "new_defaulted_borrower_count"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-defaults"
+        }
+      ]
+    }
+  ]
+}

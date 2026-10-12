@@ -43,3 +43,40 @@ index; the cover has no printed page label.
 
 See [independent golden notes](../../../../../tests/bronze/au/westpac/2025-09-30/aps330/golden-notes.md)
 for authoring provenance and the complete metadata/value test contract.
+
+## CR9 extension — reviewed 2026-10-12
+
+Read PDF/printed pp. 55–56, rendered p. 55 at 120 dpi, and re-read the
+portfolio, default, program-managed, CR6 and glossary definitions on pp. 33–34,
+47–48 and 98. The selected mortgage block has eight rows, with no subtotal.
+Its vertically centred label follows three mortgage rows; Corporate precedes
+the block and Australian credit cards follows it. Separate geometric windows
+retain seven numeric positions and Moody's/S&P equivalents for every row.
+The first seven rating pairs are `N/A`; both default-row ratings are blank.
+The last three default-row measure cells are blank/shaded. The seventh band's
+new-default count is a printed dash, with unresolved meaning, not zero.
+
+The first band reports PDs 0.07%/0.07%, previous/current counts
+564,613/571,083, defaults 385 including 7 new borrowers, and history 0.06%.
+Notes b–d establish weighted PD and its EAD weights at **June 2024**, defaults
+over July 2024–June 2025 including borrowers not funded at the opening point,
+and ten years of history. The introductory statement supplies precise annual
+boundaries 1 July 2024–30 June 2025. The two end-of-year count headers are
+interpreted against that explicitly stated annual period as 30 June 2024 and
+30 June 2025; this is header/context interpretation, not a quotation of dates
+printed in those headers. No day is added to the June-2024 PD/weight label.
+Arithmetic-PD timing and the exact historical endpoints remain unresolved.
+There is no implicit document-date fallback or uniform opening-cohort claim.
+
+Note c and the `of which` header establish seven row-scoped field subsets;
+the blank default row supplies no default-event count or subset observation.
+Note a explicitly concerns non-retail historical proxies and is inapplicable
+to this mortgage selection. CR6's report-wide entity, currency, Level 2 and
+portfolio evidence is reused with CR9 scope; CR6-specific notes are not.
+The PD glossary and program-managed long-run definition qualify both PDs.
+The p. 34 default definition qualifies default counts and the default band.
+Neither CR6 nor the glossary resolves what exact entity the borrower counts
+count, or the history denominator/event/exit conventions; those stay unknown.
+
+The existing PDF extractor now returns CR6 and CR9 in one `disclosure-v2`
+bundle. Save under a new output version; retained `cr6-v1` remains unchanged.

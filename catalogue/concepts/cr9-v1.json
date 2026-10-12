@@ -1,0 +1,31 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "risk.historical-annual-default-rate",
+      "revision_id": "risk.historical-annual-default-rate@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Historical annual default rate",
+      "category": "quantity",
+      "definition": "Reported realised annual default rate over historical experience, distinct from a model probability of default. Averaging, denominator, population and event conventions require source-specific definitions.",
+      "evidence_refs": [
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "field",
+          "ref_id": "historical_annual_default_rate"
+        },
+        {
+          "bundle_key": "au/westpac/2025-09-30/aps330",
+          "document_id": "westpac-2025-09-30-aps330",
+          "dataset_id": "cr9-residential-mortgages",
+          "kind": "qualification",
+          "ref_id": "cr9-history"
+        }
+      ]
+    }
+  ]
+}

@@ -7,8 +7,8 @@ import mountainash as ma
 import polars as pl
 from mountainash_data import IbisBackend
 
-from rwa_analysis.domains.cr6.contracts import TABLES
 from rwa_analysis.domains.cr6.models import Cr6Output
+from rwa_analysis.domains.cr9.models import Cr9Output
 from rwa_analysis.extraction.datasets import ExtractionBundle
 from rwa_analysis.storage.bronze import BronzeStore
 from rwa_analysis.storage.manifests import (
@@ -17,11 +17,19 @@ from rwa_analysis.storage.manifests import (
     identifier,
     retain_manifest,
 )
+from rwa_analysis.storage.tables import DOMAINS
+
+
+@dataclass(frozen=True)
+class SilverOutput:
+    cr6: Cr6Output
+    cr9: Cr9Output
 
 
 @dataclass(frozen=True)
 class SilverCandidate:
     cr6: Cr6Output
+    cr9: Cr9Output
     selection: RebuildSelection
     catalogue_release_id: str
 
@@ -55,20 +63,29 @@ class SilverStore:
             bronze_root=self.bronze_root,
             project_root=self.project_root,
         )
-        output = replace(
-            candidate.cr6,
+        output = SilverOutput(
             **{
-                table.member: getattr(candidate.cr6, table.member).with_columns(
-                    ma.lit(revision).alias("silver_revision_id")
+                domain: replace(
+                    getattr(candidate, domain),
+                    **{
+                        table.member: getattr(
+                            getattr(candidate, domain), table.member
+                        ).with_columns(ma.lit(revision).alias("silver_revision_id"))
+                        for table in tables
+                    },
                 )
-                for table in TABLES
-            },
+                for domain, _, tables in DOMAINS
+            }
         )
         retain_manifest(manifest_path, manifest)
         return self.write(output, manifest_path, revision, manifest.schema_version)
 
     def write(
-        self, output: Cr6Output, manifest_path: Path, revision: str, schema_version: str
+        self,
+        output: SilverOutput,
+        manifest_path: Path,
+        revision: str,
+        schema_version: str,
     ) -> Publication:
         """Replace the declared tables atomically, retaining the supplied row revisions."""
         self.database.parent.mkdir(parents=True, exist_ok=True)
@@ -84,13 +101,14 @@ class SilverStore:
                 if namespace not in db.list_namespaces():
                     db.ibis_connection().create_database(namespace)
             with db.transaction():
-                for table in TABLES:
-                    db.create_table(
-                        table.table,
-                        getattr(output, table.member).to_pyarrow(),
-                        namespace="silver",
-                        overwrite=True,
-                    )
+                for domain, _, tables in DOMAINS:
+                    for table in tables:
+                        db.create_table(
+                            table.table,
+                            getattr(getattr(output, domain), table.member).to_pyarrow(),
+                            namespace="silver",
+                            overwrite=True,
+                        )
                 db.create_table(
                     "silver_publication",
                     marker.to_arrow(),
@@ -109,18 +127,23 @@ class SilverStore:
         store = BronzeStore(manifest.bronze_root)
         return tuple(store.load(ref).bundle for ref in manifest.selection.bronze_refs)
 
-    def read(self, publication: Publication) -> Cr6Output:
+    def read(self, publication: Publication) -> SilverOutput:
         with IbisBackend(
             dialect="duckdb", database=str(publication.database), read_only=True
         ) as db:
             # Materialize before closing the connection, retaining exact Decimal values.
-            return Cr6Output(
+            return SilverOutput(
                 **{
-                    table.member: ma.relation(
-                        ma.relation(
-                            db.table(table.table, namespace="silver")
-                        ).to_polars()
+                    domain: output_type(
+                        **{
+                            table.member: ma.relation(
+                                ma.relation(
+                                    db.table(table.table, namespace="silver")
+                                ).to_polars()
+                            )
+                            for table in tables
+                        }
                     )
-                    for table in TABLES
+                    for domain, output_type, tables in DOMAINS
                 }
             )
