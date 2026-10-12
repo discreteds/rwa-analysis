@@ -13,6 +13,11 @@
 
 ## Evidence and design history
 
+- [Historical source-table design](04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md):
+  proposed capture/composition contracts and structural research queries; awaiting
+  researcher review, not implemented. The [2024 source inventory](00.ideation/2026-10-12-historical-source-inventory.md)
+  records selected mortgage panels, measures, qualifications and unresolved meanings.
+
 - [CR9 implementation lessons](00.ideation/2026-10-12-cr9-implementation-lessons.md):
   observed fixes, reusable design evidence and concrete follow-up candidates.
 
