@@ -18,7 +18,7 @@
 
 - [CR9 domain and temporal metadata design](04.planning/superpowers/specs/2026-10-12-cr9-domain-design.md):
   refined production specification and disposable spike shape approved.
-   Four-bank CR9 capture, conformance and persistence are implemented on PR #9.
+   Four-bank CR9 capture, conformance and persistence are implemented and merged through PR #9.
   The [implementation plan](04.planning/superpowers/plans/2026-10-12-cr9-implementation.md)
    records the approved Westpac checkpoint and final four-bank execution evidence.
 

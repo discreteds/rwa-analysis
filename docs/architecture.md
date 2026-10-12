@@ -1,7 +1,7 @@
 # Current processing architecture
 
 Updated: 2026-10-12. Describes four-bank CR6/CR9 implementation, including the CR9
-delivery on PR #9. This is implemented branch scope, not a claim that PR #9 has merged.
+delivery merged into `develop` through PR #9 at `32e5f6a`.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
