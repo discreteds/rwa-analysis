@@ -1,0 +1,48 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "measure.cba.historical.exposure-lgd",
+      "revision_id": "measure.cba.historical.exposure-lgd@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "risk.loss-given-default@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.ratio@v1"},
+      "attributes": [
+        {"name": "weighting", "value": "weighted_average", "status": "established",
+         "evidence_refs": [
+           {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"field","ref_id":"lgd"},
+           {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"field","ref_id":"lgd"},
+           {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"field","ref_id":"lgd"}
+         ]},
+        {"name": "weight_measure", "value": null, "status": "unresolved"},
+        {"name": "weight_timing", "value": null, "status": "unresolved"},
+        {"name": "loss_basis", "value": "Downturn LGD: net present value of post-default loss including internal and external costs, expressed as a percentage of EAD.", "status": "established",
+         "evidence_refs": [
+           {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"lgd-definition"},
+           {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"lgd-downturn"}
+         ]}
+      ],
+      "evidence_refs": [
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"field","ref_id":"lgd"},
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"field","ref_id":"lgd"},
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"field","ref_id":"lgd"}
+      ]
+    },
+    {
+      "id": "measure.cba.historical.rwa-overlay",
+      "revision_id": "measure.cba.historical.rwa-overlay@v1",
+      "created_on": "2026-10-12",
+      "effective_from": null,
+      "effective_to": null,
+      "concept_ref": {"kind": "concept", "revision_id": "capital.risk-weighted-assets@v1"},
+      "result_unit_ref": {"kind": "concept", "revision_id": "unit.money@v1"},
+      "evidence_refs": [
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"overlay"},
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"qualification","ref_id":"overlay"},
+        {"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"qualification","ref_id":"overlay"}
+      ]
+    }
+  ]
+}
