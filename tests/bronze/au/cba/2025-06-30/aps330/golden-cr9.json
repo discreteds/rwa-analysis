@@ -1,0 +1,58 @@
+{
+  "title": "CR9: IRB - Backtesting of probability of default (PD) per portfolio",
+  "portfolio": "Residential mortgage",
+  "approach": "Subject to AIRB approach",
+  "fields": [
+    ["weighted_average_pd", "Weighted\naverage\nPD", "%"],
+    ["arithmetic_average_pd", "Arithmetic\naverage\nPD by\nborrowers", "%"],
+    ["previous_year_borrower_count", "End of\nprevious\nyear", "#"],
+    ["current_year_borrower_count", "End of the\nyear", "#"],
+    ["defaulted_borrower_count", "Non-\nperforming\nborrowers\nin the year", "#"],
+    ["new_defaulted_borrower_count", "of which:\nnew non-\nperforming\nborrowers\nin the year", "#"],
+    ["historical_annual_default_rate", "Average\nhistorical\nannual\ndefault\nrate ²", "%"]
+  ],
+  "rows": [
+    ["0.00 to <0.15", "AAA to A-", "Aaa - A3", "0.07", "0.07", "718,884", "730,204", "1,045", "28", "0.07"],
+    ["0.15 to <0.25", "BBB+ to BBB", "Baa1 to Baa2", "0.18", "0.18", "289,979", "296,933", "933", "39", "0.16"],
+    ["0.25 to <0.50", "BBB-", "Baa3", "0.34", "0.34", "243,884", "245,165", "1,331", "50", "0.29"],
+    ["0.50 to <0.75", "BB+", "Ba1", "0.57", "0.57", "158,362", "149,637", "1,384", "44", "0.46"],
+    ["0.75 to <2.50", "BB to BB-", "Ba2 to Ba3", "1.39", "1.39", "312,430", "287,846", "4,826", "85", "1.06"],
+    ["2.50 to <10.00", "B+ to B-", "B1 to B3", "3.86", "3.96", "116,121", "105,737", "3,831", "276", "2.80"],
+    ["10.00 to <100.00", "CCC+ to CCC-", "Caa1 to Caa3", "16.66", "16.66", "2,825", "2,594", "352", "–", "13.32"],
+    ["100.00 (Default)", "D", "Ca to C", "100.00", "100.00", "14,145", "16,296", "", "", ""]
+  ],
+  "bands": [["0.00", "0.15"], ["0.15", "0.25"], ["0.25", "0.50"], ["0.50", "0.75"], ["0.75", "2.50"], ["2.50", "10.00"], ["10.00", "100.00"], [null, null]],
+  "notes": {
+    "cr9-introduction": "The table below provides a comparison of the PD used in the Group’s IRB models with the effective default rates of the Group’s borrowers in order to validate the reliability of PD calculations for exposures. The data is computed for the 12-month period from 1 April 2024 to 31 March 2025 for all portfolio types. The information does not include the impact of RWA overlays and risk floors.",
+    "cr9-bands": "The Group’s internal PD grades have been mapped to the fixed PD ranges defined for disclosure, with the midpoints of the grades sitting within the range.",
+    "cr9-history": "The average historical default rate is calculated using data from 2014 based on the asset class determined by the relevant regulatory standards at the time.",
+    "non-performing-definition": "An exposure that is in default.",
+    "retail-non-performing": "Retail exposures are classified as non-performing when payment on a facility is 90 days or more past due, or there are indications of unlikeliness to pay (e.g. a write-off amount exists against the facility)."
+  },
+  "timing": [
+    ["annual", "1 April 2024 to 31 March 2025", null, "2024-04-01", "2025-03-31", "12", "months"],
+    ["history", "from 2014", null, "2014", null, null, null],
+    ["previous-year", "End of previous year", "2024-03-31", null, null, null, null],
+    ["current-year", "End of the year", "2025-03-31", null, null, null, null],
+    ["unspecified", "", null, null, null, null, null]
+  ],
+  "field_notes": {
+    "weighted_average_pd": ["pd-definition", "pd-long-run"],
+    "arithmetic_average_pd": ["pd-definition", "pd-long-run"],
+    "previous_year_borrower_count": [],
+    "current_year_borrower_count": [],
+    "defaulted_borrower_count": ["non-performing-definition", "retail-non-performing"],
+    "new_defaulted_borrower_count": ["non-performing-definition", "retail-non-performing"],
+    "historical_annual_default_rate": ["cr9-history"]
+  },
+  "roles": [
+    ["weighted_average_pd", "measurement", "unspecified"],
+    ["weighted_average_pd", "weight_measurement", "unspecified"],
+    ["arithmetic_average_pd", "measurement", "unspecified"],
+    ["previous_year_borrower_count", "measurement", "previous-year"],
+    ["current_year_borrower_count", "measurement", "current-year"],
+    ["defaulted_borrower_count", "outcome_window", "annual"],
+    ["new_defaulted_borrower_count", "outcome_window", "annual"],
+    ["historical_annual_default_rate", "history_window", "history"]
+  ]
+}

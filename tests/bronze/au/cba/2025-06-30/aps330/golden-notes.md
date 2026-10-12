@@ -45,3 +45,22 @@ saved PDF cover. It has no printed page label. Corrected its `printed_page` from
 the invented `"1"` to `""` (absent-label convention in the existing string
 contract), retaining `pdf_page=1` and `location="Cover"`. This addresses Task 2
 review M1 using source evidence; all other page references remain source-backed.
+# CR9 independent extension — 2026-10-12
+
+`golden-cr9.json` was hand-authored from rendered PDF/printed page 60, its prose,
+notes and reviewed glossary/methodology before CR9 extractor code. It is not a
+serialization of extractor output. The original `golden.json` remains unchanged.
+
+The fixture covers all eight mortgage rows, seven measure positions, two rating
+columns, headers/units, interval/default semantics, blank versus dash missingness,
+source qualifications and annual/history timing. End-of-year count dates are
+interpreted from the explicit April–March annual period, not the document date.
+History `from 2014` remains year-precision with unknown end/duration. No CR6
+weighting, Westpac cohort rule or precise borrower counting unit is borrowed.
+
+The source test owns PDF-to-source correctness: dropping a CR9 row, swapping a
+count column, reading the dash as zero, losing rating association, importing CR6
+weighting, or padding the history start to a full date must fail here. Existing
+shared transport tests own codec round-trip and legacy-wire compatibility.
+The first run failed because CBA still returned `cr6-v1`; after implementation
+the five focused CBA tests passed with CR6 compared to its unchanged golden.

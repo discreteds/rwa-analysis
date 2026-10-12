@@ -1,0 +1,64 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "cba.cr9.context", "revision_id": "cba.cr9.context@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage"},
+      "attributes": [
+        {"name": "row_role", "value": "band", "status": "established", "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "axis", "ref_id": "pd-heading"}]},
+        {"name": "population", "value": {"kind": "concept", "revision_id": "population.residential-mortgages@v1"}, "status": "established", "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "portfolio-definition"}]},
+        {"name": "overlay_treatment", "value": "excludes RWA overlays and risk floors", "status": "established", "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "qualification", "ref_id": "cr9-introduction"}]}
+      ],
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "context", "ref_id": "context"}]
+    },
+    {
+      "id": "cba.cr9.weighted_average_pd", "revision_id": "cba.cr9.weighted_average_pd@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "weighted_average_pd", "published_field_ref": "weighted_average_pd"},
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.weighted_average_pd@v1"},
+      "conversion": {"source_unit": "%", "source_scale": "1", "unit_factor": "0.01"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "weighted_average_pd"}]
+    },
+    {
+      "id": "cba.cr9.arithmetic_average_pd", "revision_id": "cba.cr9.arithmetic_average_pd@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "arithmetic_average_pd", "published_field_ref": "arithmetic_average_pd"},
+      "concept_ref": {"kind": "concept", "revision_id": "risk.default-probability@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.arithmetic_average_pd@v1"},
+      "conversion": {"source_unit": "%", "source_scale": "1", "unit_factor": "0.01"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "arithmetic_average_pd"}]
+    },
+    {
+      "id": "cba.cr9.historical_annual_default_rate", "revision_id": "cba.cr9.historical_annual_default_rate@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "historical_annual_default_rate", "published_field_ref": "historical_annual_default_rate"},
+      "concept_ref": {"kind": "concept", "revision_id": "risk.historical-annual-default-rate@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.historical_annual_default_rate@v1"},
+      "conversion": {"source_unit": "%", "source_scale": "1", "unit_factor": "0.01"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "historical_annual_default_rate"}]
+    },
+    {
+      "id": "cba.cr9.previous_year_borrower_count", "revision_id": "cba.cr9.previous_year_borrower_count@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "previous_year_borrower_count", "published_field_ref": "previous_year_borrower_count"},
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.previous_year_borrower_count@v1"},
+      "conversion": {"source_unit": "#", "source_scale": "1", "unit_factor": "1"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "previous_year_borrower_count"}]
+    },
+    {
+      "id": "cba.cr9.current_year_borrower_count", "revision_id": "cba.cr9.current_year_borrower_count@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "current_year_borrower_count", "published_field_ref": "current_year_borrower_count"},
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.current_year_borrower_count@v1"},
+      "conversion": {"source_unit": "#", "source_scale": "1", "unit_factor": "1"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "current_year_borrower_count"}]
+    },
+    {
+      "id": "cba.cr9.defaulted_borrower_count", "revision_id": "cba.cr9.defaulted_borrower_count@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "defaulted_borrower_count", "published_field_ref": "defaulted_borrower_count"},
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.defaulted_borrower_count@v1"},
+      "conversion": {"source_unit": "#", "source_scale": "1", "unit_factor": "1"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "defaulted_borrower_count"}]
+    },
+    {
+      "id": "cba.cr9.new_defaulted_borrower_count", "revision_id": "cba.cr9.new_defaulted_borrower_count@v1", "created_on": "2026-10-12", "effective_from": null, "effective_to": null,
+      "scope": {"document_id": "cba-2025-06-30-aps330", "document_date": "2025-06-30", "dataset_id": "cr9-residential-mortgages", "template": "CR9", "portfolio": "Residential mortgage", "field_key": "new_defaulted_borrower_count", "published_field_ref": "new_defaulted_borrower_count"},
+      "concept_ref": {"kind": "concept", "revision_id": "count.reported-borrowers@v1"}, "measure_ref": {"kind": "measure", "revision_id": "measure.cba.cr9.new_defaulted_borrower_count@v1"},
+      "conversion": {"source_unit": "#", "source_scale": "1", "unit_factor": "1"},
+      "evidence_refs": [{"bundle_key": "au/cba/2025-06-30/aps330", "document_id": "cba-2025-06-30-aps330", "dataset_id": "cr9-residential-mortgages", "kind": "field", "ref_id": "new_defaulted_borrower_count"}]
+    }
+  ]
+}
