@@ -41,6 +41,10 @@ Organisations report similar concepts under different labels, while the same lab
 
 A changed footnote can require a revised mapping even if the published column title stays the same.
 
+Across reporting vintages, do not presume semantic continuity from organisation,
+label or column position. Follow [complete capture across evolving disclosures](../a.architecture/historical-disclosure-capture.md): preserve absence and changed grain,
+and leave gap filling and construction of comparable histories to downstream analysis.
+
 Arrangements are counted entities (#); exposures are monetary amounts ($). An arrangement may carry an exposure amount, but these are distinct concepts. Earlier discussion used the ambiguous term `modelled exposure unit`; the researcher corrected that interpretation. Source borrower, counterparty, loan, agreement and arrangement terminology requires contextual mapping: NAB's mortgage agreement count maps to arrangement count, without asserting that every counterparty count in every portfolio counts arrangements. Preserve each source definition and investigate distinctness and aggregation where relevant.
 
 Measures over arrangements can have multiple meaningful variants: account/arrangement-weighted or monetary-exposure-weighted aggregation, and population or treatment rules that include, exclude or conditionally include arrangements. Represent these as composable attributes of the measurement definition rather than creating a separate top-level concept for every combination. Keep the counted entity distinct from how a measure over those entities is weighted. An exposure-weighted measure must identify the applicable monetary exposure basis; account weighting must establish what counts as an account and its contribution.

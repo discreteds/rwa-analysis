@@ -15,6 +15,13 @@ The spike is reference material only; implementation starts fresh from `develop`
 
 ## 1. Ask and boundary
 
+Historical extension clarification: this specification's implemented 2025 typed
+contracts do not define the allowable metric inventory of older disclosures.
+[Complete capture across evolving disclosures](../../../01.principles/a.architecture/historical-disclosure-capture.md)
+governs earlier-period work: review the entire selected table, preserve changing
+metrics/grain and extend contracts where source evidence requires it. This is a
+constraint on the next specification, not a claim that those extensions are implemented.
+
 Use mortgage CR9 as the second concrete domain to establish interfaces that capture
 each published datapoint with its meaning, multiple time dimensions and provenance.
 

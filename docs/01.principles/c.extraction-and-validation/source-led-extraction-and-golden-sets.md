@@ -20,6 +20,7 @@ PDF layouts and definitions vary. A parser can produce plausible numbers while m
 - Keep tests under `tests/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/`, mirroring the extractor and Bronze hierarchy.
 - Report mismatches at dataset, row and field level, including metadata mismatches. Dropped fields cannot silently pass through an older comparator.
 - Extend shared dataclasses and helpers from demonstrated requirements across real extractions. Preserve coverage of previously selected datasets when adding domains or jurisdictions.
+- Follow [complete capture across evolving disclosures](../a.architecture/historical-disclosure-capture.md): keep layout-specific handling in the bespoke extractor, retain all metrics in the selected table, and expose semantic changes rather than hiding them in document-specific parsing.
 - Separate faithful extraction, structural Silver conformance and task-specific analytical suitability. Passing extraction checks does not resolve unknown metric semantics, but partial semantic knowledge does not prevent capture or publication with appropriate tags. Analysis may use explicit assumptions and approximations; perfect accounting is not an acceptance criterion.
 
 ## Example

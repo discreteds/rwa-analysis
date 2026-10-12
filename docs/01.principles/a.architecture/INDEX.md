@@ -3,6 +3,7 @@
 | Principle | Status | Summary |
 |---|---|---|
 | [Capture and tag for research](capture-and-tag-for-research.md) | AGREED | Faithful capture and useful tagging support assumption-aware, approximate research without requiring perfect accounting. |
+| [Complete capture across evolving disclosures](historical-disclosure-capture.md) | AGREED | Capture every selected table's metrics and historical structure; preserve changing semantics and absence; keep layout local and generalise only from demonstrated source needs. |
 | [Evidence and interpretation](evidence-and-interpretation.md) | AGREED | Preserve source evidence and distinguish reported facts from interpretations and derivations. |
 | [Multi-domain source bundles](multi-domain-source-bundles.md) | AGREED | One file's extraction can span domains, portfolios, periods and jurisdictions. |
 | [Rebuildable analytical layers](rebuildable-analytical-layers.md) | AGREED | Durable inputs reproduce full Silver rebuilds; atomic publication does not imply a validation gate. |
