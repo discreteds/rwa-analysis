@@ -5,8 +5,10 @@
 > Tasks are behaviour-sized; the disposable spike is reference only.
 
 Status: **APPROVED by the researcher, 2026-10-12.** Design approved the same day.
-Tasks 1–2 are implemented on `feature/historical-source-tables`; execution is paused
-at checkpoint A pending researcher review. Tasks 3–5 have not started. Researcher authorised
+Tasks 1–2 are implemented on `feature/historical-source-tables`; the researcher
+approved continuation after checkpoint A on 2026-10-12. Tasks 3–5 are **BLOCKED / NO-GO**
+at native publication by Mountainash item 302; independent source capture is implemented.
+Researcher authorised
 a fresh coding worktree seeded from `develop` after merging documentation PR #12.
 
 **Goal:** Capture all selected four-bank 2024 mortgage tables with composable
@@ -243,17 +245,17 @@ Create `tests/silver/test_source_table_legacy.py`.
 existing catalogue definitions. **Produces:** complete 234 historical body positions,
 supplementary RWA figures, and explicit source-table projections of selected 2025 inputs.
 
-- [ ] Independently author all source expectations before extraction. Cover all three
+- [x] Independently author all source expectations before extraction. Cover all three
   exposure and three backtesting panels, subtotal/default/total roles, two dashes and
   negative September 2023 EAD variance. Keep notes' $131989m and $214081m apart from
   the table's $116228m RWA total; retain backtesting NZ-history scope and unknown dates.
-- [ ] Write failing full-source cases and legacy projection tests. Verify original
+- [x] Write failing full-source cases and legacy projection tests. Verify original
   count 564613 remains integer, fourteen `N/A` ratings remain lexical, nested label
   paths/order survive, and seven within-row new-default subsets retain endpoints.
   Verify old resolver outputs still supply their original definition/conversion
   references; no fabricated mapping applicability based on document date.
   Run `uv run pytest tests/bronze/au/westpac/2024-09-30/aps330 tests/silver/test_source_table_legacy.py -q` red.
-- [ ] Implement the bespoke historical extractor and per-model legacy adapter fresh.
+- [x] Implement the bespoke historical extractor and per-model legacy adapter fresh.
   Resolve legacy meanings using the original rows and field keys before associating
   them with adapted cells. Use actual published bindings and lexical axes, not a
   cross-product of every dataclass member. Convert CR6 snapshot timing only to its
@@ -293,14 +295,14 @@ Each bank is its own source-authoring/red-green/commit unit within this task.
 **Produces:** NAB 90 and ANZ 125 selected body positions; 574 overall plus numerical
 notes; complete evidence-backed mappings with explicitly unresolved attributes.
 
-- [ ] Author NAB expectations independently: two exposure panels without a total
+- [x] Author NAB expectations independently: two exposure panels without a total
   column; three backtesting panels in each of two tables, retaining distinct main and
   RBNZ mortgage populations. Include arrangement-based average EAD, changed PD models,
   continuing-balance cohort restriction and different APRA/RBNZ LGD conventions.
-- [ ] Author ANZ expectations independently: three exposure panels with original
+- [x] Author ANZ expectations independently: three exposure panels with original
   two-line bands and mortgage total column; one backtesting panel. Retain PD/EAD
   2019–2023, LGD 2018–2022 and separate September 2023 cutoff without a unified window.
-- [ ] Run each new complete-source test red, implement its bespoke extractor, then
+- [x] Run each new complete-source test red, implement its bespoke extractor, then
   run green. Use the same source comparison boundary as Task 1, for example:
 
   ```python
@@ -447,7 +449,64 @@ Review dispositions, complexity cuts first:
 | Fix now | Existing master test assumed every domain had a `.contexts` relation | Kept CR6/CR9 context checks explicit and tested declared outputs, including the empty native source output for ordinary modern runs. |
 | Track upstream / gate | No required dependency defect reproduced | No workaround or upstream blocker introduced. |
 
-**Checkpoint A awaits researcher review.** Complete four-bank historical capture,
+**Checkpoint A accepted; continuation authorised on 2026-10-12.** Complete four-bank historical capture,
 explicit Westpac legacy projection, structural research example and new source-table
 master proof remain Tasks 3–5; current staging/master code is not claimed to have
 passed that later new-domain proof.
+
+### Continuation and upstream block — 2026-10-12
+
+The researcher accepted checkpoint A and requested continuation. Independent source
+work and the per-model legacy projection were delegated in disjoint files while
+the parent implemented explicit pipeline composition, frame-key preservation and
+the master/example proof path.
+
+Completed source commits:
+
+- `2f70f60`: Westpac 2024, six dated panels, 234 body cells + two note observations.
+- `bd70a80`: NAB 2024, eight dated panels, 90 body cells including separate main/RBNZ rows.
+- `c025078`: ANZ 2024, four dated panels, 125 body cells.
+- `aa3d5a7`, `e6ea30e`: pure legacy adapter, original-address meaning selection,
+  lexical ratings, row roles/aggregation scopes and source column ordering.
+- `12f9ac4`: evidence-backed CBA LGD/overlay definitions and scoped assertions;
+  average-EAD counting and exact LGD exposure weighting remain unresolved.
+- `0297910`: Westpac unit conversion declarations. NAB/ANZ conversions and the
+  selected modern Westpac catalogue members are included in the shared release.
+
+All four historical bundles roundtrip exactly through saved Bronze:
+`/tmp/opencode/historical-four-bronze-cognhgze/`.
+This proof contains **23 dated datasets, 574 body cells + eight note observations =
+582 source cells**. It is a capture/transport proof, not the blocked master result.
+
+The expanded CBA-only persisted/master path passes, including reconstruction after
+staging deletion. Retained checkpoint-A v3 cells remain decodable after adding the
+legacy row properties. Source tests and pure legacy tests pass. Final full suite:
+**169 passed, two failed**, both at the same upstream ingress error, before the
+remaining mixed-publication/master assertions execute.
+Log: `/tmp/opencode/historical-blocked-suite.log`.
+
+#### Reproduced dependency defect — NO-GO
+
+Mountainash's pinned flat dataclass ingress samples the first 100 rows through
+Polars before applying declarations. A nullable string column initially all-null
+then rejects a later string. Both ordinary relation ingress and explicit TypeSpec
+ingress fail on `100 × Cell(None) + Cell("N/A")`.
+
+- Real legacy comparison: later lexical ratings raise `ComputeError` on `N/A`.
+- Real complete example: historical Westpac reaches the same failure earlier on
+  `missing_reason="dash_unresolved"` after exposure cells.
+- Full-example command was run and failed; log:
+  `/tmp/opencode/historical-full-blocked.log`.
+
+Authoritative upstream record (committed in Mountainash Central as `a3ffdcb9`):
+`/home/ubuntu/git/mountainash-io/mountainash-central/04.planning/mountainash/a.backlog/active/flat-pydata-late-non-null-inference.md`.
+
+**Blocked steps:** Task 3 persisted historical/legacy comparison; Task 4 complete
+persisted bank distinguishability proof; Task 5 full master/inventory/example and
+final correctness/complexity review. Their tests and draft example remain pending;
+they are not skipped or marked done. The feature PR remains draft.
+
+**Unblock condition:** upstream native ingress repair lands, deliberately update the
+consumer pin, then pass the full selected suite and retained historical example.
+No caller-side reordering, artificial rows, alternative ingestion or local dependency
+patch has been introduced. The next decision is whether to start that upstream repair.

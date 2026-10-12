@@ -4,7 +4,8 @@ Date: 2026-10-12
 
 Status: **APPROVED by the researcher, 2026-10-12**, after independent correctness
 and complexity reviews. CBA checkpoint implementation is on the coding branch,
-not yet merged; the complete four-bank feature remains in progress. The
+not yet merged; four-bank source capture is implemented but full publication is
+blocked by upstream ingress item 302. The
 [implementation plan](../plans/2026-10-12-historical-source-tables.md) was also
 approved on 2026-10-12 and records the CBA checkpoint evidence and review boundary.
 
