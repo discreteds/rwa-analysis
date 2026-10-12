@@ -119,6 +119,8 @@ must establish the complete selected source requirements before implementation.
 
 ## References
 
+- [Approved historical source-table design](../../04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md)
+  and [2024 source inventory](../../00.ideation/2026-10-12-historical-source-inventory.md).
 - [Capture and tag for research](capture-and-tag-for-research.md).
 - [Multi-domain source bundles](multi-domain-source-bundles.md).
 - [Source-led extraction and golden sets](../c.extraction-and-validation/source-led-extraction-and-golden-sets.md).

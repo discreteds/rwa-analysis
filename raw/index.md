@@ -38,6 +38,26 @@ NAB page references distinguish one-based PDF positions from printed labels (two
 
 - [ANZ New Pillar 3 disclosure update](anz-2025-03-31-disclosure-update.pdf), one-page explanation associated with March 2025 reporting, published 8 May 2025. [Official PDF](https://www.anz.com/content/dam/anzcom/shareholder/2025-half-year-results-announcement/new-pillar3-disclosure-update.pdf). Describes the revised templates, unchanged quarterly/half-year/year-end cadence and quantitative Excel publication. This is explanatory material, not another bank-period observation. Inspected visually because text extraction omitted most of its content.
 
+## Prior annual reports — 2024 discovery
+
+Acquired from official bank URLs on 2026-10-12 for historical-format specification.
+These are source-discovery observations, not implemented extractors or independent
+goldens. Publication dates have not yet been established. References below are
+one-based PDF positions; printed page labels can differ.
+
+| Organisation | Reporting date | Saved PDF / official source | Located mortgage evidence |
+|---|---|---|---|
+| CBA | 2024-06-30 | [Saved PDF](cba-2024-06-30-aps330.pdf) · [Official PDF](https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/fy24/CBA-FY24-Basel-III-Pillar-3-Disclosure.pdf) | Table 9d(ii), PDF pp.49–51: transposed exposure measures and original bands. Table 9f(ii)/(iii), PDF p.56: portfolio-level PD, LGD and EAD backtesting with distinct histories. Table 9f(i), pp.54–55: actual/regulatory losses, a separate measure family. |
+| Westpac | 2024-09-30 | [Saved PDF](westpac-2024-09-30-aps330.pdf) · [Official PDF](https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/wbc-pillar-3-report-september-2024.pdf) | PDF p.45: mortgage PD-band table, including March 2024/September 2023 panels; definitions p.42. PDF pp.56–58: portfolio-level predicted/observed PD, LGD and EAD comparison with regulatory EL, including September 2023 continuation. |
+| NAB | 2024-09-30 | [Saved PDF](nab-2024-09-30-aps330.pdf) · [Official PDF](https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2024-full-year-pillar-3-report.pdf) | Table 5.3.B, PDF pp.50–51: transposed exposure measures; note identifies mortgage PD-model change. Tables 5.1.J(ii)/(iii), pp.40–42: PD/EAD and LGD backtesting with all comparative panels and separately named RBNZ mortgages. Loss experience p.38 onward is separately defined. |
+| ANZ Bank HoldCo | 2024-09-30 | [Saved PDF](anz-2024-09-30-aps330.pdf) · [Official PDF](https://www.anz.com/content/dam/anzcom/shareholder/2024-september-pillar-3-disclosure.pdf) | Table 9(d), PDF pp.53–55: transposed retail exposure measures, including mortgage rows. Table 9(f), PDF p.57: portfolio-level PD/LGD/EAD backtesting; retail windows differ by measure. |
+
+The earlier tables are predecessors to the research capabilities served by CR6/CR9,
+not automatically equivalent templates or metric definitions. The
+[historical source inventory](../docs/00.ideation/2026-10-12-historical-source-inventory.md)
+records selected panels, metrics, qualifications and unresolved meanings; independent
+goldens and production extractors have not yet been authored.
+
 ## Official archives
 
 - [CBA Pillar 3 capital disclosures](https://www.commbank.com.au/about-us/investors/regulatory-disclosure/pillar-3-capital-disclosures.html). The headings use CBA financial years: the December 2025 report is filed under 2026, while the “2025 Half Year” report covers December 2024.
@@ -49,11 +69,11 @@ All four archives also link quantitative Excel files. Those links were observed 
 
 ## Review status
 
-The four reviewed selections below are available through the
-[CR6 extraction commands](../docs/workflows/cr6-extraction.md). Saved Bronze
-versions support [offline Silver rebuild and recovery](../docs/workflows/silver-rebuild.md).
-The [CLI integration test](../tests/integration/test_cr6_cli.py) verifies all four
-dispatches and restored inputs at a different root.
+The four reviewed 2025 selections below are available through the
+[Python examples](../README.md#four-bank-staging-and-master). Saved Bronze versions
+support [independently callable rebuild stages](../README.md#rerun-selected-stages).
+See the [current architecture](../docs/architecture.md) for implementation and
+verification evidence; 2024 source acquisition does not imply implemented extraction.
 
 See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). Those discovery notes are not production extractions. CBA June 2025 now has a [direct source review](../extractions/au/cba/2025-06-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/cba/2025-06-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/cba/2025-06-30/aps330/golden.json). All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.
 
