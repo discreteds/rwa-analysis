@@ -4,7 +4,8 @@
 > checkpoint after task 3. Use `test-driven-development` and `test-audit` for real
 > implementation. Do not reuse the disposable spike as the implementation branch.
 
-**Status:** PROPOSED — implementation awaits researcher review of this plan.
+**Status:** APPROVED — execution has reached the task-3 Westpac checkpoint.
+Tasks 4–5 await researcher permission to continue after reviewing that checkpoint.
 
 **Goal:** Capture the selected four-bank mortgage CR9 disclosures with field-level
 meaning/time metadata through retained mixed-domain Bronze, staging and master.
@@ -278,3 +279,40 @@ unknown dates and no implicit analytical aggregation apply throughout.
 The only intermediate researcher checkpoint is task 3; final delivery is reviewed
 through the implementation PR. Mark progress with actual runs, not the presence of
 classes or table declarations. This plan does not authorise the deferred refactors.
+
+## Task-3 execution evidence — 2026-10-12
+
+Coding branch: `feature/cr9-capture`, seeded from the approved plan branch rather
+than the disposable spike. Documentation remains in the base checkout.
+Checkpoint code is retained in [draft PR #9](https://github.com/discreteds/rwa-analysis/pull/9).
+
+- Baseline: 114 tests passed before changes.
+- Tasks 1–3 integrated and review fixes applied: 143 tests passed, including original CR6 behaviour, old-wire
+  fixtures, Westpac mixed capture, field semantics and persisted metadata/reconstruction.
+- Real PDF run produced nine CR6 and eight CR9 mortgage rows, all 27 declared tables,
+  four temporal roles and seven within-row default/new-default subset relationships.
+- Annual interval remains July 2024–June 2025; weighted PD/EAD timing remains June
+  2024; ten-year history has unresolved endpoints. No annual default rate was inferred.
+- Reconstruction uses stored values and restores published column labels/order.
+- The scope of the default-count subset excludes the blank default-stock row.
+
+Run from the coding worktree:
+```bash
+uv run python examples/westpac_cr9.py --data-root /tmp/opencode/cr9-task3-final --run-name westpac-cr9-checkpoint-reviewed
+```
+
+Retained local evidence: `/tmp/opencode/cr9-task3-final/` (Bronze, manifest, DuckDB,
+readback Parquet files); log: `/tmp/opencode/cr9-task3-final-reviewed.log`.
+
+Complexity review retained the typed models, fifteen-relation CR9 inventory and
+boundary-specific tests. It removed an unused temporal-binding copy on semantic
+`FieldOccurrence`; source metadata still owns those bindings and Silver persists them.
+The 52 catalogue tests passed after that cut. No metadata-ingress or constructor-
+validation refactoring was included. Four-bank CR9 expansion and full CR9 master
+acceptance remain task-4/5 work, not claimed complete by this checkpoint.
+
+Correctness review found a missing row-axis qualification in Silver field metadata.
+A failing source-backed regression reproduced it; the repaired projection now attaches
+the default definition to default-stock counts without leaking it to performing rows.
+The full suite and the real example passed after repair; Ruff and diff checks pass.
+No upstream-dependent blocker was identified for this checkpoint.

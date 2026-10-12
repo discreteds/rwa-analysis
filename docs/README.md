@@ -17,7 +17,7 @@
   refined production specification and disposable spike shape approved.
   CR9 remains unimplemented in production.
   The [implementation plan](04.planning/superpowers/plans/2026-10-12-cr9-implementation.md)
-  is proposed for review, with an early real Westpac mixed-domain checkpoint.
+  is approved and records the real Westpac mixed-domain checkpoint awaiting review.
 
 - [Raw inventory](../raw/index.md) and [`extractions/`](../extractions/): official
   sources, per-document review and saved extraction code.
