@@ -5,7 +5,8 @@
 > Tasks are behaviour-sized; the disposable spike is reference only.
 
 Status: **APPROVED by the researcher, 2026-10-12.** Design approved the same day.
-Execution starts with Tasks 1–2 and pauses at checkpoint A. Researcher authorised
+Tasks 1–2 are implemented on `feature/historical-source-tables`; execution is paused
+at checkpoint A pending researcher review. Tasks 3–5 have not started. Researcher authorised
 a fresh coding worktree seeded from `develop` after merging documentation PR #12.
 
 **Goal:** Capture all selected four-bank 2024 mortgage tables with composable
@@ -123,11 +124,11 @@ Modify `extraction/{datasets.py,codec.py}`, `storage/bronze.py`,
 `disclosure-v3`; `BronzeStore.save/load` roundtrips it. CBA fixtures expose the real
 extractor output as input, not expected answers.
 
-- [ ] Read/render the full selected CBA source and independently author expected
+- [x] Read/render the full selected CBA source and independently author expected
   cells/metadata before implementing the extractor. Separate three exposure panels
   and two backtesting tables. Include 125 body positions plus panel-specific overlay
   and scaling observations; document unknown restatement-note scope and EAD timing.
-- [ ] Write failing full-source and transport cases. Use existing complete golden
+- [x] Write failing full-source and transport cases. Use existing complete golden
   comparison where compatible. Example transport assertion at the public boundary:
 
   ```python
@@ -143,19 +144,19 @@ extractor output as input, not expected answers.
   Retained old-wire fixture cases continue to assert their original representation.
   Run `uv run pytest tests/bronze/au/cba/2024-06-30/aps330 tests/integration/test_bronze_storage.py -q`
   and establish the intended missing-capability failures before implementation.
-- [ ] Implement source-table types and the bespoke extractor fresh. Cell IDs are
+- [x] Implement source-table types and the bespoke extractor fresh. Cell IDs are
   local stable strings; cells bind fields/leaf axes, contexts, bands and qualifiers.
   Note cells have no fabricated table positions. Field occurrences declare source
   form and result kind; no canonical equivalence is encoded by their Python names.
   Widen the `Dataset.metadata` annotation to the two actual metadata container types.
   New temporal bindings address cell ID plus role; retain descriptor statuses.
-- [ ] Add explicit v3 dataset/payload dispatch; reuse primitive scalar conversion.
+- [x] Add explicit v3 dataset/payload dispatch; reuse primitive scalar conversion.
   Keep v1/v2 writers/readers unchanged. Do not attach new constructor checks or
   automatic encode/decode validation to v3. In `BronzeStore.save`, retain old-format
   staged verification for old formats; the new v3 path writes via mountainash-files
   and publishes without adding that automatic comparison. Ordinary explicit load
   decodes the saved payload; tests prove its roundtrip.
-- [ ] Run focused cases green, inspect the real saved CBA bundle and commit this
+- [x] Run focused cases green, inspect the real saved CBA bundle and commit this
   behaviour as `feat: capture historical CBA tables in source-defined Bronze`.
 
 ## Task 2 — Composed semantics through persisted reconstruction
@@ -171,14 +172,14 @@ existing catalogue file conventions; extend the selected release during later ta
 **Produces:** Named `.source_tables` output; source-only ordinary session run;
 persisted `reconstruct_source_tables(output.source_tables)` with full metadata.
 
-- [ ] Write failing cases for (1) unmapped average EAD retained with known unit
+- [x] Write failing cases for (1) unmapped average EAD retained with known unit
   conversion, (2) no fabricated average-PD field, (3) two source occurrences sharing
   one reviewed measure revision with distinct evidence, (4) scoped refinement/conflict
   and unknown timing, and (5) complete persisted metadata and value reconstruction.
   Use independently authored synthetic catalogue fixtures to demonstrate conflicts
   when real source evidence does not establish a semantic equivalence or conflict.
   Do not turn those fixtures into production financial interpretations.
-- [ ] Exercise the actual public session boundary with temporary storage settings:
+- [x] Exercise the actual public session boundary with temporary storage settings:
 
   ```python
   result = session.run(
@@ -201,7 +202,7 @@ persisted `reconstruct_source_tables(output.source_tables)` with full metadata.
   CBA extractor; expectations above come from p.49. Independently assert overlay
   amount `7.4` billion converts to `7400000000`, while original tokens remain.
   Run `uv run pytest tests/silver/test_source_table_conformance.py tests/integration/test_source_table_workflow.py -q` red.
-- [ ] Implement occurrence selection and compose meanings. Use cell IDs only for new
+- [x] Implement occurrence selection and compose meanings. Use cell IDs only for new
   source-table mappings; persist concept/measure/mapping revisions, assertions,
   alternatives and decision/evidence references. Unknown meaning never removes cells.
   Project all source metadata including full ordered paths and qualified endpoints.
@@ -210,19 +211,19 @@ persisted `reconstruct_source_tables(output.source_tables)` with full metadata.
   `Decimal(16,6)` for these source factors), independently of source-number slots.
   Inspect the pinned API for each used path; do not use unsupported 38-digit
   conformance targets or a local backend workaround.
-- [ ] Add `.source_tables` as a trailing defaulted member to existing candidate/output
+- [x] Add `.source_tables` as a trailing defaulted member to existing candidate/output
   dataclasses, using `empty_output`, preserving their existing constructor positions.
   Extend the shared storage declaration inventory. Default `ConformanceOperation`
   passes only native source-table datasets to the new pipeline; old datasets remain
   in their original pipelines. Keep existing independent session calls and `.cr6`/
   `.cr9` results intact. Reconstruction adds native source frames to the existing
   frame mapping; direct source reconstruction exposes `.frame` and `.metadata`.
-- [ ] Prove persisted ownership by changing one source number in the test DuckDB via
+- [x] Prove persisted ownership by changing one source number in the test DuckDB via
   native storage, then reconstructing: the frame must show the changed saved value.
   Check scoped evidence, descriptor uncertainty, ordered paths and note/body separation
   on readback; a simple row count is insufficient. Rerun focused cases green and
   `tests/integration/test_organisation_workflow.py` / `test_cr9_workflow.py`.
-- [ ] Commit as `feat: persist and reconstruct composed source-table observations`.
+- [x] Commit as `feat: persist and reconstruct composed source-table observations`.
 
 **Researcher checkpoint A:** Run the complete real CBA source → saved Bronze →
 Silver → reconstructed tables path in a fresh retained temporary root. Present the
@@ -383,10 +384,10 @@ implemented selected inputs.
 
 ## Evidence and status record
 
-No production code or tests have been written/run under this plan. During planning,
-existing dataset/codec, shared composer, source pipelines, session/storage/master and
-golden/test boundaries were inspected. The implementation spike remains disposable.
-Execution records and checkpoint outcomes are appended here when actually observed.
+During planning, existing dataset/codec, shared composer, source pipelines,
+session/storage/master and golden/test boundaries were inspected. The implementation
+spike remains disposable. Dated execution records follow; later tasks are not implied
+complete by the CBA proof.
 
 ### Planning reviews — 2026-10-12
 
@@ -399,3 +400,54 @@ Execution records and checkpoint outcomes are appended here when actually observ
   implementation proof, not claims established by planning.
 - No required upstream defect was established. No implementation or test execution
   occurred as part of these reviews. Researcher subsequently approved the plan.
+
+### Checkpoint A implementation — 2026-10-12
+
+Documentation PR #12 merged at `bced484`. Fresh coding worktree:
+`/home/ubuntu/git/discreteds/rwa-analysis-historical-capture`, branch
+`feature/historical-source-tables`, seeded from that `develop` state.
+Production implementation is fresh, not copied from the disposable spike.
+
+- Task 1 commit `386044a`: CBA source tables and `disclosure-v3` retained transport.
+- Task 2 commit `8437015`: composed conformance, storage and persisted reconstruction.
+- All selected CBA body positions: 120 exposure + 5 backtesting. Six numerical note
+  observations retain three panel-specific overlays and scaling factors: 131 cells
+  across five datasets in total. Frames exclude supplementary notes from table bodies.
+- Eighteen source relations retain axes/paths, qualifications/scopes, relationships,
+  temporal metadata, source attributes, evidence and resolved meaning references.
+- Source-unit conversions are established; canonical historical measure definitions
+  remain unresolved in this initial catalogue. Average EAD `0.359` million produces
+  `359000` base units; overlay `7.4` billion produces `7400000000.00`.
+- Independently authored synthetic catalogue cases prove shared measure revisions,
+  occurrence-specific evidence, narrow overrides and conflicts without inventing
+  equivalence between real bank measures.
+- Persisted-value mutation proves reconstruction uses stored numbers; independent
+  saved-Bronze rerun restores original source values. Existing CR6/CR9 tests pass.
+
+Final retained run:
+`/tmp/opencode/historical-cba-checkpoint-qjd8wxsv/`
+
+Contains retained Bronze, staging `cba.duckdb`, publication manifest, eighteen
+relation Parquets, five reconstructed frame Parquets and `result.json`.
+Run log: `/tmp/opencode/historical-cba-checkpoint-final.log`.
+Final suite log: `/tmp/opencode/historical-cba-suite-final.log`.
+
+Verification: **154 tests passed**; Ruff and diff checks passed. Existing dependency
+deprecation warnings and Decimal-inference messages remain; explicit native dtype
+augmentation and conformance succeed. The initial June 2023 golden transcription
+was corrected from an independently inspected high-resolution source crop, not by
+accepting the extractor's output as truth.
+
+Review dispositions, complexity cuts first:
+
+| Bucket | Finding | Resolution |
+|---|---|---|
+| Complexity cut | Duplicate dataset filtering rebuilt source bundles unnecessarily | Removed; checkpoint pipeline selects native tables directly, preserving their dataset positions. Task 3 must preserve explicit legacy opt-in when adding its adapter. |
+| Fix now | PD horizon/long-run and downturn LGD source definitions were omitted | Added scoped source qualifications and independent golden assertions; observed failure before repair, then all 154 tests passed. Final persisted run contains all nine panel-bound definition records. |
+| Fix now | Existing master test assumed every domain had a `.contexts` relation | Kept CR6/CR9 context checks explicit and tested declared outputs, including the empty native source output for ordinary modern runs. |
+| Track upstream / gate | No required dependency defect reproduced | No workaround or upstream blocker introduced. |
+
+**Checkpoint A awaits researcher review.** Complete four-bank historical capture,
+explicit Westpac legacy projection, structural research example and new source-table
+master proof remain Tasks 3–5; current staging/master code is not claimed to have
+passed that later new-domain proof.
