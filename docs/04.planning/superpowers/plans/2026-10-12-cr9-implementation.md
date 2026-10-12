@@ -4,7 +4,8 @@
 > checkpoint after task 3. Use `test-driven-development` and `test-audit` for real
 > implementation. Do not reuse the disposable spike as the implementation branch.
 
-**Status:** IMPLEMENTED AND VERIFIED — all five tasks complete on PR #9, awaiting merge.
+**Status:** COMPLETE AND MERGED — all five tasks implemented and verified. PRs #8
+and #9 merged into `develop`; implementation merge commit: `32e5f6a`.
 The researcher approved the Westpac checkpoint before tasks 4–5. Implementation
 [lessons](../../../00.ideation/2026-10-12-cr9-implementation-lessons.md) are retained
 for future backlog and design decisions.
@@ -21,7 +22,8 @@ dataclasses, Decimal, pdfplumber and DuckDB. No dependency upgrade is planned.
 
 **Spec:** [Approved refined CR9 specification](../specs/2026-10-12-cr9-domain-design.md).
 PR #7 merged at `5190388`; design and disposable spike shape are approved. The
-implementation plan is a new checkpoint, not implicit execution approval.
+implementation plan was subsequently approved and executed, with the task-3
+checkpoint approved before tasks 4–5 proceeded.
 
 ## Global constraints and execution
 
@@ -330,7 +332,7 @@ No upstream-dependent blocker was identified for this checkpoint.
 | 2 — Shared semantics/CR9 conformance | COMPLETE | Occurrence/date applicability tests; precise rates, missingness, temporal roles and qualifications. |
 | 3 — Mixed staging | COMPLETE, researcher approved | Real Westpac checkpoint above, followed by explicit permission to continue. |
 | 4 — CBA/NAB/ANZ | COMPLETE | Eight/eight/nine rows; independent goldens; bank-specific conformance and actual selected catalogue evidence references. |
-| 5 — Master/delivery | COMPLETE, PR awaiting merge | Persisted mutations copied; reconstruction without staging databases; smaller/empty selections replace both domains. |
+| 5 — Master/delivery | COMPLETE AND MERGED | Persisted mutations copied; reconstruction without staging databases; smaller/empty selections replace both domains. |
 
 Actual command: `uv run python examples/four_bank_cr9.py`.
 
@@ -360,3 +362,12 @@ unknown. No automatic aggregation or authoritative-vintage selection was added.
 The pinned APIs emit schema-inference and deprecation messages; the separately
 recorded inference-log investigation is not a confirmed upstream correctness defect.
 No upstream-dependent blocker was established for the completed capture scope.
+
+## Next work — earlier reporting period
+
+Researcher direction: repeat CR6 and CR9 capture across an earlier reporting period
+for the four banks, using the established source-review, extraction, catalogue and
+publication workflow. The reporting period and source documents remain to be selected.
+Preserve the existing captures and retain each earlier report as a distinct source
+occurrence. This is the next piece of work, not an outstanding task in this completed
+plan; detailed scope will follow source selection.

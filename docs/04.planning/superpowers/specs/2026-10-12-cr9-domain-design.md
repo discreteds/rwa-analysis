@@ -6,8 +6,8 @@ Status: **Refined production specification approved by the researcher after PR #
 merged.** Design and disposable spike shape are also approved. The
 [implementation plan](../plans/2026-10-12-cr9-implementation.md) is approved and records
 the approved task-3 checkpoint and completed four-bank execution evidence.
-CR9 extraction, catalogue and persistence are implemented and verified on PR #9;
-merge status is separate from this implementation status.
+CR9 extraction, catalogue and persistence are implemented and verified; PRs #8 and
+#9 are merged into `develop` (implementation merge commit `32e5f6a`).
 
 Design approval followed merged PR #5. Spike evidence is retained at commit
 `16db1b7` on `feature/cr9-interface-spike`, [draft PR #6](https://github.com/discreteds/rwa-analysis/pull/6).
