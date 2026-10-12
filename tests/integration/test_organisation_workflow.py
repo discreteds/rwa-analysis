@@ -43,7 +43,7 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
                 pdf_path="raw/cba-2025-06-30-aps330.pdf",
             ),
         ),
-        catalogue=CatalogueSelection(release_path="catalogue/releases/cr6-v1.json"),
+        catalogue=CatalogueSelection(release_path="catalogue/releases/cr6-cr9-v1.json"),
         run_name="review",
         revision="first",
     )
@@ -54,7 +54,7 @@ def test_cba_run_and_independent_saved_rerun(project_root, tmp_path, monkeypatch
     assert result.bundles[0].datasets[0].metadata.context.source_template == "CR6"
     output = session.silver.read(result.publication)
     stored = output.cr6
-    assert output.cr9.observations.count_rows() == 0
+    assert output.cr9.observations.count_rows() == 8
     assert stored.contexts.count_rows() == 1
     assert stored.context_evidence.count_rows() == 2
     assert {r["source_pdf_page"] for r in stored.context_evidence.to_dicts()} == {1, 55}

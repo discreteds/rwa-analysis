@@ -31,7 +31,7 @@ result = session.run(
         ),
     ),
     catalogue=CatalogueSelection(
-        release_path="catalogue/releases/cr6-v1.json",
+        release_path="catalogue/releases/cr6-cr9-v1.json",
         evidence_refs=tuple(
             BronzeRef(f"au/{org}/2025-09-30/aps330", "v1")
             for org in ("westpac", "nab", "anz")
