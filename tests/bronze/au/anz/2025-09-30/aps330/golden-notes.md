@@ -55,3 +55,31 @@ CR6 footnote 2 separately supplies the non-use-in-RWA reason.
 Structural subtotal membership follows the printed block, complete non-overlapping
 PD intervals and distinct default category. It does not establish count additivity
 or weighted-average formulas. No exact arithmetic reconciliation is required.
+
+## CR9 independent extension — 2026-10-12
+
+`golden-cr9.json` was manually authored from p. 66 text and its rendered page,
+before implementing the CR9 extractor. The test first failed on the existing
+CR6-only bundle version. It preserves the original CR6 golden verbatim by testing
+the CR6 dataset through the retained `cr6-v1` representation.
+
+CR9 scope is **63 measure positions** across source rows **11–18 and 20**:
+**59 present, one dash, three blanks**, plus both agencies' nine rating positions.
+All tokens, decimal precision, integer count types, row/column evidence, bands,
+subtotal membership, `of which` relationships and field timing are checked. Default
+ratings are the literal `Default`; subtotal rating cells are blank. The history
+note's line-wrap `5- year` is retained as flattened source text, not rewritten.
+
+The independent note expectations cover p. 66 footnotes 1–4. The review reads
+p. 116's Corporates-only 2.5-year modification in context; mortgage duration stays
+five years, with no invented endpoints. Annual count/PD anchors are unknown.
+The subtotal's **0.62%** and first-band **0.08%** history are independent published
+observations. The catalogue test loads the owned ANZ assets through a temporary
+release and resolves actual extracted fields: it catches imported Westpac weights
+or cohort rules, incorrect corporate history, dropped historical exclusions,
+and lost band/aggregate semantic tags. It first failed on missing ANZ assets and
+then on absent band mappings. Parent tests own persisted rate conversion.
+
+These tests exercise the public extractor and semantic resolver with the real
+PDF and independently authored expectations. No new production test seam or
+runtime validation process is introduced.
