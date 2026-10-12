@@ -108,10 +108,13 @@ and default-event incidence remain different measures.
 Use CR9 as the second concrete domain to establish the shared interfaces with CR6.
 The design must support recognising revised historical calculations across reports
 and extending historical coverage by acquiring earlier and later report vintages.
-This is approval to design, not an implemented CR9 pipeline or approved class layout.
+This direction led to the approved design and spike shape below; it is not an
+implemented CR9 pipeline.
 
 Written proposal: [CR9 capture and shared domain interfaces](../../superpowers/specs/2026-10-12-cr9-domain-design.md).
-The class layout awaits researcher review and a disposable shape spike.
+The design and disposable spike shape are approved. The refined production
+specification is under review before implementation planning; no production CR9
+pipeline is delivered yet.
 
 Keep document reporting/publication dates distinct from field-specific measurement
 dates, cohort anchors, outcome intervals and historical calculation windows. Retain
@@ -205,8 +208,8 @@ or publication gates.
 - [ ] Extend the evidenced joins/scenarios to the remaining banks and calculate
   market shares only for explicitly matched populations and denominators.
 
-Source discovery and the capture-and-tag design scope are recorded. The CR9 interface
-proposal awaits review; acquisition, approved model implementation and executable
+Source discovery and the capture-and-tag design scope are recorded. The refined CR9
+production specification is under review; acquisition, model implementation and executable
 integration remain follow-up work, not completed features.
 
 ## Governing principles
