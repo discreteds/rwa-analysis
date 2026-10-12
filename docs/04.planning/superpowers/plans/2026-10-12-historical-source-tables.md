@@ -4,7 +4,9 @@
 > researcher checkpoints below, and `test-driven-development` for real code.
 > Tasks are behaviour-sized; the disposable spike is reference only.
 
-Status: **PROPOSED — awaiting researcher approval.** Design approved 2026-10-12.
+Status: **APPROVED by the researcher, 2026-10-12.** Design approved the same day.
+Execution starts with Tasks 1–2 and pauses at checkpoint A. Researcher authorised
+a fresh coding worktree seeded from `develop` after merging documentation PR #12.
 
 **Goal:** Capture all selected four-bank 2024 mortgage tables with composable
 metadata, persisted source-defined cells and useful structural comparisons.
@@ -396,4 +398,4 @@ Execution records and checkpoint outcomes are appended here when actually observ
   pinned-backend declarations and complete metadata roundtrips remain assigned
   implementation proof, not claims established by planning.
 - No required upstream defect was established. No implementation or test execution
-  occurred as part of these reviews. Researcher plan approval remains outstanding.
+  occurred as part of these reviews. Researcher subsequently approved the plan.
