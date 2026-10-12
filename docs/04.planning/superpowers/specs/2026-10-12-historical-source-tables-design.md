@@ -2,10 +2,10 @@
 
 Date: 2026-10-12
 
-Status: **PROPOSED — awaiting researcher review.** Source-defined capture,
-composable definitions/occurrences and report-structure research are agreed
-directions. This document proposes their concrete boundaries; it does not claim
-production implementation or approval of every contract below.
+Status: **APPROVED by the researcher, 2026-10-12**, after independent correctness
+and complexity reviews. Implementation is not yet started. The
+[implementation plan](../plans/2026-10-12-historical-source-tables.md) is awaiting
+its own review and approval.
 
 ## 1. Ask and scope
 
@@ -353,8 +353,8 @@ a multi-module change likely on the order of one to two thousand production line
 plus source-specific fixtures, not four small parser edits. Planning should refine
 that estimate against the approved contracts, not treat it as a quota.
 
-No implementation plan until researcher review of this proposed design. New source
-evidence may refine unresolved financial definitions without blocking faithful
+Researcher approval permits implementation planning, not promotion of the spike.
+New source evidence may refine unresolved financial definitions without blocking faithful
 capture. Any required unsupported dependency path is reproduced and tracked with
 its upstream owner; do not hide it with an unapproved local workaround.
 

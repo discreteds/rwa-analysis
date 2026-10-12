@@ -119,7 +119,7 @@ must establish the complete selected source requirements before implementation.
 
 ## References
 
-- [Proposed historical source-table design](../../04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md)
+- [Approved historical source-table design](../../04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md)
   and [2024 source inventory](../../00.ideation/2026-10-12-historical-source-inventory.md).
 - [Capture and tag for research](capture-and-tag-for-research.md).
 - [Multi-domain source bundles](multi-domain-source-bundles.md).
