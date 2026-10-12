@@ -1,0 +1,39 @@
+{
+  "fields": ["weighted_average_pd", "arithmetic_average_pd", "current_year_borrower_count", "previous_year_borrower_count", "defaulted_borrower_count", "new_defaulted_borrower_count", "historical_annual_default_rate"],
+  "headers": ["Weighted\naverage\nPD", "Arithmetic\naverage\nPD by\nborrowers", "As at\n30 Sep 25", "As at\n30 Sep 24", "Number\nof\ndefaulted\nborrowers\nin the\nyear", "Of which:\nnew\ndefaulted\nborrowers\nin the\nyear", "Average\nhistorical\nannual\ndefault\nrate"],
+  "rows": [
+    ["0.00 to <0.15", "0.10%", "0.10%", "198,124", "215,531", "235", "-", "0.10%"],
+    ["0.15 to <0.25", "0.19%", "0.19%", "209,644", "208,841", "278", "5", "0.21%"],
+    ["0.25 to <0.50", "0.37%", "0.37%", "322,349", "320,674", "1,168", "54", "0.38%"],
+    ["0.50 to <0.75", "0.62%", "0.62%", "76,423", "79,062", "532", "28", "0.58%"],
+    ["0.75 to <2.50", "1.09%", "1.10%", "114,775", "117,491", "1,522", "40", "0.98%"],
+    ["2.50 to <10.00", "5.36%", "5.40%", "21,630", "21,886", "1,392", "2", "4.71%"],
+    ["10.00 to <100.00", "26.42%", "26.19%", "15,742", "15,852", "3,368", "-", "23.48%"],
+    ["100.00 (Default)", "100.00%", "100.00%", "9,141", "9,900", "", "", ""]
+  ],
+  "rating_agencies": ["S&P Global Ratings /\nFitch Ratings", "Moody's Investor Services"],
+  "ratings": [
+    ["AAA, AA+, AA, AA-, A+, A, A-", "Aaa, Aa1, Aa2, Aa3, A1, A2, A3"],
+    ["BBB+", "Baa1"], ["BBB, BBB-", "Baa2, Baa3"], ["BB+", "Ba1"],
+    ["BB+, BB, BB-", "Ba1, Ba2, Ba3"], ["B+, B, B-", "B1, B2, B3"],
+    ["B-, CCC+, CCC, CCC-", "B3, Caa1, Caa2, Caa3"], ["D", "C"]
+  ],
+  "temporal_roles": [
+    ["weighted_average_pd", "measurement", "current-year"],
+    ["weighted_average_pd", "weight_measurement", "current-year"],
+    ["arithmetic_average_pd", "measurement", "unspecified"],
+    ["current_year_borrower_count", "measurement", "current-year"],
+    ["previous_year_borrower_count", "measurement", "previous-year"],
+    ["defaulted_borrower_count", "outcome_window", "annual"],
+    ["new_defaulted_borrower_count", "outcome_window", "annual"],
+    ["historical_annual_default_rate", "history_window", "history"]
+  ],
+  "notes": {
+    "cr9-weighting": "Weighted average PD in column (a) represents PDs weighted by EaD as at the reporting date, and arithmetic average PD by borrowers in column (b) represents the sum of all PDs divided by the number of borrowers.",
+    "cr9-counting": "The approach to measure the number of borrowers is outlined in CR6: IRB - credit risk exposures by portfolio and probability of default range.",
+    "cr9-defaults": "A borrower is included as a defaulted borrower in the year in column (d) where a new borrower or performing borrower at the beginning of the financial year was non-performing at any month-end during the financial year. This includes any borrower that subsequently returns to performing or ceases to be a borrower during the year.",
+    "cr9-new-defaults": "The number of borrowers in column (e) comprises those borrowers in column (d) that are new borrowers during the financial year.",
+    "cr9-history": "A 10-year observation period has been used to allow for a meaningful assessment of the performance of the Group's PD models. The cohort that is not in default at the beginning of each financial year in the observation period has been averaged.",
+    "cr9-framework": "Changes in asset class definitions under the revised capital framework, which came into effect from 1 January 2023, have been retrospectively applied on a best endeavours basis."
+  }
+}
