@@ -57,6 +57,53 @@ and constructing comparable histories are downstream research tasks.
   reconciliation of changing definitions belong to downstream analysis with explicit
   assumptions. Preserve reported observations separately from those derived results.
 
+## Source-defined capture and composable metadata
+
+Researcher clarification following the disposable shape spike, 2026-10-12:
+source-defined tables own capture completeness. Fixed CR6/CR9 rows remain useful
+domain projections, but do not define the allowable fields of a captured table.
+This revises the fixed-row capture direction for historical extensions; production
+still uses the implemented typed contracts until a subsequent design is approved
+and delivered. Preserve existing retained formats and behaviour.
+
+Compose tables from source fields, axes, typed values, temporal bindings,
+qualifications and relationships. Reuse shared representation types and
+evidence-backed semantic definitions across extracts. Each published field and cell
+remains an independently identified source occurrence with its own labels, position,
+context and evidence; reuse of a definition does not merge occurrences. Applicable
+definition revisions and contextual refinements remain explicit and traceable.
+Unknown canonical meaning must not prevent retaining or querying a published value.
+
+The physical schema, reusable field-definition sets and complete composition
+interfaces remain subjects of the proposed design. The spike established a small
+capture-to-persistence path, not a complete metadata model or migration.
+
+## Report structure as research data
+
+Composable metadata supports analysis of how disclosures change over time,
+independently of their numeric results. Retain queryable source structure and its
+interpretation links so research can compare:
+
+- Fields appearing, disappearing or moving between nested headers.
+- Label changes versus evidence-backed changes in meaning or definition revision.
+- Original bands, portfolio grain, units and temporal scope.
+- Qualifications and parent/subset relationships.
+
+For example, comparing Westpac's selected 2024 and 2025 backtesting disclosures
+should expose the portfolio-level versus band-level structure without manufacturing
+matching bands or equating their default-rate definitions. A field inventory query
+must distinguish an absent field from a published field containing blanks.
+
+Absence is relative to the reviewed selection: a field outside the captured block
+is not evidence that the entire report omitted it. Keep report vintage, measured
+period and extraction/interpretation revisions distinct so corrections to our
+capture are not presented as bank reporting changes. Unresolved equivalence remains
+visible rather than being classified automatically as either continuity or change.
+
+These comparisons are analytical queries over retained metadata. Following
+[selective persistence](emergent-analysis-and-selective-persistence.md), this use
+case does not require a separate change-tracking service or mandatory stored diffs.
+
 ## Source-led examples from 2024 discovery
 
 - CBA June 2024, Table 9d(ii), PDF p.49: bands run across columns; repeated sections

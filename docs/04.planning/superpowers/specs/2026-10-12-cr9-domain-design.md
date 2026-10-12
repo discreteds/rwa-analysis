@@ -22,6 +22,14 @@ governs earlier-period work: review the entire selected table, preserve changing
 metrics/grain and extend contracts where source evidence requires it. This is a
 constraint on the next specification, not a claim that those extensions are implemented.
 
+Subsequent researcher clarification, 2026-10-12: historical capture will use
+source-defined tables with composable metadata, reusable definitions and distinct
+published field/cell occurrences. Structure-over-time queries are an explicit
+research use case. This revises the fixed-row capture choice below for the next
+design, without changing this specification's implemented 2025 contracts or evidence.
+See the governing principle's [composition decision](../../../01.principles/a.architecture/historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
+and [structural research scope](../../../01.principles/a.architecture/historical-disclosure-capture.md#report-structure-as-research-data).
+
 Use mortgage CR9 as the second concrete domain to establish interfaces that capture
 each published datapoint with its meaning, multiple time dimensions and provenance.
 
