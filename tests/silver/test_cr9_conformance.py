@@ -128,3 +128,22 @@ def test_reconstruction_preserves_published_measure_column_order(
         "of which: new\nNon-performing\nborrowers in\nthe year",
         "Average\nhistorical annual\ndefault rated",
     ]
+
+
+def test_default_stock_counts_retain_the_row_default_definition(
+    westpac_bundle, project_root, tmp_path
+):
+    output, dataset = conformed_cr9(westpac_bundle, project_root, tmp_path)
+    fields = output.fields.to_polars()
+    qualifications = output.field_qualifications.to_polars().join(
+        fields.select("observation_id", "field_key", "source_record_id"),
+        on=["observation_id", "field_key"],
+    )
+    counts = qualifications.filter(
+        pl.col("field_key").is_in(
+            ["previous_year_borrower_count", "current_year_borrower_count"]
+        )
+        & (pl.col("qualification_ref") == "default-definition")
+    )
+    assert counts.height == 2
+    assert set(counts["source_record_id"]) == {dataset.backtesting_rows[-1].record_id}

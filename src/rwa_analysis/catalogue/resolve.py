@@ -9,7 +9,6 @@ from rwa_analysis.extraction.cr6 import (
     Cr6Dataset,
 )
 from rwa_analysis.extraction.models import PublishedField
-from rwa_analysis.extraction.temporal import TemporalBinding
 
 from .models import (
     Assertion,
@@ -30,7 +29,6 @@ class FieldOccurrence:
     scope: MappingScope
     published_field: PublishedField
     segment_memberships: tuple[str, ...]
-    temporal_bindings: tuple[TemporalBinding, ...] = ()
 
 
 def field_occurrence(dataset, record, field_key):
@@ -61,11 +59,6 @@ def field_occurrence(dataset, record, field_key):
         ),
         published,
         record.source_segment_memberships,
-        tuple(
-            b
-            for b in dataset.metadata.temporal_bindings
-            if b.record_id == record.record_id and b.field_key == field_key
-        ),
     )
 
 

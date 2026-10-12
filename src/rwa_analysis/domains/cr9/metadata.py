@@ -194,6 +194,7 @@ def field_rows(tables, loaded, ds, row, name, meaning, catalogue):
         )
     )
     descriptors = {d.id: d for d in ds.metadata.temporal_descriptors}
+    row_axis = next(axis for axis in ds.metadata.axes if axis.id == row.source_row_ref)
     temporal_qualifiers = tuple(
         q
         for b in ds.metadata.temporal_bindings
@@ -204,6 +205,7 @@ def field_rows(tables, loaded, ds, row, name, meaning, catalogue):
         dict.fromkeys(
             (
                 *ds.metadata.context.qualification_refs,
+                *row_axis.qualification_refs,
                 *binding.qualification_refs,
                 *published.qualification_refs,
                 *temporal_qualifiers,
