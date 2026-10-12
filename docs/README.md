@@ -13,6 +13,9 @@
 
 ## Evidence and design history
 
+- [CR9 implementation lessons](00.ideation/2026-10-12-cr9-implementation-lessons.md):
+  observed fixes, reusable design evidence and concrete follow-up candidates.
+
 - [CR9 domain and temporal metadata design](04.planning/superpowers/specs/2026-10-12-cr9-domain-design.md):
   refined production specification and disposable spike shape approved.
   CR9 remains unimplemented in production.

@@ -5,7 +5,9 @@
 > implementation. Do not reuse the disposable spike as the implementation branch.
 
 **Status:** APPROVED — execution has reached the task-3 Westpac checkpoint.
-Tasks 4–5 await researcher permission to continue after reviewing that checkpoint.
+The researcher approved that checkpoint and authorised tasks 4–5. Implementation
+[lessons](../../../00.ideation/2026-10-12-cr9-implementation-lessons.md) are retained
+for future backlog and design decisions.
 
 **Goal:** Capture the selected four-bank mortgage CR9 disclosures with field-level
 meaning/time metadata through retained mixed-domain Bronze, staging and master.
