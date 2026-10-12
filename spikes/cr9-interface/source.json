@@ -1,0 +1,51 @@
+{
+  "notice": "DISPOSABLE, manually transcribed shape input; not production Bronze or an independent golden.",
+  "document_id": "westpac-2025-09-30-aps330",
+  "document_reporting_date": "2025-09-30",
+  "publication_date": null,
+  "dataset_id": "cr9-residential-mortgages",
+  "record_id": "band-1",
+  "source_row": "0.00 to <0.15",
+  "pdf_page": 55,
+  "values": {
+    "weighted_average_pd": "0.07",
+    "arithmetic_average_pd": "0.07",
+    "previous_year_borrower_count": "564613",
+    "current_year_borrower_count": "571083",
+    "defaulted_borrower_count": "385",
+    "new_defaulted_borrower_count": "7",
+    "historical_annual_default_rate": "0.06"
+  },
+  "labels": {
+    "weighted_average_pd": "Weighted average PD",
+    "arithmetic_average_pd": "Arithmetic average PD by borrowers",
+    "previous_year_borrower_count": "End of previous year",
+    "current_year_borrower_count": "End of the year",
+    "defaulted_borrower_count": "Non-performing borrowers in the year",
+    "new_defaulted_borrower_count": "of which: new Non-performing borrowers in the year",
+    "historical_annual_default_rate": "Average historical annual default rate"
+  },
+  "temporal": [
+    {"descriptor_id": "june-2024", "point": "2024-06", "point_status": "established", "pdf_page": 56, "source_text": "PD estimate and EAD used for weighted average PD is as at June 2024."},
+    {"descriptor_id": "annual", "start": "2024-07-01", "start_status": "established", "end": "2025-06-30", "end_status": "established", "pdf_page": 55, "source_text": "The data is computed for the 12-month period from 1 July 2024 to 30 June 2025 for all portfolio types."},
+    {"descriptor_id": "history", "duration": 10, "duration_unit": "years", "duration_status": "established", "pdf_page": 56, "source_text": "Average historical default rate is calculated over 10 years."},
+    {"descriptor_id": "previous-year-label", "pdf_page": 55, "source_text": "End of previous year", "interpretation_note": "Exact point left unresolved in this spike; no date borrowed from adjacent PD column."},
+    {"descriptor_id": "current-year-label", "pdf_page": 55, "source_text": "End of the year", "interpretation_note": "Exact point left unresolved in this spike."},
+    {"descriptor_id": "arithmetic-pd-date", "pdf_page": 55, "source_text": "Arithmetic average PD by borrowers", "interpretation_note": "Measurement point not independently resolved by this spike."}
+  ],
+  "bindings": [
+    ["weighted_average_pd", "measurement", "june-2024"],
+    ["weighted_average_pd", "weight_measurement", "june-2024"],
+    ["arithmetic_average_pd", "measurement", "arithmetic-pd-date"],
+    ["previous_year_borrower_count", "measurement", "previous-year-label"],
+    ["current_year_borrower_count", "measurement", "current-year-label"],
+    ["defaulted_borrower_count", "outcome_window", "annual"],
+    ["new_defaulted_borrower_count", "outcome_window", "annual"],
+    ["historical_annual_default_rate", "history_window", "history"]
+  ],
+  "qualifications": [
+    "External rating equivalent Moody's: N/A; S&P: N/A for this mortgage band.",
+    "Defaulted borrowers in the year include performing borrowers as at June 2024 who default from July 2024 to June 2025, and new borrowers not funded in June 2024 who default from July 2024 to June 2025. (p.56 note c)",
+    "This spike does not establish an annual default-rate denominator or a rating-assignment anchor."
+  ]
+}

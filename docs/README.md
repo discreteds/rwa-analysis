@@ -14,7 +14,8 @@
 ## Evidence and design history
 
 - [CR9 domain and temporal metadata design](04.planning/superpowers/specs/2026-10-12-cr9-domain-design.md):
-  proposed second-domain interfaces for review; capture/tag scope agreed, not implemented.
+  approved design; [disposable interface spike](00.ideation/2026-10-12-cr9-interface-spike.md)
+  awaits shape review before implementation planning.
 
 - [Raw inventory](../raw/index.md) and [`extractions/`](../extractions/): official
   sources, per-document review and saved extraction code.

@@ -208,8 +208,8 @@ class MappingScope:
     dataset_id: str
     template: str
     portfolio: str
-    observation_from: date
-    observation_to: date
+    observation_from: date | None
+    observation_to: date | None
     field_key: str | None = None
     published_field_ref: str | None = None
     record_id: str | None = None
@@ -219,7 +219,11 @@ class MappingScope:
     regulatory_scope: str | None = None
 
     def __post_init__(self):
-        if self.observation_from > self.observation_to:
+        if (
+            self.observation_from is not None
+            and self.observation_to is not None
+            and self.observation_from > self.observation_to
+        ):
             raise ValueError("Reversed mapping observation interval")
 
     def narrows(self, other: "MappingScope") -> bool:
@@ -227,8 +231,10 @@ class MappingScope:
         if self == other:
             return False
         if (
-            self.observation_from < other.observation_from
-            or self.observation_to > other.observation_to
+            (other.observation_from is not None and
+             (self.observation_from is None or self.observation_from < other.observation_from))
+            or (other.observation_to is not None and
+                (self.observation_to is None or self.observation_to > other.observation_to))
         ):
             return False
         return all(
