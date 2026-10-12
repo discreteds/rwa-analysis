@@ -44,7 +44,8 @@ def _matches(mapping, dataset, record, field_key, binding):
             scope.band_ref is None
             or scope.band_ref in record.source_segment_memberships
         )
-        and scope.observation_from <= context.observation_date <= scope.observation_to
+        and (scope.observation_from is None or scope.observation_from <= context.observation_date)
+        and (scope.observation_to is None or context.observation_date <= scope.observation_to)
         and (
             mapping.effective_from is None
             or mapping.effective_from <= context.observation_date
@@ -152,6 +153,11 @@ def resolve_field(
         ),
         key=lambda m: m.revision_id,
     )
+    return compose_field(catalogue, published, mappings, definition_applies)
+
+
+def compose_field(catalogue, published, mappings, definition_applies):
+    """DISPOSABLE CR9 SPIKE: compose meanings after domain-specific selection."""
     # A correction replaces a whole predecessor mapping for this occurrence.
     # Keep every historical member available through catalogue.member(), but
     # never execute superseded ancestors alongside an applicable correction.

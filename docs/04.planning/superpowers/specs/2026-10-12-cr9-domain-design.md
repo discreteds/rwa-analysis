@@ -2,9 +2,10 @@
 
 Date: 2026-10-12
 
-Status: **PROPOSED — written design for researcher review.** Capture-and-tag scope
-and deferred refactoring are agreed; the class shapes below are proposals. No CR9
-implementation, extraction fixture or production publication is supplied by this spec.
+Status: **APPROVED by the researcher after PR #5 merged, 2026-10-12.** The disposable
+[interface spike](../../../00.ideation/2026-10-12-cr9-interface-spike.md) has run and
+awaits shape review before implementation planning. No production CR9 implementation,
+extraction fixture or publication is supplied by this spec.
 
 ## 1. Ask and boundary
 
