@@ -65,11 +65,17 @@ def read_staged_bundle(
         expected_reference=asdict(expected_reference) if expected_reference else None,
     )
     BronzeRef(**envelope["reference"])
-    result = parse_bytes(raw, "json", output="pydata")
-    if type(result.data) is not list or len(result.data) != 1:
-        raise ValueError("Bronze envelope: expected one JSON object")
-    if result.data[0] != envelope:
-        raise ValueError("Bronze normalization changed source evidence or provenance")
+    if bundle.schema_version == "cr6-v1":
+        # Retain the legacy tabular normalization check. Mixed-domain JSON is
+        # decoded by the source codec above: Arrow row unification is not a
+        # lossless representation of heterogeneous domain objects.
+        result = parse_bytes(raw, "json", output="pydata")
+        if type(result.data) is not list or len(result.data) != 1:
+            raise ValueError("Bronze envelope: expected one JSON object")
+        if result.data[0] != envelope:
+            raise ValueError(
+                "Bronze normalization changed source evidence or provenance"
+            )
     return bundle
 
 

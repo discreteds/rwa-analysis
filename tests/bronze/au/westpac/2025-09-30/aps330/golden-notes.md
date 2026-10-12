@@ -47,3 +47,30 @@ rows, shifted columns, changed dates/units, lost tokens and unsupported semantic
 CBA's test cannot detect Westpac geometry or qualifications. No production test
 seam or duplicate anchor-only test is introduced. Expected metadata receives the
 same complete comparison as financial cells.
+
+## CR9 independent expectations — 2026-10-12
+
+`golden-cr9.json` is the independently transcribed companion to the unchanged
+CR6 `golden.json`. Authored from pp. 55–56 and a rendered p. 55 before adding
+the CR9 extractor. It contains all 56 measure tokens, all 16 rating positions,
+the seven full headers, eight bands and applicable table notes. The separate
+test-support expansion specifies all source dataclass members: context, axes,
+fields, bindings, segmentation, source qualifications, field-level subsets,
+temporal descriptors and all 64 temporal bindings. It does not read the PDF,
+extractor constants, extracted values or the disposable spike. Existing
+independent CR6 expectations supply only unchanged common source quotations
+and provenance; their scopes are explicitly restated for CR9.
+
+There are 52 present values, three blanks, and one dash. Count values are
+integers, rates retain two displayed decimal places and percent tokens. Blank
+default-event/history cells remain distinct from the seventh band's dash.
+The two ratings retain their agency and row even when blank. There is no
+synthetic total. The source's `of which` relationship is retained for each
+non-default row, scoped to that row and addressed by measure field endpoints.
+
+June-2024 PD/weight timing keeps month precision. Annual dates come from the
+introduction; end-of-year count dates are interpreted in that stated year.
+History has a known ten-year duration and unknown endpoints; arithmetic-PD
+measurement remains explicitly unknown. The synthetic transport test separately
+checks a year-only start and fractional duration, and does not claim those
+values were disclosed by Westpac.

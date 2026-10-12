@@ -11,6 +11,104 @@ import pytest
 from rwa_analysis.extraction.codec import encode_payload
 
 
+def test_mixed_transport_preserves_temporal_precision_and_missingness(
+    tmp_path, legacy_bundle
+):
+    from decimal import Decimal
+
+    from rwa_analysis.extraction.cr9 import Cr9BacktestingRow, Cr9Context, Cr9Dataset
+    from rwa_analysis.extraction.datasets import DatasetMetadata
+    from rwa_analysis.extraction.models import ReportedValue
+    from rwa_analysis.extraction.temporal import TemporalBinding, TemporalDescriptor
+    from rwa_analysis.storage.bronze import BronzeStore
+
+    old = legacy_bundle.datasets[0]
+    context = old.metadata.context
+    ref = context.evidence[0]
+    cr9_context = Cr9Context(
+        context.id,
+        context.document_date,
+        "CR9",
+        "Synthetic",
+        "Mortgages",
+        context.reporting_entity,
+        context.consolidation_scope,
+        context.regulatory_scope,
+        context.geography,
+        context.currency,
+        (),
+        (ref,),
+    )
+    rate = ReportedValue(Decimal("0.0600"), "0.0600%", 4, None, ref)
+    missing = ReportedValue(None, "", None, "blank_unresolved", ref)
+    row = Cr9BacktestingRow(
+        "band-1",
+        "band-1",
+        "band",
+        (),
+        (),
+        rate,
+        rate,
+        rate,
+        ReportedValue(0, "0", 0, None, ref),
+        missing,
+        missing,
+        missing,
+    )
+    history = TemporalDescriptor(
+        "history",
+        "since 2014; 2.5 years",
+        start="2014",
+        start_status="established",
+        duration_amount=Decimal("2.5"),
+        duration_unit="years",
+        duration_status="established",
+        evidence=(ref,),
+    )
+    metadata = DatasetMetadata(
+        cr9_context,
+        (),
+        (),
+        (),
+        (),
+        (),
+        (),
+        (history,),
+        (
+            TemporalBinding(
+                "band-1", "historical_annual_default_rate", "history_window", "history"
+            ),
+        ),
+    )
+    dataset = Cr9Dataset("cr9", metadata, (row,))
+    bundle = replace(
+        legacy_bundle, schema_version="disclosure-v2", datasets=(old, dataset)
+    )
+    store = BronzeStore(tmp_path / "bronze")
+    saved = store.save(bundle, "mixed")
+    loaded = store.load(saved).bundle
+    assert loaded == bundle
+    wire = json.loads(store.path(saved).read_text())
+    assert wire["schema_version"] == "disclosure-v2"
+    assert [d["domain"] for d in wire["payload"]["datasets"]] == ["cr6", "cr9"]
+    assert (
+        wire["payload"]["datasets"][1]["metadata"]["temporal_descriptors"][0]["start"]
+        == "2014"
+    )
+    assert (
+        wire["payload"]["datasets"][1]["backtesting_rows"][0]["weighted_average_pd"][
+            "value"
+        ]
+        == "0.0600"
+    )
+
+
+def test_legacy_wire_has_no_new_metadata_members(legacy_payload, legacy_bundle):
+    assert legacy_bundle.datasets[0].metadata.temporal_descriptors == ()
+    assert legacy_bundle.datasets[0].metadata.temporal_bindings == ()
+    assert encode_payload(legacy_bundle) == legacy_payload
+
+
 @pytest.mark.parametrize(
     "bundle_fixture", ["cba_bundle", "westpac_bundle", "nab_bundle", "anz_bundle"]
 )
@@ -76,12 +174,12 @@ def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
     ],
 )
 def test_load_rejects_invalid_envelope(
-    tmp_path, cba_bundle, field_path, replacement, remove, error
+    tmp_path, legacy_bundle, field_path, replacement, remove, error
 ):
     from rwa_analysis.storage.bronze import BronzeStore
 
     store = BronzeStore(tmp_path / "data/bronze")
-    ref = store.save(cba_bundle, "v1", "test-revision")
+    ref = store.save(legacy_bundle, "v1", "test-revision")
     path = tmp_path / "data/bronze" / ref.bundle_key / "v1/bundle.json"
     envelope = deepcopy(json.loads(path.read_text()))
     target = envelope
@@ -132,12 +230,12 @@ def test_unsafe_references_cannot_be_saved(
 
 @pytest.mark.parametrize("failure", ["write", "changed_evidence", "missing_field"])
 def test_failed_staging_leaves_previous_version_and_no_partial_output(
-    tmp_path, cba_bundle, monkeypatch, failure
+    tmp_path, legacy_bundle, monkeypatch, failure
 ):
     from rwa_analysis.storage import bronze
 
     store = bronze.BronzeStore(tmp_path / "data/bronze")
-    ref = store.save(cba_bundle, "v1", "r1")
+    ref = store.save(legacy_bundle, "v1", "r1")
     parent = tmp_path / "data/bronze" / ref.bundle_key
     previous = (parent / "v1/bundle.json").read_bytes()
     real_write = bronze.write
@@ -159,7 +257,7 @@ def test_failed_staging_leaves_previous_version_and_no_partial_output(
     with pytest.raises(
         (OSError, ValueError), match="failure|changed source evidence|missing_reason"
     ):
-        store.save(cba_bundle, "v2", "r2")
+        store.save(legacy_bundle, "v2", "r2")
     assert sorted(p.name for p in parent.iterdir()) == ["v1"]
     assert (parent / "v1/bundle.json").read_bytes() == previous
 

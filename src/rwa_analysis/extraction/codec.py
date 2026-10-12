@@ -1,6 +1,7 @@
 """Strict schema-directed JSON codec; Decimal strings never pass through float.
 
-The cr6-v1 wire keeps flat metadata and records despite Python composition.
+The cr6-v1 wire keeps flat metadata and records despite Python composition;
+disclosure-v2 keeps explicit domain discriminators and composed metadata.
 Generic ReportedValue's parameter determines its numeric JSON representation.
 """
 
@@ -11,21 +12,45 @@ from types import UnionType
 from typing import Literal, Union, get_args, get_origin, get_type_hints
 
 from .cr6 import Cr6Dataset
+from .cr9 import Cr9Dataset
 from .datasets import Dataset, DatasetMetadata, ExtractionBundle
 
 
-def _convert(value, annotation, path, *, decode, parameters=None):
+def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v1"):
     parameters = parameters or {}
     annotation = parameters.get(annotation, annotation)
     # cr6-v1 contains only CR6 datasets; shared bundles impose no record shape.
     if annotation is Dataset:
-        annotation = Cr6Dataset
+        if version == "cr6-v1":
+            annotation = Cr6Dataset
+        elif decode:
+            annotation = {"cr6": Cr6Dataset, "cr9": Cr9Dataset}[value["domain"]]
+            value = {k: v for k, v in value.items() if k != "domain"}
+        else:
+            annotation = type(value)
+            result = _convert(
+                value,
+                annotation,
+                path,
+                decode=False,
+                parameters=parameters,
+                version=version,
+            )
+            return {
+                "domain": {Cr6Dataset: "cr6", Cr9Dataset: "cr9"}[annotation],
+                **result,
+            }
     origin, args = get_origin(annotation), get_args(annotation)
     if origin in (Union, UnionType):
         for option in args:
             try:
                 return _convert(
-                    value, option, path, decode=decode, parameters=parameters
+                    value,
+                    option,
+                    path,
+                    decode=decode,
+                    parameters=parameters,
+                    version=version,
                 )
             except (TypeError, ValueError):
                 pass
@@ -40,7 +65,12 @@ def _convert(value, annotation, path, *, decode, parameters=None):
             raise TypeError(f"{path}: expected {expected.__name__}")
         converted = [
             _convert(
-                item, args[0], f"{path}[{i}]", decode=decode, parameters=parameters
+                item,
+                args[0],
+                f"{path}[{i}]",
+                decode=decode,
+                parameters=parameters,
+                version=version,
             )
             for i, item in enumerate(value)
         ]
@@ -48,9 +78,18 @@ def _convert(value, annotation, path, *, decode, parameters=None):
     cls = origin or annotation
     if is_dataclass(cls):
         hints = get_type_hints(cls)
-        names = {f.name for f in fields(cls)}
-        if cls is Cr6Dataset and decode:
-            metadata_names = {f.name for f in fields(DatasetMetadata)}
+        members = tuple(
+            f
+            for f in fields(cls)
+            if not (
+                cls is DatasetMetadata
+                and version == "cr6-v1"
+                and f.name not in LEGACY_METADATA_FIELDS
+            )
+        )
+        names = {f.name for f in members}
+        if cls is Cr6Dataset and decode and version == "cr6-v1":
+            metadata_names = LEGACY_METADATA_FIELDS
             _object_keys(value, {"id", "records"} | metadata_names, path)
             value = {
                 "id": value["id"],
@@ -74,10 +113,11 @@ def _convert(value, annotation, path, *, decode, parameters=None):
                 f"{path}.{f.name}",
                 decode=decode,
                 parameters=substitutions,
+                version=version,
             )
-            for f in fields(cls)
+            for f in members
         }
-        if cls is Cr6Dataset and not decode:
+        if cls is Cr6Dataset and not decode and version == "cr6-v1":
             return {
                 "id": result["id"],
                 **result["metadata"],
@@ -106,20 +146,33 @@ def _convert(value, annotation, path, *, decode, parameters=None):
 
 
 def encode_payload(bundle: ExtractionBundle) -> dict:
-    payload = _convert(bundle, ExtractionBundle, "bundle", decode=False)
+    payload = _convert(
+        bundle, ExtractionBundle, "bundle", decode=False, version=bundle.schema_version
+    )
     # Revalidate the complete boundary, including reference closure and invariants.
     decode_payload(payload)
     return payload
 
 
 def decode_payload(payload: dict) -> ExtractionBundle:
-    bundle = _convert(payload, ExtractionBundle, "bundle", decode=True)
-    if bundle.schema_version != SCHEMA_VERSION:
-        raise ValueError(f"Unsupported schema version: {bundle.schema_version}")
+    version = payload["schema_version"]
+    if version not in (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION):
+        raise ValueError(f"Unsupported schema version: {version}")
+    bundle = _convert(payload, ExtractionBundle, "bundle", decode=True, version=version)
     return bundle
 
 
 SCHEMA_VERSION = "cr6-v1"
+DISCLOSURE_SCHEMA_VERSION = "disclosure-v2"
+LEGACY_METADATA_FIELDS = {
+    "context",
+    "axes",
+    "published_fields",
+    "bindings",
+    "segmentations",
+    "qualifications",
+    "relationships",
+}
 EXTRACTION_WORKFLOW_VERSION = "cr6-extraction-v1"
 
 
@@ -147,7 +200,7 @@ def encode_envelope(
 ) -> dict:
     """Keep execution provenance outside the exact source payload."""
     envelope = {
-        "schema_version": SCHEMA_VERSION,
+        "schema_version": bundle.schema_version,
         "reference": {
             "bundle_key": bundle.bundle_key,
             "output_version": output_version,
@@ -180,10 +233,10 @@ def decode_envelope(
         "envelope",
     )
     for field, supported in (
-        ("schema_version", SCHEMA_VERSION),
-        ("extraction_workflow_version", EXTRACTION_WORKFLOW_VERSION),
+        ("schema_version", (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION)),
+        ("extraction_workflow_version", (EXTRACTION_WORKFLOW_VERSION,)),
     ):
-        if type(envelope[field]) is not str or envelope[field] != supported:
+        if type(envelope[field]) is not str or envelope[field] not in supported:
             raise ValueError(f"{field}: unsupported version {envelope[field]!r}")
     reference = envelope["reference"]
     _object_keys(reference, {"bundle_key", "output_version"}, "reference")
@@ -208,6 +261,8 @@ def decode_envelope(
             "executed_at: expected timezone-aware ISO timestamp"
         ) from error
     try:
+        if envelope["payload"]["schema_version"] != envelope["schema_version"]:
+            raise ValueError("schema_version: envelope and payload differ")
         bundle = decode_payload(envelope["payload"])
     except TypeError as error:
         raise ValueError(str(error)) from error
