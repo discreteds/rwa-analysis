@@ -64,6 +64,8 @@ class SourceCell:
     qualification_refs: tuple[str, ...]
     value_kind: ValueKind
     value: ReportedValue[Decimal] | ReportedValue[int] | ReportedText
+    source_row_role: str | None = None
+    source_aggregation_scope: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

@@ -236,9 +236,17 @@ def source_rows(rows, loaded, table, meanings, catalogue):
             original_text=value.original_text,
             displayed_precision=getattr(value, "displayed_precision", None),
             missing_reason=value.missing_reason,
+            source_row_role=c.source_row_role,
         )
         references("cell", c.id, "context_refs", c.context_refs, "context")
         references("cell", c.id, "segment_refs", c.segment_refs, "band")
+        references(
+            "cell",
+            c.id,
+            "source_aggregation_scope",
+            c.source_aggregation_scope,
+            "block",
+        )
         references(
             "cell", c.id, "qualification_refs", c.qualification_refs, "qualification"
         )

@@ -62,7 +62,26 @@ def test_adapter_retains_paths_scopes_and_translates_field_endpoints_and_time(
     original = westpac_bundle.datasets[1]
     table, _ = adapt(original, catalogue)
     meta = table.metadata
-    assert meta.axes == original.metadata.axes
+    # p.55 places both external-rating columns before the numeric PD columns.
+    columns = sorted(
+        (a for a in meta.axes if a.axis == "column"), key=lambda a: a.order
+    )
+    assert [a.id for a in columns] == [
+        "rating-0",
+        "rating-1",
+        "column-weighted_average_pd",
+        "column-arithmetic_average_pd",
+        "column-previous_year_borrower_count",
+        "column-current_year_borrower_count",
+        "column-defaulted_borrower_count",
+        "column-new_defaulted_borrower_count",
+        "column-historical_annual_default_rate",
+    ]
+    assert [a.order for a in columns] == list(range(9))
+    original_axes = {a.id: a for a in original.metadata.axes}
+    assert tuple(replace(a, order=original_axes[a.id].order) for a in meta.axes) == (
+        original.metadata.axes
+    )
     assert meta.qualifications == original.metadata.qualifications
     assert meta.segmentations == original.metadata.segmentations
     assert meta.temporal_descriptors == original.metadata.temporal_descriptors
@@ -205,3 +224,64 @@ def test_adapter_uses_bindings_not_optional_row_members(westpac_bundle, catalogu
     )
     assert meanings[cell.id].measure_ref is not None
     assert meanings[cell.id].unit_factor == Decimal("0.01")
+
+
+@pytest.mark.parametrize("index", [0, 1])
+def test_legacy_row_metadata_reaches_flat_cells_and_ordered_scope_references(
+    westpac_bundle, catalogue, index
+):
+    from rwa_analysis.domains.source_tables.contracts import DECLARATIONS
+    from rwa_analysis.domains.source_tables.metadata import source_rows
+    from rwa_analysis.storage.bronze import BronzeRef, LoadedBronze
+
+    dataset = westpac_bundle.datasets[index]
+    table, meanings = adapt(dataset, catalogue)
+    records = dataset.exposure_rows if index == 0 else dataset.backtesting_rows
+    by_row = {r.source_row_ref: r for r in records}
+    for cell in table.cells:
+        assert cell.source_row_role == by_row[cell.row_ref].source_row_role
+        assert cell.source_aggregation_scope == ("mortgage-block",)
+    rows = {name: [] for name in DECLARATIONS}
+    loaded = LoadedBronze(BronzeRef(westpac_bundle.bundle_key, "test"), westpac_bundle)
+    source_rows(rows, loaded, table, meanings, catalogue)
+    for cell in rows["cells"]:
+        assert cell.source_row_role == by_row[cell.row_ref].source_row_role
+    scopes = [
+        r
+        for r in rows["references"]
+        if r.owner_kind == "cell" and r.member == "source_aggregation_scope"
+    ]
+    assert {(r.owner_id, r.position, r.target_kind, r.target_id) for r in scopes} == {
+        (cell.id, 0, "block", "mortgage-block") for cell in table.cells
+    }
+    if index == 0:
+        assert {c.source_row_role for c in rows["cells"]} == {
+            "band",
+            "Total Residential Mortgages",
+        }
+
+
+def test_native_source_constructors_and_metadata_keep_optional_legacy_defaults(
+    cba_2024_bundle, catalogue
+):
+    from rwa_analysis.domains.source_tables.contracts import DECLARATIONS
+    from rwa_analysis.domains.source_tables.metadata import source_rows
+    from rwa_analysis.domains.source_tables.semantics import resolve_cell
+    from rwa_analysis.storage.bronze import BronzeRef, LoadedBronze
+
+    table = cba_2024_bundle.datasets[0]
+    assert table.cells
+    assert all(
+        c.source_row_role is None and c.source_aggregation_scope == ()
+        for c in table.cells
+    )
+    meanings = {
+        c.id: resolve_cell(catalogue, cba_2024_bundle, table, c) for c in table.cells
+    }
+    rows = {name: [] for name in DECLARATIONS}
+    loaded = LoadedBronze(
+        BronzeRef(cba_2024_bundle.bundle_key, "test"), cba_2024_bundle
+    )
+    source_rows(rows, loaded, table, meanings, catalogue)
+    assert all(c.source_row_role is None for c in rows["cells"])
+    assert not any(r.member == "source_aggregation_scope" for r in rows["references"])

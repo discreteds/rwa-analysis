@@ -72,6 +72,7 @@ class CellRow(TableKey):
     original_text: str
     displayed_precision: int | None
     missing_reason: str | None
+    source_row_role: str | None = None
 
 
 @dataclass(frozen=True)

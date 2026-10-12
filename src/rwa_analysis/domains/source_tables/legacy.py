@@ -84,6 +84,8 @@ def adapt_legacy(
                     ),
                     value_kind,
                     getattr(record, key),
+                    source_row_role=record.source_row_role,
+                    source_aggregation_scope=record.source_aggregation_scope,
                 )
             )
             meanings[cell_id] = meaning
@@ -138,9 +140,29 @@ def adapt_legacy(
                         else None,
                         axis.source_reference,
                     ),
+                    source_row_role=records_by_row[row_ref].source_row_role,
+                    source_aggregation_scope=records_by_row[
+                        row_ref
+                    ].source_aggregation_scope,
                 )
             )
             meanings[axis.id] = FieldMeaning(None, None, (), (), None)
+
+    adapted_axes = meta.axes
+    if not cr6:
+        # CR9 rates/counts and lexical ratings have separately numbered legacy
+        # columns. Ratings precede numeric measures in the published CR9 layout;
+        # keep each group's source order while giving leaves one shared order.
+        lexical_columns = {c.column_ref for c in cells if c.value_kind == "text"}
+        columns = sorted(
+            (a for a in meta.axes if a.axis == "column"),
+            key=lambda a: (a.id not in lexical_columns, a.order),
+        )
+        positions = {a.id: i for i, a in enumerate(columns)}
+        adapted_axes = tuple(
+            replace(a, order=positions[a.id]) if a.axis == "column" else a
+            for a in meta.axes
+        )
 
     temporal = [
         CellTemporalBinding(
@@ -193,7 +215,7 @@ def adapt_legacy(
         dataset.id,
         SourceTableMetadata(
             context,
-            meta.axes,
+            adapted_axes,
             tuple(table_fields.values()),
             meta.segmentations,
             meta.qualifications,
