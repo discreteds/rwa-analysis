@@ -1,5 +1,6 @@
 """Persisted source-table fidelity at the actual session/storage boundary."""
 
+from dataclasses import replace
 from decimal import Decimal
 
 import mountainash as ma
@@ -10,6 +11,54 @@ from rwa_analysis.composition import build_session
 from rwa_analysis.operations import DocumentSelection
 from rwa_analysis.settings import OrganisationSettings
 from rwa_analysis.storage.manifests import CatalogueSelection
+
+
+def test_explicit_legacy_publication_keeps_numeric_and_lexical_views(
+    project_root, tmp_path, westpac_bundle
+):
+    from rwa_analysis.catalogue.load import load_catalogue
+    from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
+    from rwa_analysis.domains.source_tables.reconstruction import (
+        reconstruct_source_tables,
+    )
+
+    session = build_session(
+        OrganisationSettings(
+            project_root=project_root,
+            organisation_id="westpac",
+            bronze_root=tmp_path / "bronze",
+            staging_path=tmp_path / "westpac.duckdb",
+            manifest_root=tmp_path / "manifests",
+        )
+    )
+    refs = session.save_bronze((westpac_bundle,), "legacy-view")
+    inputs = session.load_bronze(refs)
+    selection = CatalogueSelection(release_path="catalogue/releases/cr6-cr9-v1.json")
+    candidate = session.conform(inputs, catalogue=selection)
+    assert candidate.source_tables.cells.count_rows() == 0
+    catalogue = load_catalogue(project_root / selection.release_path)
+    candidate = replace(
+        candidate, source_tables=SourceTablePipeline().conform(inputs, catalogue)
+    )
+    assert candidate.source_tables.cells.count_rows() == 180
+    publication = session.publish(candidate, revision="explicit")
+    assert session.silver.read_manifest(publication).selection.bronze_refs == refs
+    source = session.silver.read(publication).source_tables
+    assert source.cells.filter(ma.col("original_text") == "N/A").count_rows() == 14
+    assert source.cells.filter(ma.col("value_kind") == "text").count_rows() == 16
+    assert source.cells.filter(ma.col("source_count") == 564613).count_rows() >= 1
+    assert source.cells.filter(ma.col("original_text") == "").count_rows() == 5
+    key = westpac_bundle.bundle_key + "/cr9-residential-mortgages"
+    frames = reconstruct_source_tables(source)
+    assert frames[key].frame["rating-0"].to_list()[:7] == ["N/A"] * 7
+    assert frames[key].frame["column-previous_year_borrower_count"][0] == 564613
+    assert frames[key].frame.columns.index("rating-1") < frames[
+        key
+    ].frame.columns.index("column-weighted_average_pd")
+    # Public numeric CR9 output retains its original frame despite the same source key.
+    numeric = session.reconstruct(publication)[key]
+    assert "rating-0" not in numeric.columns
+    assert numeric.height == 8
 
 
 def test_cba_saved_source_tables_reconstruct_persisted_values(project_root, tmp_path):
@@ -133,3 +182,17 @@ def test_cba_saved_source_tables_reconstruct_persisted_values(project_root, tmp_
     again = fresh.publish(candidate, revision="rerun")
     assert again.database == session_settings.staging_path
     assert fresh.reconstruct(again)[table]["band-0"][2] == Decimal("0.359")
+
+    from rwa_analysis.composition import build_consolidator
+    from rwa_analysis.settings import ProjectSettings
+
+    master = build_consolidator(
+        ProjectSettings(
+            project_root=project_root,
+            master_path=tmp_path / "master.duckdb",
+            manifest_root=tmp_path / "master-manifests",
+        )
+    )
+    consolidated = master.consolidate((again,), revision="native-source")
+    again.database.unlink()
+    assert master.reconstruct(consolidated)[table]["band-0"][2] == Decimal("0.359")

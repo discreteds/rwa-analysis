@@ -24,6 +24,22 @@ def test_saved_source_tables_preserve_all_metadata(project_root, tmp_path):
     assert restored.schema_version == "disclosure-v3"
 
 
+def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(
+    cba_2024_bundle,
+):
+    from rwa_analysis.extraction.codec import decode_payload, encode_payload
+
+    payload = encode_payload(cba_2024_bundle)
+    # Checkpoint A retained v3 predates the explicit legacy row-property projection.
+    for dataset in payload["datasets"]:
+        for cell in dataset["cells"]:
+            cell.pop("source_row_role")
+            cell.pop("source_aggregation_scope")
+    restored = decode_payload(payload)
+    assert restored == cba_2024_bundle
+    assert restored.datasets[0].cells[0].value.original_text == "175,918"
+
+
 def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
     project_root, tmp_path
 ):

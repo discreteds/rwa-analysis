@@ -8,6 +8,7 @@ from mountainash.typespec.converters import to_polars_schema
 
 from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
 from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
+from rwa_analysis.domains.source_tables.reconstruction import reconstruct_source_tables
 from rwa_analysis.storage.bronze import BronzeStore
 from rwa_analysis.storage.manifests import (
     MasterManifest,
@@ -70,6 +71,12 @@ class SilverConsolidator:
             )
         output = self.store.read(publication)
         return {
+            **{
+                key: table.frame
+                for key, table in reconstruct_source_tables(
+                    output.source_tables
+                ).items()
+            },
             **reconstruct_cr6(output.cr6, tuple(bundles)),
             **reconstruct_cr9(output.cr9, tuple(bundles)),
         }

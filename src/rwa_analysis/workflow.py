@@ -57,14 +57,14 @@ class OrganisationSession:
         output = self.silver.read(publication)
         bundles = self.silver.read_sources(publication)
         return {
-            **reconstruct_cr6(output.cr6, bundles),
-            **reconstruct_cr9(output.cr9, bundles),
             **{
                 key: value.frame
                 for key, value in reconstruct_source_tables(
                     output.source_tables
                 ).items()
             },
+            **reconstruct_cr6(output.cr6, bundles),
+            **reconstruct_cr9(output.cr9, bundles),
         }
 
     def run(

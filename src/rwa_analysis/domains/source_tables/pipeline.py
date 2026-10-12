@@ -6,6 +6,7 @@ import polars as pl
 from rwa_analysis.extraction.source_tables import SourceTable
 
 from .contracts import DECLARATIONS, TABLES, relation
+from .legacy import adapt_legacy
 from .metadata import source_rows
 from .models import SourceTableOutput
 from .semantics import resolve_cell
@@ -16,12 +17,13 @@ class SourceTablePipeline:
         rows = {t.member: [] for t in TABLES}
         for loaded in inputs:
             for table in loaded.bundle.datasets:
-                if not isinstance(table, SourceTable):
-                    continue
-                meanings = {
-                    c.id: resolve_cell(catalogue, loaded.bundle, table, c)
-                    for c in table.cells
-                }
+                if isinstance(table, SourceTable):
+                    meanings = {
+                        c.id: resolve_cell(catalogue, loaded.bundle, table, c)
+                        for c in table.cells
+                    }
+                else:
+                    table, meanings = adapt_legacy(table, catalogue)
                 source_rows(rows, loaded, table, meanings, catalogue)
         output = {name: relation(name, values) for name, values in rows.items()}
         if rows["cells"]:

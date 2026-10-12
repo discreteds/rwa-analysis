@@ -88,6 +88,12 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
     if is_dataclass(cls):
         hints = get_type_hints(cls)
         if cls is SourceCell:
+            if decode:
+                value = {
+                    "source_row_role": None,
+                    "source_aggregation_scope": [],
+                    **value,
+                }
             kind = value["value_kind"] if decode else value.value_kind
             hints["value"] = {
                 "decimal": ReportedValue[Decimal],

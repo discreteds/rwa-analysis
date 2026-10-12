@@ -1,7 +1,5 @@
 """Source-reviewed CBA semantics, distinct from synthetic composition coverage."""
 
-import json
-import shutil
 from dataclasses import replace
 from decimal import Decimal
 
@@ -13,23 +11,10 @@ from rwa_analysis.domains.source_tables.semantics import resolve_cell
 
 
 @pytest.fixture
-def historical_catalogue(tmp_path, project_root):
-    """Load owned additions without changing the concurrently assembled release."""
-    root = tmp_path / "catalogue"
-    shutil.copytree(project_root / "catalogue", root)
-    release = json.loads((root / "releases/cr6-cr9-v1.json").read_text())
-    for kind, path in (
-        ("mapping", "mappings/cba-historical-2024-v1.json"),
-        ("measure", "measures/historical-mortgages-v1.json"),
-        ("mapping", "mappings/historical-semantics-v1.json"),
-    ):
-        release["selection"].extend(
-            {"path": path, "kind": kind, "revision_id": m["revision_id"]}
-            for m in json.loads((root / path).read_text())["members"]
-        )
-    path = root / "releases/test-historical.json"
-    path.write_text(json.dumps(release))
-    return load_catalogue(path)
+def historical_catalogue(project_root):
+    return load_catalogue(
+        project_root / "catalogue/releases/historical-mortgages-v1.json"
+    )
 
 
 def test_cba_panels_reuse_lgd_with_local_overlay_evidence(
@@ -97,6 +82,8 @@ def test_cba_unknown_average_ead_and_other_occurrences_do_not_inherit_lgd(
     other_table = replace(table, id="unreviewed-panel")
     lgd = next(c for c in table.cells if c.id == "lgd/band-0")
     assert (
-        resolve_cell(historical_catalogue, cba_2024_bundle, other_table, lgd).measure_ref
+        resolve_cell(
+            historical_catalogue, cba_2024_bundle, other_table, lgd
+        ).measure_ref
         is None
     )
