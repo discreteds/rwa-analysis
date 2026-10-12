@@ -236,7 +236,7 @@ def retained(
 
 
 @pytest.fixture
-def published_cr6(retained, monkeypatch):
+def published_banks(retained, monkeypatch):
     from rwa_analysis.composition import build_session
     from rwa_analysis.settings import OrganisationSettings
     from rwa_analysis.storage.manifests import CatalogueSelection
@@ -257,7 +257,7 @@ def published_cr6(retained, monkeypatch):
         candidate = session.conform(
             session.load_bronze((ref,)),
             catalogue=CatalogueSelection(
-                release_path="catalogue/releases/cr6-v1.json",
+                release_path="catalogue/releases/cr6-cr9-v1.json",
                 evidence_refs=tuple(r for r in refs if r != ref),
             ),
         )

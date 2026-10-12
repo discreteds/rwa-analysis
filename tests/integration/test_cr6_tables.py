@@ -6,8 +6,8 @@ from decimal import Decimal
 from mountainash_data import IbisBackend
 
 
-def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
-    session, publication = published_cr6[0]
+def test_persisted_numeric_mutations_and_absence_are_visible(published_banks):
+    session, publication = published_banks[0]
     warehouse = publication.database
     key = "au/cba/2025-06-30/aps330/cr6-residential-mortgages"
     oid = f"{key}/band-1"
@@ -34,11 +34,11 @@ def test_persisted_numeric_mutations_and_absence_are_visible(published_cr6):
         assert table.row(0)[4] == expected
 
 
-def test_actual_four_bank_tables(published_cr6, project_root):
+def test_actual_four_bank_tables(published_banks, project_root):
     from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
 
     tables = {}
-    for session, publication in published_cr6:
+    for session, publication in published_banks:
         # Reusing a populated warehouse must preserve its schemas and rebuild tables.
         manifest = session.silver.read_manifest(publication)
         candidate = session.conform(

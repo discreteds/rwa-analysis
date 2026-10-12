@@ -185,7 +185,7 @@ def test_explicit_occurrence_scope_is_conjunctive(source, changed):
 
 
 def test_westpac_reviewed_meanings_and_cr6_release_preservation(
-    project_root, westpac_bundle
+    project_root, westpac_bundle, cba_bundle, nab_bundle, anz_bundle
 ):
     from rwa_analysis.catalogue.load import load_catalogue
     from rwa_analysis.domains.cr9.semantics import resolve_field
@@ -247,14 +247,21 @@ def test_westpac_reviewed_meanings_and_cr6_release_preservation(
             for item in value:
                 yield from evidence_refs(item)
 
-    retained = {
-        "field": {f.id for f in source.metadata.published_fields},
-        "qualification": {q.id for q in source.metadata.qualifications},
-        "context": {source.metadata.context.id},
-        "band": {b.id for s in source.metadata.segmentations for b in s.bands},
-    }
+    retained = {}
+    for bundle in (westpac_bundle, cba_bundle, nab_bundle, anz_bundle):
+        for dataset in bundle.datasets:
+            retained[(bundle.bundle_key, bundle.document.document_id, dataset.id)] = {
+                "field": {f.id for f in dataset.metadata.published_fields},
+                "qualification": {q.id for q in dataset.metadata.qualifications},
+                "context": {dataset.metadata.context.id},
+                "band": {b.id for s in dataset.metadata.segmentations for b in s.bands},
+                "relationship": {r.id for r in dataset.metadata.relationships},
+                "axis": {a.id for a in dataset.metadata.axes},
+            }
     for member in cat.members:
         for support in evidence_refs(member):
             if support.dataset_id == source.id:
-                assert support.document_id == westpac_bundle.document.document_id
-                assert support.ref_id in retained[support.kind]
+                refs = retained[
+                    (support.bundle_key, support.document_id, support.dataset_id)
+                ]
+                assert support.ref_id in refs[support.kind]

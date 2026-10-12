@@ -160,30 +160,13 @@ def test_complete_anz_source_contract():
 
 
 def test_anz_meanings_keep_history_exclusions_and_unknown_annual_cohort(
-    tmp_path, project_root, anz_bundle
+    project_root, anz_bundle
 ):
     """Catch Westpac timing/weighting or corporate history leaking into ANZ."""
-    import shutil
-
     from rwa_analysis.catalogue.load import load_catalogue
     from rwa_analysis.domains.cr9.semantics import resolve_field
 
-    root = tmp_path / "catalogue"
-    shutil.copytree(project_root / "catalogue", root)
-    release_path = root / "releases/cr6-cr9-v1.json"
-    release = json.loads(release_path.read_text())
-    for folder, kind in (("measures", "measure"), ("mappings", "mapping")):
-        path = f"{folder}/anz-cr9-2025-09-30-v1.json"
-        assert (root / path).is_file(), f"Missing ANZ source definitions: {path}"
-        for member in json.loads((root / path).read_text())["members"]:
-            if not any(
-                s["revision_id"] == member["revision_id"] for s in release["selection"]
-            ):
-                release["selection"].append(
-                    {"path": path, "kind": kind, "revision_id": member["revision_id"]}
-                )
-    release_path.write_text(json.dumps(release))
-    catalogue = load_catalogue(release_path)
+    catalogue = load_catalogue(project_root / "catalogue/releases/cr6-cr9-v1.json")
     dataset = anz_bundle.datasets[1]
     history = resolve_field(
         catalogue,
