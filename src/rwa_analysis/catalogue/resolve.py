@@ -1,6 +1,6 @@
 """Conjunctive occurrence matching; attribute-level composition and conflicts."""
 
-from dataclasses import replace
+from dataclasses import dataclass, fields, replace
 from functools import cache
 
 from rwa_analysis.extraction.cr6 import (
@@ -8,11 +8,14 @@ from rwa_analysis.extraction.cr6 import (
     BronzeCreditRiskExposureRow,
     Cr6Dataset,
 )
+from rwa_analysis.extraction.models import PublishedField
+from rwa_analysis.extraction.temporal import TemporalBinding
 
 from .models import (
     Assertion,
     CatalogueRelease,
     FieldMeaning,
+    MappingScope,
     RevisionRef,
     SemanticAttribute,
     SourceMappingRevision,
@@ -20,40 +23,61 @@ from .models import (
 )
 
 
-def _matches(mapping, dataset, record, field_key, binding):
-    scope, context = mapping.scope, dataset.metadata.context
-    observed = {
-        "document_id": getattr(record, field_key).source_reference.document_id,
-        "document_date": context.document_date,
-        "dataset_id": dataset.id,
-        "template": context.source_template,
-        "portfolio": context.source_portfolio_label,
-        "field_key": field_key,
-        "published_field_ref": binding.published_field_ref,
-        "record_id": record.record_id,
-        "row_role": record.source_row_role,
-        "reporting_entity": context.reporting_entity.value,
-        "regulatory_scope": context.regulatory_scope.value,
-    }
-    return (
-        all(
-            getattr(scope, key) is None or getattr(scope, key) == value
-            for key, value in observed.items()
-        )
-        and (
-            scope.band_ref is None
-            or scope.band_ref in record.source_segment_memberships
-        )
-        and scope.observation_from <= context.observation_date <= scope.observation_to
-        and (
-            mapping.effective_from is None
-            or mapping.effective_from <= context.observation_date
-        )
-        and (
-            mapping.effective_to is None
-            or mapping.effective_to >= context.observation_date
-        )
+@dataclass(frozen=True)
+class FieldOccurrence:
+    """Source occurrence, independent of a domain's numeric row collection."""
+
+    scope: MappingScope
+    published_field: PublishedField
+    segment_memberships: tuple[str, ...]
+    temporal_bindings: tuple[TemporalBinding, ...] = ()
+
+
+def field_occurrence(dataset, record, field_key):
+    context = dataset.metadata.context
+    binding = next(
+        b
+        for b in dataset.metadata.bindings
+        if b.typed_field_name == field_key and record.source_row_ref in b.row_refs
     )
+    published = next(
+        f
+        for f in dataset.metadata.published_fields
+        if f.id == binding.published_field_ref
+    )
+    return FieldOccurrence(
+        MappingScope(
+            document_id=getattr(record, field_key).source_reference.document_id,
+            document_date=context.document_date,
+            dataset_id=dataset.id,
+            template=context.source_template,
+            portfolio=context.source_portfolio_label,
+            field_key=field_key,
+            published_field_ref=binding.published_field_ref,
+            record_id=record.record_id,
+            row_role=record.source_row_role,
+            reporting_entity=context.reporting_entity.value,
+            regulatory_scope=context.regulatory_scope.value,
+        ),
+        published,
+        record.source_segment_memberships,
+        tuple(
+            b
+            for b in dataset.metadata.temporal_bindings
+            if b.record_id == record.record_id and b.field_key == field_key
+        ),
+    )
+
+
+def matches_occurrence(mapping, occurrence):
+    """Conjunctive source identity; temporal applicability belongs to the adapter."""
+    scope = mapping.scope
+    return all(
+        getattr(scope, f.name) is None
+        or getattr(scope, f.name) == getattr(occurrence.scope, f.name)
+        for f in fields(scope)
+        if f.name not in ("observation_from", "observation_to", "band_ref")
+    ) and (scope.band_ref is None or scope.band_ref in occurrence.segment_memberships)
 
 
 def _unique(values):
@@ -118,16 +142,7 @@ def resolve_field(
         raise ValueError(f"Unknown CR6 field: {field_key}")
     if record not in dataset.exposure_rows:
         raise ValueError("Record does not belong to dataset")
-    binding = next(
-        b
-        for b in dataset.metadata.bindings
-        if b.typed_field_name == field_key and record.source_row_ref in b.row_refs
-    )
-    published = next(
-        f
-        for f in dataset.metadata.published_fields
-        if f.id == binding.published_field_ref
-    )
+    occurrence = field_occurrence(dataset, record, field_key)
     observation_date = dataset.metadata.context.observation_date
 
     @cache
@@ -142,16 +157,30 @@ def resolve_field(
             )
         )
 
-    mappings = sorted(
-        (
-            m
-            for m in catalogue.members
-            if isinstance(m, SourceMappingRevision)
-            and _matches(m, dataset, record, field_key, binding)
-            and all(definition_applies(ref) for ref in m.decision_refs)
-        ),
-        key=lambda m: m.revision_id,
+    mappings = (
+        m
+        for m in catalogue.members
+        if isinstance(m, SourceMappingRevision)
+        and matches_occurrence(m, occurrence)
+        and (
+            m.scope.observation_from is None
+            or m.scope.observation_from <= observation_date
+        )
+        and (
+            m.scope.observation_to is None or observation_date <= m.scope.observation_to
+        )
+        and (m.effective_from is None or m.effective_from <= observation_date)
+        and (m.effective_to is None or observation_date <= m.effective_to)
+        and all(definition_applies(ref) for ref in m.decision_refs)
     )
+    return compose_field(
+        catalogue, occurrence.published_field, mappings, definition_applies
+    )
+
+
+def compose_field(catalogue, published_field, applicable_mappings, definition_applies):
+    """Compose domain-selected meaning, retaining conflicts and partial knowledge."""
+    mappings = sorted(applicable_mappings, key=lambda m: m.revision_id)
     # A correction replaces a whole predecessor mapping for this occurrence.
     # Keep every historical member available through catalogue.member(), but
     # never execute superseded ancestors alongside an applicable correction.
@@ -209,8 +238,8 @@ def resolve_field(
         rule = mapping.conversion
         if (
             rule
-            and published.source_unit == rule.source_unit
-            and published.source_scale == rule.source_scale
+            and published_field.source_unit == rule.source_unit
+            and published_field.source_scale == rule.source_scale
         ):
             conversions.append((mapping, rule.unit_factor))
 
