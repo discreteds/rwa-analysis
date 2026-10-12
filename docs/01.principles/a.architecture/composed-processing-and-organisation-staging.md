@@ -56,6 +56,10 @@ whose requirements and behaviour have not yet been defined.
 
 ## References
 
+- [Current implementation](../../architecture.md): four-bank CR6 uses these boundaries,
+  a named 12-relation output and staging/master replacement. Broader domain dispatch
+  remains an extension design, not an implemented plugin facility.
+- [Mountainash-first coding](../d.coding-practices/mountainash-first.md).
 - [Strategic architecture design](../../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md).
 - [Rebuildable analytical layers](rebuildable-analytical-layers.md).
 - [Multi-domain source bundles](multi-domain-source-bundles.md).

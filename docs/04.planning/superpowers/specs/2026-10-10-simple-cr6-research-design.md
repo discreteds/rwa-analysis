@@ -2,7 +2,12 @@
 
 Date: 2026-10-10
 
-Status: **Approved for local execution.** [PR #1](https://github.com/discreteds/rwa-analysis/pull/1) is a working demonstration, not a merge candidate. The [previous plan](../plans/2026-10-10-cr6-bronze-to-silver.md) records how that demonstration was built.
+Status: **Historical intermediate design.** Its physical layout and processing owners
+are superseded by the implemented [strategic architecture](2026-10-11-strategic-architecture-design.md)
+and [current guide](../../../architecture.md). Direct Python use, source fidelity and
+dataset-wide Mountainash transformations remain governing decisions. PR #1 was a
+working demonstration; the [previous plan](../plans/2026-10-10-cr6-bronze-to-silver.md)
+records its construction. PR #2 delivered the replacement to `develop`.
 
 ## 1. The ask
 
@@ -145,6 +150,9 @@ Write tests around these behaviors. Add another case when it protects a distinct
 | Full transactional rebuild and source lineage | One retained input manifest; ordinary repeat execution | Incremental processing, publication caching and workflow services |
 | Four reconstructed dataframes for research | Direct Python function calls | CLI, HTML reporting and UI machinery |
 
-The next implementation should make one complete bank flow runnable early, then apply the same shape to the other three. Use the demo to avoid repeating source discovery and known mistakes. Any proposed departure from the validated Mountainash pipeline must explain the present need before adding code.
+Historical delivery sequence: make one complete bank flow runnable early, then apply
+the same shape to the other three. This was completed in the strategic migration.
+Any proposed departure from the Mountainash pipeline must explain the present need.
 
-The researcher requested an [implementation plan](../plans/2026-10-10-simple-cr6-research.md) using this direction. Review that plan before starting the build.
+The [intermediate implementation plan](../plans/2026-10-10-simple-cr6-research.md)
+is retained as history; use the current guide for active interfaces and storage.

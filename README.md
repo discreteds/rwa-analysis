@@ -4,6 +4,27 @@ The four-bank CR6 workflow publishes normalised organisation staging databases,
 consolidates master and reconstructs all four source tables. The CBA example also
 demonstrates PDF extraction through publication and reconstruction.
 
+## Documentation
+
+- [Documentation guide](docs/README.md)
+- [Current architecture and implementation limits](docs/architecture.md)
+- [Durable principles](docs/01.principles/README.md)
+- [Mountainash-first coding practices](docs/01.principles/d.coding-practices/mountainash-first.md)
+
+Production scope is the selected four-bank mortgage CR6 blocks. Other disclosure
+domains, a reusable capital engine and Gold persistence are not yet implemented.
+
+## Environment and retained inputs
+
+Use Python 3.12+ and `uv sync --locked` for the pinned dependency environment.
+Source PDFs, extractors, goldens, catalogue and configuration are tracked. Generated
+Bronze, manifests and DuckDB files under `data/` are retained separately; a fresh
+checkout/worktree does not automatically contain the saved `v1` inputs.
+
+The PDF example below can produce a new CBA extraction. Saved-Bronze examples need
+the selected retained bundles. Inspect example roots and run names before execution:
+they write Bronze/publications, and each Silver publication replaces its target.
+
 ## CBA workflow
 
 ```bash
@@ -63,6 +84,8 @@ rows. Producing revisions remain on those rows; the master manifest retains the
 selected staging manifests. Reconstruction uses master numbers and retained Bronze
 metadata, without depending on live staging databases. Publications refer to mutable
 database locations; select the current staging publications when rebuilding master.
+Old publication handles do not select historical snapshots or detect a stale revision.
+The workflow assumes sequential staging writes followed by consolidation.
 
 The demonstrated selection contains 36 observations, 432 fields, 1,296 mapping
 references and 32 source relationships. Each reconstructed table has nine rows.
@@ -89,6 +112,12 @@ supporting evidence. `domains/cr6/contracts.py` declares the complete table inve
 Metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
 ingress boundary is tracked for removal in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
 Validation is separate and remains undefined; it is not invoked by this workflow.
+
+Rebuild manifests retain input references, not copies of all referenced assets.
+Implementation revision defaults to `unrecorded`; retaining reproducible research
+also requires retaining its source inputs, catalogue files and code/environment.
+See the [architecture guide](docs/architecture.md) for the exact publication boundary
+and the distinction between undefined analytical validation and retained transport checks.
 
 ## Verification
 

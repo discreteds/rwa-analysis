@@ -2,11 +2,14 @@
 
 Date: 2026-10-11
 
-Status: **Approved for implementation.**
+Status: **Implemented for the selected four-bank CR6 slice; PR #2 merged into develop.**
 The separation of configuration, declarations, operations and workflow, and the
 `OrganisationSession.run()` entrypoint, were agreed after the CBA spike. The
-researcher approved the migration plan; concrete signatures and physical publication
-details are being established during implementation.
+researcher approved the migration plan and its CBA checkpoint; staging/master delivery
+is complete. See the [current architecture](../../../architecture.md) for actual code
+owners, signatures, physical storage, verification evidence and provenance limits.
+CR1/CR2 passages remain extension designs. Historical spike/dependency findings below
+are dated evidence, not assertions about every current path.
 
 **2026-10-11 correction:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md).
 Its scope and behaviour are not defined. Earlier boundary-validation and
@@ -30,7 +33,8 @@ interfaces in response to its shape review, before implementation planning.
 The [project principles](../../../01.principles/README.md) govern evidence, semantics,
 identity and research limitations. The [composed processing principle](../../../01.principles/a.architecture/composed-processing-and-organisation-staging.md)
 records the decisions from this discussion. The [simple CR6 design](2026-10-10-simple-cr6-research-design.md)
-remains the baseline for source fidelity and direct Python use. Its earlier validation
+records the intermediate source-fidelity and direct-Python design. Its earlier three-table
+physical layout and ownership are superseded by this specification; validation
 instructions are superseded by the separate-validation principle.
 
 ## 2. Agreed architecture
@@ -264,6 +268,11 @@ requirement to coerce source values or null columns to precision 38.
 
 ### Verified framework entry points and remaining proof
 
+The following records API inspection and spike findings from implementation design.
+For the delivered path, use the current guide and completed migration evidence.
+References to native rule/validator APIs establish availability only; no invocation
+is authorised by this specification.
+
 Inspection of the installed dependencies confirmed:
 
 - `mountainash.typespec.extraction.extract_from_dataclass` derives a TypeSpec.
@@ -373,7 +382,7 @@ database transactions belong to their respective owners above.
 The organisation identifies the source owner and staging destination. It does not
 force every dataset to share a legal entity, exposure country or reporting date.
 
-Proposed method responsibilities:
+Implemented CR6 session method responsibilities:
 
 | Session method | Delegated owner | Input → output |
 |---|---|---|
@@ -382,7 +391,7 @@ Proposed method responsibilities:
 | `load_bronze(refs)` | Bronze store | Explicit saved references → bundles paired with their Bronze references |
 | `conform(inputs, catalogue)` | Domain pipelines | Referenced bundles and interpretations → conformed domain results in a Silver candidate carrying its rebuild selection |
 | `publish(candidate, revision)` | Silver store | Complete candidate → organisation staging publication, with retained manifest |
-| `reconstruct(publication)` | Silver/Bronze read operations, then domain reconstruction | Loaded Silver and linked source metadata → source-shaped numeric tables with metadata |
+| `reconstruct(publication)` | Silver/Bronze read operations, then domain reconstruction | Loaded Silver and linked source metadata → source-shaped numeric dataframes |
 | `run(documents=..., catalogue=..., run_name=..., revision=...)` | Workflow: the stage methods above | Explicit run inputs → publication reference and reconstructed tables |
 
 The full workflow deliberately reloads saved Bronze before conformance, preserving
@@ -390,6 +399,10 @@ the established handoff. A targeted rerun calls only the relevant methods. A com
 stage selection replaces the organisation's staging contents; it is not an implicit
 append. For example, rebuilding only the June document leaves only the June selection
 in that staging database. To retain several dates, include their saved inputs.
+
+`reconstruct()` returns `dict[str, pl.DataFrame]`, not the full source metadata.
+Source bundles are available separately through `RunResult.bundles` or the store's
+`read_sources(publication)` method.
 
 `run()` replaces the provisional `all()` name. It is the entrypoint for the organisation
 workflow: extract, save Bronze, reload Bronze, conform, publish, reconstruct. It uses
@@ -407,7 +420,7 @@ Conformance carries those references and the selected catalogue into the candida
 rebuild selection. Publication retains the existing rebuild manifest outside disposable
 Silver. This explicit data flow, rather than session history, supports later readback.
 
-Illustrative targeted use, with proposed application methods:
+Targeted use with the implemented application methods:
 
 ```python
 cba = build_session(cba_settings)
@@ -507,14 +520,17 @@ The operation reads already conformed values; it does not rerun extraction, rein
 catalogue mappings or repeat domain transformations. It does not add together reported
 totals or deduplicate independent source occurrences merely because values agree.
 
-Proposed publication details:
+Publication details, reconciled with the delivered CR6 path:
 
-- Read one completed staging publication per selected organisation. Incompatible
-  staging schemas are an upfront input error.
+- Select current completed staging publications, normally one per organisation.
+  Schema compatibility follows the declared tables and native operations; there is
+  no separate upfront schema-validation pass or publication freshness check.
 - Preserve source identities and producing-publication lineage. Master retains its
   selected staging publications and their durable rebuild manifests, so reconstruction
-  remains possible after staging is replaced. Exact revision columns and publication
-  marker representation are deferred to implementation planning.
+  remains possible after staging is replaced. Producing `silver_revision_id` values
+  remain on copied rows; `MasterManifest` retains staging manifest paths and the
+  `ops.silver_publication` marker identifies the master publication. Database paths
+  are mutable, not historical snapshots; see the current architecture's limits.
 - Removing an organisation from the selection removes its rows on the next full
   master rebuild. A failed master rebuild leaves the prior master publication intact.
 - The initial workflow remains single-writer and sequential. Finish staging rebuilds
@@ -550,7 +566,7 @@ transport, domain transformations and persisted reconstruction. These tests do n
 authorize runtime validation. Production CR1/CR2 and a defensive lifecycle suite are
 outside this migration; do not repeat framework arithmetic tests throughout it.
 
-## 10. Review checkpoint
+## 10. Completed review and implementation checkpoint
 
 The researcher accepted the refined design as settled and authorised the
 [migration-and-retirement plan](../plans/2026-10-11-strategic-architecture-migration.md)
@@ -562,3 +578,8 @@ Keep declarative input/output schemas and existing source goldens. Validation is
 separate and remains undefined. Do not restore the retired application checks, historical
 defensive lifecycle suite or introduce a hardening programme as part of this migration.
 The plan's verification is sized to the real workflow and the declared boundaries.
+
+The migration completed with 114 tests passing and a real four-bank staging/master
+demonstration on 2026-10-11; PR #2 merged into `develop`. The
+[migration completion record](../plans/2026-10-11-strategic-architecture-migration.md#four-bank-completion--2026-10-11)
+retains that evidence. This is not approval to implement the additional domain examples.

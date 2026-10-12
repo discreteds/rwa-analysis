@@ -15,7 +15,11 @@ Each principle carries a status and scope:
 | PROPOSED | Awaiting a design decision |
 | SUPERSEDED | Retained for context, with a link to its replacement |
 
-These definitions are local to this repository; Mountainash's status vocabulary is not copied unchanged. All initial principles are AGREED because production extraction and conformance are not yet implemented.
+These definitions are local to this repository; Mountainash's status vocabulary is not
+copied unchanged. Four-bank CR6 extraction, conformance and staging/master are now
+implemented. Principles may remain AGREED where their scope also covers future domains
+or behaviour not yet delivered. Cite concrete implementation evidence without promoting
+an entire broad principle to IMPLEMENTED on the strength of one slice.
 
 Scope identifies the affected layers or concerns, such as `core`, `Bronze`, `Silver`, `Gold`, or `extraction`. Category letters order navigation, not conflict precedence.
 
@@ -40,6 +44,12 @@ Keep principles focused on enduring constraints. Dataclass field lists, implemen
 - Preserve the rationale and replacement link when superseding a principle. Distinguish refinements from changed decisions.
 - Mark a principle IMPLEMENTED only when supporting code and verification can be cited. An exploratory prototype is insufficient.
 - Keep relative links valid and avoid multiple competing copies of a principle. Specifications link here for governing intent and retain their own detailed contracts.
+- The [current architecture](../architecture.md) describes implemented behaviour and
+  limitations; the [documentation guide](../README.md) identifies current entrypoints.
+  Keep them and `AGENTS.md` aligned when ownership or supported scope changes.
+- Update a superseded specification's status and replacement link. Preserve historical
+  execution evidence with dates; do not leave completed plans advertising an active
+  implementation checkpoint or stale open-PR status.
 
 ## Relationship to the existing design
 

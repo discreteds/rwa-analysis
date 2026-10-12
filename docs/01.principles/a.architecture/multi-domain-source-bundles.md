@@ -26,5 +26,9 @@ An ANZ APRA disclosure under `au/anz/` can contain Australian AIRB mortgages, se
 
 ## References
 
+- [Current implementation](../../architecture.md#source-contracts-and-normalised-silver):
+  composed dataset protocol and CR6 container are implemented; the retained `cr6-v1`
+  codec and pipeline currently support CR6 only. Other domains need their own selected
+  source contracts and transport support.
 - [Initial data model](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md), sections 2–6.
 - [NAB/ANZ source review](../../00.ideation/2025-nab-anz-metadata-spike.md).

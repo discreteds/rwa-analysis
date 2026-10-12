@@ -28,6 +28,10 @@ If a glossary establishes that a previously assumed borrower count measures agre
 
 ## References
 
+- [Current implementation and provenance limits](../../architecture.md#current-publication-and-provenance-limits):
+  transactional full replacement is implemented; publication paths are mutable and
+  automatic code/environment pinning is not a supplied guarantee. Gold and incremental
+  processing remain future work under this principle.
 - [Initial data model — Silver lifecycle](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#11-silver-conformance-and-rebuild-lifecycle).
 - [Platform design](../../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md).
 - [Correction-safe identity](../b.data-semantics/correction-safe-identity.md).

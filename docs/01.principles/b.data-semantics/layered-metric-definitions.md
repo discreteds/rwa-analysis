@@ -57,5 +57,9 @@ Compose temporal measures from cohort eligibility at an anchor, qualifying event
 
 ## References
 
+- [Current CR6 contracts](../../../src/rwa_analysis/domains/cr6/contracts.py) and
+  [conformance evidence](../../../tests/silver/test_cr6_conformance.py) implement the
+  measure-specific numeric declarations for the selected slice. The complete semantic
+  hierarchy and additional temporal domains are not implied implemented by that proof.
 - [Initial data model — semantic catalogue](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#7-durable-semantic-catalogue) and [contextual mappings](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md#8-contextual-mappings-and-effective-meaning).
 - [NAB/ANZ source review](../../00.ideation/2025-nab-anz-metadata-spike.md).

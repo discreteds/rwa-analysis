@@ -1,14 +1,18 @@
 # Simplify the existing four-bank CR6 implementation
 
-> **For agentic workers:** Use `executing-plans` with a researcher checkpoint after task 3. Adapt the existing implementation and tests. Do not restart extraction, metadata discovery or golden authoring.
+> **Historical execution record:** superseded by the completed
+> [strategic migration](2026-10-11-strategic-architecture-migration.md). Do not execute
+> these tasks or reinstate retired checks/interfaces from this intermediate plan.
 
-**Status:** Approved; executing locally on `feature/simple-cr6`. Researcher clarification during execution: trust framework arithmetic and casts; no application-level precision guards or duplicate numeric validation.
+**Status:** SUPERSEDED — intermediate implementation on `feature/simple-cr6`, replaced
+by PR #2. Current use is documented in the [architecture guide](../../../architecture.md).
+Validation is separate and undefined; historical validation and defensive-test instructions
+below do not authorise new work.
 
 **Later numeric decision (2026-10-11):** the shared `Decimal(22,8)` declarations
 below describe the earlier implementation. The strategic design now specifies
 money `Decimal(16,2)`, small-valued measures `Decimal(16,8)` and integer counts.
-The disposable CR1/CR2 spike exercises this change; migration of the existing CR6
-implementation is not part of that spike.
+The strategic migration subsequently implemented this numeric policy in production CR6.
 
 **Goal:** Retain the four-bank research assets and simplify their conformance/publication/reconciliation into dataset-wide Mountainash and three-table Silver.
 
