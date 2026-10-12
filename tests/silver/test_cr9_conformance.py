@@ -108,3 +108,23 @@ def test_new_defaults_are_a_field_subset_within_each_row(
         == relationships["child_observation_id"].to_list()
     )
     assert output.relationship_evidence.to_polars().height >= 7
+
+
+def test_reconstruction_preserves_published_measure_column_order(
+    westpac_bundle, project_root, tmp_path
+):
+    from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
+
+    output, _ = conformed_cr9(westpac_bundle, project_root, tmp_path)
+    table = next(iter(reconstruct_cr9(output, (westpac_bundle,)).values()))
+    # Westpac p.55 puts the historical rate after all four count columns.
+    assert table.columns == [
+        "source_row",
+        "weighted_average_pd",
+        "arithmetic_average_pd",
+        "previous_year_borrower_count",
+        "current_year_borrower_count",
+        "defaulted_borrower_count",
+        "new_defaulted_borrower_count",
+        "historical_annual_default_rate",
+    ]

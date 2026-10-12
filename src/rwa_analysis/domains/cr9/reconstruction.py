@@ -16,6 +16,16 @@ def reconstruct_cr9(output, bundles):
             if not isinstance(ds, Cr9Dataset):
                 continue
             axes = {a.id: a for a in ds.metadata.axes}
+            column_order = {
+                name: min(
+                    axes[ref].order
+                    for binding in ds.metadata.bindings
+                    if binding.typed_field_name == name
+                    for ref in binding.column_refs
+                )
+                for name in MEASURES
+            }
+            source_fields = sorted(MEASURES, key=column_order.__getitem__)
             labels = ma.relation(
                 [
                     {
@@ -45,6 +55,6 @@ def reconstruct_cr9(output, bundles):
                     .select("observation_id", "source_row", "source_order", *MEASURES)
                 )
             tables[f"{bundle.bundle_key}/{ds.id}"] = (
-                result.sort("source_order").select("source_row", *MEASURES).to_polars()
+                result.sort("source_order").select("source_row", *source_fields).to_polars()
             )
     return tables
