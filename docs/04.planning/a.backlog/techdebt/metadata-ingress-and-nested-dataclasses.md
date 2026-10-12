@@ -4,6 +4,9 @@
 
 **Status:** OPEN
 
+**Scheduling:** Deferred during CR9 interface design by researcher decision,
+2026-10-12. The removal objective remains; CR9 is not an ingress-refactoring project.
+
 **Owner:** rwa-analysis metadata schemas / CR6 domain projection
 
 **Decision:** Researcher explicitly authorised the temporary adaptation while

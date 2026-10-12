@@ -55,6 +55,21 @@ Default state and default event are distinct reusable concepts. A stock default 
 
 Compose temporal measures from cohort eligibility at an anchor, qualifying event/transition rules and an observation window with explicit boundaries. Reusable definitions express relative timing; observation instances supply actual dates. Counts and rates remain distinct, with rates referencing denominator and weighting definitions. Cure, exit, repeated events and incomplete follow-up require explicit rules when relevant. Published CR9 measures do not automatically inherit the canonical forward-cohort definition.
 
+Researcher clarification, 2026-10-12: temporal metadata must resolve for each datapoint,
+not merely each table or record. Adjacent CR9 columns can describe PD measurement dates,
+opening/closing populations, annual default events and historical averaging windows.
+Shared temporal descriptors may be referenced by multiple fields; their physical
+representation remains a design decision. Preserve the source's actual wording and
+knowledge status when a duration is known but exact boundaries are not.
+
+Keep publication vintage separate from the period measured, disclosed methodology
+changes and our extraction/interpretation revisions. Retain successive published
+occurrences so research can examine repeated or revised historical values. A changed
+rolling-window average alone does not establish a restatement or reveal its annual
+components. Capture and tag the evidence; period alignment, vintage selection,
+aggregation and reconstruction of longer histories are bespoke analytical choices,
+not implicit conformance or publication policies.
+
 ## References
 
 - [Current CR6 contracts](../../../src/rwa_analysis/domains/cr6/contracts.py) and
