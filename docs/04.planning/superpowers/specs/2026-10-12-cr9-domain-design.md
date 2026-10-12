@@ -2,9 +2,10 @@
 
 Date: 2026-10-12
 
-Status: **Design and disposable spike shape approved by the researcher.** This
-post-spike revision specifies the production contracts for final review before
-implementation planning. Production CR9 extraction, catalogue and persistence remain
+Status: **Refined production specification approved by the researcher after PR #7
+merged.** Design and disposable spike shape are also approved. The
+[implementation plan](../plans/2026-10-12-cr9-implementation.md) awaits review.
+Production CR9 extraction, catalogue and persistence remain
 unimplemented; approval of the shape is not a claim of production correctness.
 
 Design approval followed merged PR #5. Spike evidence is retained at commit

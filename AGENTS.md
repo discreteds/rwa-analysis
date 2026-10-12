@@ -37,6 +37,9 @@ Follow [validation is a separate process](docs/01.principles/c.extraction-and-va
 
 ## Documentation and planning locations
 
+Work on documentation in the synced base checkout, on a documentation branch with a
+PR. Reserve worktrees for coding; do not create a worktree for each spec or plan.
+
 All project documentation belongs in this repository:
 
 - Project backlog: `docs/04.planning/a.backlog/INDEX.md`. Temporary implementation
