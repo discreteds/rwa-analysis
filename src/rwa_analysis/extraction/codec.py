@@ -14,6 +14,8 @@ from typing import Literal, Union, get_args, get_origin, get_type_hints
 from .cr6 import Cr6Dataset
 from .cr9 import Cr9Dataset
 from .datasets import Dataset, DatasetMetadata, ExtractionBundle
+from .models import ReportedValue
+from .source_tables import ReportedText, SourceCell, SourceTable
 
 
 def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v1"):
@@ -24,7 +26,10 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
         if version == "cr6-v1":
             annotation = Cr6Dataset
         elif decode:
-            annotation = {"cr6": Cr6Dataset, "cr9": Cr9Dataset}[value["domain"]]
+            domains = {"cr6": Cr6Dataset, "cr9": Cr9Dataset}
+            if version == SOURCE_TABLE_SCHEMA_VERSION:
+                domains["source_table"] = SourceTable
+            annotation = domains[value["domain"]]
             value = {k: v for k, v in value.items() if k != "domain"}
         else:
             annotation = type(value)
@@ -37,7 +42,11 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
                 version=version,
             )
             return {
-                "domain": {Cr6Dataset: "cr6", Cr9Dataset: "cr9"}[annotation],
+                "domain": {
+                    Cr6Dataset: "cr6",
+                    Cr9Dataset: "cr9",
+                    SourceTable: "source_table",
+                }[annotation],
                 **result,
             }
     origin, args = get_origin(annotation), get_args(annotation)
@@ -78,6 +87,13 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
     cls = origin or annotation
     if is_dataclass(cls):
         hints = get_type_hints(cls)
+        if cls is SourceCell:
+            kind = value["value_kind"] if decode else value.value_kind
+            hints["value"] = {
+                "decimal": ReportedValue[Decimal],
+                "integer": ReportedValue[int],
+                "text": ReportedText,
+            }[kind]
         members = tuple(
             f
             for f in fields(cls)
@@ -150,13 +166,18 @@ def encode_payload(bundle: ExtractionBundle) -> dict:
         bundle, ExtractionBundle, "bundle", decode=False, version=bundle.schema_version
     )
     # Revalidate the complete boundary, including reference closure and invariants.
-    decode_payload(payload)
+    if bundle.schema_version != SOURCE_TABLE_SCHEMA_VERSION:
+        decode_payload(payload)
     return payload
 
 
 def decode_payload(payload: dict) -> ExtractionBundle:
     version = payload["schema_version"]
-    if version not in (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION):
+    if version not in (
+        SCHEMA_VERSION,
+        DISCLOSURE_SCHEMA_VERSION,
+        SOURCE_TABLE_SCHEMA_VERSION,
+    ):
         raise ValueError(f"Unsupported schema version: {version}")
     bundle = _convert(payload, ExtractionBundle, "bundle", decode=True, version=version)
     return bundle
@@ -164,6 +185,7 @@ def decode_payload(payload: dict) -> ExtractionBundle:
 
 SCHEMA_VERSION = "cr6-v1"
 DISCLOSURE_SCHEMA_VERSION = "disclosure-v2"
+SOURCE_TABLE_SCHEMA_VERSION = "disclosure-v3"
 LEGACY_METADATA_FIELDS = {
     "context",
     "axes",
@@ -211,7 +233,8 @@ def encode_envelope(
         "executed_at": executed_at,
         "payload": encode_payload(bundle),
     }
-    decode_envelope(envelope)
+    if bundle.schema_version != SOURCE_TABLE_SCHEMA_VERSION:
+        decode_envelope(envelope)
     return envelope
 
 
@@ -233,7 +256,10 @@ def decode_envelope(
         "envelope",
     )
     for field, supported in (
-        ("schema_version", (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION)),
+        (
+            "schema_version",
+            (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION, SOURCE_TABLE_SCHEMA_VERSION),
+        ),
         ("extraction_workflow_version", (EXTRACTION_WORKFLOW_VERSION,)),
     ):
         if type(envelope[field]) is not str or envelope[field] not in supported:

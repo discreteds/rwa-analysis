@@ -15,6 +15,7 @@ from .models import (
     source_objects,
     unique_ids,
 )
+from .source_tables import SourceTableMetadata
 from .temporal import TemporalBinding, TemporalDescriptor
 
 
@@ -36,7 +37,7 @@ class Dataset(Protocol):
     def id(self) -> str: ...
 
     @property
-    def metadata(self) -> DatasetMetadata[object]: ...
+    def metadata(self) -> DatasetMetadata[object] | SourceTableMetadata: ...
 
 
 @dataclass(frozen=True)

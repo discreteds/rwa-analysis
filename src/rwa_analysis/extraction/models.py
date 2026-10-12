@@ -160,7 +160,7 @@ class SegmentationDefinition:
 
 @dataclass(frozen=True)
 class SourceEndpoint:
-    kind: Literal["row", "field", "block", "dataset", "band", "relationship"]
+    kind: Literal["row", "field", "block", "dataset", "band", "relationship", "cell"]
     id: str
 
 
