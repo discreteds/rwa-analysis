@@ -113,8 +113,10 @@ implemented CR9 pipeline.
 
 Written proposal: [CR9 capture and shared domain interfaces](../../superpowers/specs/2026-10-12-cr9-domain-design.md).
 The design, disposable spike shape and refined production specification are approved.
-The implementation plan awaits review; no production CR9
-pipeline is delivered yet.
+The implementation plan is executed on `feature/cr9-capture` (PR #9): the approved
+Westpac checkpoint was followed by CBA/NAB/ANZ capture and real mixed-domain master
+verification. This supplies faithfully tagged inputs; the broader distribution and
+supplementary-evidence research below remains open.
 
 Keep document reporting/publication dates distinct from field-specific measurement
 dates, cohort anchors, outcome intervals and historical calculation windows. Retain

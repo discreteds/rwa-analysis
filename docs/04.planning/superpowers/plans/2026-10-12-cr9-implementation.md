@@ -4,7 +4,10 @@
 > checkpoint after task 3. Use `test-driven-development` and `test-audit` for real
 > implementation. Do not reuse the disposable spike as the implementation branch.
 
-**Status:** PROPOSED — implementation awaits researcher review of this plan.
+**Status:** IMPLEMENTED AND VERIFIED — all five tasks complete on PR #9, awaiting merge.
+The researcher approved the Westpac checkpoint before tasks 4–5. Implementation
+[lessons](../../../00.ideation/2026-10-12-cr9-implementation-lessons.md) are retained
+for future backlog and design decisions.
 
 **Goal:** Capture the selected four-bank mortgage CR9 disclosures with field-level
 meaning/time metadata through retained mixed-domain Bronze, staging and master.
@@ -21,6 +24,9 @@ PR #7 merged at `5190388`; design and disposable spike shape are approved. The
 implementation plan is a new checkpoint, not implicit execution approval.
 
 ## Global constraints and execution
+
+Execution status is recorded in the completion table below; the original task
+checklists preserve the approved plan wording.
 
 - Use the base checkout for docs; reserve a fresh `develop`-seeded worktree for coding.
   Confirm the coding branch/worktree when execution starts. Never base on spike PR #6.
@@ -278,3 +284,79 @@ unknown dates and no implicit analytical aggregation apply throughout.
 The only intermediate researcher checkpoint is task 3; final delivery is reviewed
 through the implementation PR. Mark progress with actual runs, not the presence of
 classes or table declarations. This plan does not authorise the deferred refactors.
+
+## Task-3 execution evidence — 2026-10-12
+
+Coding branch: `feature/cr9-capture`, seeded from the approved plan branch rather
+than the disposable spike. Documentation remains in the base checkout.
+Checkpoint code is retained in [draft PR #9](https://github.com/discreteds/rwa-analysis/pull/9).
+
+- Baseline: 114 tests passed before changes.
+- Tasks 1–3 integrated and review fixes applied: 143 tests passed, including original CR6 behaviour, old-wire
+  fixtures, Westpac mixed capture, field semantics and persisted metadata/reconstruction.
+- Real PDF run produced nine CR6 and eight CR9 mortgage rows, all 27 declared tables,
+  four temporal roles and seven within-row default/new-default subset relationships.
+- Annual interval remains July 2024–June 2025; weighted PD/EAD timing remains June
+  2024; ten-year history has unresolved endpoints. No annual default rate was inferred.
+- Reconstruction uses stored values and restores published column labels/order.
+- The scope of the default-count subset excludes the blank default-stock row.
+
+Run from the coding worktree:
+```bash
+uv run python examples/westpac_cr9.py --data-root /tmp/opencode/cr9-task3-final --run-name westpac-cr9-checkpoint-reviewed
+```
+
+Retained local evidence: `/tmp/opencode/cr9-task3-final/` (Bronze, manifest, DuckDB,
+readback Parquet files); log: `/tmp/opencode/cr9-task3-final-reviewed.log`.
+
+Complexity review retained the typed models, fifteen-relation CR9 inventory and
+boundary-specific tests. It removed an unused temporal-binding copy on semantic
+`FieldOccurrence`; source metadata still owns those bindings and Silver persists them.
+The 52 catalogue tests passed after that cut. No metadata-ingress or constructor-
+validation refactoring was included. Four-bank CR9 expansion and full CR9 master
+acceptance remain task-4/5 work, not claimed complete by this checkpoint.
+
+Correctness review found a missing row-axis qualification in Silver field metadata.
+A failing source-backed regression reproduced it; the repaired projection now attaches
+the default definition to default-stock counts without leaking it to performing rows.
+The full suite and the real example passed after repair; Ruff and diff checks pass.
+No upstream-dependent blocker was identified for this checkpoint.
+
+## Four-bank completion evidence — 2026-10-12
+
+| Task | Status | Executable evidence |
+|---|---|---|
+| 1 — Westpac source/transport | COMPLETE | Independent source golden and retained legacy-wire fixture; mixed transport roundtrip. |
+| 2 — Shared semantics/CR9 conformance | COMPLETE | Occurrence/date applicability tests; precise rates, missingness, temporal roles and qualifications. |
+| 3 — Mixed staging | COMPLETE, researcher approved | Real Westpac checkpoint above, followed by explicit permission to continue. |
+| 4 — CBA/NAB/ANZ | COMPLETE | Eight/eight/nine rows; independent goldens; bank-specific conformance and actual selected catalogue evidence references. |
+| 5 — Master/delivery | COMPLETE, PR awaiting merge | Persisted mutations copied; reconstruction without staging databases; smaller/empty selections replace both domains. |
+
+Actual command: `uv run python examples/four_bank_cr9.py`.
+
+Artifacts: `/tmp/opencode/cr9-four-bank-8yj05s49/`.
+Log: `/tmp/opencode/cr9-four-bank-final.log`.
+
+The example retained four mixed bundles, four organisation publications and a master
+publication containing 36 CR6 rows and 33 CR9 rows, then reconstructed eight tables
+from master values. Readback Parquet files are under the artifact root's `readback/`.
+The new example exposes research objects for `python -i` and prints its fresh retained
+temporary output root. Existing Westpac interactive-example debt remains tracked.
+
+Full suite: **148 passed**. Independent final correctness review: no repair findings;
+its focused extraction/catalogue/conformance/master run passed 32 tests. Complexity
+review retained the source-specific extraction/code evidence and cut ANZ's temporary
+test release auto-completion so it now exercises the actual integrated release.
+After that test-only cut, the two focused ANZ tests passed. Ruff and diff checks
+passed; 91 local documentation targets resolved against the documentation and
+implementation checkouts.
+
+Source decisions remain faithful and scoped: CBA history starts at year precision
+`2014`; NAB count columns keep their explicit dates and agreement-count evidence;
+ANZ's five-year history excludes technical defaults/exited obligors as disclosed and
+its 0.62% subtotal is retained directly. Unknown annual anchors/denominators stay
+unknown. No automatic aggregation or authoritative-vintage selection was added.
+
+The pinned APIs emit schema-inference and deprecation messages; the separately
+recorded inference-log investigation is not a confirmed upstream correctness defect.
+No upstream-dependent blocker was established for the completed capture scope.

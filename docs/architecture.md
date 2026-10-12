@@ -1,7 +1,7 @@
 # Current processing architecture
 
-Updated: 2026-10-12. Describes the four-bank CR6 implementation merged in PR #2,
-not every capability proposed in the original platform design.
+Updated: 2026-10-12. Describes four-bank CR6/CR9 implementation, including the CR9
+delivery on PR #9. This is implemented branch scope, not a claim that PR #9 has merged.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
@@ -16,7 +16,10 @@ per bank. These counts describe the selected sources, not universal schema const
 Source dates, legal entities, geography, currency and regulatory perimeters remain
 distinct. ANZ's selected AIRB block does not represent every ANZ-group mortgage.
 
-CR1/CR2, CR9 and liquidity are research/design cases, not implemented domain pipelines.
+The same source bundles now include selected CR9 blocks: eight rows each for CBA,
+Westpac and NAB, and nine for ANZ including its subtotal; seven measure positions
+per row. CR9 timing attaches to individual fields rather than a common observation date.
+CR1/CR2 and liquidity remain research/design cases, not implemented domain pipelines.
 Gold persistence and a reusable NumPy/SciPy capital engine are not implemented.
 The application is ordinary Python, with examples and numeric dataframes for research.
 
@@ -33,7 +36,7 @@ BronzeStore.save → retained bundle.json → BronzeStore.load
                                              |
 Versioned catalogue release -----------------+
                                              |
-                                Cr6Pipeline.conform
+                           Cr6Pipeline / Cr9Pipeline.conform
                                 Mountainash relations
                                              |
                                   SilverCandidate
@@ -54,11 +57,12 @@ Saved Bronze structure + persisted Silver numbers → source-shaped dataframes
 | [`extraction/`](../src/rwa_analysis/extraction/) | Source dataclasses, composed metadata, dataset protocol, lossless codec and reusable parsing; each bespoke extractor owns its PDF layout |
 | [`catalogue/`](../src/rwa_analysis/catalogue/) | Load and resolve concepts, definitions, scoped mappings, evidence and researcher decisions |
 | [`domains/cr6/`](../src/rwa_analysis/domains/cr6/) | CR6 models, schema/table declarations, Mountainash transformations and source-unit reconstruction |
+| [`domains/cr9/`](../src/rwa_analysis/domains/cr9/) | CR9 typed rows, field-level temporal metadata, source-scoped semantic selection, conformance and reconstruction |
 | [`storage/`](../src/rwa_analysis/storage/) | Bronze transport, paths, manifests, database connections, transactional publication and master consolidation |
 
 Domain transformations receive data and interpretations; they do not open PDFs,
 configuration files or database connections. Settings select execution locations;
-the catalogue owns financial meaning. Current dispatch is explicitly CR6-specific;
+the catalogue owns financial meaning. Current dispatch explicitly selects CR6 and CR9;
 the dataset protocol is not an automatic multi-domain plugin system.
 
 ## Source contracts and normalised Silver
@@ -67,7 +71,10 @@ the dataset protocol is not an automatic multi-domain plugin system.
 `Cr6Dataset` composes `DatasetMetadata` and exposes `exposure_rows`. Its saved
 `cr6-v1` representation retains the earlier `records`/flat-metadata wire shape through
 the codec. Python composition does not require rewriting retained Bronze or goldens.
-The current codec supports CR6; adding a domain requires its actual transport shape.
+New mixed bundles use `disclosure-v2` with explicit domain discriminators.
+`Cr9Dataset` composes metadata with `backtesting_rows`; its context deliberately has
+no table-wide observation date. Existing `cr6-v1` output remains readable and retains
+its old wire format. Extraction output names are independent of these wire versions.
 
 [`contracts.py::TABLES`](../src/rwa_analysis/domains/cr6/contracts.py) associates
 the 12 named `Cr6Output` relation members with their row models, derived/augmented
@@ -86,6 +93,22 @@ Band fields live on observations. Repeated metadata becomes related rows; small
 owned source locations are flattened. Catalogue definitions remain durable files
 under [`catalogue/`](../catalogue/), outside disposable Silver.
 
+CR9 declares the analogous twelve metadata/measure relations plus
+`temporal_descriptors`, `temporal_bindings` and `temporal_evidence` in
+[`contracts.py`](../src/rwa_analysis/domains/cr9/contracts.py). Its relationships
+include optional field endpoints so a new-default subset is distinct from a row
+self-edge. Bindings join a source record/field and temporal role to an occurrence-
+scoped descriptor; partial dates, duration and unresolved bounds remain explicit.
+Temporal qualifications are projected to affected fields. Source row qualifications
+also follow those fields into Silver.
+
+The shared `compose_field` combines selected meanings. CR6 retains date-aware
+selection; the CR9 adapter selects explicit occurrences and leaves date-restricted
+definitions/mappings unresolved rather than substituting the document date.
+`cr6-cr9-v1` retains the old release's members and adds source-specific CR9 definitions.
+Counts are not assumed to share one counting convention: NAB establishes agreements,
+while unsupported counting/weighting conventions remain unresolved.
+
 Dataclass schemas are derived with `extract_from_dataclass`, then augmented with
 explicit literals, keys and measure-specific decimals. Money uses `Decimal(16,2)`;
 rates, band fractions and maturity use `Decimal(16,8)`; counts are integers.
@@ -101,6 +124,8 @@ The approved temporary `asdict()`/full-record Polars inference boundary is isola
 in `domains/cr6/metadata.py`. Mountainash owns its relational projections. Its
 [removal debt](04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
 requires revisiting nested metadata schemas, not generalising the adapter.
+CR9 uses flat dataclass lists through native relation ingress; this does not remove
+the existing CR6 nested-ingress debt.
 
 ## Execution, publication and reconstruction
 
@@ -109,12 +134,16 @@ Master consolidation is a separate call. Targeted stages accept explicit inputs 
 do not depend on earlier calls on the same session. See the executable examples in
 the [README](../README.md).
 
+`SilverCandidate` and `SilverOutput` expose named `cr6` and `cr9` members. The common
+inventory in `storage/tables.py` drives all 27 table writes/readbacks; an omitted
+domain is represented by typed empty relations and is cleared on replacement.
+
 - Bronze output names select retained versions beneath a bundle path. Use a new
   `run_name` to save another extraction; it is not a schema or code version.
 - Staging publication replaces every declared table for the complete selected input
   set, plus `ops.silver_publication`, in one mountainash-data DuckDB transaction.
   Selecting fewer inputs removes their former rows. Manifests are retained separately
-  before the database write; file retention and the database are not one transaction.
+   before the database write; file retention and the database are not one transaction.
 - Master reads persisted staging values, concatenates corresponding relations with
   `ma.concat`, and replaces its own tables. It does not reconform Bronze or deduplicate
   source occurrences. Empty selections produce typed empty tables.
@@ -163,6 +192,12 @@ new domain is approved; do not force stock/flow or liquidity records into CR6.
 The [completed migration record](04.planning/superpowers/plans/2026-10-11-strategic-architecture-migration.md)
 records 114 passing tests and the real CBA/four-bank demonstrations on 2026-10-11.
 This is dated evidence, not a fresh test-run claim or a target test count.
+
+The [CR9 execution record](04.planning/superpowers/plans/2026-10-12-cr9-implementation.md)
+records 148 passing tests and the real four-bank PDF → retained Bronze → staging →
+master run: 36 CR6 rows, 33 CR9 rows and eight reconstructed numeric tables. Existing
+CR6 goldens are unchanged. Master tests mutate stored CR9 rates/history duration,
+then verify copying and reconstruction after deleting the staging databases.
 
 - [Organisation workflow tests](../tests/integration/test_organisation_workflow.py):
   real CBA PDF → saved Bronze → persisted tables, independent reruns and rooted settings.

@@ -6,9 +6,9 @@ This is a single-user Python disclosure research project using Mountainash for t
 
 The primary goal is [faithful capture and useful tagging](docs/01.principles/a.architecture/capture-and-tag-for-research.md), not perfect accounting. PDFs provide incomplete evidence by nature. Preserve and tag partial semantics; support explicit assumptions, approximations and imperfect comparisons downstream. Do not demand exhaustive definitions, exact reconciliation or global analytical eligibility before retaining faithfully captured observations. Distinguish actual extraction/structural errors from legitimate research limitations.
 
-The implemented slice is four-bank mortgage CR6: bespoke PDF extractors, retained
+The implemented slice is four-bank mortgage CR6/CR9: bespoke PDF extractors, retained
 Bronze, a durable semantic catalogue, normalised organisation staging Silver, master
-consolidation and source-shaped numeric dataframe reconstruction. CR1/CR2, CR9,
+consolidation and source-shaped numeric dataframe reconstruction. CR1/CR2,
 liquidity and capital analytics remain research/design work rather than production
 pipelines. Check actual code and assets before asserting additional capability.
 
@@ -61,7 +61,7 @@ plans and logical-model examples. Follow its status distinctions before using a 
 - Scrutinise each PDF with an LLM before constructing its bespoke Python extractor. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning.
 - One source PDF's extractor owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates.
 - Implemented paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/bundle.json`. Generated Bronze is retained separately and is not automatically present in a fresh checkout/worktree.
-- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; the retained codec reads/writes the existing `cr6-v1` representation.
+- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; CR9 exposes `metadata` and `backtesting_rows`. New mixed bundles use `disclosure-v2`; the retained codec still reads/writes the existing `cr6-v1` representation.
 - Folder jurisdiction/date describe the source disclosure. Dataset context determines exposure geography, regulatory basis and observation date.
 - Preserve labels, values, units, precision, missingness, segmentation and evidence. Unresolved meanings remain explicit; notes and glossaries may establish metric variants.
 - Inspect both table axes and nested headers for meaning. Capture `of which`, parent/child and total relationships, including those established by notes, so downstream aggregation does not double-count parents and subsets. Do not assume displayed children exhaust a parent or are mutually exclusive without evidence.
@@ -126,5 +126,7 @@ does not authorise a new validation process. See the current architecture's dist
 Example scripts write generated data; inspect their selected roots/run names before
 running them. `examples/cba_extraction.py` starts from the tracked PDF; saved-Bronze
 examples require retained `v1` bundles, which a fresh worktree does not inherit.
+`examples/four_bank_cr9.py` starts from all four PDFs, retains a fresh temporary output
+root and exposes interactive results. Store readback has named `.cr6` and `.cr9` outputs.
 
 Preserve unrelated user work. Keep exploratory artifacts clearly labelled and distinguish them from production Bronze, approved golden fixtures and implemented contracts. When changing this guidance, retain links to authoritative principles instead of duplicating their status inventories here.
