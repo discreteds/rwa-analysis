@@ -13,9 +13,14 @@
 
 ## Evidence and design history
 
+- [CR9 implementation lessons](00.ideation/2026-10-12-cr9-implementation-lessons.md):
+  observed fixes, reusable design evidence and concrete follow-up candidates.
+
 - [CR9 domain and temporal metadata design](04.planning/superpowers/specs/2026-10-12-cr9-domain-design.md):
-  design and disposable spike shape approved; refined production specification for
-  review before implementation planning. CR9 remains unimplemented in production.
+  refined production specification and disposable spike shape approved.
+   Four-bank CR9 capture, conformance and persistence are implemented on PR #9.
+  The [implementation plan](04.planning/superpowers/plans/2026-10-12-cr9-implementation.md)
+   records the approved Westpac checkpoint and final four-bank execution evidence.
 
 - [Raw inventory](../raw/index.md) and [`extractions/`](../extractions/): official
   sources, per-document review and saved extraction code.

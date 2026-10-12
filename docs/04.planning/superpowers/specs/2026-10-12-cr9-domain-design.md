@@ -2,10 +2,12 @@
 
 Date: 2026-10-12
 
-Status: **Design and disposable spike shape approved by the researcher.** This
-post-spike revision specifies the production contracts for final review before
-implementation planning. Production CR9 extraction, catalogue and persistence remain
-unimplemented; approval of the shape is not a claim of production correctness.
+Status: **Refined production specification approved by the researcher after PR #7
+merged.** Design and disposable spike shape are also approved. The
+[implementation plan](../plans/2026-10-12-cr9-implementation.md) is approved and records
+the approved task-3 checkpoint and completed four-bank execution evidence.
+CR9 extraction, catalogue and persistence are implemented and verified on PR #9;
+merge status is separate from this implementation status.
 
 Design approval followed merged PR #5. Spike evidence is retained at commit
 `16db1b7` on `feature/cr9-interface-spike`, [draft PR #6](https://github.com/discreteds/rwa-analysis/pull/6).
@@ -175,7 +177,8 @@ Split the current CR6 `resolve_field()` responsibility at the existing seam:
    overrides, supersessions and unresolved/conflicting attributes into `FieldMeaning`.
 
 The shared input is a concrete `FieldOccurrence` carrying source identity, published
-field/binding, scoped source attributes and temporal bindings. It has no `Cr6Dataset`
+field and scoped source attributes. Temporal bindings remain on dataset metadata for
+conformance; the current semantic selector does not consume or copy them. It has no `Cr6Dataset`
 dependency and does not demand that every domain expose `exposure_rows`.
 
 The proven composition seam is:

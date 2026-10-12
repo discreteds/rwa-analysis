@@ -21,3 +21,10 @@ Temporary implementation choices with an explicit removal objective live under
 |---|---|---|
 | [Metadata ingress and nested dataclass schemas](techdebt/metadata-ingress-and-nested-dataclasses.md) | OPEN | Revisit the metadata schemas and remove the temporary recursive `asdict()` ingress adaptation. |
 | [Constructor validation separation](techdebt/constructor-validation-separation.md) | DEFERRED | Revisit retained constructor/transport checking responsibilities under the separate-validation principle; outside CR9 interface design. |
+| [Interactive research examples](techdebt/interactive-research-examples.md) | OPEN | Restore convenient interactive execution and exposed research objects without introducing a runner framework. |
+
+## Implementation learning
+
+[CR9 implementation lessons](../../00.ideation/2026-10-12-cr9-implementation-lessons.md)
+retain observed fixes, design evidence and investigation candidates. Candidates are
+not new requirements or confirmed upstream defects.
