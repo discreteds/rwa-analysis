@@ -28,6 +28,9 @@ A fixture with correct EAD amounts but an incorrect default category or an unsup
 
 ## References
 
+- [Implemented source goldens](../../../tests/bronze/) and
+  [bespoke extractors/reviews](../../../extractions/) cover the selected four-bank CR6
+  blocks. Additional domains and tables need their own source-backed expectations.
 - [Initial data model](../../04.planning/superpowers/specs/2026-10-10-initial-data-model.md), section 10.
 - [CBA/Westpac source review](../../00.ideation/2025-disclosure-spike.md).
 - [NAB/ANZ source review](../../00.ideation/2025-nab-anz-metadata-spike.md).

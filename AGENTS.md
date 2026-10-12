@@ -2,11 +2,19 @@
 
 ## Project purpose
 
-This is a single-user Python disclosure research project using Mountainash for tabular analytics, conformance, validation and storage integration. Australian mortgage regulatory capital is the first slice; the architecture supports other portfolios, jurisdictions and data domains.
+This is a single-user Python disclosure research project using Mountainash for tabular analytics, conformance, configuration and storage integration. Australian mortgage regulatory capital is the first slice. Validation is separate and undefined.
 
 The primary goal is [faithful capture and useful tagging](docs/01.principles/a.architecture/capture-and-tag-for-research.md), not perfect accounting. PDFs provide incomplete evidence by nature. Preserve and tag partial semantics; support explicit assumptions, approximations and imperfect comparisons downstream. Do not demand exhaustive definitions, exact reconciliation or global analytical eligibility before retaining faithfully captured observations. Distinguish actual extraction/structural errors from legitimate research limitations.
 
-The repository currently contains source PDFs, discovery notes, principles and design specifications. Check the actual files before assuming a package, extractor, database or test command has been implemented.
+The implemented slice is four-bank mortgage CR6: bespoke PDF extractors, retained
+Bronze, a durable semantic catalogue, normalised organisation staging Silver, master
+consolidation and source-shaped numeric dataframe reconstruction. CR1/CR2, CR9,
+liquidity and capital analytics remain research/design work rather than production
+pipelines. Check actual code and assets before asserting additional capability.
+
+Start with the [documentation guide](docs/README.md), [current architecture](docs/architecture.md)
+and [executable README](README.md). Historical specs and plans retain superseded
+proposals; their presence is not authority to restore retired functionality.
 
 ## Design principles — mandatory
 
@@ -21,6 +29,7 @@ Before architectural decisions or changes to extraction contracts, metadata, map
 | Layer boundaries, source bundles, Silver rebuilds, Gold dependencies | [Architecture](docs/01.principles/a.architecture/INDEX.md) |
 | Metric definitions, label mappings, variants, temporal scope, corrections and identity | [Data semantics](docs/01.principles/b.data-semantics/INDEX.md) |
 | PDF review, bespoke extractors, golden sets and extraction tests | [Extraction and validation](docs/01.principles/c.extraction-and-validation/INDEX.md) |
+| Library selection, tabular expressions, settings, adapters and coding style | [Coding practices](docs/01.principles/d.coding-practices/INDEX.md) |
 
 Principle documents own their decisions, statuses and scopes; category indexes own the navigation inventory. `AGREED` means an accepted design constraint, not implemented functionality. If new evidence conflicts with an agreed principle, surface the conflict and obtain a revised decision rather than silently overriding it. Update the principle, category index and affected specifications together when a decision changes.
 
@@ -40,19 +49,16 @@ All project documentation belongs in this repository:
 
 Use these planning paths even when a skill defaults to `docs/superpowers/`. Preserve the user's directory convention and update relative links after moves. Mountainash's external repository is a reference, not the destination for this project's documents.
 
-Current detailed specifications:
-
-- [Platform architecture](docs/04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md).
-- [Initial data model](docs/04.planning/superpowers/specs/2026-10-10-initial-data-model.md).
-- [Layered schemas and E–R diagrams](docs/04.planning/superpowers/specs/2026-10-10-layered-data-model.md): distinct Bronze capture and Silver conformed contracts, with the durable semantic catalogue between them.
-- [Worked model examples](docs/04.planning/superpowers/specs/2026-10-10-data-model-worked-examples.md): design exercises, not production fixtures.
+The [documentation guide](docs/README.md) identifies current specifications, completed
+plans and logical-model examples. Follow its status distinctions before using a design.
 
 ## Source and extraction workflow
 
 - Save acquired PDFs in project-root `raw/` and maintain [raw/index.md](raw/index.md). Keep acquisition simple; do not introduce checksums, registration machinery or file-identity proofs.
 - Scrutinise each PDF with an LLM before constructing its bespoke Python extractor. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning.
 - One source PDF's extractor owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates.
-- Agreed paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/`. These are intended layouts, not claims that they already exist.
+- Implemented paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/bundle.json`. Generated Bronze is retained separately and is not automatically present in a fresh checkout/worktree.
+- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; the retained codec reads/writes the existing `cr6-v1` representation.
 - Folder jurisdiction/date describe the source disclosure. Dataset context determines exposure geography, regulatory basis and observation date.
 - Preserve labels, values, units, precision, missingness, segmentation and evidence. Unresolved meanings remain explicit; notes and glossaries may establish metric variants.
 - Inspect both table axes and nested headers for meaning. Capture `of which`, parent/child and total relationships, including those established by notes, so downstream aggregation does not double-count parents and subsets. Do not assume displayed children exhaust a parent or are mutually exclusive without evidence.
@@ -60,6 +66,17 @@ Current detailed specifications:
 - Mirror the extraction hierarchy under `tests/bronze/`, with `golden.json`, `golden-notes.md` and `test_extraction.py`. Metadata mismatches are failures even when values match.
 
 ## Conformance and persistence
+
+### Mountainash-first coding — mandatory
+
+Follow [Mountainash-first implementation](docs/01.principles/d.coding-practices/mountainash-first.md).
+Use native ecosystem capabilities for tabular work, contracts, settings and storage;
+inspect pinned APIs before writing local equivalents. Polars/Arrow are explicit
+boundaries, not a parallel business-logic pipeline. The principle owns adaptation
+policy and the approved temporary metadata-ingress exception.
+
+Follow the [current architecture](docs/architecture.md) for processing ownership and
+entrypoints. Keep ordinary Python use, explicit inputs and independently callable stages.
 
 ### Semantic discovery and maintenance
 
@@ -74,15 +91,37 @@ Current detailed specifications:
 - Use Mountainash relations/contracts and storage integration; the selected persistent store is local DuckDB through `mountainash-data`. Keep NumPy/SciPy capital calculations independent of persistence.
 - Consult the actual installed/local Mountainash APIs and backend capabilities before implementing an integration. The dependency's documentation does not prove every conformance or transaction path is supported.
 - Record Mountainash dependency findings in `/home/ubuntu/git/mountainash-io/mountainash-central/04.planning/mountainash/a.backlog/`, following its conventions and checking existing owners first. Do not open GitHub issues without explicit researcher approval. Distinguish reproduced defects, capability questions and consumer declaration mistakes.
-- Silver reads saved Bronze. Full regeneration is the primary workflow; incremental upserts must yield the same logical result.
+- Silver reads saved Bronze. Full regeneration is the implemented workflow; incremental upserts are deferred and would need to yield the same logical result.
 - Keep definitions, mappings, curated corrections and rebuild manifests outside disposable Silver. A manual Silver edit alone is not a durable correction.
 - Version interpretations and preserve source-effective dates separately from revision history. Mutable canonical classifications and database-generated IDs are not sufficient durable observation identities.
 - Publish candidate revisions atomically. Handle removal, splitting and merging as well as updates; preserve source lineage and avoid double-counting comparative evidence. Validation is separate and does not supply an implicit publication gate.
+- Before publication/consolidation, consult the [current publication limits](docs/architecture.md#current-publication-and-provenance-limits):
+  paths are mutable, selections replace contents, and manifests do not automatically
+  pin all reproducibility inputs. Preserve retained assets and use current publications.
 - Gold identifies the Silver revision it consumed and must be regenerated when its dependencies change.
 - Apply [emergent analysis and selective persistence](docs/01.principles/a.architecture/emergent-analysis-and-selective-persistence.md): do not create core entities or mandatory storage for every possible reconciliation or inference. Compute exploratory relationships as needed, retain useful outputs with reproducible inputs and assumptions, and promote reusable definitions when research warrants them. Missing evidence or unexplained analytical residuals do not automatically indicate extraction errors.
 
 ## Verification and maintenance
 
-Use verification appropriate to the actual change: check links and indexes for documentation; source-backed golden comparisons for extraction; conformance and rebuild behaviour for Silver. Discover commands from the project's configuration when it exists rather than copying Mountainash's development commands.
+Use verification appropriate to the actual change: check links, statuses, indexes and
+code/example accuracy for documentation; independent goldens for extraction; actual
+conformance and persisted reconstruction for Silver. Current project commands:
+
+```bash
+uv sync --locked
+uv run pytest
+uv run ruff check src tests examples extractions
+git diff --check
+```
+
+Use focused existing tests while iterating. New tests must protect observable behaviour
+or a distinct regression, not duplicate framework arithmetic or implementation details.
+Do not restore the retired defensive lifecycle suite or turn tests into runtime gates.
+The retained codec/transport and model parsers still perform checks; their existence
+does not authorise a new validation process. See the current architecture's distinction.
+
+Example scripts write generated data; inspect their selected roots/run names before
+running them. `examples/cba_extraction.py` starts from the tracked PDF; saved-Bronze
+examples require retained `v1` bundles, which a fresh worktree does not inherit.
 
 Preserve unrelated user work. Keep exploratory artifacts clearly labelled and distinguish them from production Bronze, approved golden fixtures and implemented contracts. When changing this guidance, retain links to authoritative principles instead of duplicating their status inventories here.

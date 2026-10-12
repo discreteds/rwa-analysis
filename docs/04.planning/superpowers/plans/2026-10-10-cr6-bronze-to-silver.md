@@ -1,8 +1,14 @@
 # First CR6 Bronze-to-Silver Implementation Plan
 
-**Status: historical implementation reference.** The researcher declined PR #1 as a merge candidate and retained it as a working demonstration. Review the proposed [simpler CR6 research workflow](../specs/2026-10-10-simple-cr6-research-design.md) before any further implementation; this plan is not the active execution target.
+**Status: historical implementation reference.** The researcher declined PR #1 as a
+merge candidate and retained it as a working demonstration. The replacement shipped
+in PR #2 through the [strategic migration](2026-10-11-strategic-architecture-migration.md).
+Use the [current architecture](../../../architecture.md) for supported interfaces.
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `subagent-driven-development` or `executing-plans` to implement this plan task-by-task, according to the execution method chosen by the researcher. Steps use checkbox (`- [ ]`) syntax for tracking. Do not start implementation before plan review. Use `test-audit` when authoring tests and `test-driven-development` when implementing features.
+> **Do not execute this historical plan.** Its CLI, validation gates, defensive test
+> mandates and earlier physical layout have been superseded. The
+> [separate-validation principle](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md)
+> governs; the historical steps below are retained as execution evidence only.
 
 **Goal:** Extract the complete Australian mortgage CR6 blocks from CBA June 2025 and Westpac, NAB and ANZ September 2025 into retained Bronze bundles, then publish a source-traceable, Decimal-preserving Silver revision in local DuckDB from pinned durable inputs.
 

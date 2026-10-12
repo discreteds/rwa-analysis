@@ -2,13 +2,15 @@
 
 Date: 2026-10-10
 
-Status: Approved architectural direction; written specification awaiting review.
+Status: **Historical platform direction and future research scope.** The selected
+four-bank CR6 slice is implemented; this document is not the current API or physical
+layout specification. See the [current architecture](../../../architecture.md).
 
 Subsequent decisions: the [simple CR6 workflow](2026-10-10-simple-cr6-research-design.md)
 supersedes the CLI and automatic output-reuse proposals below. The
 [strategic architecture](2026-10-11-strategic-architecture-design.md) records the
 agreed domain contracts, organisation sessions, Mountainash Settings layers and
-staging/master split. Its detailed written design awaits review. Use those later
+staging/master split, now implemented for CR6 and merged in PR #2. Use those later
 decisions for these concerns rather than reinstating the earlier implementation proposals.
 
 Governing principles: [Principles and architecture](../../../01.principles/README.md). The collection captures durable decisions; this specification describes their intended implementation.
@@ -38,7 +40,7 @@ The research hypothesis and mathematical definitions in `docs/00.ideation/initia
 One repository contains versioned agent workflow instructions and an installable package, `rwa_analysis`, with three independently understandable components:
 
 1. **Disclosure processing:** agent-led discovery and retrieval, followed by LLM scrutiny of every PDF and LLM-authored bespoke Python extraction code for that file. Structured outputs and evidence references form the handoff to data processing. A shared extraction library grows from recurring needs across these per-file extractions.
-2. **Data preparation:** Mountainash contracts, persistence, normalisation, validation and semantic tagging through a durable, versioned catalogue. Analytical selection is task-specific.
+2. **Data preparation:** Mountainash contracts, persistence, normalisation and semantic tagging through a durable, versioned catalogue. Analytical selection is task-specific; validation remains separate and undefined.
 3. **Capital analytics:** pure numerical functions for mortgage capital, PD Differentiation Benefit (PDB) and subsequent sensitivity and decomposition methods.
 
 Capital functions accept numerical arrays and explicit parameter sets. They do not fetch documents or query a database. Application orchestration selects and materialises analytical inputs through Mountainash, invokes numerical calculations, and persists the results and lineage.
@@ -69,16 +71,16 @@ Official archives / targeted web searches
 |---|---|
 | Runtime and dependency management | Python 3.12+, uv and a committed lockfile |
 | Tabular selection and transformations | Mountainash relations and expressions |
-| Tabular schemas and validation | Mountainash TypeSpec, conformance and data contracts |
+| Tabular schemas and conformance | Mountainash TypeSpec and conformance; validation remains undefined |
 | Extraction output models | Python dataclasses representing the target data schema, evolved from real per-file extractions |
 | Database access and writes | mountainash-data, backed by persistent DuckDB |
 | Structured artifact I/O | mountainash-files |
 | Discovery and downloading | Versioned agent instructions using available search/browser/download tools |
 | Original document storage and catalogue | Project-root `raw/` with readable PDF filenames and `raw/index.md` maintained by the agent |
 | Numerical calculations | NumPy and SciPy |
-| Configuration and command inputs | Pydantic |
+| Configuration | Mountainash Settings native layering (supersedes the initial Pydantic-only proposal) |
 | PDF extraction | LLM scrutiny of each PDF, followed by a bespoke Python extractor per file using PDF/table tools and shared extraction components where applicable |
-| CLI and charts | Typer and Plotly |
+| Research interface | Ordinary Python examples and numeric dataframes; CLI/HTML proposals retired, charts deferred |
 | Verification | pytest and Ruff |
 
 Pin a compatible set of Mountainash ecosystem revisions. Optional local editable overrides support ecosystem development without making sibling checkout paths a requirement for reproducible runs.
@@ -236,7 +238,7 @@ Silver is produced by conforming versioned Bronze extraction datasets through Mo
 - Explicit PD-band boundaries, units, inclusivity and open-ended ranges.
 - Source row/column roles and canonical roles where mapped, including explicit subset/aggregate relationships and multi-level header paths.
 - Defaulted/non-defaulted classification.
-- Missing-value reasons, validation outcomes and source references.
+- Missing-value reasons, interpretation status and source references; validation outputs are not defined.
 
 Each segmentation belongs to a disclosed breakdown. Exact portfolio aggregation requires supported coverage and disjointness; parent rows and their subsets are not additive siblings. PD, LVR and borrower-type breakdowns are not combined as if they were disjoint exposures. Analyses can use incomplete breakdowns or approximate alignment with explicit selection and assumptions, without relabelling inferred results as published totals.
 
@@ -248,7 +250,12 @@ The earlier proposed validation inventory (units, references, bands and numerica
 
 Structural defects require correction; partial semantics and ambiguous mappings remain inspectable and tagged. Analytical suitability is task-specific, with assumptions and limitations visible. There is no universal comparable/not-comparable gate on source observations.
 
-Keep Bronze versions, semantic definitions, mappings, curated corrections and rebuild manifests outside disposable Silver. Each manifest identifies input versions and conformance code/contracts/configuration. Validate a candidate revision and publish atomically through supported transaction/staging mechanisms. A failed rebuild leaves the prior revision available. Incremental upserts are later optimisations and must yield the same logical result as a full rebuild. Gold outputs identify their Silver revision and become stale when their dependencies change.
+Keep Bronze versions, semantic definitions, mappings, curated corrections and rebuild
+manifests outside disposable Silver. Publish atomically through supported transactions,
+without a validation gate. The current manifest implementation retains selections but
+does not automatically pin code/configuration/environment; retain those inputs explicitly
+for reproducibility. Incremental upserts remain deferred. Future Gold outputs identify
+their consumed Silver revision and become stale when dependencies change.
 
 ### 5.3 Gold: versioned research products
 
@@ -278,12 +285,15 @@ The initial model comprises the following groups. Physical schemas are versioned
 | Semantic catalogue | Stable concepts and relationships, measure definitions, researcher decisions, framework/parameter versions |
 | Evidence | Source file, extraction run, published field, axes/header paths, qualifications and source relationships |
 | Observations | Typed domain records/values, breakdown, segment membership, band definition and source lineage |
-| Interpretation | Contextual mapping revisions, corrections, interpretation tags and validation outcomes |
+| Interpretation | Contextual mapping revisions, corrections and interpretation tags; validation outcomes are undefined |
 | Retained analysis | Selected input manifests, calculations, outputs and assumptions when useful; not a mandatory record of every exploratory result |
 
 Source values are addressable through their dataset, typed record and field, including non-cell locations for narrative observations. Effective meaning combines dataset context, row definition, column definition and qualifications. A source row can contain multiple measure types or identify a particular stock/flow measure. Preserve merged spans and subset relationships rather than forcing every source into one rectangular grain. Important quantities and dimensions use typed fields; JSON may hold source metadata or complete run configuration.
 
-Store source quantities as decimal/fixed-point values with explicit units. Convert to floating point deliberately when preparing numerical inputs. Identifiers remain stable; revisions and run identifiers distinguish history. Referential and uniqueness requirements are enforced through database facilities where supported and application contracts where necessary.
+Store source quantities as decimal/fixed-point values with explicit units. Convert to
+floating point deliberately when preparing numerical inputs. Identifiers remain stable;
+revisions and run identifiers distinguish history. Declared keys and relationships do
+not authorise additional runtime validators or imply database constraint enforcement.
 
 ## 7. Initial analytical contract
 
@@ -312,6 +322,10 @@ Common PD bands are not required to compute each bank's grouped PDB. Preserve na
 
 ## 8. Execution, idempotency and failures
 
+**Historical proposals below:** the implemented workflow is explicit Python stage
+calls, full replacement on request, and separate undefined validation. Automatic output
+reuse, CLI orchestration and embedded validation described in this section are retired.
+
 Stages have explicit handoffs: discover, acquire, scrutinise, construct/run the per-file extractor, normalise/validate, analyse and report. Discovery and acquisition are agent workflows producing PDFs in `raw/` and `raw/index.md`. LLM review and extractor authoring produce saved review notes and Python code. Code exposes extraction execution, structured-data import, validation, transformation and analytical entry points. A convenience command regenerates the comparison from a pinned structured extraction/observation snapshot and its saved source references; it does not need to repeat discovery or LLM review. Saved bespoke extractors can also be rerun independently.
 
 Code-driven processing records input observation/extraction versions, implementation version and configuration. Repeating a successful deterministic stage with identical inputs reuses its published output unless an explicit new attempt is requested. Agent extraction attempts retain distinct outputs and workflow metadata; their outputs are not assumed identical merely because instructions match. Failed processing attempts can be retried without duplicating published observations. These processing conventions do not impose identity checks or run tracking on source downloads.
@@ -321,6 +335,10 @@ Publish database outputs and successful processing status within one owned trans
 The initial execution model has one writer. Agent instructions coordinate exploratory work; CLI commands coordinate repeatable data processing. Saved PDFs, the index and structured extraction outputs connect them. Processing logs retain failures and actionable diagnostics.
 
 ## 9. Repository and physical layout
+
+**Historical proposed layout:** use the [current architecture](../../../architecture.md)
+for actual packages, staging/master paths and retained manifests. There is no implemented
+`cli.py`, analytics/reporting package, universal warehouse or migration framework.
 
 ```text
 pyproject.toml
@@ -440,4 +458,6 @@ The first slice validates only the selected backend and actual required operatio
 
 ## 12. Next review boundary
 
-Review this written specification before producing detailed implementation tasks. The implementation plan should begin with milestones A–D and leave broad historical scraping until the first full pipeline is working.
+The four-bank CR6 processing slice has since shipped through the strategic migration.
+Unimplemented analytics, historical expansion and additional domains need their own
+researcher-approved scope; this historical delivery sequence is not a current plan.

@@ -2,17 +2,24 @@
 
 Date: 2026-10-10
 
-Status: Proposed logical schema for review; not implemented database DDL.
+Status: **Logical schema reference; not current database DDL.** The CR6 implementation
+uses the later [normalised strategic design](2026-10-11-strategic-architecture-design.md#normalised-cr6-storage--approved-after-the-cba-spike).
+See the [current architecture](../../../architecture.md) for physical relations and
+code names. Other domain shapes remain design exercises.
 
 Companion to the [consolidated specification](2026-10-10-initial-data-model.md) and [worked source examples](2026-10-10-data-model-worked-examples.md). This document makes the layer ownership, entity relationships and first Silver domain contract explicit.
 
 Feasibility evidence: [CBA/Westpac Mountainash and DuckDB spike](../../../00.ideation/2026-10-10-layered-model-feasibility-spike.md), including Decimal conformance findings and rebuild/publication checks. This is a throwaway experiment, not implementation of these contracts.
 
-Implementation proposal: [First CR6 Bronze-to-Silver plan](../plans/2026-10-10-cr6-bronze-to-silver.md), awaiting review before execution.
+Historical implementation: [First CR6 Bronze-to-Silver plan](../plans/2026-10-10-cr6-bronze-to-silver.md).
+The subsequent strategic migration delivered the replacement in PR #2.
 
 The researcher expanded the planned initial extraction scope to the Australian mortgage CR6 blocks from CBA June 2025 and Westpac, NAB and ANZ September 2025. NAB/ANZ add source-backed counting, exposure-basis, overlay, entity/perimeter and missingness cases; the CBA/Westpac-only spike does not establish those new extractors or mappings.
 
-The implementation plan ends with recreation of each selected table from saved Bronze and persisted Silver alongside its source-page images, followed by recorded visual reconciliation. Silver values are returned to source units for display; this review complements independent goldens and does not require exact accounting reconciliation.
+The original demonstration ended with visual reconciliation. Current reconstruction
+returns numeric dataframes from persisted Silver and saved source bindings; HTML/image
+generation is not a processing requirement. Source review still uses rendered PDF pages
+where needed to establish meaning.
 
 ## 1. Three models with different responsibilities
 
@@ -414,4 +421,6 @@ An observation can have more than one supporting source occurrence. Lineage dist
 
 An interpretation correction changes mappings or catalogue revisions and can regenerate canonical roles, units or definition links while source evidence remains unchanged. A faithful Bronze fixture does not need rewriting for that correction. If new source notes are required, expand Bronze first. Retaining every historical Silver snapshot is optional; retaining the inputs needed to reproduce it is required.
 
-This proposal is ready for model review, not yet for claiming implemented conformance. The next implementation plan must establish dataclass/table encodings, exact backend contracts and supported transactional publication without changing these layer boundaries implicitly.
+CR6 conformance and transactional publication are now implemented with the later
+normalised physical model. These diagrams remain useful logical context, not evidence
+that every illustrated entity, field or additional domain has been implemented.

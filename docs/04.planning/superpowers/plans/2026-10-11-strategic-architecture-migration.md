@@ -1,21 +1,21 @@
 # Strategic architecture migration and retirement plan
 
-> **For agentic workers:** Use `executing-plans`, with a researcher checkpoint at
-> the first working CBA path. Use existing source goldens and native Mountainash
-> schema declarations/conformance. Do not restore the retired defensive suite.
+> **Completed execution record:** PR #2 merged into `develop`. The task instructions
+> below describe that migration; do not rerun it as a new plan. Current usage is in
+> the [architecture guide](../../../architecture.md).
 
 **2026-10-11 decision:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md),
 and has not yet been defined. This supersedes earlier boundary-validation instructions.
 Do not invoke validators or introduce validation gates in this migration.
 
-**Status:** Approved for implementation. The researcher accepted the refined design as settled
+**Status:** COMPLETE — merged. The researcher accepted the refined design as settled
 and authorised planning without another spike. During planning, the researcher
 explicitly rejected reintroducing the older checks or bullet-proofing this migration.
 
-**Current checkpoint:** the researcher approved CBA and authorised the remaining
+**Completed checkpoint:** the researcher approved CBA and authorised the remaining
 four-bank work. All four staging databases and master now run successfully; full
 suite: **114 passed**. Correctness and complexity reviews found no in-scope defects
-or required cuts. PR #2 is open against `develop` (not merged). Earlier blocked-status
+or required cuts. PR #2 merged into `develop` at `a759e25`. Earlier blocked-status
 entries below are historical execution evidence, not current delivery gates.
 
 Independent alignment and complexity reviews passed on 2026-10-11 with no requested
@@ -379,5 +379,5 @@ and interpretations survive; native conformance produces the declared schemas; o
 implementations are removed. This completes the requested architectural migration.
 Additional hardening is not part of this plan.
 
-Execution uses batched `executing-plans` with the CBA checkpoint. Review the plan and
-confirm the implementation seed/worktree before coding.
+Execution used batched `executing-plans` with the CBA checkpoint. The checkpoint and
+delivery are complete; the dated intermediate records above remain historical evidence.

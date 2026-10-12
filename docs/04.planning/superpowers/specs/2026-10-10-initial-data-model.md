@@ -2,7 +2,10 @@
 
 Date: 2026-10-10
 
-Status: Consolidated design for review. Incorporates agreed principles and discovery; logical record shapes and binding representation below are the proposed first implementation contract, not implemented classes.
+Status: **Logical model and extension design reference.** The selected CR6 slice is
+implemented with the later [strategic architecture](2026-10-11-strategic-architecture-design.md).
+Names and physical layouts below are conceptual; use the [current guide](../../../architecture.md)
+and code declarations for implemented contracts. CR1/CR2/LIQ2 remain design examples.
 
 Parent: [Platform architecture](2026-10-10-rwa-analysis-design.md). Governance: [Principles and architecture](../../../01.principles/README.md).
 
@@ -267,12 +270,16 @@ Silver domain tables retain logical observation identity, canonical context/grai
 
 Use Mountainash contracts, relations and persistence integration with local DuckDB through `mountainash-data`; retain the independent NumPy/SciPy analytical library. Verify actual API/backend support for Decimal, contracts and transactions against pinned versions. Physical tables and storage encodings are established with the first working Bronze slice, not a prebuilt universal ontology database.
 
-Validation distinguishes:
+When investigating discrepancies, distinguish:
 
 - **Structural/extraction errors:** invalid references, lost observations, contradictory value/missingness states or conversions inconsistent with established units.
 - **Research limitations:** unknown conventions, coarse disclosures, mismatched populations, unresolved mappings and analytical residuals.
 
-The second group does not block publication. Apply exact reconciliation only where source definitions and precision justify it; otherwise retain a diagnostic or use a tagged approximation in analysis. There is no global analytical eligibility flag. Calculations state their own needed inputs and assumptions.
+These distinctions do not define or invoke a validation process. Validation remains
+separate and undefined. Research limitations do not block publication. Apply exact
+reconciliation in analysis only where source definitions and precision justify it;
+otherwise retain a diagnostic or tagged approximation. There is no global analytical
+eligibility flag. Calculations state their own needed inputs and assumptions.
 
 ### Full rebuild inputs and publication
 
@@ -306,4 +313,6 @@ The [worked examples](2026-10-10-data-model-worked-examples.md) exercise:
 
 They establish that the proposed logical model can express the selected cases without inventing unavailable data. They do not establish full extraction accuracy, backend integration or production readiness.
 
-Review the consolidated contracts and examples before implementation planning. The first implementation checkpoint now covers four agreed full Australian mortgage CR6 golden sets and bespoke extractors, followed by Mountainash conformance/rebuild verification. The [implementation plan](../plans/2026-10-10-cr6-bronze-to-silver.md) details the CBA/Westpac/NAB/ANZ scope. Introduce additional domain classes only as their selected extraction scope becomes concrete.
+The four-bank CR6 checkpoint is complete under the strategic migration. The
+[original implementation plan](../plans/2026-10-10-cr6-bronze-to-silver.md) is historical.
+Introduce additional domain classes only as their selected extraction scope becomes concrete.

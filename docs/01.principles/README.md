@@ -9,14 +9,16 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 - [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
 - [b. Data semantics](b.data-semantics/INDEX.md): layered metric definitions, contextual mappings and correction-safe identity.
 - [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction, independently authored golden sets, and validation as a separate, not-yet-defined process.
+- [d. Coding practices](d.coding-practices/INDEX.md): Mountainash-first implementation, explicit library boundaries and capability-gap handling.
 
 ## Supporting material
 
-- [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved specification separating configuration, declarations, operations and workflow, with the agreed `run()` entrypoint and a linked migration plan.
+- [Current architecture](../architecture.md): implemented ownership, normalised CR6 tables, staging/master behaviour, provenance limits and verification evidence.
+- [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved design implemented for four-bank CR6, with a completed migration record; additional domains remain design examples.
 
-- [Simpler CR6 research workflow](../04.planning/superpowers/specs/2026-10-10-simple-cr6-research-design.md): candidate replacement implementation direction for review; PR #1 is retained as a working demonstration.
+- [Simpler CR6 research workflow](../04.planning/superpowers/specs/2026-10-10-simple-cr6-research-design.md): historical intermediate design, superseded in physical storage and ownership by the strategic architecture.
 
-- [Platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): detailed architecture and intended workflows.
+- [Original platform design](../04.planning/superpowers/specs/2026-10-10-rwa-analysis-design.md): research direction and historical proposals; use the current architecture for implemented workflows.
 - [Initial data model](../04.planning/superpowers/specs/2026-10-10-initial-data-model.md): consolidated source capture, semantic catalogue and conformance contracts.
 - [Layered schemas and E–R diagrams](../04.planning/superpowers/specs/2026-10-10-layered-data-model.md): explicit Bronze/catalogue/Silver relationships and conformed field contracts.
 - [Worked model examples](../04.planning/superpowers/specs/2026-10-10-data-model-worked-examples.md): source-backed CR6, CR1/CR2 and LIQ2 design exercises.
