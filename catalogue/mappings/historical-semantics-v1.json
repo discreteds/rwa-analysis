@@ -1,0 +1,65 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id":"cba-jun24-lgd-semantics","revision_id":"cba-jun24-lgd-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2024-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"lgd","published_field_ref":"lgd"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.exposure-lgd@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"excludes_overlays","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"field","ref_id":"lgd"}]
+    },
+    {
+      "id":"cba-dec23-lgd-semantics","revision_id":"cba-dec23-lgd-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-12-31","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"lgd","published_field_ref":"lgd"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.exposure-lgd@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"excludes_overlays","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"field","ref_id":"lgd"}]
+    },
+    {
+      "id":"cba-jun23-lgd-semantics","revision_id":"cba-jun23-lgd-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"lgd","published_field_ref":"lgd"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.exposure-lgd@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"excludes_overlays","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"field","ref_id":"lgd"}]
+    },
+    {
+      "id":"cba-jun24-overlay-semantics","revision_id":"cba-jun24-overlay-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2024-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"overlay","published_field_ref":"overlay"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.rwa-overlay@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"overlay_amount_only","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"qualification","ref_id":"overlay"}]
+    },
+    {
+      "id":"cba-dec23-overlay-semantics","revision_id":"cba-dec23-overlay-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-12-31","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"overlay","published_field_ref":"overlay"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.rwa-overlay@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"overlay_amount_only","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"qualification","ref_id":"overlay"}]
+    },
+    {
+      "id":"cba-jun23-overlay-semantics","revision_id":"cba-jun23-overlay-semantics@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"overlay","published_field_ref":"overlay"},
+      "measure_ref":{"kind":"measure","revision_id":"measure.cba.historical.rwa-overlay@v1"},
+      "attributes":[{"name":"overlay_treatment","value":"overlay_amount_only","status":"established","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"qualification","ref_id":"overlay"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"qualification","ref_id":"overlay"}]
+    },
+    {
+      "id":"cba-jun24-average-ead-unresolved","revision_id":"cba-jun24-average-ead-unresolved@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2024-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"average_ead","published_field_ref":"average_ead"},
+      "attributes":[{"name":"counted_entity","value":null,"status":"unresolved","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"field","ref_id":"average_ead"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2024-06-30","kind":"field","ref_id":"average_ead"}]
+    },
+    {
+      "id":"cba-dec23-average-ead-unresolved","revision_id":"cba-dec23-average-ead-unresolved@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-12-31","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"average_ead","published_field_ref":"average_ead"},
+      "attributes":[{"name":"counted_entity","value":null,"status":"unresolved","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"field","ref_id":"average_ead"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-12-31","kind":"field","ref_id":"average_ead"}]
+    },
+    {
+      "id":"cba-jun23-average-ead-unresolved","revision_id":"cba-jun23-average-ead-unresolved@v1","created_on":"2026-10-12","effective_from":null,"effective_to":null,
+      "scope":{"document_id":"cba-2024-06-30-aps330","document_date":"2024-06-30","dataset_id":"table9d-ii-2023-06-30","template":"Table 9d(ii)","portfolio":"Residential mortgage","field_key":"average_ead","published_field_ref":"average_ead"},
+      "attributes":[{"name":"counted_entity","value":null,"status":"unresolved","evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"field","ref_id":"average_ead"}]}],
+      "evidence_refs":[{"bundle_key":"au/cba/2024-06-30/aps330","document_id":"cba-2024-06-30-aps330","dataset_id":"table9d-ii-2023-06-30","kind":"field","ref_id":"average_ead"}]
+    }
+  ]
+}

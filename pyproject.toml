@@ -26,7 +26,7 @@ dependencies = [
 dev = ["pytest", "ruff"]
 
 [tool.uv.sources]
-mountainash = { git = "https://github.com/mountainash-io/mountainash", rev = "ee28822d25310a396865a78cba17f2d7cb779d09" }
+mountainash = { git = "https://github.com/mountainash-io/mountainash", rev = "c98f35ace19562dac0612fdd9f6c580a59bdc5f8" }
 mountainash-data = { git = "https://github.com/mountainash-io/mountainash-data", rev = "36f4f4a68bc17de51bfc22bbfbd9dd9191db2701" }
 mountainash-files = { git = "https://github.com/mountainash-io/mountainash-files", rev = "13721c33fa5876ba8ee1e69917f3e9ce9f781fc2" }
 mountainash-settings = { git = "https://github.com/mountainash-io/mountainash-settings", rev = "e81750960b3fb078ae239696b848054568af6c72" }

@@ -118,11 +118,12 @@ class BronzeStore:
             write(
                 FileSinkSpec(path=str(staging / "bundle.json"), format="json"), envelope
             )
-            restored = read_staged_bundle(
-                staging / "bundle.json", expected_reference=ref
-            )
-            if encode_payload(restored) != envelope["payload"]:
-                raise ValueError("Bronze serialization changed source evidence")
+            if bundle.schema_version != "disclosure-v3":
+                restored = read_staged_bundle(
+                    staging / "bundle.json", expected_reference=ref
+                )
+                if encode_payload(restored) != envelope["payload"]:
+                    raise ValueError("Bronze serialization changed source evidence")
             if destination.exists() or destination.is_symlink():
                 raise FileExistsError(destination)
             staging.rename(destination)

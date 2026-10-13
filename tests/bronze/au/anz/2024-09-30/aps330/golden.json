@@ -1,0 +1,59 @@
+{
+  "bands": ["0.00%\n<0.11%", "0.11%\n<0.30%", "0.30%\n<0.51%", "0.51%\n<3.49%", "3.49%\n<10.09%", "10.09%\n<100.00%", "Default", "Total"],
+  "bounds": [["0.00", "0.11"], ["0.11", "0.30"], ["0.30", "0.51"], ["0.51", "3.49"], ["3.49", "10.09"], ["10.09", "100.00"], [null, null], [null, null]],
+  "fields": [
+    ["exposure", "Exposure at Default", "$M", "1000000", 0],
+    ["undrawn", "Undrawn commitments (included in above)", "$M", "1000000", 0],
+    ["average_ead", "Average Exposure at Default", "$M", "1000000", 3],
+    ["lgd", "Exposure-weighted average Loss Given Default (%)", "%", "1", 1],
+    ["risk_weight", "Exposure-weighted average risk weight (%)", "%", "1", 1]
+  ],
+  "exposures": [
+    {"date": "2024-09-30", "label": "Sep 24", "page": 53, "rows": [
+      ["119,159", "73,101", "45,028", "101,696", "11,985", "2,372", "3,534", "356,875"],
+      ["19,190", "4,830", "2,221", "7,094", "48", "17", "10", "33,410"],
+      ["0.345", "0.432", "0.392", "0.403", "0.397", "0.383", "0.405", "0.385"],
+      ["13.0%", "14.1%", "14.7%", "16.5%", "15.5%", "16.4%", "26.9%", "14.7%"],
+      ["6.6%", "10.4%", "18.4%", "42.0%", "86.1%", "141.4%", "306.6%", "25.5%"]
+    ]},
+    {"date": "2024-03-31", "label": "Mar 24", "page": 54, "rows": [
+      ["85,573", "62,866", "37,488", "144,707", "10,975", "1,732", "3,025", "346,365"],
+      ["20,137", "4,057", "1,460", "7,520", "41", "15", "7", "33,238"],
+      ["0.300", "0.379", "0.398", "0.419", "0.387", "0.321", "0.430", "0.372"],
+      ["12.3%", "13.6%", "14.0%", "15.3%", "14.9%", "14.5%", "24.7%", "14.2%"],
+      ["6.2%", "10.1%", "18.7%", "42.6%", "93.2%", "161.4%", "264.9%", "29.3%"]
+    ]},
+    {"date": "2023-09-30", "label": "Sep 23", "page": 55, "rows": [
+      ["83,971", "60,151", "36,181", "143,396", "9,820", "1,575", "2,384", "337,478"],
+      ["20,168", "4,140", "1,531", "8,831", "43", "10", "6", "34,729"],
+      ["0.290", "0.363", "0.380", "0.421", "0.373", "0.351", "0.367", "0.364"],
+      ["12.3%", "13.5%", "13.7%", "15.1%", "14.6%", "14.2%", "26.3%", "14.0%"],
+      ["6.3%", "10.1%", "18.4%", "41.9%", "91.9%", "156.2%", "284.0%", "28.5%"]
+    ]}
+  ],
+  "backtesting": [
+    ["estimated_pd", "Average Estimated PD %", "%", "0.91"],
+    ["actual_pd", "Average Actual PD %", "%", "0.70"],
+    ["ead_ratio", "Average estimated to actual EAD ratio", "ratio", "1.01"],
+    ["estimated_lgd", "Average Estimated LGD %", "%", "18.11"],
+    ["actual_lgd", "Average Actual LGD %", "%", "1.35"]
+  ],
+  "notes": {
+    "default-definition": [28, "ANZ uses the following definition of default:  ANZ considers that the customer is unlikely to pay its credit obligations in full, without recourse to actions such as realising security, or  the customer is greater than or equal to 90 days past due on a credit obligation, or  the customer’s overdraft or other revolving facility(ies) have been continuously outside approved limits for 90 or more consecutive days."],
+    "ead-net-offsets": [27, "Unless otherwise stated, throughout this disclosure EAD is net of offsets for credit risk mitigation such as netting and financial collateral."],
+    "regulatory-adjustments": [48, "For the wholesale asset class, PD, LGD, M and EAD are used in the calculation of capital and in the collectively assessed provisioning process. For the retail asset class, PD, LGD and EAD are used in the calculation of capital, and PNPL, EANPL and LGNPL are used in the collectively assessed provisioning process. Regulatory and internal expected loss are calculated from the same data sources and starting from the same basis, however there are some differences between the factors used because several aspects of ANZ’s rating system are adjusted in accordance with APRA requirements for regulatory capital purposes. The most significant of these adjustments are the use for regulatory capital purposes of downturn LGDs; the application of regulatory prescribed scalars such as the mortgages scalars of 1.4, 1.7 and 2.5 and the mandatory use of the supervisory slotting approach for project finance."],
+    "report-entity": [4, "This document is prepared for ANZ BH Pty Ltd (ANZ Bank HoldCo) in accordance with Board policy and the Australian Prudential Regulation Authority (APRA) ADI Prudential Standard (APS) 330: Public Disclosure requirements."],
+    "level-2": [4, "The APS 330 disclosure has been prepared on the Level 2 basis being ANZ Bank HoldCo as the head of ANZ’s Level 2 Banking Group following the implementation of the non-operating holding company on 3 January 2023 (formerly Australia and New Zealand Banking Group Limited (ANZBGL) for prior years)."],
+    "currency": [4, "Unless otherwise stated, all amounts are rounded to AUD millions."],
+    "suncorp": [46, "On 31 July 2024 ANZ added Suncorp Bank to the ANZ Banking Group. Suncorp Bank is a standardised ADI with Credit RWA calculated based on APS 112 Standardised Approach to Credit Risk and as such will not be reflected in the below for IRB specific disclosure tables."],
+    "regulatory-basis": [46, "Residential Mortgages Exposures secured by residential property AIRB"],
+    "pd-definition": [47, "PD is an estimate of the level of the risk of borrower default over a 12-month horizon. Borrower ratings are derived by way of rating models used both at loan origination and for ongoing monitoring."],
+    "ead-definition": [49, "EAD represents the expected outstanding at the time of default, including an estimate of additional drawings prior to default (based on supervisory credit conversion factors), plus post-default drawings that were legally committed to prior to default."],
+    "lgd-definition": [47, "LGD is an estimate of the potential economic loss on a credit exposure, incurred as a consequence of customer default, expressed as a percentage of the facility’s EAD."],
+    "ead-glossary": [100, "Exposure At Default is defined as the expected facility exposure at the date of default."],
+    "pd-history": [57, "The estimated PD is based on the average of the internally estimated long-run PDs for obligors that are not in default at September of each year over the period of observation being 2019 to 2023. The actual PD is based on the number of defaulted obligors up to September 2023 compared to the total number of obligors measured."],
+    "ead-history": [57, "The EAD ratio compares internally estimated EAD prior to default to realised EAD for defaulted obligors over the period of observation being 2019 to 2023. A ratio greater than 1.0 signifies that on average, the actual defaulted exposures are lower than the estimated exposures at the time of default."],
+    "lgd-history": [57, "The estimated LGD is the downturn LGD for accounts that defaulted at September of each year during the observation period being 2018 to 2022. The actual LGD is based on the average realised losses over the period for the accounts observed at the beginning and defaulted during the observation period. Defaults occurring after September 2023 have been excluded from the analysis to allow sufficient time for workout period."],
+    "lgd-review": [57, "A review of historical LGD data is currently being undertaken and may result in changes to Average Actual LGD numbers detailed above."]
+  }
+}

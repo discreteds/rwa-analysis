@@ -1,0 +1,50 @@
+{
+  "bands": ["0<0.1%", "0.1<0.5%", "0.5<2.0%", "2.0<5.0%", "5.0<99.9%", "100%"],
+  "bounds": [["0","0.1"],["0.1","0.5"],["0.5","2.0"],["2.0","5.0"],["5.0","99.9"],[null,null]],
+  "exposure_fields": [
+    ["Exposure at default", "$m", "1000000"],
+    ["Undrawn commitments", "$m", "1000000"],
+    ["Average exposure at default ($m)", "$m", "1000000"],
+    ["Exposure-weighted average LGD (%)", "%", "1"],
+    ["Exposure-weighted average risk-weight (%)", "%", "1"]
+  ],
+  "backtesting_fields": {
+    "ii": [["Average estimated PD", "%", "1"], ["Average actual PD", "%", "1"], ["Ratio of estimated to actual EaD", "ratio", "1"]],
+    "iii": [["Average estimated downturn LGD", "%", "1"], ["Average actual LGD", "%", "1"]]
+  },
+  "exposures": [
+    {"date":"2024-09-30","label":"As at 30 Sep 24","page":50,"rows":[
+      ["17,404","273,487","96,365","7,979","10,963","4,520"],
+      ["6,768","44,309","7,591","326","319","129"],
+      ["0.13","0.40","0.50","0.46","0.41","0.46"],
+      ["11.6%","14.3%","19.8%","17.2%","16.6%","23.4%"],
+      ["5.6%","12.7%","39.7%","77.7%","138.4%","192.9%"]]},
+    {"date":"2024-03-31","label":"As at 31 Mar 24","page":51,"rows":[
+      ["64,632","207,429","94,494","16,059","13,348","3,785"],
+      ["28,649","24,779","3,732","607","338","121"],
+      ["0.19","0.40","0.48","0.59","0.49","0.42"],
+      ["13.3%","15.3%","17.3%","18.9%","18.0%","22.9%"],
+      ["5.8%","13.1%","35.1%","88.2%","142.1%","188.6%"]]}
+  ],
+  "backtesting": [
+    {"kind":"ii","date":"2024-09-30","page":40,"rows":[["0.87","0.92","1.0"],["0.99","0.69","1.0"]]},
+    {"kind":"ii","date":"2024-03-31","page":40,"rows":[["0.89","0.91","1.0"],["1.00","0.68","1.0"]]},
+    {"kind":"ii","date":"2023-09-30","page":41,"rows":[["0.87","0.91","1.0"],["1.01","0.68","1.0"]]},
+    {"kind":"iii","date":"2024-09-30","page":41,"rows":[["20.0","1.8"],["23.0","1.7"]]},
+    {"kind":"iii","date":"2024-03-31","page":42,"rows":[["20.0","1.9"],["23.4","1.9"]]},
+    {"kind":"iii","date":"2023-09-30","page":42,"rows":[["20.0","2.0"],["23.7","2.1"]]}
+  ],
+  "notes": {
+    "average-arrangements":"Simple average of exposure by number of arrangements.",
+    "undrawn":"Undrawn commitments are included in total exposure shown above.",
+    "overlay":"RWA overlay adjustments for regulatory prescribed methodology requirements have been excluded from exposure-weighted average risk weights.",
+    "pd-model-change":"In the six months ended 30 September 2024, PD estimates for residential mortgage exposures subject to the advanced IRB approach were updated through the implementation of new PD models. This resulted in a change in the distribution of residential mortgage exposures across PD risk grades.",
+    "pd-cohort":"The following table provides internal estimates of long-run PD and actual default rates by asset class. Averages of actual and estimated PD are calculated using the cohort that is not in default at the beginning of the reporting period and averaged out over a 10-year observation period. Only exposures with a balance outstanding at both the beginning and end of a 12-month period are included in the analysis.",
+    "ead-comparison":"The ratio of estimated to actual EaD in the following table provides a comparison of EaD for customers that are not in default at the beginning of the reporting period, with EaD at the point of default. A ratio greater than 1.0 signifies that on average, EaD is lower at the point of default than at the beginning of the reporting period.",
+    "lgd-history":"Actual LGD has been calculated using net write-offs from defaults over a 10-year observation period to the reporting date, excluding recent defaults to allow sufficient time to complete the workout of the asset and recognition of any losses. For defaults relating to qualifying revolving retail and other retail, this period is the most recent 12 months and for all other asset classes this period is the most recent two years.",
+    "lgd-estimate":"The following table compares internal estimates of downturn LGD at the beginning of the year with actual losses.",
+    "apra-floor":"Estimated downturn LGD subject to APRA imposed regulatory floors.",
+    "rbnz-lgd":"RBNZ prudential rules prescribe LGDs for residential mortgages.",
+    "rbnz-materiality":"Risk estimate information has only been disclosed for the RBNZ regulated banking subsidiary’s significant asset classes on the basis of materiality."
+  }
+}

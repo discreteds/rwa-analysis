@@ -1,0 +1,82 @@
+{
+  "bands": ["0.0 to 0.10", "0.10 to 0.25", "0.25 to 1.0", "1.0 to 2.5", "2.5 to 10.0", "10.0 to 99.99", "Subtotal", "Default", "Total"],
+  "bounds": [["0.0", "0.10"], ["0.10", "0.25"], ["0.25", "1.0"], ["1.0", "2.5"], ["2.5", "10.0"], ["10.0", "99.99"], [null, null], [null, null], [null, null]],
+  "exposure_fields": [
+    ["outstandings", "Outstandingsᵃ", "$m"],
+    ["undrawn", "Committed Undrawnᵇ", "$m"],
+    ["ead", "Exposure at Default", "$m"],
+    ["pd", "Probability of Default", "%"],
+    ["lgd", "Loss Given Default", "%"],
+    ["expected_loss", "Regulatory Expected Loss", "$m"],
+    ["rwa", "Risk Weighted Assets", "$m"],
+    ["risk_weight", "Average Risk Weight", "%"]
+  ],
+  "exposures": [
+    {"date": "2024-09-30", "label": "30 September 2024", "rows": [
+      ["83,167", "42,412", "124,282", "0.06%", "13%", "9", "7,029", "6%"],
+      ["109,398", "14,735", "122,778", "0.16%", "14%", "27", "9,975", "8%"],
+      ["226,437", "7,928", "233,586", "0.45%", "15%", "164", "43,329", "19%"],
+      ["29,751", "695", "30,344", "1.19%", "16%", "59", "11,489", "38%"],
+      ["22,037", "1,211", "22,645", "7.79%", "15%", "269", "23,795", "105%"],
+      ["8,227", "25", "8,253", "23.73%", "16%", "312", "11,289", "137%"],
+      ["479,017", "67,006", "541,888", "1.00%", "15%", "840", "106,906", "20%"],
+      ["5,816", "29", "5,816", "100%", "20%", "498", "9,322", "160%"],
+      ["484,833", "67,035", "547,704", "2.05%", "15%", "1,338", "116,228", "21%"]
+    ]},
+    {"date": "2024-03-31", "label": "31 March 2024", "rows": [
+      ["77,673", "42,278", "118,626", "0.06%", "13%", "9", "6,697", "6%"],
+      ["107,689", "14,715", "121,145", "0.16%", "14%", "27", "9,884", "8%"],
+      ["223,902", "9,378", "232,584", "0.45%", "15%", "163", "42,995", "18%"],
+      ["30,113", "694", "30,715", "1.20%", "16%", "60", "11,666", "38%"],
+      ["22,847", "1,165", "23,446", "7.81%", "15%", "281", "24,795", "106%"],
+      ["8,212", "21", "8,234", "23.64%", "16%", "311", "11,280", "137%"],
+      ["470,436", "68,251", "534,750", "1.02%", "15%", "851", "107,317", "20%"],
+      ["5,439", "28", "5,439", "100%", "20%", "476", "8,601", "158%"],
+      ["475,875", "68,279", "540,189", "2.02%", "15%", "1,327", "115,918", "21%"]
+    ]},
+    {"date": "2023-09-30", "label": "30 September 2023", "rows": [
+      ["72,233", "41,325", "112,350", "0.06%", "13%", "8", "6,368", "6%"],
+      ["106,671", "14,695", "120,152", "0.16%", "14%", "27", "10,067", "8%"],
+      ["221,712", "11,338", "232,352", "0.45%", "16%", "163", "43,357", "19%"],
+      ["29,636", "672", "30,214", "1.20%", "16%", "59", "11,510", "38%"],
+      ["22,472", "1,149", "23,055", "7.78%", "15%", "280", "24,663", "107%"],
+      ["7,220", "24", "7,245", "21.54%", "16%", "251", "9,963", "138%"],
+      ["459,944", "69,203", "525,368", "0.95%", "15%", "788", "105,928", "20%"],
+      ["4,372", "28", "4,372", "100%", "20%", "378", "7,020", "161%"],
+      ["464,316", "69,231", "529,740", "1.77%", "15%", "1,166", "112,948", "21%"]
+    ]}
+  ],
+  "backtesting_fields": [
+    ["expected_loss", "Regulatory Expected Lossᵃ", "$m", ["panel", "expected_loss"]],
+    ["predicted_pd", "Predicted", "%", ["panel", "default-rate", "predicted_pd"]],
+    ["observed_pd", "Observed", "%", ["panel", "default-rate", "observed_pd"]],
+    ["predicted_lgd", "Predicted", "%", ["panel", "lgd", "predicted_lgd"]],
+    ["observed_lgd", "Observed", "%", ["panel", "lgd", "observed_lgd"]],
+    ["ead_variance", "Observed EAD variance to Predictedᵇ", "%", ["panel", "ead_variance"]]
+  ],
+  "backtesting": [
+    {"date": "2024-09-30", "label": "30 September 2024", "page": 57, "tokens": ["1,338", "0.77%", "0.61%", "20%", "1%", "-"]},
+    {"date": "2024-03-31", "label": "31 March 2024", "page": 57, "tokens": ["1,327", "0.77%", "0.60%", "20%", "1%", "-"]},
+    {"date": "2023-09-30", "label": "30 September 2023", "page": 58, "tokens": ["1,166", "0.77%", "0.60%", "20%", "1%", "(1%)"]}
+  ],
+  "notes": {
+    "outstandings": [45, "Outstandings are balances that were drawn down as at the reporting date and include certain off-balance sheet items."],
+    "undrawn": [45, "Committed undrawn balances are committed exposures that were not drawn down as at the reporting date."],
+    "supplementary-rwa": [45, "As at 30 September 2024 Residential Mortgages risk weighted assets under the IRB approach totalled $131,989 million. The standardised approach equivalent was $214,081 million."],
+    "expected-loss-definition": [42, "For both non-defaulted and defaulted exposures, regulatory expected loss is determined at the facility level. For non-defaulted exposures, regulatory expected loss is the product of PD, LGD and EAD while for defaulted exposures, the best estimates of loss is applied. Total regulatory expected loss as shown in the table below is the sum of both non-defaulted and defaulted regulatory expected loss and given the difference in methodology, regulatory expected loss reported is not equal to the product of the corresponding reported average PD, average LGD and aggregate EAD."],
+    "pd-bands": [42, "Westpac’s program-managed exposures are classified by PD band and the average PD within a band can, likewise, vary from portfolio to portfolio."],
+    "pd-definition": [114, "Probability of default is a through-the-cycle assessment of the likelihood of a customer defaulting on its financial obligations within one year."],
+    "ead-definition": [114, "EAD is calculated at facility level and includes outstandings as well as the proportion of committed undrawn that is expected to be drawn in the event of a future default."],
+    "lgd-definition": [114, "The LGD represents an estimate of the expected severity of a loss to Westpac should a customer default occur during a severe economic downturn. Westpac assigns LGD to each credit facility, assuming an event of default has occurred and taking into account a conservative estimate of the net realisable value of assets to which Westpac has recourse and over which it has security. LGDs also reflect the seniority of exposure in the customer’s capital and debt structure."],
+    "default-definition": [114, "From 1 January 2023: Refer to Non-Performing Exposures definition."],
+    "npe-definition": [114, "Credit default exposures, the initial recognition of which under APS 220 occurs where either one, or both, of the following has happened: • Westpac considers that the borrower is unlikely to pay its credit obligations to Westpac in full, and without recourse to actions such as realising available security; • the borrower is 90 days or more past-due on a credit obligation to Westpac."],
+    "rwa-definition": [113, "Assets (both on and off-balance sheet) are risk weighted according to each asset’s inherent potential for default and what the likely losses would be in case of default. In the case of non-asset backed risks (i.e. market, IRRBB and operational risk), RWA is determined by multiplying the capital requirements for those risks by 12.5."],
+    "backtesting-framework": [56, "The table below compares regulatory credit risk estimates used in the calculation of risk weighted assets to the average of actual outcomes observed since the establishment of Advanced IRB accreditation for each portfolio. Predicted parameters represent average internally predicted long-run probabilities of default for non-defaulted obligors at the start of each year, as well as downturn estimates of loss (or the regulatory minimum where required). They are averaged using data from the financial years beginning at the time of Advanced IRB accreditation (2008 for most portfolios) and compared to observed outcomes over the same period. Predicted parameters are reviewed annually utilising observed outcomes from prior periods as a key input. Historical information from the period of previous capital framework (Basel II) has been mapped to the most comparable Basel III asset classes."],
+    "default-rates": [56, "At the start of each year, a predicted default probability is assigned to all non-defaulted obligors. This is averaged over the portfolio for the period since IRB accreditation and reported as the predicted default rate. The actual default rate reflects the fraction of obligors who start the year not in default but default during the one-year period. The observed annual default rates are averaged over the period since IRB accreditation."],
+    "lgd-workout": [56, "LGD estimates are based on an economic loss calculation and include workout costs and discounting of future cash flows to the date of default. LGD analysis excludes recent defaults in order to allow sufficient time for the full workout of the facility and hence an accurate LGD to be determined. The workout period varies by portfolio: a two-year workout period is assumed for transaction-managed and residential mortgage lending; and a one year period for other program-managed portfolios."],
+    "ead-variance-method": [57, "The EAD variance compares the observed EAD to the predicted EAD up to one year prior to default. For transaction-managed portfolios, predicted EAD is currently mandated to be 100% of committed exposures. The observed EAD is averaged for all obligors that defaulted over the observation period."],
+    "expected-loss-population": [57, "Includes regulatory expected losses for defaulted and non-defaulted exposures."],
+    "negative-variance": [57, "A negative outcome indicates observed EAD was lower than predicted EAD, which can happen because exposures were managed down prior to default or off-balance sheet items or undrawn limits were not fully drawn prior to default."],
+    "nz-history": [57, "Historical Default Rate, Loss Given Default and Observed-to-Predicted EAD are included in the asset classes above, consistent with the historical classification of New Zealand exposures."]
+  }
+}

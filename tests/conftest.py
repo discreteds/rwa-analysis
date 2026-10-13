@@ -201,6 +201,11 @@ def cba_bundle():
 
 
 @pytest.fixture(scope="session")
+def cba_2024_bundle():
+    return _extract("cba", "2024-06-30")
+
+
+@pytest.fixture(scope="session")
 def westpac_bundle():
     return _extract("westpac", "2025-09-30")
 
