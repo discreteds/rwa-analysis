@@ -502,6 +502,7 @@ def build():
                     title,
                     start=text,
                     end="\n",
+                    after=label,
                 )
             physicals.append(header)
             header_slot = (FragmentRef(header.revision_id, "text"),)

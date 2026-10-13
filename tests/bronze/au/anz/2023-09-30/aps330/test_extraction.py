@@ -70,6 +70,22 @@ def test_complete_anz_2023_source(project_root):
         assert table.id == "table9d-" + expected["date"]
         assert meta.context.source_date_label == expected["label"]
         axes = {a.id: a for a in meta.axes}
+        # PDF pp.52–54 repeat these words in the title and in the actual block.
+        # Capture must select the standalone heading, not the title's suffix.
+        for kind in ("field", "block"):
+            heading = next(
+                b
+                for b in bundle.snapshot.occurrences
+                if b.ref.scope == table.id
+                and b.ref.kind == kind
+                and b.ref.local_id == "exposure"
+            )
+            location = heading.physical_refs[0]
+            assert (
+                captured[(location.binding_ref, location.slot)].text
+                == "Exposure at Default"
+            )
+        assert axes["exposure"].source_label == "Exposure at Default"
         assert [a.source_label for a in meta.axes if a.axis == "column"] == golden[
             "bands"
         ]

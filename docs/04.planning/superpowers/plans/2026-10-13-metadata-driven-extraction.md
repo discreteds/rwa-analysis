@@ -474,7 +474,7 @@ separate task commits, retaining the recorded red/green evidence above.
 ### Retained executable artifacts
 
 - Example: `uv run python examples/anz_metadata_capture.py`.
-- Current proof root: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/`.
+- Initial proof root (superseded by the heading repair below): `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/`.
 - v4 snapshot: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/bronze/au/anz/2023-09-30/aps330/metadata-proof/bundle.json`.
 - Retained refinement release: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/catalogue/releases/anz-checkpoint-refinement.json`.
 - Ordinary readback: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/anz.duckdb`.
@@ -510,3 +510,45 @@ The ANZ independent golden, saved-only refinement workflow and snapshot transpor
 tests passed (**3 passed**); focused Ruff and diff checks passed. The parent also
 verified the example at `/tmp/opencode/anz-metadata-checkpoint-a-8w4smvvg/` and recorded
 the `develop` baseline as **181 passed**. Correctness review remains pending.
+
+### Correctness repair: exposure heading selection
+
+The independent review reproduced an in-repo sourcing error on PDF pp.52–54:
+the first `Exposure at Default` substring occurs in the table title. The paragraph
+reader therefore captured `Exposure at Default subject to Internal Ratings Based
+(IRB) approach by risk grade` for the exposure field/block, also publishing that
+incorrect block label in `source_axes`. The 125 financial values were unaffected.
+
+The existing independent source test now checks the field and block fragments and
+block label against the literal standalone heading on all three panels. RED:
+`uv run pytest tests/bronze/au/anz/2023-09-30 -q` failed with the title suffix rather
+than `Exposure at Default`; log `/tmp/opencode/metadata-heading-red.log`.
+The declaration now passes `after=label` to the existing paragraph reader,
+restricting heading selection to content after the panel date. No reader framework
+or alternate mode was added. The source golden and saved-only workflow passed
+(**2 tests**); log `/tmp/opencode/metadata-heading-green.log`.
+
+All earlier checkpoint artifacts, including the parent's
+`/tmp/opencode/anz-metadata-checkpoint-a-8w4smvvg/`, are superseded for source-label
+fidelity. They retain the incorrect exposure block labels and remain historical
+evidence only. Corrected retained artifacts:
+
+- Root: `/tmp/opencode/anz-metadata-checkpoint-a-4aojvuza/`.
+- Snapshot: `/tmp/opencode/anz-metadata-checkpoint-a-4aojvuza/bronze/au/anz/2023-09-30/aps330/metadata-proof/bundle.json`.
+- Example database: `/tmp/opencode/anz-metadata-checkpoint-a-4aojvuza/anz.duckdb`.
+- Fresh-process saved-only database: `/tmp/opencode/anz-metadata-checkpoint-a-4aojvuza/fresh-process.duckdb`.
+- Example log: `/tmp/opencode/metadata-heading-example.log`.
+- Saved-only readback log: `/tmp/opencode/metadata-heading-saved-only.log`.
+- Full-suite log: `/tmp/opencode/metadata-heading-full-tests.log`.
+
+The fresh process used the retained root after its copied PDF and authoring directory
+had been deleted. It asserted that all three persisted exposure blocks and all six
+field/block fragments equal exactly `Exposure at Default`, and reconstructed four
+tables with 125 financial cells, seven contexts, all eight occurrence kinds and the
+retained comment refinement. No upstream finding or further source migration is involved.
+
+Final verification after the heading repair: **195 passed**, 7,874 dependency
+warnings, in 204.17 seconds. `uv run ruff check src tests examples extractions`
+and `git diff --check` passed. The regression and full-suite evidence preserve the
+entire checkpoint scope; the earlier complexity cut removed only duplicate argument
+plumbing, with selected definition contents still supplied by the retained snapshot.
