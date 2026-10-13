@@ -1,7 +1,8 @@
 # Current processing architecture
 
-Updated: 2026-10-12. Describes four-bank CR6/CR9 implementation, including the CR9
-delivery merged into `develop` through PR #9 at `32e5f6a`.
+Updated: 2026-10-13. Describes four-bank CR6/CR9 and source-defined historical
+capture. Historical implementation is verified on `feature/historical-source-tables`
+(PR #13); the CR9 baseline merged through PR #9 at `32e5f6a`.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
@@ -23,6 +24,12 @@ CR1/CR2 and liquidity remain research/design cases, not implemented domain pipel
 Gold persistence and a reusable NumPy/SciPy capital engine are not implemented.
 The application is ordinary Python, with examples and numeric dataframes for research.
 
+Historical capture selects the 2024 mortgage exposure/backtesting panels from CBA,
+Westpac, NAB and ANZ: 23 dated datasets, 574 body cells and eight numerical notes.
+NAB main and separately named RBNZ mortgage backtesting populations remain distinct.
+Selected Westpac 2025 CR6/CR9 can be explicitly projected as two source datasets for
+structural comparison; that is a second view, not additional exposure to aggregate.
+
 ## Data flow and ownership
 
 ```text
@@ -36,7 +43,7 @@ BronzeStore.save → retained bundle.json → BronzeStore.load
                                              |
 Versioned catalogue release -----------------+
                                              |
-                           Cr6Pipeline / Cr9Pipeline.conform
+                  Cr6Pipeline / Cr9Pipeline / SourceTablePipeline.conform
                                 Mountainash relations
                                              |
                                   SilverCandidate
@@ -46,6 +53,7 @@ Versioned catalogue release -----------------+
 Selected current staging publications → SilverConsolidator → master DuckDB
                                                                |
 Saved Bronze structure + persisted Silver numbers → source-shaped dataframes
+Persisted source-table structure + cells → source-oriented numeric/lexical frames
 ```
 
 | Owner | Responsibility |
@@ -58,11 +66,12 @@ Saved Bronze structure + persisted Silver numbers → source-shaped dataframes
 | [`catalogue/`](../src/rwa_analysis/catalogue/) | Load and resolve concepts, definitions, scoped mappings, evidence and researcher decisions |
 | [`domains/cr6/`](../src/rwa_analysis/domains/cr6/) | CR6 models, schema/table declarations, Mountainash transformations and source-unit reconstruction |
 | [`domains/cr9/`](../src/rwa_analysis/domains/cr9/) | CR9 typed rows, field-level temporal metadata, source-scoped semantic selection, conformance and reconstruction |
+| [`domains/source_tables/`](../src/rwa_analysis/domains/source_tables/) | Source-defined cells/metadata conformance, explicit legacy adaptation and persisted structural reconstruction |
 | [`storage/`](../src/rwa_analysis/storage/) | Bronze transport, paths, manifests, database connections, transactional publication and master consolidation |
 
 Domain transformations receive data and interpretations; they do not open PDFs,
 configuration files or database connections. Settings select execution locations;
-the catalogue owns financial meaning. Current dispatch explicitly selects CR6 and CR9;
+the catalogue owns financial meaning. Dispatch explicitly selects CR6, CR9 and source tables;
 the dataset protocol is not an automatic multi-domain plugin system.
 
 ## Source contracts and normalised Silver
@@ -88,8 +97,7 @@ TypeSpecs and physical `silver.cr6_*` tables:
 | `attributes`, `attribute_evidence`, `attribute_decisions` | Resolved assertions and alternatives, typed values and supporting references |
 | `relationships`, `relationship_evidence` | Source parent/child relationships and evidence |
 
-There is no separate persisted band catalogue or universal numeric EAV table.
-Band fields live on observations. Repeated metadata becomes related rows; small
+Within CR6, band fields live on observations. Repeated metadata becomes related rows; small
 owned source locations are flattened. Catalogue definitions remain durable files
 under [`catalogue/`](../catalogue/), outside disposable Silver.
 
@@ -134,8 +142,8 @@ Master consolidation is a separate call. Targeted stages accept explicit inputs 
 do not depend on earlier calls on the same session. See the executable examples in
 the [README](../README.md).
 
-`SilverCandidate` and `SilverOutput` expose named `cr6` and `cr9` members. The common
-inventory in `storage/tables.py` drives all 27 table writes/readbacks; an omitted
+`SilverCandidate` and `SilverOutput` expose named `cr6`, `cr9` and `source_tables`
+members. The common inventory in `storage/tables.py` drives all 45 table writes/readbacks; an omitted
 domain is represented by typed empty relations and is cleared on replacement.
 
 - Bronze output names select retained versions beneath a bundle path. Use a new
@@ -152,6 +160,44 @@ domain is represented by typed empty relations and is cleared on replacement.
 - Reconstruction uses persisted values and conversion factors, with saved Bronze
   supplying labels, ordering and source metadata. Master reconstruction needs those
   retained files, but not live staging databases.
+
+### Source-defined historical tables
+
+`SourceTable` composes a table context, published fields, ordered axes and typed
+cells with qualifications, segmentations, relationships and cell-level timing.
+Fields carry units, scale and source form (`table_body` or `note`). Cells carry
+Decimal/integer/lexical payloads and explicit source missingness; absent fields have
+no occurrence. `disclosure-v3` transports these datasets without extending the fixed
+CR6/CR9 row inventories. Earlier v3 checkpoint cells decode with defaults for the
+later legacy row-role and aggregation-scope metadata.
+
+`SourceTableOutput` declares 18 relations: tables, fields, axes, cells, references,
+source attributes, evidence, segmentations, bands, qualifications, relationships,
+temporal descriptors/bindings, meanings, mapping references and interpretation
+attributes/evidence/decisions. Ordered reference rows preserve header paths and
+qualified endpoints; the same declarations drive storage and master copying.
+
+`resolve_cell` uses the existing scoped catalogue composer. Definitions can be
+shared while source occurrences and evidence remain separate. Exact unit conversion
+does not imply an established canonical measure. Source Decimal slots use
+`Decimal(16,8)`, conversion factors `Decimal(16,6)`, normalised money `Decimal(16,2)`
+and other numeric scalars `Decimal(16,8)`; counts remain integers. Wider arithmetic
+precedes conformance. The native model-declared ingress fix in Mountainash PR #377
+is pinned; no source-row reordering or inference-window workaround is used.
+
+Ordinary `ConformanceOperation` selects native source datasets for this output.
+An explicit `SourceTablePipeline().conform(inputs, catalogue)` also adapts selected
+legacy CR6/CR9 datasets. The adapter resolves original addresses/timing first, then
+projects published bindings, lexical rating cells and scoped relationships. The
+candidate's selection contains both actual saved input references.
+
+`reconstruct_source_tables(output.source_tables)` returns source-shaped frames and
+filtered metadata from persisted relations. It does not reread source numbers from
+Bronze. Numeric notes remain separately queryable cells outside body frames.
+Session/master frame dictionaries preserve existing numeric CR6/CR9 keys when an
+explicit source projection shares their source identity. The historical example
+exposes source views separately and constructs field/path/time/band inventories
+with Mountainash, including fields with unresolved definitions or missing values.
 
 ### Current publication and provenance limits
 
@@ -182,11 +228,10 @@ behaviour must be reconciled explicitly with the separate-validation decision.
 ## Extending the implementation
 
 The agreed [historical-capture direction](01.principles/a.architecture/historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
-uses source-defined fields/cells composed with reusable metadata definitions and
-distinct source occurrences. It includes querying how report structure changes over
-time. A disposable spike exercised selected 2024/2025 cases; production contracts,
-complete metadata composition and migration are not implemented. The fixed domain
-rows described above remain the current implementation, not the future capture limit.
+is implemented for the selected 2024 reports and explicit Westpac 2025 comparison.
+Extend bespoke extraction and independent goldens for additional sources; do not
+assume this selection establishes fifteen-year coverage or cross-vintage equivalence.
+The disposable shape spike remains separate from production implementation.
 
 Follow [Mountainash-first coding practices](01.principles/d.coding-practices/mountainash-first.md).
 Select a real source case, review evidence, extend independent goldens and introduce

@@ -6,8 +6,10 @@
 
 Status: **APPROVED by the researcher, 2026-10-12.** Design approved the same day.
 Tasks 1–2 are implemented on `feature/historical-source-tables`; the researcher
-approved continuation after checkpoint A on 2026-10-12. Tasks 3–5 are **BLOCKED / NO-GO**
-at native publication by Mountainash item 302; independent source capture is implemented.
+approved continuation after checkpoint A on 2026-10-12. Mountainash item 302 is
+resolved and the consumer pin updated on 2026-10-13: full suite and retained example
+pass. Tasks 3–5 are complete and independently reviewed; checkpoint B is ready for
+researcher review. Code PR #13 and companion documentation PR #14 await merge.
 Researcher authorised
 a fresh coding worktree seeded from `develop` after merging documentation PR #12.
 
@@ -260,7 +262,7 @@ supplementary RWA figures, and explicit source-table projections of selected 202
   them with adapted cells. Use actual published bindings and lexical axes, not a
   cross-product of every dataclass member. Convert CR6 snapshot timing only to its
   established measurement role; copy CR9's existing field-level roles.
-- [ ] Implement this ordinary explicit composition in the integration example/test:
+- [x] Implement this ordinary explicit composition in the integration example/test:
 
   ```python
   inputs = session.load_bronze((historical_ref, modern_ref))
@@ -280,7 +282,7 @@ supplementary RWA figures, and explicit source-table projections of selected 202
   A normal modern session without this explicit call still has empty source output.
   Existing session frame mappings retain the old modern numeric frames; explicit
   source frames/metadata remain separately accessible, avoiding duplicate-key overwrite.
-- [ ] Run focused tests green plus the persisted comparison. Confirm historical
+- [x] Run focused tests green plus the persisted comparison. Confirm historical
   portfolio grain versus modern bands and source field inventories independently
   of normalised numbers. Commit as `feat: capture Westpac history and adapt selected legacy tables`.
 
@@ -314,13 +316,13 @@ notes; complete evidence-backed mappings with explicitly unresolved attributes.
   `extractor_path`, `pdf_path`, `golden_path` are the bank-specific paths above, rooted
   through `project_root`; expected JSON is independently source-authored. Run
   `uv run pytest tests/bronze/au/nab/2024-09-30/aps330 tests/bronze/au/anz/2024-09-30/aps330 -q`.
-- [ ] Populate the existing catalogue release with reviewed definitions and explicit
+- [x] Populate the existing catalogue release with reviewed definitions and explicit
   occurrence mappings. Reuse genuine shared concepts; do not force identical average
   EAD counting, EAD-ratio timing or default-rate cohort definitions across banks.
   Record researcher decisions for uncertain financial interpretation; retain unresolved
   attributes until decided. Development fixtures, not invented source facts, establish
   composition behaviour where the real sources do not prove equivalence.
-- [ ] Conform actual saved NAB/ANZ bundles and check persisted distinguishability of
+- [x] Conform actual saved NAB/ANZ bundles and check persisted distinguishability of
   main/RBNZ populations and field-specific time. Add only these new regression risks
   to the shared conformance tests; source tests own full numeric transcription.
   Commit separately as `feat: capture historical NAB mortgage disclosures` and
@@ -331,23 +333,23 @@ notes; complete evidence-backed mappings with explicitly unresolved attributes.
 **Files:** Modify `storage/consolidation.py`, `tests/integration/test_master_consolidation.py`;
 create `examples/historical_mortgages.py`; update `README.md`, `docs/architecture.md`,
 `docs/README.md`, source reviews and this plan's execution evidence. Record concrete
-generalisation lessons in `docs/00.ideation/2026-10-12-historical-implementation-lessons.md`.
+generalisation lessons in `docs/00.ideation/2026-10-13-historical-implementation-lessons.md`.
 
 **Consumes:** Four complete historical publications and explicitly selected modern
 Westpac projection. **Produces:** reproducible retained demonstration and interactive
 structural inventory from persisted master, with source-shaped frames and metadata.
 
-- [ ] Extend existing master tests with source-table publication: retain values and
+- [x] Extend existing master tests with source-table publication: retain values and
   metadata after deleting staging DBs; rebuild with fewer inputs and confirm removed
   source/child rows disappear. Change a persisted value before consolidation and prove
   master copies it. Keep the old CR6/CR9 assertions, without cloning their whole suite.
   Run `uv run pytest tests/integration/test_master_consolidation.py -q` red.
-- [ ] Extend the current declared-inventory consolidation and source reconstruction.
+- [x] Extend the current declared-inventory consolidation and source reconstruction.
   Select source-table outputs from persisted master. Preserve old frame keys; when
   source output includes legacy projections, keep those source frames available via
   `reconstruct_source_tables` rather than overwriting existing numeric frames.
   Do not reinterpret Bronze or introduce automatic snapshot/vintage selection.
-- [ ] Build the ordinary interactive example from tracked PDFs into a fresh retained
+- [x] Build the ordinary interactive example from tracked PDFs into a fresh retained
   `/tmp/opencode` root. Expose `sessions`, `publications`, `master_publication`,
   `output`, `source_tables` and `field_inventory` at module scope for `python -i`.
   Use actual saved inputs and the explicit Task 3 candidate composition for Westpac.
@@ -355,7 +357,7 @@ structural inventory from persisted master, with source-shaped frames and metada
   fields and scope/time/revision references. Field presence must not filter on numeric
   non-nullness. Keep multiple definition references visible where a field varies by cell.
   Rebanding, inference and automatic equivalence decisions are not part of this example.
-- [ ] Run focused cases green, then the real example:
+- [x] Run focused cases green, then the real example:
 
   ```bash
   uv run python examples/historical_mortgages.py
@@ -367,15 +369,15 @@ structural inventory from persisted master, with source-shaped frames and metada
   Record actual cell counts, supplementary observations, retained paths and structural
   findings. Check each golden's selected scope rather than using 574 alone as a proof
   of completeness. Existing four-bank examples must still work against fresh roots.
-- [ ] Update current architecture/README to implemented behaviour only after the
+- [x] Update current architecture/README to implemented behaviour only after the
   above proof. Retain lessons about local geometry, shared contracts, legacy metadata
   adaptation and catalogue composition; link any concrete techdebt/upstream finding to
   its owner. Do not create speculative backlogs from every observation.
-- [ ] Run independent correctness and complexity reviews of the final diff. Apply
+- [x] Run independent correctness and complexity reviews of the final diff. Apply
   complexity cuts before triaging defects; repair in-repo defects now. A reproduced
   required dependency defect blocks delivery until its upstream resolution and full
   relevant proof; no unapproved workaround or silent acceptance with follow-ups.
-- [ ] Commit as `feat: demonstrate historical mortgage structural research`; open the
+- [x] Commit the delivery and open/update the
   coding PR against `develop`, preserving this approved documentation lineage.
   Offer local/worktree cleanup after review/merge, retaining run artifacts separately.
 
@@ -510,3 +512,62 @@ they are not skipped or marked done. The feature PR remains draft.
 consumer pin, then pass the full selected suite and retained historical example.
 No caller-side reordering, artificial rows, alternative ingestion or local dependency
 patch has been introduced. The next decision is whether to start that upstream repair.
+
+### Upstream repair consumed — 2026-10-13
+
+Mountainash PR #377 merged at `c98f35ace19562dac0612fdd9f6c580a59bdc5f8`.
+Consumer commit `ce61b11` updates `pyproject.toml` and `uv.lock`; `uv sync --locked`
+succeeded. The native fix preserves model-declared source types at construction;
+no consumer ingress workaround is needed.
+
+The previously blocked integration paths now execute. One unreachable assertion
+incorrectly counted blanks across both CR6 and CR9; it now scopes its five-blank
+expectation to the intended CR9 table. Full suite: **171 passed**; Ruff and diff
+checks passed. Log: `/tmp/opencode/historical-pr377-suite.log`.
+
+Real example: `uv run python examples/historical_mortgages.py` succeeded.
+Retained output: `/tmp/opencode/historical-mortgages-vnzcoqbr/`.
+Log: `/tmp/opencode/historical-pr377-example.log`.
+
+- 23 historical datasets plus two explicitly adapted modern Westpac datasets.
+- 574 historical body cells, eight numerical note observations and 180 modern
+  source cells: **762 cells across 25 source datasets**.
+- Nine modern CR6 and eight modern CR9 rows remain in their existing named outputs.
+- All 25 source frames reconstructed; field/path/time/band inventories and all
+  source relations retained in Parquet alongside the saved Bronze and DuckDB stores.
+- Master tests pass persisted mutation, staging deletion and removal of selected
+  inputs. Explicit legacy views retain original numeric frame keys.
+
+**Item 302 consumer gate cleared.** Final feature reviews and documentation are
+separate remaining work; the earlier blocked record above is retained as history.
+
+### Checkpoint B — final review and delivery, 2026-10-13
+
+Independent final complexity and correctness reviews completed. Apply complexity
+cuts first, then triage correctness findings:
+
+| Bucket | Finding | Resolution |
+|---|---|---|
+| Complexity cut | CBA workflow repeated the stronger master test's staging-removal proof | Removed the duplicate tail; master test remains the owner. |
+| Complexity cut | Transport tests reparsed the CBA PDF via duplicate setup | Reused the existing immutable session-scoped fixture. |
+| Fix now | NAB/ANZ persisted semantic risks had real-run evidence but no focused regression cases | Added saved-Bronze → publication/readback assertions for NAB main/RBNZ scoped floor notes and ordered paths, and ANZ field-specific windows/cutoff. No numeric-golden duplication. |
+| Fix now | Current guides and execution record needed the new workflow | Updated README/architecture, this plan and documentation guide; retained the concrete implementation lessons. |
+| Track upstream | Item 302 | Repaired upstream, pin consumed, full suite/example passed; central item closed with consumer evidence. No outstanding upstream blocker. |
+
+The correctness reviewer found no reproducible production defect in selected scope
+and inspected persisted reference closure. Complexity review retained the design
+without new layers or requirements. Final tests after coverage additions/cuts:
+**173 passed**; log `/tmp/opencode/historical-final-suite.log`. Ruff and diff checks
+passed. Existing modern example `examples/four_bank_cr9.py` also executed successfully;
+log `/tmp/opencode/historical-pr377-modern-example.log`.
+
+Retained checkpoint B remains `/tmp/opencode/historical-mortgages-vnzcoqbr/`:
+no production changes followed that successful run, only test coverage/cleanup and
+documentation. It exposes portfolio-level 2024 Westpac backtesting versus band-level
+2025 CR9, changed field inventories, original paths/bands and mapped/unmapped meanings.
+Canonical definitions remain intentionally partial; only evidence-backed meanings
+are selected. No automatic equivalence, reconciliation or common history window is
+claimed. See the [implementation lessons](../../../00.ideation/2026-10-13-historical-implementation-lessons.md).
+
+**GO for researcher checkpoint B review**, pending PR merge. All selected capture,
+transport, composition, persistence and reconstruction paths are executable.
