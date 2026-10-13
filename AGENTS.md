@@ -20,7 +20,7 @@ proposals; their presence is not authority to restore retired functionality.
 The approved [contextual-occurrence](docs/01.principles/a.architecture/contextual-source-occurrences.md)
 and [metadata-driven processing](docs/01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
 principles govern the target architecture. Their [design specification](docs/04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
-is a draft, not an implemented migration. Preserve current extraction entrypoints
+is approved for a disposable spike, not an implemented migration. Preserve current extraction entrypoints
 and saved formats until the replacement has been designed, approved and verified.
 
 ## Design principles — mandatory

@@ -20,7 +20,7 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
   recorded in the affected principles. AGREED establishes design authority, not an
   implemented replacement pipeline; existing capture remains supported.
 - [Metadata-driven extraction design](../04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md):
-  draft design governed by those principles, awaiting review and a disposable spike.
+  design approved for a disposable spike; the executed shape awaits researcher review.
 
 - [Current architecture](../architecture.md): implemented ownership, normalised CR6 tables, staging/master behaviour, provenance limits and verification evidence.
 - [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved design implemented for four-bank CR6, with a completed migration record; additional domains remain design examples.

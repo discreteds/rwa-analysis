@@ -2,10 +2,11 @@
 
 Date: 2026-10-13.
 
-Status: **DRAFT for researcher review.** Governing principles are approved; the
-interfaces and storage recommendations below are proposed, not implemented or
-approved for implementation. Review this design before a disposable real-source
-spike. Implementation planning follows researcher review of that spike's shape.
+Status: **APPROVED for the disposable spike by the researcher, 2026-10-13.** The
+metadata/operation direction is accepted; production implementation is not approved.
+The spike has exercised the ANZ path described below. Implementation planning still
+requires researcher review of its shape and resolution of the remaining physical
+contract decisions.
 
 ## 1. Ask and scope
 
@@ -356,11 +357,11 @@ catalogue resolution, codec, relational metadata projection and retained-source
 adapters. Source declaration migration is additional. The first persisted example is
 the progress checkpoint; no implementation task breakdown is approved.
 
-Questions for researcher review: does the explicit Python declaration/operation split
+Questions for spike-shape review: does the explicit Python declaration/operation split
 make the three responsibilities independently maintainable; do explicit scoped
 bindings describe applicability clearly enough; and does a retained metadata snapshot
-meet the required reproducibility boundary? These are design recommendations to
-review, not unrecorded approvals. Final physical fields and migration sequencing
+meet the required reproducibility boundary? The design direction is approved for the
+probe; its executable shape remains for researcher review. Final physical fields and migration sequencing
 depend on the spike; the principles and source acceptance behaviours do not.
 
 ## 9. Draft review dispositions
@@ -374,4 +375,30 @@ Correctness review found no required defect. Clarifications retain provisional s
 independently applicable conversions when temporal meaning is unresolved, and later
 interpretations as durable rebuild inputs. No upstream-dependent finding was identified;
 the new runtime shape remains unproven until the spike. Review completion does not
-constitute researcher approval of this draft or an implementation plan.
+constitute approval of an implementation plan; researcher approval for the spike is
+recorded separately above.
+
+## 10. Disposable spike evidence
+
+The approved probe ran on `spike/metadata-driven-extraction`, seeded from the
+specification branch in the base checkout. Code remains disposable under
+`spikes/metadata-driven-extraction/`; it must not become the production implementation
+base. Execution config, metadata/source declarations, physical operations, capture and
+saved-data conformance are separately inspectable.
+
+ANZ's selected row and reform matrix produced 42 occurrences spanning all seven kinds
+and five financial cells. The selected numbers, five paragraphs and two matrix
+evidence summaries agree with the independent source goldens. A separately retained,
+source-supported loss-basis refinement changed the actual-LGD interpretation while
+preserving all five persisted numbers. A fresh-process saved-only reconstruction
+opened no PDFs and imported neither the source configuration nor the physical readers.
+
+Retained run: `/tmp/opencode/metadata-extraction-spike-zcze07kq/`.
+Logs: `/tmp/opencode/metadata-driven-spike-final.log` and
+`/tmp/opencode/metadata-driven-spike-saved-only.log`.
+
+This proves the selected separation and persisted path, not production transport,
+all-kind catalogue decoding, cross-bundle identity, master consolidation or migration.
+The spike's lightweight composer adapter and simplified temporal attributes are not
+final physical contracts. Shape review remains pending; no new tests were authored
+and no implementation plan has been started.
