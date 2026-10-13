@@ -3,6 +3,11 @@
 > **Status:** AGREED
 > **Scope:** core, extraction, Bronze
 
+> **Replacement proposal, 2026-10-13:** The [metadata-driven journey](metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
+> proposes metadata-defined capture instead of requiring a complete bespoke extractor
+> per PDF. This principle remains AGREED and authoritative pending acceptance;
+> the one-source-bundle boundary remains.
+
 ## Principle
 
 One source PDF has a bespoke extractor and one logical Bronze bundle, which can contain multiple typed datasets. Portfolio, domain, jurisdiction and observation period belong to the relevant dataset context rather than being imposed by the source folder.

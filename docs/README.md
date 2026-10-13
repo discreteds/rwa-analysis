@@ -13,6 +13,11 @@
 
 ## Evidence and design history
 
+- Proposed [contextual source occurrences](01.principles/a.architecture/contextual-source-occurrences.md)
+  and [metadata-driven extraction and conformance](01.principles/a.architecture/metadata-driven-extraction-and-conformance.md):
+  source-backed architectural direction and explicit candidate supersessions, awaiting
+  principle approval. These do not describe an implemented replacement pipeline.
+
 - [Historical source-table design](04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md):
   researcher-approved capture/composition contracts and structural research queries;
   the four-bank 2024 delivery merged through PRs #13/#14. The

@@ -14,6 +14,11 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 ## Supporting material
 
+- Proposed [contextual source occurrences](a.architecture/contextual-source-occurrences.md)
+  and [metadata-driven journey](a.architecture/metadata-driven-extraction-and-conformance.md):
+  assessed against captured disclosures; replacement clauses are identified for review.
+  Existing AGREED principles remain authoritative until the proposals are accepted.
+
 - [Current architecture](../architecture.md): implemented ownership, normalised CR6 tables, staging/master behaviour, provenance limits and verification evidence.
 - [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved design implemented for four-bank CR6, with a completed migration record; additional domains remain design examples.
 
