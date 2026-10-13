@@ -119,14 +119,14 @@ than an unrestricted dictionary for semantic content.
 ```python
 # Approved production signatures; normal Python calls, no discovered registry.
 physical_operation(document, binding: PhysicalBinding) -> tuple[CapturedFragment, ...]
-capture(pdf_path, definition: CaptureDefinition, selected_definitions, operations) -> CapturedBundle
+capture(pdf_path, definition: CaptureDefinition, operations) -> CapturedBundle
 run_capture(definition_path, operations_path, pdf_path) -> CapturedBundle
 resolve_capture(loaded_bronze, catalogue) -> ResolvedCapture
 project_cr6(source_output, domain_bindings) -> Cr6Output
 project_cr9(source_output, domain_bindings) -> Cr9Output
 ```
 
-`definition.py` exposes `DEFINITION` and its explicitly selected reusable definitions;
+`definition.py` exposes `DEFINITION`, whose snapshot contains the selected reusable definitions;
 `physical.py` exposes `OPERATIONS`. Neither imports the other. `run_capture` loads
 both using the existing explicit module-loading pattern. A dated `extract.py` calls
 it with sibling file paths, retaining the current `DocumentSelection` call shape.
@@ -500,3 +500,13 @@ materialised compatibility views of singly captured passages.
 No required upstream defect has been reproduced. Existing Mountainash declaration
 warnings and Ibis/Polars deprecation warnings remain visible. Checkpoint A awaits
 the parent's independent reviews and researcher acceptance; nothing has been pushed.
+
+### Approved complexity cut
+
+Before correctness triage, removed the redundant `SELECTED_DEFINITIONS` alias and
+capture argument. `capture` now consumes `definition.snapshot` directly; declaration
+and physical-operation loading remain separate. No alternate mode was introduced.
+The ANZ independent golden, saved-only refinement workflow and snapshot transport
+tests passed (**3 passed**); focused Ruff and diff checks passed. The parent also
+verified the example at `/tmp/opencode/anz-metadata-checkpoint-a-8w4smvvg/` and recorded
+the `develop` baseline as **181 passed**. Correctness review remains pending.

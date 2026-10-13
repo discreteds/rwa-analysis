@@ -50,6 +50,5 @@ def run_capture(definition_path, operations_path, pdf_path):
     return capture(
         pdf_path,
         declarations.DEFINITION,
-        declarations.SELECTED_DEFINITIONS,
         physical.OPERATIONS,
     )

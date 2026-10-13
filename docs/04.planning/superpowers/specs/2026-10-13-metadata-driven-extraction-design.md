@@ -138,13 +138,13 @@ Proposed conceptual calls (not existing public APIs):
 
 ```text
 physical_operation(document, physical_binding) -> captured fragments
-capture(document, extraction_definition, selected_definitions, supplied_operations)
+capture(document, extraction_definition, supplied_operations)
     -> captured bundle
 conform(saved_bundles, selected_interpretations) -> Silver candidate
 ```
 
-`selected_definitions` supplies the referenced physical/context declarations and any
-catalogue definitions used by capture. Construction loads those explicit selections;
+The extraction definition's snapshot supplies the selected physical/context declarations
+and any catalogue definitions used by capture. Construction loads those explicit selections;
 capture does not resolve references through an implicit current catalogue. Their
 serialisable revisions supply the retained snapshot described below.
 

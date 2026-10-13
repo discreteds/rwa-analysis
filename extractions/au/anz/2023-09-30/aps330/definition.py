@@ -784,4 +784,3 @@ def build():
 
 
 DEFINITION = build()
-SELECTED_DEFINITIONS = DEFINITION.snapshot.contexts

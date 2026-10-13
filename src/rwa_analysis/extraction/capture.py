@@ -10,8 +10,8 @@ from .source_tables import ReportedText, SourceCell
 from .values import parse_decimal_token
 
 
-def capture(pdf_path, definition, selected_definitions, operations):
-    snapshot = replace(definition.snapshot, contexts=tuple(selected_definitions))
+def capture(pdf_path, definition, operations):
+    snapshot = definition.snapshot
     with pdfplumber.open(pdf_path) as document:
         fragments = tuple(
             fragment
