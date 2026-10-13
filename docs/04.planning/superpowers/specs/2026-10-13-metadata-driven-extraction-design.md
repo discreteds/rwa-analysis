@@ -2,11 +2,10 @@
 
 Date: 2026-10-13.
 
-Status: **APPROVED for the disposable spike by the researcher, 2026-10-13.** The
-metadata/operation direction is accepted; production implementation is not approved.
-The spike has exercised the ANZ path described below. Implementation planning still
-requires researcher review of its shape and resolution of the remaining physical
-contract decisions.
+Status: **Design direction and disposable spike shape APPROVED by the researcher,
+2026-10-13.** Production implementation is not yet authorised. The
+[implementation plan](../plans/2026-10-13-metadata-driven-extraction.md) develops the
+remaining contract details for review; the disposable code is reference only.
 
 ## 1. Ask and scope
 
@@ -397,8 +396,10 @@ Retained run: `/tmp/opencode/metadata-extraction-spike-zcze07kq/`.
 Logs: `/tmp/opencode/metadata-driven-spike-final.log` and
 `/tmp/opencode/metadata-driven-spike-saved-only.log`.
 
-This proves the selected separation and persisted path, not production transport,
+The researcher accepted this shape on 2026-10-13 ("looks good!"). This proves the
+selected separation and persisted path, not production transport,
 all-kind catalogue decoding, cross-bundle identity, master consolidation or migration.
 The spike's lightweight composer adapter and simplified temporal attributes are not
-final physical contracts. Shape review remains pending; no new tests were authored
-and no implementation plan has been started.
+final physical contracts. No new tests were authored for the spike. The implementation
+plan is drafted independently, with fresh production code and TDD required after
+plan approval.

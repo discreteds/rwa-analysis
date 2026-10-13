@@ -10,7 +10,8 @@
   and [metadata-driven extraction and conformance](01.principles/a.architecture/metadata-driven-extraction-and-conformance.md):
   AGREED on 2026-10-13; authoritative ownership and occurrence-model decisions with
   enacted clause supersessions. The [metadata-driven extraction design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
-  is approved for a disposable spike; its executed shape awaits researcher review.
+  and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
+  awaits review before production work.
   Principle acceptance does not imply an implemented replacement
   pipeline; existing capture remains supported.
 - [Mountainash-first coding](01.principles/d.coding-practices/mountainash-first.md):

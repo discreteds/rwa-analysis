@@ -12,8 +12,8 @@ and the [metadata-driven journey](01.principles/a.architecture/metadata-driven-e
 These supersede extractor/domain-container ownership as the governing target: physical
 sourcing, semantic meaning and context are singly defined metadata consumed across
 capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
-is approved for a disposable spike, whose executed shape awaits researcher review;
-the production replacement is not implemented.
+and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
+awaits review; the production replacement is not implemented.
 
 The sections below describe the working pipeline and its retained interfaces. Its
 bespoke extractors, field/cell-oriented catalogue adapters and domain dispatch remain
