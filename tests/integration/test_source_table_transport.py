@@ -3,6 +3,8 @@
 from dataclasses import replace
 from decimal import Decimal
 
+import pytest
+
 from rwa_analysis.extraction.models import ReportedValue
 from rwa_analysis.storage.bronze import BronzeStore
 
@@ -32,8 +34,9 @@ def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(
     assert restored.datasets[0].cells[0].value.original_text == "175,918"
 
 
+@pytest.mark.parametrize("version", ["disclosure-v3", "disclosure-v4"])
 def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
-    cba_2024_bundle, tmp_path
+    cba_2024_bundle, tmp_path, version
 ):
     from rwa_analysis.extraction.source_tables import ReportedText
 
@@ -70,7 +73,18 @@ def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
         metadata=replace(table.metadata, published_fields=tuple(fields)),
     )
     store = BronzeStore(tmp_path)
-    saved = store.save(replace(bundle, datasets=(synthetic,)), "synthetic")
+    selected = replace(bundle, datasets=(synthetic,))
+    if version == "disclosure-v4":
+        from rwa_analysis.extraction.definitions import CapturedBundle, CaptureSnapshot
+
+        selected = CapturedBundle(
+            bundle.document,
+            bundle.bundle_key,
+            bundle.extractor_path,
+            (synthetic,),
+            CaptureSnapshot("typed@1", (), (), ()),
+        )
+    saved = store.save(selected, "synthetic")
     restored = store.load(saved).bundle.datasets[0]
     assert restored == synthetic
     assert type(restored.cells[0].value.value) is int

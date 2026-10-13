@@ -5,9 +5,10 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **DRAFT — awaiting researcher approval.** The design and disposable spike
-shape were accepted on 2026-10-13. This plan proposes production contract details
-and migration sequencing; it does not authorise implementation by itself.
+Status: **APPROVED — Tasks 1–3 complete; checkpoint A awaiting review.** The researcher approved the plan,
+merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
+worktree seeded from `develop` at `2ef55de` on 2026-10-13. Checkpoint A is the
+current execution boundary; Tasks 4–7 await that checkpoint review.
 
 **Goal:** Drive all existing selected four-bank captures and their Bronze-to-Silver
 journey from singly defined physical, semantic and contextual metadata.
@@ -65,7 +66,7 @@ resolver cases own interpretation; persisted tests own storage and reconstructio
 
 ## Production boundaries to implement
 
-These details are proposed for approval with this plan. They replace prototype
+These details were approved with this plan on 2026-10-13. They replace prototype
 shortcuts, not the accepted source–meaning–context architecture.
 
 The file map identifies ownership, not a mandatory module count. Keep a small
@@ -116,7 +117,7 @@ than an unrestricted dictionary for semantic content.
   original catalogue addressing and named output projection, not financial definitions.
 
 ```python
-# Proposed production signatures; normal Python calls, no discovered registry.
+# Approved production signatures; normal Python calls, no discovered registry.
 physical_operation(document, binding: PhysicalBinding) -> tuple[CapturedFragment, ...]
 capture(pdf_path, definition: CaptureDefinition, selected_definitions, operations) -> CapturedBundle
 run_capture(definition_path, operations_path, pdf_path) -> CapturedBundle
@@ -154,19 +155,19 @@ and `tests/conftest.py` only for shared input fixtures.
 **Consumes:** Existing payload, axis, qualification, segmentation, temporal and reference types.
 **Produces:** `CapturedBundle`/snapshot types and save/load support for `disclosure-v4`.
 
-- [ ] Author independent transport cases before code: a shared comment with two
+- [x] Author independent transport cases before code: a shared comment with two
   targets; field/axis same local spelling; Decimal/integer/lexical/blank payloads;
   retained source scope and revision references. The expected payload facts are
   literals or existing source goldens, not generated from the new encoder.
-- [ ] Run the focused tests and record the intended RED result. Keep existing v1/v2/v3
+- [x] Run the focused tests and record the intended RED result. Keep existing v1/v2/v3
   cases, including the checkpoint-v3 default metadata case, attached to old-format
   fixtures rather than accidentally converting every input fixture to v4.
-- [ ] Implement the typed declarations and separate v4 branch of the existing codec.
+- [x] Implement the typed declarations and separate v4 branch of the existing codec.
   Preserve old dispatch and encoding. Extend `LoadedBronze`/store typing to accept the
   new variant; no extra constructor/roundtrip validation on the new path.
-- [ ] Decode saved snapshots without importing the declaration or physical-operation
+- [x] Decode saved snapshots without importing the declaration or physical-operation
   files. Retain selected definition contents, not just mutable file paths.
-- [ ] Run focused tests to GREEN and commit this behaviour-sized change.
+- [x] Run focused tests to GREEN and commit this behaviour-sized change.
 
 ```python
 # Extend the existing transport owner with a new typed input fixture.
@@ -191,21 +192,21 @@ and extend existing catalogue tests only where retained addressing is affected.
 **Consumes:** Captured snapshots and existing versioned catalogue selections.
 **Produces:** `resolve_capture(loaded_bronze, catalogue) -> ResolvedCapture`.
 
-- [ ] Author parameterised cases for table/axis/field/cell/comment resolution;
+- [x] Author parameterised cases for table/axis/field/cell/comment resolution;
   source-supported context plus selected interpretations; explicit overriding versus
   whole-mapping supersession; provisional/conflicting support; and temporal role
   applicability with an independently usable percent conversion. Include two report
   vintages and one shared comment to expose address or scope collapse.
-- [ ] Record RED at the resolver boundary before implementing. Use direct typed
+- [x] Record RED at the resolver boundary before implementing. Use direct typed
   source and mapping inputs, not mocks that calculate the expected interpretation.
-- [ ] Generalise selection and the current composition core. Existing `compose_field`
+- [x] Generalise selection and the current composition core. Existing `compose_field`
   callers and retained catalogue files continue to route through that core. Extend
   typed reference/attribute handling for structural roles and contexts without adopting
   arbitrary spike dictionaries or forcing comments into fake numeric fields.
-- [ ] Resolve explicit context contributions once; record provenance and alternatives.
+- [x] Resolve explicit context contributions once; record provenance and alternatives.
   A conflicting/missing temporal role leaves only its dependent attributes unresolved.
   Do not use physical containment or document dates as silent semantic inheritance.
-- [ ] Run new and existing resolver cases to GREEN; commit.
+- [x] Run new and existing resolver cases to GREEN; commit.
 
 ```text
 Same cell + percent conversion + unknown required measurement date
@@ -232,18 +233,18 @@ extend its existing golden test and `tests/integration/test_source_table_workflo
 **Produces:** Full ANZ 2023 selected capture through the ordinary session, saved v4,
 contextual Silver and source-shaped readback. This task is the early executable checkpoint.
 
-- [ ] Extend existing source/persisted tests before implementing the new path. Preserve
+- [x] Extend existing source/persisted tests before implementing the new path. Preserve
   all 125 financial cells and applicable evidence, not just the spike's five cells.
   Add distinct persisted assertions for shared comments, occurrence-scoped context,
   pre/post-framework headers and the NZ blank. Keep existing field-specific timing
   expectations and all independent source labels, values and relationships.
-- [ ] Record RED, then implement physical-fragment invocation, capture assembly and
+- [x] Record RED, then implement physical-fragment invocation, capture assembly and
   source declaration loading. Keep execution roots in existing settings; source geometry
   in declaration parameters; semantic/time definitions outside physical operations.
-- [ ] Declare native flat relations for occurrence/context/reference additions; use
+- [x] Declare native flat relations for occurrence/context/reference additions; use
   the current table inventory for publication/readback. Populate current cell meanings
   from the resolved capture; never resolve them again in numeric projection code.
-- [ ] Make an explicit semantic revision over retained evidence and reconform saved
+- [x] Make an explicit semantic revision over retained evidence and reconform saved
   Bronze. Load a retained catalogue release containing an occurrence-targeted
   comment/context refinement with an explicit override through the ordinary catalogue
   loader; verify the resolved non-cell meaning and provenance after publication.
@@ -252,7 +253,7 @@ contextual Silver and source-shaped readback. This task is the early executable 
   Remove the test's copied PDF and source-authoring files before that rerun;
   use real store/session APIs, not a test-only no-PDF mode. Values and source IDs remain
   fixed while selected interpretation provenance changes.
-- [ ] Run focused tests and an ordinary retained session example to GREEN. Commit
+- [x] Run focused tests and an ordinary retained session example to GREEN. Commit
   and present checkpoint A before migrating more sources.
 
 ```python
@@ -432,7 +433,70 @@ persistence, Task 4 is historical migration, Tasks 5–6 deliver modern projecti
 source migration, and Task 7 closes the complete scope. Use checkpoints A/B and final
 independent review, rather than fresh implementation agents for each small edit.
 
-The plan's production adapters, typed snapshot and all-kind persistence details need
-researcher approval. If they require changing the accepted separation, stop and review
+The researcher approved the production adapters, typed snapshot and all-kind
+persistence details on 2026-10-13. If they require changing the accepted separation, stop and review
 the design instead of expanding the implementation around a failing shape. Do not
 start coding on the basis of the spike approval alone.
+
+## Checkpoint A execution record — 2026-10-13
+
+Approval: researcher authorised the complete plan, PR #17 merge/synchronisation and
+the separate worktree. Execution uses `executing-plans` with TDD/test-audit, seeded
+from `develop` `2ef55de` on `feature/metadata-driven-extraction`. No spike code was
+read, copied or used as the production base. Tasks 4–7 have not been executed.
+
+### Primary-owner evidence
+
+| Owner | RED evidence | GREEN evidence |
+|---|---|---|
+| Retained transport | New captured variant absent; later retained semantic-definition contents absent | Focused transport/storage run: 37 passed; typed payload cases extended to v4 while old v3 checkpoint-default case remains |
+| Occurrence resolver | Nine cases failed at the missing resolver; role-specific concept initially unresolved; explicitly bound dated mapping initially bypassed missing measurement time | Context conflicts/provisional support, explicit overrides, whole-mapping supersession, selected definition contents and independent conversion exercised at the resolver owner |
+| ANZ independent source golden | Existing source returned v3; later published field had no captured header fragment | All 125 independently specified values, structure, qualifications and field timing pass through v4; original golden JSON unchanged |
+| Persisted workflow | Existing source returned v3; initial non-cell evidence provenance absent; initial readback included unrelated bundle comments | Shared comments, matrix pre/post headers/NZ blank, reachable metadata, context references and retained comment override survive DuckDB publication |
+| Existing compatibility owners | Historical-vintage provenance query failed after cell observation IDs changed | Existing cell observation IDs restored; all-kind owner columns supply new addressing |
+| Ordinary fresh-process example | Import-order cycle exposed outside pytest | CapturedBundle moved to the declaration owner, avoiding eager catalogue/source import cycles; actual example and independent saved-only process succeed |
+
+The combined focused command covering catalogue, historical meanings, ANZ goldens,
+transport/storage and source workflows passed **110 tests** before final compatibility
+and import-order refinements. The first full-suite invocation exceeded its 120-second
+command limit; its early failures led to the retained cell-ID repair. Full-suite final
+results: **195 passed**, 7,874 existing dependency warnings, in 203.33 seconds.
+The final focused rerun after all code changes passed **26 tests** (56.46 seconds):
+new resolver/transport cases, old source transport, four-bank vintage publication,
+ANZ source golden and source-table workflow. Its log is
+`/tmp/opencode/metadata-checkpoint-a-focused-tests.log`.
+
+Final checks: `uv run ruff check src tests examples extractions` passed;
+`git diff --check` passed; all relative links in changed Markdown files resolve.
+The batch is committed as one checkpoint-A implementation milestone rather than
+separate task commits, retaining the recorded red/green evidence above.
+
+### Retained executable artifacts
+
+- Example: `uv run python examples/anz_metadata_capture.py`.
+- Current proof root: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/`.
+- v4 snapshot: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/bronze/au/anz/2023-09-30/aps330/metadata-proof/bundle.json`.
+- Retained refinement release: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/catalogue/releases/anz-checkpoint-refinement.json`.
+- Ordinary readback: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/anz.duckdb`.
+- Independent fresh-process readback: `/tmp/opencode/anz-metadata-checkpoint-a-o0_f0yvy/fresh-process.duckdb`.
+- Logs: `/tmp/opencode/metadata-checkpoint-a-example.log`,
+  `/tmp/opencode/metadata-checkpoint-a-saved-only.log`,
+  `/tmp/opencode/metadata-checkpoint-a-full-tests.log`.
+
+The copied PDF and source-authoring directory were deleted before reconformance.
+The fresh process used the retained proof directory as its project root: **125 cells,
+seven shared/context definitions, all eight occurrence kinds, four reconstructed
+tables, EAD ratio 1.01000000**, and the retained interpretation
+`wholesale review; mortgage applicability unresolved`. The original project PDF and
+retained project data were not modified.
+
+Implementation ownership follows the plan, with `CapturedBundle` in
+`extraction/definitions.py` to avoid the observed import cycle. The generic storage
+inventory already carries the four new source relations, so no duplicated Silver,
+manifest or workflow table list was added. Source-table numeric meanings remain a
+cell projection of resolved captures. Existing source-table qualifications are
+materialised compatibility views of singly captured passages.
+
+No required upstream defect has been reproduced. Existing Mountainash declaration
+warnings and Ibis/Polars deprecation warnings remain visible. Checkpoint A awaits
+the parent's independent reviews and researcher acceptance; nothing has been pushed.

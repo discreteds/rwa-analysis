@@ -8,6 +8,7 @@ from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
 from rwa_analysis.domains.cr9.pipeline import Cr9Pipeline
 from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
 from rwa_analysis.extraction.datasets import ExtractionBundle
+from rwa_analysis.extraction.definitions import CapturedBundle
 from rwa_analysis.extraction.runner import run_extractor
 from rwa_analysis.extraction.source_tables import SourceTable
 from rwa_analysis.storage.bronze import LoadedBronze
@@ -27,7 +28,7 @@ class ExtractionOperation:
 
     def extract(
         self, documents: tuple[DocumentSelection, ...]
-    ) -> tuple[ExtractionBundle, ...]:
+    ) -> tuple[ExtractionBundle | CapturedBundle, ...]:
         return tuple(
             run_extractor(
                 self.project_root / doc.extractor_path, self.project_root / doc.pdf_path

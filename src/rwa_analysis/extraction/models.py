@@ -11,6 +11,17 @@ Status = Literal[
 
 
 @dataclass(frozen=True)
+class OccurrenceRef:
+    bundle_key: str
+    scope: str | None
+    kind: Literal[
+        "table", "field", "row", "column", "header", "block", "cell", "comment"
+    ]
+    local_id: str
+    output_version: str | None = None
+
+
+@dataclass(frozen=True)
 class SourceDocument:
     document_id: str
     local_path: str

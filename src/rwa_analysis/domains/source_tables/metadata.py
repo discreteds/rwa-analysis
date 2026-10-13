@@ -5,6 +5,156 @@ from rwa_analysis.catalogue.models import EvidenceRef, RevisionRef
 from .contracts import DECLARATIONS
 
 
+def capture_rows(rows, resolved):
+    """Persist shared definitions once and occurrence-qualified results and links."""
+    loaded = resolved.captured
+    bundle = loaded.bundle
+    slots = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+
+    def emitter(tid):
+        def emit(relation_name, **values):
+            rows[relation_name].append(
+                DECLARATIONS[relation_name].model(
+                    silver_revision_id="", table_id=tid, **values
+                )
+            )
+
+        return emit
+
+    def evidence(emit, kind, key, member, sources):
+        for i, r in enumerate(sources):
+            emit(
+                "evidence",
+                owner_kind=kind,
+                owner_id=key,
+                member=member,
+                position=i,
+                source_document_id=r.document_id,
+                source_pdf_page=r.pdf_page,
+                source_printed_page=r.printed_page,
+                source_location=r.location,
+                source_row=r.row,
+                source_column=r.column,
+            )
+
+    emit = emitter(bundle.bundle_key)
+    for context in bundle.snapshot.contexts:
+        emit("contexts", context_revision_id=context.revision_id)
+        evidence(
+            emit,
+            "context_definition",
+            context.revision_id,
+            "evidence",
+            context.evidence,
+        )
+        from rwa_analysis.catalogue.models import FieldMeaning
+
+        interpretation_rows(
+            emit,
+            bundle.bundle_key,
+            "context_definition",
+            context.revision_id,
+            "",
+            FieldMeaning(None, None, (), context.attributes, None),
+        )
+        for i, d in enumerate(context.temporal):
+            key = context.revision_id + "/" + d.id
+            emit(
+                "references",
+                owner_kind="context_definition",
+                owner_id=context.revision_id,
+                member="temporal_descriptors",
+                position=i,
+                target_kind="temporal_descriptor",
+                target_id=key,
+            )
+            emit(
+                "temporal_descriptors",
+                descriptor_id=key,
+                position=i,
+                **{
+                    name: getattr(d, name)
+                    for name in (
+                        "source_label",
+                        "point",
+                        "start",
+                        "end",
+                        "point_status",
+                        "start_status",
+                        "end_status",
+                        "duration_amount",
+                        "duration_unit",
+                        "duration_status",
+                    )
+                },
+            )
+            evidence(emit, "temporal_descriptor", key, "evidence", d.evidence)
+            for j, q in enumerate(d.qualification_refs):
+                emit(
+                    "references",
+                    owner_kind="temporal_descriptor",
+                    owner_id=key,
+                    member="qualification_refs",
+                    position=j,
+                    target_kind="comment",
+                    target_id=q,
+                )
+    for binding in bundle.snapshot.occurrences:
+        ref = binding.ref
+        tid = ref.bundle_key + ("/" + ref.scope if ref.scope else "")
+        emit = emitter(tid)
+        fragments = [slots[(r.binding_ref, r.slot)] for r in binding.physical_refs]
+        emit(
+            "occurrences",
+            bundle_key=ref.bundle_key,
+            output_version=loaded.ref.output_version,
+            scope=ref.scope,
+            kind=ref.kind,
+            local_id=ref.local_id,
+            source_text="\n".join(f.text for f in fragments) if fragments else None,
+            capture_revision_id=bundle.snapshot.revision_id,
+        )
+        evidence(
+            emit,
+            ref.kind,
+            ref.local_id,
+            "physical_capture",
+            (f.evidence for f in fragments),
+        )
+        for i, link in enumerate(binding.links):
+            target = link.target
+            emit(
+                "occurrence_links",
+                owner_kind=ref.kind,
+                owner_id=ref.local_id,
+                position=i,
+                role=link.role,
+                target_bundle_key=target.bundle_key,
+                target_scope=target.scope,
+                target_kind=target.kind,
+                target_id=target.local_id,
+                target_output_version=target.output_version,
+            )
+        links = [(key, None, None) for key in binding.context_refs] + [
+            (r.context_ref, r.role, r.context_ref + "/" + r.descriptor_ref)
+            for r in binding.temporal_roles
+        ]
+        for i, (key, role, descriptor) in enumerate(links):
+            emit(
+                "context_bindings",
+                owner_kind=ref.kind,
+                owner_id=ref.local_id,
+                context_revision_id=key,
+                role=role,
+                descriptor_ref=descriptor,
+                position=i,
+            )
+        if ref.kind != "cell":
+            interpretation_rows(
+                emit, tid, ref.kind, ref.local_id, "", resolved.meanings[ref]
+            )
+
+
 def source_rows(rows, loaded, table, meanings, catalogue):
     bundle, meta = loaded.bundle, table.metadata
     tid = f"{bundle.bundle_key}/{table.id}"
@@ -273,64 +423,65 @@ def source_rows(rows, loaded, table, meanings, catalogue):
             if meaning.unit_factor is None and c.value_kind != "text"
             else "present",
         )
-        oid = tid + "/" + c.id
-        for pos, mapping in enumerate(meaning.mapping_refs):
+        interpretation_rows(emit, tid, "cell", c.id, c.field_ref, meaning)
+
+
+def interpretation_rows(emit, tid, kind, owner_id, field_key, meaning):
+    oid = tid + "/" + ("" if kind == "cell" else kind + "/") + owner_id
+    for pos, mapping in enumerate(meaning.mapping_refs):
+        emit(
+            "mapping_refs",
+            observation_id=oid,
+            field_key=field_key,
+            owner_kind=kind,
+            owner_id=owner_id,
+            reference_kind=mapping.kind,
+            position=pos,
+            mapping_revision_ref=mapping.revision_id,
+        )
+    for pos, attribute in enumerate(meaning.attributes):
+        for idx, assertion in enumerate((attribute, *attribute.alternatives)):
+            key = {
+                "observation_id": oid,
+                "field_key": field_key,
+                "owner_kind": kind,
+                "owner_id": owner_id,
+                "name": attribute.name,
+                "assertion_index": idx,
+            }
+            v = assertion.value
             emit(
-                "mapping_refs",
-                observation_id=oid,
-                field_key=c.field_ref,
+                "attributes",
+                **key,
                 position=pos,
-                mapping_revision_ref=mapping.revision_id,
+                status=assertion.status,
+                value_text=v if type(v) is str else None,
+                value_integer=v if type(v) is int else None,
+                value_boolean=v if type(v) is bool else None,
+                value_revision_kind=v.kind if isinstance(v, RevisionRef) else None,
+                value_revision_id=v.revision_id if isinstance(v, RevisionRef) else None,
+                value_bundle_key=v.bundle_key if isinstance(v, EvidenceRef) else None,
+                value_document_id=v.document_id if isinstance(v, EvidenceRef) else None,
+                value_dataset_id=v.dataset_id if isinstance(v, EvidenceRef) else None,
+                value_ref_kind=v.kind if isinstance(v, EvidenceRef) else None,
+                value_ref_id=v.ref_id if isinstance(v, EvidenceRef) else None,
             )
-        for pos, attribute in enumerate(meaning.attributes):
-            for idx, assertion in enumerate((attribute, *attribute.alternatives)):
-                key = {
-                    "observation_id": oid,
-                    "field_key": c.field_ref,
-                    "name": attribute.name,
-                    "assertion_index": idx,
-                }
-                v = assertion.value
+            for j, e in enumerate(assertion.evidence_refs):
                 emit(
-                    "attributes",
+                    "attribute_evidence",
                     **key,
-                    position=pos,
-                    status=assertion.status,
-                    value_text=v if type(v) is str else None,
-                    value_integer=v if type(v) is int else None,
-                    value_boolean=v if type(v) is bool else None,
-                    value_revision_kind=v.kind if isinstance(v, RevisionRef) else None,
-                    value_revision_id=v.revision_id
-                    if isinstance(v, RevisionRef)
-                    else None,
-                    value_bundle_key=v.bundle_key
-                    if isinstance(v, EvidenceRef)
-                    else None,
-                    value_document_id=v.document_id
-                    if isinstance(v, EvidenceRef)
-                    else None,
-                    value_dataset_id=v.dataset_id
-                    if isinstance(v, EvidenceRef)
-                    else None,
-                    value_ref_kind=v.kind if isinstance(v, EvidenceRef) else None,
-                    value_ref_id=v.ref_id if isinstance(v, EvidenceRef) else None,
+                    position=j,
+                    bundle_key=e.bundle_key,
+                    document_id=e.document_id,
+                    dataset_id=e.dataset_id,
+                    kind=e.kind,
+                    ref_id=e.ref_id,
                 )
-                for j, e in enumerate(assertion.evidence_refs):
-                    emit(
-                        "attribute_evidence",
-                        **key,
-                        position=j,
-                        bundle_key=e.bundle_key,
-                        document_id=e.document_id,
-                        dataset_id=e.dataset_id,
-                        kind=e.kind,
-                        ref_id=e.ref_id,
-                    )
-                for j, d in enumerate(assertion.decision_refs):
-                    emit(
-                        "attribute_decisions",
-                        **key,
-                        position=j,
-                        decision_kind=d.kind,
-                        decision_revision_id=d.revision_id,
-                    )
+            for j, d in enumerate(assertion.decision_refs):
+                emit(
+                    "attribute_decisions",
+                    **key,
+                    position=j,
+                    decision_kind=d.kind,
+                    decision_revision_id=d.revision_id,
+                )

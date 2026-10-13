@@ -13,7 +13,40 @@ These supersede extractor/domain-container ownership as the governing target: ph
 sourcing, semantic meaning and context are singly defined metadata consumed across
 capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
 and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
-awaits review; the production replacement is not implemented.
+was approved on 2026-10-13. Tasks 1–3 on `feature/metadata-driven-extraction`
+implement the first ANZ 2023 v4 path for checkpoint A review. The remaining
+source migrations and CR6/CR9 projections are still planned.
+
+### Checkpoint A: ANZ 2023 metadata-owned capture
+
+`extractions/au/anz/2023-09-30/aps330/definition.py` owns the reviewed selection,
+physical parameters, shared contexts and occurrence bindings. Its sibling
+`physical.py` exposes only physical readers; the thin `extract.py` invokes
+`run_capture`. Execution locations remain in existing session settings.
+
+`CapturedBundle` uses separate `disclosure-v4` transport. Its snapshot retains
+selected declarations and reusable definition contents without importing source
+authoring files on reload. Physical fragments capture shared comments once;
+source-table qualifications are materialised compatibility views of those bindings.
+The existing v1/v2/v3 wire paths remain operational.
+
+`catalogue/occurrences.py::resolve_capture` uses the existing composer for table,
+axis, field, cell and comment occurrences. Explicit occurrence targets can select
+a Bronze output version. Context and mapping revisions retain distinct provenance;
+role-specific temporal applicability never substitutes a document date. Cell
+numeric projection consumes the already resolved meanings.
+
+The source-table inventory adds `occurrences`, `occurrence_links`, `contexts` and
+`context_bindings`; existing assertion/mapping/evidence relations now have
+kind-qualified owners. Shared definitions are retained at bundle scope, with
+explicit references from occurrences. Reconstruction includes reachable shared
+comments and contexts alongside local metadata. The same declared inventory drives
+ordinary staging writes and readback. Task 7 owns the additional master-removal proof.
+
+`examples/anz_metadata_capture.py` runs the full 125-cell source, saves v4, deletes
+its disposable copies of the PDF/authoring files and publishes a retained,
+occurrence-targeted comment override from saved Bronze. Checkpoint review is required
+before Tasks 4–7; this example does not establish the remaining migration's completion.
 
 The sections below describe the working pipeline and its retained interfaces. Its
 bespoke extractors, field/cell-oriented catalogue adapters and domain dispatch remain
@@ -162,7 +195,7 @@ do not depend on earlier calls on the same session. See the executable examples 
 the [README](../README.md).
 
 `SilverCandidate` and `SilverOutput` expose named `cr6`, `cr9` and `source_tables`
-members. The common inventory in `storage/tables.py` drives all 45 table writes/readbacks; an omitted
+members. The common inventory in `storage/tables.py` drives all 49 table writes/readbacks; an omitted
 domain is represented by typed empty relations and is cleared on replacement.
 
 - Bronze output names select retained versions beneath a bundle path. Use a new
@@ -190,10 +223,11 @@ no occurrence. `disclosure-v3` transports these datasets without extending the f
 CR6/CR9 row inventories. Earlier v3 checkpoint cells decode with defaults for the
 later legacy row-role and aggregation-scope metadata.
 
-`SourceTableOutput` declares 18 relations: tables, fields, axes, cells, references,
+`SourceTableOutput` declares 22 relations: tables, fields, axes, cells, references,
 source attributes, evidence, segmentations, bands, qualifications, relationships,
 temporal descriptors/bindings, meanings, mapping references and interpretation
-attributes/evidence/decisions. Ordered reference rows preserve header paths and
+attributes/evidence/decisions, plus occurrences, occurrence links, contexts and context
+bindings. Ordered reference rows preserve header paths and
 qualified endpoints; the same declarations drive storage and master copying.
 
 `resolve_cell` uses the existing scoped catalogue composer. Definitions can be

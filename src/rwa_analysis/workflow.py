@@ -8,6 +8,7 @@ from rwa_analysis.domains.cr6.reconstruction import reconstruct_cr6
 from rwa_analysis.domains.cr9.reconstruction import reconstruct_cr9
 from rwa_analysis.domains.source_tables.reconstruction import reconstruct_source_tables
 from rwa_analysis.extraction.datasets import ExtractionBundle
+from rwa_analysis.extraction.definitions import CapturedBundle
 from rwa_analysis.operations import (
     ConformanceOperation,
     DocumentSelection,
@@ -22,7 +23,7 @@ from rwa_analysis.storage.silver import Publication, SilverCandidate, SilverStor
 class RunResult:
     publication: Publication
     tables: dict[str, pl.DataFrame]
-    bundles: tuple[ExtractionBundle, ...]
+    bundles: tuple[ExtractionBundle | CapturedBundle, ...]
 
 
 @dataclass(frozen=True)
@@ -34,11 +35,11 @@ class OrganisationSession:
 
     def extract(
         self, documents: tuple[DocumentSelection, ...]
-    ) -> tuple[ExtractionBundle, ...]:
+    ) -> tuple[ExtractionBundle | CapturedBundle, ...]:
         return self.extraction.extract(documents)
 
     def save_bronze(
-        self, bundles: tuple[ExtractionBundle, ...], run_name: str
+        self, bundles: tuple[ExtractionBundle | CapturedBundle, ...], run_name: str
     ) -> tuple[BronzeRef, ...]:
         return tuple(self.bronze.save(bundle, run_name) for bundle in bundles)
 

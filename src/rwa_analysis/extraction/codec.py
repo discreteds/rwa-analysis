@@ -14,6 +14,7 @@ from typing import Literal, Union, get_args, get_origin, get_type_hints
 from .cr6 import Cr6Dataset
 from .cr9 import Cr9Dataset
 from .datasets import Dataset, DatasetMetadata, ExtractionBundle
+from .definitions import CapturedBundle
 from .models import ReportedValue
 from .source_tables import ReportedText, SourceCell, SourceTable
 
@@ -167,31 +168,37 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
     return value
 
 
-def encode_payload(bundle: ExtractionBundle) -> dict:
+def encode_payload(bundle: ExtractionBundle | CapturedBundle) -> dict:
     payload = _convert(
-        bundle, ExtractionBundle, "bundle", decode=False, version=bundle.schema_version
+        bundle, type(bundle), "bundle", decode=False, version=bundle.schema_version
     )
     # Revalidate the complete boundary, including reference closure and invariants.
-    if bundle.schema_version != SOURCE_TABLE_SCHEMA_VERSION:
+    if bundle.schema_version not in (
+        SOURCE_TABLE_SCHEMA_VERSION,
+        CAPTURE_SCHEMA_VERSION,
+    ):
         decode_payload(payload)
     return payload
 
 
-def decode_payload(payload: dict) -> ExtractionBundle:
+def decode_payload(payload: dict) -> ExtractionBundle | CapturedBundle:
     version = payload["schema_version"]
     if version not in (
         SCHEMA_VERSION,
         DISCLOSURE_SCHEMA_VERSION,
         SOURCE_TABLE_SCHEMA_VERSION,
+        CAPTURE_SCHEMA_VERSION,
     ):
         raise ValueError(f"Unsupported schema version: {version}")
-    bundle = _convert(payload, ExtractionBundle, "bundle", decode=True, version=version)
+    cls = CapturedBundle if version == CAPTURE_SCHEMA_VERSION else ExtractionBundle
+    bundle = _convert(payload, cls, "bundle", decode=True, version=version)
     return bundle
 
 
 SCHEMA_VERSION = "cr6-v1"
 DISCLOSURE_SCHEMA_VERSION = "disclosure-v2"
 SOURCE_TABLE_SCHEMA_VERSION = "disclosure-v3"
+CAPTURE_SCHEMA_VERSION = "disclosure-v4"
 LEGACY_METADATA_FIELDS = {
     "context",
     "axes",
@@ -219,7 +226,7 @@ def _nonempty_string(value, path):
 
 
 def encode_envelope(
-    bundle: ExtractionBundle,
+    bundle: ExtractionBundle | CapturedBundle,
     *,
     output_version: str,
     implementation_revision: str,
@@ -239,14 +246,17 @@ def encode_envelope(
         "executed_at": executed_at,
         "payload": encode_payload(bundle),
     }
-    if bundle.schema_version != SOURCE_TABLE_SCHEMA_VERSION:
+    if bundle.schema_version not in (
+        SOURCE_TABLE_SCHEMA_VERSION,
+        CAPTURE_SCHEMA_VERSION,
+    ):
         decode_envelope(envelope)
     return envelope
 
 
 def decode_envelope(
     envelope: dict, *, expected_reference: dict[str, str] | None = None
-) -> ExtractionBundle:
+) -> ExtractionBundle | CapturedBundle:
     """Reject unsupported versions, dropped metadata and mistyped JSON values."""
     _object_keys(
         envelope,
@@ -264,7 +274,12 @@ def decode_envelope(
     for field, supported in (
         (
             "schema_version",
-            (SCHEMA_VERSION, DISCLOSURE_SCHEMA_VERSION, SOURCE_TABLE_SCHEMA_VERSION),
+            (
+                SCHEMA_VERSION,
+                DISCLOSURE_SCHEMA_VERSION,
+                SOURCE_TABLE_SCHEMA_VERSION,
+                CAPTURE_SCHEMA_VERSION,
+            ),
         ),
         ("extraction_workflow_version", (EXTRACTION_WORKFLOW_VERSION,)),
     ):

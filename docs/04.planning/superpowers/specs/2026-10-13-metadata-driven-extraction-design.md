@@ -3,9 +3,11 @@
 Date: 2026-10-13.
 
 Status: **Design direction and disposable spike shape APPROVED by the researcher,
-2026-10-13.** Production implementation is not yet authorised. The
-[implementation plan](../plans/2026-10-13-metadata-driven-extraction.md) develops the
-remaining contract details for review; the disposable code is reference only.
+2026-10-13.** The researcher subsequently approved production implementation under the
+[implementation plan](../plans/2026-10-13-metadata-driven-extraction.md), including its
+production contract details and checkpoint sequence; Tasks 1–3 are implemented and
+verified for checkpoint A review (195 passing tests).
+The disposable code remains reference only and is not the implementation base.
 
 ## 1. Ask and scope
 

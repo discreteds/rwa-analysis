@@ -15,6 +15,7 @@ from .models import (
     CatalogueRelease,
     FieldMeaning,
     MappingScope,
+    OccurrenceScope,
     RevisionRef,
     SemanticAttribute,
     SourceMappingRevision,
@@ -65,6 +66,8 @@ def field_occurrence(dataset, record, field_key):
 def matches_occurrence(mapping, occurrence):
     """Conjunctive source identity; temporal applicability belongs to the adapter."""
     scope = mapping.scope
+    if isinstance(scope, OccurrenceScope):
+        return False
     return all(
         getattr(scope, f.name) is None
         or getattr(scope, f.name) == getattr(occurrence.scope, f.name)
@@ -171,7 +174,14 @@ def resolve_field(
     )
 
 
-def compose_field(catalogue, published_field, applicable_mappings, definition_applies):
+def compose_field(
+    catalogue,
+    published_field,
+    applicable_mappings,
+    definition_applies,
+    *,
+    mapping_applicability=None,
+):
     """Compose domain-selected meaning, retaining conflicts and partial knowledge."""
     mappings = sorted(applicable_mappings, key=lambda m: m.revision_id)
     # A correction replaces a whole predecessor mapping for this occurrence.
@@ -191,8 +201,13 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
     candidates = {}
     conversions = []
     for mapping in mappings:
+        applies = (
+            mapping_applicability(mapping)
+            if mapping_applicability
+            else definition_applies
+        )
         attrs = list(mapping.attributes)
-        if mapping.measure_ref and definition_applies(mapping.measure_ref):
+        if mapping.measure_ref and applies(mapping.measure_ref):
             measure = catalogue.member(mapping.measure_ref)
             attrs.extend(measure.attributes)
             attrs.extend(
@@ -210,18 +225,20 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
                     ),
                 ]
             )
-        if mapping.concept_ref and definition_applies(mapping.concept_ref):
+        if mapping.concept_ref and applies(mapping.concept_ref):
             attrs.append(
                 SemanticAttribute(
                     name="concept", value=mapping.concept_ref, status="established"
                 )
             )
         for attr in attrs:
-            if not all(definition_applies(ref) for ref in revision_references(attr)):
+            if not all(applies(ref) for ref in revision_references(attr)):
                 continue
             # Only the mapping's own source support is added; unrelated field
             # qualifiers are not propagated from neighboring measures.
-            if attr.name in ("concept", "measure", "result_unit"):
+            if attr.name in ("concept", "measure", "result_unit") or isinstance(
+                getattr(mapping, "scope", None), OccurrenceScope
+            ):
                 attr = replace(
                     attr,
                     evidence_refs=_unique(attr.evidence_refs + mapping.evidence_refs),
@@ -231,6 +248,7 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
         rule = mapping.conversion
         if (
             rule
+            and published_field is not None
             and published_field.source_unit == rule.source_unit
             and published_field.source_scale == rule.source_scale
         ):
@@ -251,7 +269,10 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
     view = FieldMeaning(
         None,
         None,
-        tuple(RevisionRef("mapping", m.revision_id) for m in mappings),
+        tuple(
+            RevisionRef(getattr(m, "reference_kind", "mapping"), m.revision_id)
+            for m in mappings
+        ),
         attributes,
         factors[0] if len(factors) == 1 else None,
     )

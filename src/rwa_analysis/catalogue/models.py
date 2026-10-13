@@ -5,9 +5,9 @@ from datetime import date
 from decimal import Decimal
 from typing import Literal
 
-from rwa_analysis.extraction.models import Status
+from rwa_analysis.extraction.models import OccurrenceRef, Status
 
-Kind = Literal["concept", "relationship", "measure", "decision", "mapping"]
+Kind = Literal["concept", "relationship", "measure", "decision", "mapping", "context"]
 
 
 @dataclass(frozen=True)
@@ -23,7 +23,21 @@ class EvidenceRef:
     bundle_key: str
     document_id: str
     dataset_id: str
-    kind: Literal["qualification", "field", "band", "axis", "context", "relationship"]
+    kind: Literal[
+        "qualification",
+        "field",
+        "band",
+        "axis",
+        "context",
+        "relationship",
+        "comment",
+        "table",
+        "row",
+        "column",
+        "header",
+        "block",
+        "cell",
+    ]
     ref_id: str
 
 
@@ -126,6 +140,9 @@ ATTRIBUTE_NAMES = frozenset(
         "cohort_eligibility",
         "event_definition",
         "denominator",
+        "structural_role",
+        "qualification_meaning",
+        "historical_review_applicability",
     }
 )
 
@@ -256,6 +273,12 @@ class MappingScope:
 
 
 @dataclass(frozen=True)
+class OccurrenceScope:
+    targets: tuple[OccurrenceRef, ...]
+    temporal_role: str = "measurement"
+
+
+@dataclass(frozen=True)
 class UnitConversion:
     source_unit: str
     source_scale: Decimal
@@ -268,7 +291,7 @@ class UnitConversion:
 
 @dataclass(frozen=True, kw_only=True)
 class SourceMappingRevision(Revision):
-    scope: MappingScope
+    scope: MappingScope | OccurrenceScope
     concept_ref: RevisionRef | None = None
     measure_ref: RevisionRef | None = None
     attributes: tuple[SemanticAttribute, ...] = ()
@@ -281,7 +304,7 @@ class SourceMappingRevision(Revision):
         for ref, kind in ((self.concept_ref, "concept"), (self.measure_ref, "measure")):
             if ref is not None and ref.kind != kind:
                 raise ValueError(f"Mapping requires {kind} reference: {ref}")
-        if any(r.kind != "mapping" for r in self.overrides_refs):
+        if any(r.kind not in ("mapping", "context") for r in self.overrides_refs):
             raise ValueError("Overrides require mapping references")
 
 

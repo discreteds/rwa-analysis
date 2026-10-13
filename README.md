@@ -145,6 +145,13 @@ explicitly composes `SourceTablePipeline().conform(inputs, catalogue)` to includ
 its saved Westpac legacy datasets. Existing numeric frame keys retain their numeric
 views; use `reconstruct_source_tables(output.source_tables)` for lexical projections.
 
+The checkpoint-A implementation branch migrates ANZ September 2023 to
+`disclosure-v4`, retaining capture declarations and all-kind context metadata.
+Run `uv run python -i examples/anz_metadata_capture.py` for the full 125-cell path
+and a saved-only comment reinterpretation after deleting disposable source copies.
+It prints a fresh retained `/tmp/opencode` root. Remaining source migrations await
+checkpoint review; their formats and entrypoints continue to work.
+
 Source reconstruction uses persisted source relations. Existing CR6/CR9 reconstruction
 still uses saved Bronze structure. Preserve all selected inputs and manifests as
 described below. The locked Mountainash revision includes PR #377's declared-source

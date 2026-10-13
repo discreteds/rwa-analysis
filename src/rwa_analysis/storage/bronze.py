@@ -21,6 +21,7 @@ from rwa_analysis.extraction.codec import (
     encode_payload,
 )
 from rwa_analysis.extraction.datasets import ExtractionBundle
+from rwa_analysis.extraction.definitions import CapturedBundle
 
 
 @dataclass(frozen=True)
@@ -48,12 +49,12 @@ class BronzeRef:
 @dataclass(frozen=True)
 class LoadedBronze:
     ref: BronzeRef
-    bundle: ExtractionBundle
+    bundle: ExtractionBundle | CapturedBundle
 
 
 def read_staged_bundle(
     path: Path, *, expected_reference: BronzeRef | None = None
-) -> ExtractionBundle:
+) -> ExtractionBundle | CapturedBundle:
     """Private shared reader for staged and published bundles."""
     # Validate the original JSON before Arrow unifies nested records: otherwise
     # an absent required key can be silently restored as a nullable field.
@@ -91,7 +92,7 @@ class BronzeStore:
 
     def save(
         self,
-        bundle: ExtractionBundle,
+        bundle: ExtractionBundle | CapturedBundle,
         run_name: str,
         implementation_revision: str = "unrecorded",
     ) -> BronzeRef:
@@ -118,7 +119,7 @@ class BronzeStore:
             write(
                 FileSinkSpec(path=str(staging / "bundle.json"), format="json"), envelope
             )
-            if bundle.schema_version != "disclosure-v3":
+            if bundle.schema_version not in ("disclosure-v3", "disclosure-v4"):
                 restored = read_staged_bundle(
                     staging / "bundle.json", expected_reference=ref
                 )
