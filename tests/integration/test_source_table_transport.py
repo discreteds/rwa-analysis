@@ -4,19 +4,11 @@ from dataclasses import replace
 from decimal import Decimal
 
 from rwa_analysis.extraction.models import ReportedValue
-from rwa_analysis.extraction.runner import run_extractor
 from rwa_analysis.storage.bronze import BronzeStore
 
 
-def capture(project_root):
-    return run_extractor(
-        project_root / "extractions/au/cba/2024-06-30/aps330/extract.py",
-        project_root / "raw/cba-2024-06-30-aps330.pdf",
-    )
-
-
-def test_saved_source_tables_preserve_all_metadata(project_root, tmp_path):
-    bundle = capture(project_root)
+def test_saved_source_tables_preserve_all_metadata(cba_2024_bundle, tmp_path):
+    bundle = cba_2024_bundle
     store = BronzeStore(tmp_path)
     ref = store.save(bundle, "transport-proof")
     restored = store.load(ref).bundle
@@ -41,11 +33,11 @@ def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(
 
 
 def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
-    project_root, tmp_path
+    cba_2024_bundle, tmp_path
 ):
     from rwa_analysis.extraction.source_tables import ReportedText
 
-    bundle = capture(project_root)
+    bundle = cba_2024_bundle
     table = bundle.datasets[0]
     original = table.cells[0]
     evidence = original.value.source_reference

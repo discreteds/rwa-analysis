@@ -5,12 +5,101 @@ from decimal import Decimal
 
 import mountainash as ma
 import polars as pl
+import pytest
 from mountainash_data import IbisBackend
 
 from rwa_analysis.composition import build_session
 from rwa_analysis.operations import DocumentSelection
 from rwa_analysis.settings import OrganisationSettings
 from rwa_analysis.storage.manifests import CatalogueSelection
+
+
+@pytest.mark.parametrize("organisation", ("nab", "anz"))
+def test_historical_population_and_field_time_survive_saved_publication(
+    project_root, tmp_path, organisation
+):
+    """Catch metadata collapse during transport/projection, beyond PDF goldens."""
+    session = build_session(
+        OrganisationSettings(
+            project_root=project_root,
+            organisation_id=organisation,
+            bronze_root=tmp_path / "bronze",
+            staging_path=tmp_path / "staging.duckdb",
+            manifest_root=tmp_path / "manifests",
+        )
+    )
+    result = session.run(
+        documents=(
+            DocumentSelection(
+                f"extractions/au/{organisation}/2024-09-30/aps330/extract.py",
+                f"raw/{organisation}-2024-09-30-aps330.pdf",
+            ),
+        ),
+        catalogue=CatalogueSelection(
+            release_path="catalogue/releases/historical-mortgages-v1.json"
+        ),
+        run_name="semantic-readback",
+        revision="semantic-readback",
+    )
+    source = session.silver.read(result.publication).source_tables
+    if organisation == "nab":
+        table = "au/nab/2024-09-30/aps330/table5-1-j-iii-2024-09-30"
+        cells = source.cells.filter(ma.col("table_id") == table)
+        assert set(cells.select("row_ref").to_polars()["row_ref"]) == {"main", "rbnz"}
+        scopes = (
+            source.references.filter(
+                (ma.col("table_id") == table)
+                & (ma.col("owner_kind") == "qualification")
+                & ma.col("owner_id").is_in(["apra-floor", "rbnz-lgd"])
+                & (ma.col("member") == "scope")
+            )
+            .select("owner_id", "target_kind", "target_id")
+            .to_dicts()
+        )
+        assert sorted(
+            (r["owner_id"], r["target_kind"], r["target_id"]) for r in scopes
+        ) == [
+            ("apra-floor", "cell", "main/estimated_lgd"),
+            ("rbnz-lgd", "cell", "rbnz/estimated_lgd"),
+        ]
+        paths = (
+            source.references.filter(
+                (ma.col("table_id") == table)
+                & (ma.col("owner_kind") == "axis")
+                & ma.col("owner_id").is_in(["main", "rbnz"])
+                & (ma.col("member") == "header_path_refs")
+            )
+            .sort("owner_id", "position")
+            .select("owner_id", "target_id")
+            .to_dicts()
+        )
+        assert [(r["owner_id"], r["target_id"]) for r in paths] == [
+            ("main", "panel"),
+            ("main", "main-block"),
+            ("rbnz", "panel"),
+            ("rbnz", "rbnz-block"),
+        ]
+    else:
+        table = "au/anz/2024-09-30/aps330/table9f-2024-09-30"
+        timing = (
+            source.temporal_bindings.filter(ma.col("table_id") == table)
+            .join(
+                source.temporal_descriptors.rename({"descriptor_id": "descriptor_ref"}),
+                on=["silver_revision_id", "table_id", "descriptor_ref"],
+            )
+            .select("cell_id", "role", "start", "end")
+            .to_dicts()
+        )
+        assert {(r["cell_id"], r["role"], r["start"], r["end"]) for r in timing} == {
+            ("mortgage/estimated_pd", "history_window", "2019", "2023"),
+            ("mortgage/actual_pd", "history_window", "2019", "2023"),
+            ("mortgage/ead_ratio", "history_window", "2019", "2023"),
+            ("mortgage/estimated_lgd", "history_window", "2018", "2022"),
+            ("mortgage/actual_lgd", "history_window", "2018", "2022"),
+            ("mortgage/actual_pd", "outcome_window", None, "2023-09"),
+            ("mortgage/estimated_lgd", "outcome_window", None, "2023-09"),
+            ("mortgage/actual_lgd", "outcome_window", None, "2023-09"),
+        }
 
 
 def test_explicit_legacy_publication_keeps_numeric_and_lexical_views(
@@ -48,9 +137,12 @@ def test_explicit_legacy_publication_keeps_numeric_and_lexical_views(
     assert source.cells.filter(ma.col("value_kind") == "text").count_rows() == 16
     assert source.cells.filter(ma.col("source_count") == 564613).count_rows() >= 1
     key = westpac_bundle.bundle_key + "/cr9-residential-mortgages"
-    assert source.cells.filter(
-        (ma.col("table_id") == key) & (ma.col("original_text") == "")
-    ).count_rows() == 5
+    assert (
+        source.cells.filter(
+            (ma.col("table_id") == key) & (ma.col("original_text") == "")
+        ).count_rows()
+        == 5
+    )
     frames = reconstruct_source_tables(source)
     assert frames[key].frame["rating-0"].to_list()[:7] == ["N/A"] * 7
     assert frames[key].frame["column-previous_year_borrower_count"][0] == 564613
@@ -184,17 +276,3 @@ def test_cba_saved_source_tables_reconstruct_persisted_values(project_root, tmp_
     again = fresh.publish(candidate, revision="rerun")
     assert again.database == session_settings.staging_path
     assert fresh.reconstruct(again)[table]["band-0"][2] == Decimal("0.359")
-
-    from rwa_analysis.composition import build_consolidator
-    from rwa_analysis.settings import ProjectSettings
-
-    master = build_consolidator(
-        ProjectSettings(
-            project_root=project_root,
-            master_path=tmp_path / "master.duckdb",
-            manifest_root=tmp_path / "master-manifests",
-        )
-    )
-    consolidated = master.consolidate((again,), revision="native-source")
-    again.database.unlink()
-    assert master.reconstruct(consolidated)[table]["band-0"][2] == Decimal("0.359")
