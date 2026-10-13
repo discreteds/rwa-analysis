@@ -4,6 +4,10 @@ The four-bank CR6/CR9 workflow publishes normalised organisation staging databas
 consolidates master and reconstructs all eight source tables. The CBA example also
 demonstrates PDF extraction through publication and reconstruction.
 
+The historical workflow captures complete selected 2024 mortgage panels as
+source-defined tables, including their original structure and supplementary notes.
+It also supports an explicitly selected Westpac 2025 structural comparison.
+
 ## Documentation
 
 - [Documentation guide](docs/README.md)
@@ -11,7 +15,8 @@ demonstrates PDF extraction through publication and reconstruction.
 - [Durable principles](docs/01.principles/README.md)
 - [Mountainash-first coding practices](docs/01.principles/d.coding-practices/mountainash-first.md)
 
-Implemented scope is the selected four-bank mortgage CR6 and CR9 blocks. Other disclosure
+Implemented scope is the selected four-bank 2025 mortgage CR6/CR9 blocks and 2024
+mortgage exposure/backtesting panels. Other disclosure
 domains, a reusable capital engine and Gold persistence are not yet implemented.
 
 ## Environment and retained inputs
@@ -106,6 +111,36 @@ The workflow assumes sequential staging writes followed by consolidation.
 
 The demonstrated selection contains 36 observations, 432 fields, 1,296 mapping
 references and 32 source relationships. Each reconstructed table has nine rows.
+
+## Historical source tables
+
+```bash
+uv run python -i examples/historical_mortgages.py
+```
+
+This starts from the tracked PDFs and retains a fresh `/tmp/opencode` directory.
+The 23 selected historical datasets are dated panels: 574 body positions plus eight
+numerical note observations. The explicit modern Westpac projection adds two datasets
+and 180 cells, for 25 source datasets and 762 cells in master.
+
+Inspect `sessions`, `publications`, `master_publication`, `output`, `source_tables`,
+`field_inventory`, `field_paths`, `field_timing`, `field_bands` and `field_mappings`.
+`output.source_tables` exposes persisted source values, axes, qualifications, timing
+and composed meanings. Each `source_tables[key]` exposes `.frame` and `.metadata`.
+Inventory presence includes unmapped and blank fields. Numerical notes are queryable
+cells, excluded from body frames. Reports' changing bands and definitions are retained
+without automatic equivalence, rebanding or imputation.
+
+New source bundles use `disclosure-v3`. Original `cr6-v1` and `disclosure-v2` paths
+remain supported. Ordinary sessions process native source datasets; the example
+explicitly composes `SourceTablePipeline().conform(inputs, catalogue)` to include
+its saved Westpac legacy datasets. Existing numeric frame keys retain their numeric
+views; use `reconstruct_source_tables(output.source_tables)` for lexical projections.
+
+Source reconstruction uses persisted source relations. Existing CR6/CR9 reconstruction
+still uses saved Bronze structure. Preserve all selected inputs and manifests as
+described below. The locked Mountainash revision includes PR #377's declared-source
+ingress repair, required for late lexical and missingness values.
 
 ## Configuration and ownership
 

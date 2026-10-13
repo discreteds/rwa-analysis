@@ -3,9 +3,12 @@
 Date: 2026-10-12
 
 Status: **APPROVED by the researcher, 2026-10-12**, after independent correctness
-and complexity reviews. Implementation is not yet started. The
+and complexity reviews. CBA checkpoint implementation is on the coding branch,
+not yet merged; four-bank source capture and full publication pass after consuming
+upstream PR #377. Final feature reviews are complete; checkpoint B awaits researcher
+review and PR merge. The
 [implementation plan](../plans/2026-10-12-historical-source-tables.md) was also
-approved on 2026-10-12; execution starts with the CBA checkpoint.
+approved on 2026-10-12 and records the CBA checkpoint evidence and review boundary.
 
 ## 1. Ask and scope
 
