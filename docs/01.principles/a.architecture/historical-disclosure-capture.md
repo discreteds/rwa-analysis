@@ -4,6 +4,11 @@
 > **Scope:** extraction, Bronze, metadata, Silver, downstream analysis
 > **Decision context:** Researcher direction during earlier-period scoping, 2026-10-12.
 
+> **Replacement proposal, 2026-10-13:** [Contextual source occurrences](contextual-source-occurrences.md#proposed-replacement-and-retained-decisions)
+> broadens the occurrence model; the [metadata-driven journey](metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
+> proposes replacing local-extractor ownership clauses. This principle remains AGREED
+> and authoritative pending acceptance; full capture and structural research remain.
+
 ## Principle
 
 Capture each selected table's complete published content and meaning in its source

@@ -3,6 +3,11 @@
 > **Status:** AGREED
 > **Scope:** metadata, Bronze, Silver
 
+> **Replacement proposal, 2026-10-13:** [Contextual source occurrences](../a.architecture/contextual-source-occurrences.md#proposed-replacement-and-retained-decisions)
+> broadens the metric-centred governing scope to all occurrence kinds. This principle
+> remains AGREED and authoritative pending acceptance; its financial distinctions,
+> evidence, revisioning and temporal semantics remain.
+
 ## Principle
 
 Metric metadata separates canonical concepts, measurement definitions, reporting definitions and presentation. Published labels map to canonical roles and semantic variants using scoped, versioned evidence. Hierarchical inheritance and overrides are explicit and traceable.

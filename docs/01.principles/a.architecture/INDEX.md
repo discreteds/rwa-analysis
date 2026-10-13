@@ -2,6 +2,8 @@
 
 | Principle | Status | Summary |
 |---|---|---|
+| [Contextual source occurrences](contextual-source-occurrences.md) | PROPOSED | Physical sourcing, semantic meaning and extraction context bind every occurrence kind through singly owned, revisioned definitions. |
+| [Metadata-driven extraction and conformance](metadata-driven-extraction-and-conformance.md) | PROPOSED | The same authoritative bindings govern extraction, retained Bronze and contextual Silver; identifies candidate replacements without changing current authority. |
 | [Capture and tag for research](capture-and-tag-for-research.md) | AGREED | Faithful capture and useful tagging support assumption-aware, approximate research without requiring perfect accounting. |
 | [Complete capture across evolving disclosures](historical-disclosure-capture.md) | AGREED | Source-defined capture composes reusable definitions with distinct occurrences; query report structure over time while preserving changing semantics and absence. |
 | [Evidence and interpretation](evidence-and-interpretation.md) | AGREED | Preserve source evidence and distinguish reported facts from interpretations and derivations. |

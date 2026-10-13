@@ -3,6 +3,12 @@
 > **Status:** AGREED
 > **Scope:** extraction, Bronze, validation
 
+> **Replacement proposal, 2026-10-13:** The [metadata-driven journey](../a.architecture/metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
+> proposes reviewed sourcing metadata with bespoke physical operations where needed,
+> replacing the requirement for a complete bespoke Python extractor per PDF. This
+> principle remains AGREED and authoritative pending acceptance; independent review
+> and source-authored goldens remain.
+
 ## Principle
 
 Each PDF receives an LLM-led source review and a bespoke Python extractor. Independently human- or LLM-authored golden sets specify the required values and metadata; the extractor is iterated against them. Golden sets are living specifications.

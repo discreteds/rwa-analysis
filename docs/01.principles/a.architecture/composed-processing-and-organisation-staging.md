@@ -3,6 +3,11 @@
 > **Status:** AGREED
 > **Scope:** core, Bronze, Silver, configuration, orchestration
 
+> **Replacement proposal, 2026-10-13:** The [metadata-driven journey](metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
+> proposes replacing domain-container/pipeline ownership as the governing capture
+> boundary. This principle remains AGREED and authoritative pending acceptance;
+> staging, storage separation and independently callable stages remain.
+
 ## Principle
 
 Separate domain dataset containers share a fundamental Python protocol and compose
