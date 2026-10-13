@@ -1,7 +1,7 @@
 # 2023 historical mortgage capture
 
-Date: 2026-10-13. Status: implemented; full persisted example passes; independent
-reviews complete and their findings repaired. Final regression verification in progress.
+Date: 2026-10-13. Status: complete and verified; independent reviews and repairs
+complete. Combined code/documentation PR #15 targets `develop`, pending merge.
 
 ## Approved continuation
 
@@ -138,6 +138,12 @@ The full example was rerun after the repairs and again produced 48 datasets and
 `/tmp/opencode/historical-2023-final-example.log`. Readback confirms the corrected
 pre/post-reform matrix headers in all eight ANZ qualification occurrences. The
 earlier run above is pre-review evidence, not the preferred current result.
+
+Final post-repair regression run: **181 passed** in 196.77 seconds, log
+`/tmp/opencode/historical-2023-final-suite.log`. Ruff and staged diff checks passed;
+135 documentation links/anchors were checked. The suite reports dependency
+deprecation/type-normalization warnings; no test failures remain. No runtime
+validation process was introduced.
 
 ### Specific semantic reuse opportunity
 
