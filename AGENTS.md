@@ -17,6 +17,12 @@ Start with the [documentation guide](docs/README.md), [current architecture](doc
 and [executable README](README.md). Historical specs and plans retain superseded
 proposals; their presence is not authority to restore retired functionality.
 
+The approved [contextual-occurrence](docs/01.principles/a.architecture/contextual-source-occurrences.md)
+and [metadata-driven processing](docs/01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
+principles govern the target architecture. Their [design specification](docs/04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
+is a draft, not an implemented migration. Preserve current extraction entrypoints
+and saved formats until the replacement has been designed, approved and verified.
+
 ## Design principles — mandatory
 
 Before architectural decisions or changes to extraction contracts, metadata, mappings, conformance, persistence, identity or validation:
@@ -61,8 +67,8 @@ plans and logical-model examples. Follow its status distinctions before using a 
 ## Source and extraction workflow
 
 - Save acquired PDFs in project-root `raw/` and maintain [raw/index.md](raw/index.md). Keep acquisition simple; do not introduce checksums, registration machinery or file-identity proofs.
-- Scrutinise each PDF with an LLM before constructing its bespoke Python extractor. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning.
-- One source PDF's extractor owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates.
+- Scrutinise each PDF with an LLM before defining its capture bindings and physical sourcing. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning. Current bespoke extractors remain the implemented entrypoint pending the approved redesign.
+- One source PDF owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates. Current paths use bespoke extractors; the approved target assigns capture to reviewed metadata bindings and source-specific physical operations where needed.
 - Implemented paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/bundle.json`. Generated Bronze is retained separately and is not automatically present in a fresh checkout/worktree.
 - `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; CR9 exposes `metadata` and `backtesting_rows`. Mixed CR6/CR9 bundles use `disclosure-v2`; source-table bundles use `disclosure-v3`. The retained codec still reads/writes the existing `cr6-v1` representation. See the [source extension interfaces](docs/architecture.md#bespoke-extraction-and-shared-interfaces) for bespoke construction and explicit semantic overrides.
 - Folder jurisdiction/date describe the source disclosure. Dataset context determines exposure geography, regulatory basis and observation date.

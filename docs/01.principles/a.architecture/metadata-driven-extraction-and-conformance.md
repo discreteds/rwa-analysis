@@ -1,8 +1,9 @@
 # Metadata-driven extraction and conformance
 
-> **Status:** PROPOSED
+> **Status:** AGREED
 > **Scope:** extraction, Bronze, Silver, declarations, processing ownership
 > **Basis:** Researcher direction and assessment against captured disclosures, 2026-10-13.
+> **Accepted:** 2026-10-13. Governing design constraint; not a claim of implementation.
 
 ## Principle
 
@@ -78,12 +79,13 @@ discovering that the paragraph itself was mis-extracted requires corrected captu
 Neither correction requires copying the temporal definitions into a bank-specific
 Silver algorithm.
 
-## Proposed replacement and retained decisions
+## Clause supersessions and retained decisions
 
-Until accepted, this proposal does not supersede existing AGREED guidance. The
-following clauses are candidates for replacement, not instructions to migrate now.
+Accepted 2026-10-13. The following ownership clauses are superseded; continuing
+constraints in the affected principles remain AGREED. This decision does not migrate
+the existing implementation or retire its retained capture formats.
 
-| Existing principle and clause | Proposed replacement | Retained responsibility |
+| Superseded principle clause | Agreed replacement | Retained responsibility |
 |---|---|---|
 | [Source-led extraction](../c.extraction-and-validation/source-led-extraction-and-golden-sets.md), Principle and local-layout implication: each PDF receives a bespoke Python extractor owning layout handling | Each PDF receives reviewed extraction metadata; bespoke physical operations are supplied where required. | Source scrutiny, independent goldens and full selected content. |
 | [Multi-domain bundles](multi-domain-source-bundles.md), Principle and extension implication: a PDF owns an extractor and bundle | A PDF owns a logical source bundle whose selected capture is described by bindings; adding selected content extends those bindings and expectations. | One source bundle, distinct contextual populations and retained output versions. |
@@ -94,12 +96,13 @@ Retain [rebuildable layers](rebuildable-analytical-layers.md),
 [selective analytical persistence](emergent-analysis-and-selective-persistence.md),
 [Mountainash-first implementation](../d.coding-practices/mountainash-first.md) and
 [separate validation](../c.extraction-and-validation/validation-is-a-separate-process.md).
-The proposed journey does not define validation or add runtime gates.
+The agreed journey does not define validation or add runtime gates.
 
 ## Decision boundary
 
-Acceptance should update affected clauses, indexes and specification statuses under
-the [principle maintenance rules](../PRINCIPLES.md), preserving continuing decisions
-and replacement links. Implementation requires subsequent design approval and a
-real-source spike under the project workflow; these proposals do not approve a
-physical schema or migration.
+Affected clauses and indexes record this acceptance under the
+[principle maintenance rules](../PRINCIPLES.md), preserving continuing decisions and
+replacement links. The [metadata-driven extraction design](../../04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
+develops these constraints. Implementation still requires design approval and a
+real-source spike under the project workflow; principle acceptance alone does not
+approve a physical schema or migration. Existing capture remains supported.

@@ -11,6 +11,15 @@ owners, signatures, physical storage, verification evidence and provenance limit
 CR1/CR2 passages remain extension designs. Historical spike/dependency findings below
 are dated evidence, not assertions about every current path.
 
+**2026-10-13 ownership supersession:** Approved
+[metadata-driven processing](../../../01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
+replaces domain datasets/pipelines as the governing capture boundary in §§2–5.
+Configuration/operations/storage separation, independently callable stages and
+staging/master publication remain applicable. See the
+[new design draft](2026-10-13-metadata-driven-extraction-design.md) for the proposed
+replacement interfaces; it is not an implemented migration. Preserve the delivered
+workflow and saved formats until that migration is approved and verified.
+
 **2026-10-11 correction:** [Validation is a separate process](../../../01.principles/c.extraction-and-validation/validation-is-a-separate-process.md).
 Its scope and behaviour are not defined. Earlier boundary-validation and
 pre-publication checking instructions are superseded, including native validator

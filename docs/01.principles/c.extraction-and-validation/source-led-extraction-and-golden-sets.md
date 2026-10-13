@@ -3,15 +3,18 @@
 > **Status:** AGREED
 > **Scope:** extraction, Bronze, validation
 
-> **Replacement proposal, 2026-10-13:** The [metadata-driven journey](../a.architecture/metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
-> proposes reviewed sourcing metadata with bespoke physical operations where needed,
-> replacing the requirement for a complete bespoke Python extractor per PDF. This
-> principle remains AGREED and authoritative pending acceptance; independent review
-> and source-authored goldens remain.
+> **Clause supersession, accepted 2026-10-13:** The [metadata-driven journey](../a.architecture/metadata-driven-extraction-and-conformance.md#clause-supersessions-and-retained-decisions)
+> replaces the required complete bespoke Python extractor per PDF with reviewed
+> sourcing metadata and bespoke physical operations where needed. Independent review
+> and source-authored goldens remain AGREED.
 
 ## Principle
 
-Each PDF receives an LLM-led source review and a bespoke Python extractor. Independently human- or LLM-authored golden sets specify the required values and metadata; the extractor is iterated against them. Golden sets are living specifications.
+Each PDF receives an LLM-led source review and reviewed extraction metadata, with
+bespoke physical operations where required. Independently human- or LLM-authored
+golden sets specify the required values and metadata; extraction is iterated against
+them. Golden sets are living specifications. Expectations generated from extraction
+definitions themselves do not provide independent source evidence.
 
 ## Rationale
 
@@ -26,7 +29,7 @@ PDF layouts and definitions vary. A parser can produce plausible numbers while m
 - Keep tests under `tests/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/`, mirroring the extractor and Bronze hierarchy.
 - Report mismatches at dataset, row and field level, including metadata mismatches. Dropped fields cannot silently pass through an older comparator.
 - Extend shared dataclasses and helpers from demonstrated requirements across real extractions. Preserve coverage of previously selected datasets when adding domains or jurisdictions.
-- Follow [complete capture across evolving disclosures](../a.architecture/historical-disclosure-capture.md): keep layout-specific handling in the bespoke extractor, retain all metrics in the selected table, and expose semantic changes rather than hiding them in document-specific parsing.
+- Follow [complete capture across evolving disclosures](../a.architecture/historical-disclosure-capture.md): declare layout-specific handling through source bindings and selected physical operations, retain all metrics in the selected table, and expose semantic changes rather than hiding them in document-specific parsing.
 - Separate faithful extraction, structural Silver conformance and task-specific analytical suitability. Passing extraction checks does not resolve unknown metric semantics, but partial semantic knowledge does not prevent capture or publication with appropriate tags. Analysis may use explicit assumptions and approximations; perfect accounting is not an acceptance criterion.
 
 ## Example
