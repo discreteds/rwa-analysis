@@ -4,7 +4,7 @@ The four-bank CR6/CR9 workflow publishes normalised organisation staging databas
 consolidates master and reconstructs all eight source tables. The CBA example also
 demonstrates PDF extraction through publication and reconstruction.
 
-The historical workflow captures complete selected 2024 mortgage panels as
+The historical workflow captures complete selected 2023 and 2024 mortgage panels as
 source-defined tables, including their original structure and supplementary notes.
 It also supports an explicitly selected Westpac 2025 structural comparison.
 
@@ -15,7 +15,7 @@ It also supports an explicitly selected Westpac 2025 structural comparison.
 - [Durable principles](docs/01.principles/README.md)
 - [Mountainash-first coding practices](docs/01.principles/d.coding-practices/mountainash-first.md)
 
-Implemented scope is the selected four-bank 2025 mortgage CR6/CR9 blocks and 2024
+Implemented scope is the selected four-bank 2025 mortgage CR6/CR9 blocks and 2023/2024
 mortgage exposure/backtesting panels. Other disclosure
 domains, a reusable capital engine and Gold persistence are not yet implemented.
 
@@ -119,9 +119,17 @@ uv run python -i examples/historical_mortgages.py
 ```
 
 This starts from the tracked PDFs and retains a fresh `/tmp/opencode` directory.
-The 23 selected historical datasets are dated panels: 574 body positions plus eight
-numerical note observations. The explicit modern Westpac projection adds two datasets
-and 180 cells, for 25 source datasets and 762 cells in master.
+The 2023 and 2024 reports each contribute 23 dated datasets and 574 body positions;
+their numerical notes contribute seven and eight observations respectively. The
+explicit modern Westpac projection adds two datasets and 180 cells, for **48 source
+datasets and 1,343 cells** in master. The example selects
+`catalogue/releases/historical-mortgages-v2.json`; the earlier v1 release is retained.
+
+Original observations and later comparatives remain distinct source occurrences.
+For example, June 2023 in CBA's 2023 report and June 2023 in its 2024 report both
+survive. Do not sum these report vintages as additional exposure. The 2022 comparative
+panels retain their earlier regulatory basis, scaling and floor notes; the workflow
+does not choose a reporting vintage or impose cross-year semantic equivalence.
 
 Inspect `sessions`, `publications`, `master_publication`, `output`, `source_tables`,
 `field_inventory`, `field_paths`, `field_timing`, `field_bands` and `field_mappings`.

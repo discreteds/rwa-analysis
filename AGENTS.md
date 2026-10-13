@@ -6,9 +6,10 @@ This is a single-user Python disclosure research project using Mountainash for t
 
 The primary goal is [faithful capture and useful tagging](docs/01.principles/a.architecture/capture-and-tag-for-research.md), not perfect accounting. PDFs provide incomplete evidence by nature. Preserve and tag partial semantics; support explicit assumptions, approximations and imperfect comparisons downstream. Do not demand exhaustive definitions, exact reconciliation or global analytical eligibility before retaining faithfully captured observations. Distinguish actual extraction/structural errors from legitimate research limitations.
 
-The implemented slice is four-bank mortgage CR6/CR9: bespoke PDF extractors, retained
-Bronze, a durable semantic catalogue, normalised organisation staging Silver, master
-consolidation and source-shaped numeric dataframe reconstruction. CR1/CR2,
+The implemented slice includes four-bank mortgage CR6/CR9 and selected 2023/2024 historical
+source tables: bespoke PDF extractors, retained Bronze, a durable semantic catalogue,
+normalised organisation staging Silver, master consolidation and source-shaped
+numeric/lexical dataframe reconstruction. CR1/CR2,
 liquidity and capital analytics remain research/design work rather than production
 pipelines. Check actual code and assets before asserting additional capability.
 
@@ -38,7 +39,9 @@ Follow [validation is a separate process](docs/01.principles/c.extraction-and-va
 ## Documentation and planning locations
 
 Work on documentation in the synced base checkout, on a documentation branch with a
-PR. Reserve worktrees for coding; do not create a worktree for each spec or plan.
+PR when it is standalone work. Keep documentation associated with an implementation
+on that implementation branch and in the same PR. Reserve worktrees for coding;
+do not create a worktree for each spec or plan.
 
 All project documentation belongs in this repository:
 
@@ -61,7 +64,7 @@ plans and logical-model examples. Follow its status distinctions before using a 
 - Scrutinise each PDF with an LLM before constructing its bespoke Python extractor. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning.
 - One source PDF's extractor owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates.
 - Implemented paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/bundle.json`. Generated Bronze is retained separately and is not automatically present in a fresh checkout/worktree.
-- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; CR9 exposes `metadata` and `backtesting_rows`. New mixed bundles use `disclosure-v2`; the retained codec still reads/writes the existing `cr6-v1` representation.
+- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; CR9 exposes `metadata` and `backtesting_rows`. Mixed CR6/CR9 bundles use `disclosure-v2`; source-table bundles use `disclosure-v3`. The retained codec still reads/writes the existing `cr6-v1` representation. See the [source extension interfaces](docs/architecture.md#bespoke-extraction-and-shared-interfaces) for bespoke construction and explicit semantic overrides.
 - Folder jurisdiction/date describe the source disclosure. Dataset context determines exposure geography, regulatory basis and observation date.
 - Preserve labels, values, units, precision, missingness, segmentation and evidence. Unresolved meanings remain explicit; notes and glossaries may establish metric variants.
 - Inspect both table axes and nested headers for meaning. Capture `of which`, parent/child and total relationships, including those established by notes, so downstream aggregation does not double-count parents and subsets. Do not assume displayed children exhaust a parent or are mutually exclusive without evidence.

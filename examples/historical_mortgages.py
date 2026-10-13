@@ -1,4 +1,4 @@
-"""Capture selected 2024 mortgages and inspect disclosure structure across vintages.
+"""Capture selected 2023/2024 mortgages and inspect structure across vintages.
 
 Run: uv run python -i examples/historical_mortgages.py
 Inspect sessions, publications, master_publication, output, source_tables,
@@ -25,15 +25,15 @@ root = Path(__file__).resolve().parents[1]
 data_root = Path(mkdtemp(prefix="historical-mortgages-", dir="/tmp/opencode"))
 print(f"Retained output directory: {data_root}", flush=True)
 selection = CatalogueSelection(
-    release_path="catalogue/releases/historical-mortgages-v1.json"
+    release_path="catalogue/releases/historical-mortgages-v2.json"
 )
 catalogue = load_catalogue(root / selection.release_path)
 sessions, publications = {}, []
-for org, day in (
-    ("cba", "2024-06-30"),
-    ("westpac", "2024-09-30"),
-    ("nab", "2024-09-30"),
-    ("anz", "2024-09-30"),
+for org, dates in (
+    ("cba", ("2023-06-30", "2024-06-30")),
+    ("westpac", ("2023-09-30", "2024-09-30", "2025-09-30")),
+    ("nab", ("2023-09-30", "2024-09-30")),
+    ("anz", ("2023-09-30", "2024-09-30")),
 ):
     session = build_session(
         OrganisationSettings(
@@ -44,7 +44,6 @@ for org, day in (
             staging_path=data_root / "silver" / f"{org}.duckdb",
         )
     )
-    dates = (day, "2025-09-30") if org == "westpac" else (day,)
     bundles = session.extract(
         tuple(
             DocumentSelection(

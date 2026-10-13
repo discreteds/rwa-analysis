@@ -1,0 +1,59 @@
+{
+  "bands": ["0 < 0.1%", "0.1% < 0.3%", "0.3% < 0.5%", "0.5% < 3%", "3% < 10%", "10% < 100%", "Default", "Total"],
+  "bounds": [["0", "0.1"], ["0.1", "0.3"], ["0.3", "0.5"], ["0.5", "3"], ["3", "10"], ["10", "100"], [null, null], [null, null]],
+  "fields": [
+    ["exposure", "Total credit risk exposures", "$M", "1000000", 0],
+    ["undrawn", "Undrawn commitments", "$M", "1000000", 0],
+    ["average_ead", "Exposure - average EAD ($M)", "$M", "1000000", 3],
+    ["lgd", "Exposure - weighted average LGD (%)", "%", "1", 1],
+    ["risk_weight", "Exposure - weighted average risk weight (%)", "%", "1", 1]
+  ],
+  "exposures": [
+    {"date":"2023-06-30", "label":"30 June 2023 Revised Framework ¹", "page":51, "markers":["", " ²", "", "", " ³"], "lgd_row":"Residential mortgage ⁴", "notes":{"overlay":"7.4", "scaling":"1.10"}, "rows":[
+      ["163,460","174,872","87,296","175,214","30,200","966","3,749","635,757"],
+      ["38,441","22,813","6,472","4,222","110","3","13","72,074"],
+      ["0.335","0.329","0.335","0.335","0.300","0.296","0.317","0.331"],
+      ["13.9","15.0","16.0","16.7","17.6","16.3","20.7","15.5"],
+      ["6.2","9.1","16.8","39.8","92.8","140.2","213.0","23.2"]
+    ]},
+    {"date":"2022-12-31", "label":"31 December 2022", "page":52, "markers":["", " ¹", "", "", " ²"], "lgd_row":"Residential mortgage", "notes":{"scaling":"1.06"}, "rows":[
+      ["159,706","184,976","104,146","219,018","30,617","1,022","4,434","703,919"],
+      ["44,978","18,470","8,844","9,810","117","19","17","82,255"],
+      ["0.326","0.297","0.285","0.270","0.289","0.301","0.265","0.292"],
+      ["20.0","19.7","19.5","20.1","20.1","20.0","20.3","19.9"],
+      ["5.2","10.7","18.6","40.1","88.2","143.3","183.3","24.4"]
+    ]},
+    {"date":"2022-06-30", "label":"30 June 2022", "page":53, "markers":["", " ¹", "", "", " ²"], "lgd_row":"Residential mortgage", "notes":{"scaling":"1.06"}, "rows":[
+      ["189,935","139,076","85,000","253,549","9,027","4,640","4,695","685,922"],
+      ["43,803","18,042","9,005","10,402","128","17","16","81,413"],
+      ["0.276","0.298","0.276","0.285","0.275","0.282","0.260","0.283"],
+      ["20.0","19.6","19.5","20.1","20.2","20.0","20.3","19.9"],
+      ["4.4","12.4","21.3","40.9","103.9","141.8","177.9","25.0"]
+    ]}
+  ],
+  "backtesting": [
+    {"id":"table9f-ii-2023-06-30", "title":"Table 9f (ii) – Accuracy of risk estimates – PD", "row":"Residential mortgage ¹", "fields":[["estimated_pd","Average estimated PD","%","0.71",2],["actual_pd","Average actual PD","%","0.55",2]]},
+    {"id":"table9f-iii-2023-06-30", "title":"Table 9f (iii) – Accuracy of risk estimates – LGD and EAD", "row":"Residential mortgage ² ³", "fields":[["estimated_lgd","Average estimated downturn LGD","%","20.0",1],["actual_lgd","Average actual LGD","%","3.0",1],["ead_ratio","Ratio of estimated EAD to actual EAD","ratio","1.0",1]]}
+  ],
+  "notes": {
+    "report-entity":"This document is prepared for CBA and its subsidiaries (the Group) in accordance with a Board approved policy and APRA Prudential Standard (APS) 330 Public Disclosure (APS 330).",
+    "level-2":"The Group is required to report its assessment of capital adequacy on a Level 2 basis. Level 2 is defined as the Consolidated Banking Group excluding the insurance business and certain entities through which securitisation of Group assets is conducted.",
+    "regulatory-basis":"The Group, with the exception of some relatively small portfolios, is accredited to use Internal Ratings-based approaches to calculate its capital requirements under APS 113 Capital Adequacy: Internal Ratings-based Approach to Credit Risk (APS 113).",
+    "undrawn":"The credit exposure value of undrawn commitments included in Total credit risk exposures above.",
+    "overlay":"Excludes a $7.4 billion RWA overlay that has been applied at 30 June 2023 for regulatory capital purposes.",
+    "revised-framework":"Prepared in accordance with APRA’s revised capital framework effective from 1 January 2023.",
+    "pd-horizon":"The PD, expressed as a percentage, is the estimate of the population of borrowers or counterparties assigned to a PD grade that will default within a one year period. It reflects a borrower’s ability to generate sufficient cash flows in the future to meet the terms of all of its credit obligations to the Group.",
+    "pd-long-run":"PD estimates are based on a long-run average default rate based on the Group’s historical data, supplemented with external data where applicable.",
+    "lgd-definition":"LGD is estimated as the net present value of the post default loss, including an allowance for internal and external costs, expressed as a percentage of the EAD.",
+    "lgd-downturn":"For calculating regulatory capital an estimated downturn LGD is used that reflects likely recovery rates under stressed economic conditions.",
+    "default-definition":"Common PD, EAD and LGD methodologies are followed in constructing the internal ratings process for residential mortgages, qualifying revolving retail exposures and other retail advances with the default definition applied when payment on a facility is 90 days or more past due, or there are indications of unlikeliness to pay (e.g. a write-off amount exists against the facility).",
+    "ead-definition":"EAD is the estimate of the amount of a facility that will be outstanding in the event of default. For defaulted facilities, it is the actual amount outstanding at the time of default.",
+    "framework":"The following tables compare credit risk estimates used in calculating regulatory capital to realised outcomes. The risk estimates are based on prudential requirements prior to the revised capital framework. The prudential standard changes have introduced a number of new asset classes which will be captured from 1 July 2023.",
+    "pd-history":"Table 9f (ii) compares estimates of long-run PD to actual default rates averaged over the period from 2016.",
+    "pd-cohort":"Average estimated PD is based on the average of long-run PDs for borrowers that are not in default at the beginning of each financial year in the observation period. Actual PD is based on the number of defaulted borrowers during the year compared to the non-defaulted borrowers measured at the beginning of each financial year.",
+    "restatement":"Historical data was restated in June 2023 for the financial period 2016-2022 to reflect an enhancement in data and methodology.",
+    "lgd-history":"LGDs for non-retail portfolios are based on accounts that defaulted in 2016 to 2021 financial years. LGDs for retail portfolios are based on accounts that defaulted in 2016 to 2022 financial years. Defaults occurring in the most recent years have been excluded from the analysis, to allow sufficient time for workout of impaired assets, booking of losses and more meaningful disclosures.",
+    "ead-history":"The EAD ratio compares estimates of EAD prior to default to realised EAD for borrowers that defaulted.",
+    "lgd-floor":"Estimated downturn LGD based on minimum regulatory floor requirements imposed by APRA and RBNZ."
+  }
+}

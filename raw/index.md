@@ -41,8 +41,8 @@ NAB page references distinguish one-based PDF positions from printed labels (two
 ## Prior annual reports — 2024 discovery
 
 Acquired from official bank URLs on 2026-10-12 for historical-format specification.
-These are source-discovery observations, not implemented extractors or independent
-goldens. Publication dates have not yet been established. References below are
+The selected mortgage blocks now have bespoke extractors and independent goldens,
+merged through PR #13. Publication dates have not yet been established. References below are
 one-based PDF positions; printed page labels can differ.
 
 | Organisation | Reporting date | Saved PDF / official source | Located mortgage evidence |
@@ -55,8 +55,29 @@ one-based PDF positions; printed page labels can differ.
 The earlier tables are predecessors to the research capabilities served by CR6/CR9,
 not automatically equivalent templates or metric definitions. The
 [historical source inventory](../docs/00.ideation/2026-10-12-historical-source-inventory.md)
-records selected panels, metrics, qualifications and unresolved meanings; independent
-goldens and production extractors have not yet been authored.
+records selected panels, metrics, qualifications and unresolved meanings. The
+[historical example](../README.md#historical-source-tables) exercises their saved
+Bronze, conformance and persisted reconstruction.
+
+## Prior annual reports — 2023 discovery
+
+Downloaded on 2026-10-13 from links in the official archives below. Initial
+text review located the selected mortgage panels; bespoke extraction and independent
+goldens now cover the selection. The [2023 execution record](../docs/00.ideation/2026-10-13-historical-2023-capture.md)
+records full persisted proof and final review status. Page numbers are one-based PDF positions. Publication dates
+have not yet been established.
+
+| Organisation | Reporting date | Saved PDF / official source | Located mortgage evidence |
+|---|---|---|---|
+| CBA | 2023-06-30 | [Saved PDF](cba-2023-06-30-aps330.pdf) · [Official PDF](https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/fy23/CBA-FY23-Basel-III-Pillar-3-Disclosure.pdf) | Table 9d(ii), pp.51–53: June 2023, December 2022 and June 2022 exposure panels. Tables 9f(ii)/(iii), p.57: mortgage PD/LGD/EAD backtesting. June exposure notes use a 1.10 factor and $7.4bn overlay; 2022 panels use 1.06. Backtesting expressly uses pre-reform prudential requirements. |
+| Westpac | 2023-09-30 | [Saved PDF](westpac-2023-09-30-aps330.pdf) · [Official PDF](https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/september-2023-Pillar-3-report.pdf) | Mortgage PD-band table p.44: September 2023, March 2023 and September 2022. Backtesting pp.56–57, same three dates. September 2022 default PD is lexical `N/A`; the 25% mortgage risk-weight floor was removed from January 2023. Supplementary RWA figures are $132,238m IRB and $209,292m standardised-equivalent. |
+| NAB | 2023-09-30 | [Saved PDF](nab-2023-09-30-aps330.pdf) · [Official PDF](https://www.nab.com.au/content/dam/nab/documents/reports/corporate/2023-full-year-pillar-3-report.pdf) | Table 5.3.B, pp.50–51: September/March 2023. Tables 5.1.J(ii)/(iii), pp.40–42: September 2023, March 2023 and September 2022; main and separately named RBNZ mortgage rows. March undrawn commitments are explicitly restated. |
+| ANZ | 2023-09-30 | [Saved PDF](anz-2023-09-30-aps330.pdf) · [Official PDF](https://www.anz.com/content/dam/anzcom/shareholder/2023-september-pillar-3-disclosure.pdf) | Table 9(d), pp.52–54: September 2023, March 2023 and September 2022. Table 9(f), p.56: mortgage backtesting. Retail estimated PD history is 2018–2022, EAD history 2018–2023, estimated LGD history 2017–2021; actual PD and LGD have different outcome cutoffs. |
+
+The 2023 reports cross the January 2023 capital-framework change. Original and
+comparative panels must retain their own scope and qualifications rather than inherit
+the latest panel's definition. Repeated 2023 observations in the 2024 reports remain
+separate source occurrences; this discovery does not establish equivalence.
 
 ## Official archives
 
@@ -73,7 +94,7 @@ The four reviewed 2025 selections below are available through the
 [Python examples](../README.md#four-bank-staging-and-master). Saved Bronze versions
 support [independently callable rebuild stages](../README.md#rerun-selected-stages).
 See the [current architecture](../docs/architecture.md) for implementation and
-verification evidence; 2024 source acquisition does not imply implemented extraction.
+verification evidence and the implemented 2024 mortgage selection.
 
 See [CBA/Westpac availability findings](../docs/00.ideation/2025-disclosure-spike.md) and [NAB/ANZ metadata findings](../docs/00.ideation/2025-nab-anz-metadata-spike.md). Those discovery notes are not production extractions. CBA June 2025 now has a [direct source review](../extractions/au/cba/2025-06-30/aps330/review.md), [bespoke mortgage CR6 extractor](../extractions/au/cba/2025-06-30/aps330/extract.py) and [independent complete golden](../tests/bronze/au/cba/2025-06-30/aps330/golden.json). All sixteen quarterly bank/reporting-date combinations listed above have saved PDFs, plus the ANZ explanatory document.
 
