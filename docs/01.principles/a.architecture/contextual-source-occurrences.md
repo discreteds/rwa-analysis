@@ -1,8 +1,9 @@
 # Contextual source occurrences
 
-> **Status:** PROPOSED
+> **Status:** AGREED
 > **Scope:** extraction definitions, source metadata, Bronze, semantic catalogue, Silver
 > **Basis:** Researcher direction and assessment against captured disclosures, 2026-10-13.
+> **Accepted:** 2026-10-13. Governing design constraint; not a claim of implementation.
 
 ## Principle
 
@@ -23,7 +24,7 @@ and adjacent cells can describe different populations or periods. Definitions an
 comments can govern multiple tables, while one value can depend on several passages.
 Neither a fixed domain row nor a PDF coordinate alone describes an extraction.
 
-The existing representation already preserves much of this evidence. The proposed
+The existing representation already preserves much of this evidence. The agreed
 change is to make these bindings the governing model for every occurrence kind,
 rather than principally resolving financial fields and attaching other content to them.
 
@@ -81,16 +82,17 @@ and [historical implementation lessons](../../00.ideation/2026-10-13-historical-
 These cases support the conceptual shape; the existing successful pipeline does not
 prove a new metadata-driven implementation.
 
-## Proposed replacement and retained decisions
+## Clause supersessions and retained decisions
 
-Until accepted, this proposal does not supersede existing AGREED guidance.
+Accepted 2026-10-13. The following clause changes are enacted; continuing constraints
+in the affected principles remain AGREED.
 
-- **Broaden** [layered, evidence-backed definitions](../b.data-semantics/layered-metric-definitions.md):
-  replace its metric-centred governing scope with definitions and contextual bindings
+- **Broadened** [layered, evidence-backed definitions](../b.data-semantics/layered-metric-definitions.md):
+  replaced its metric-centred governing scope with definitions and contextual bindings
   for all occurrence kinds. Preserve its financial distinctions, semantic revisioning,
   evidence, explicit overrides, scale requirements and field-specific timing.
-- **Refine** [complete historical capture](historical-disclosure-capture.md#source-defined-capture-and-composable-metadata):
-  extend its field/cell occurrence model to tables, axes and comments under the same
+- **Refined** [complete historical capture](historical-disclosure-capture.md#source-defined-capture-and-composable-metadata):
+  extended its field/cell occurrence model to tables, axes and comments under the same
   binding model. Preserve full selected-source capture, structural research and
   unresolved comparability.
 - **Retain** [evidence and interpretation](evidence-and-interpretation.md),
@@ -98,5 +100,6 @@ Until accepted, this proposal does not supersede existing AGREED guidance.
   [capture and tag for research](capture-and-tag-for-research.md).
 
 The companion [metadata-driven journey](metadata-driven-extraction-and-conformance.md)
-defines the proposed processing responsibility. Physical contracts, composition
-interfaces and migration remain subsequent design work.
+defines the agreed processing responsibility. The [metadata-driven extraction design](../../04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
+develops these constraints. Acceptance does not establish an implemented replacement
+pipeline; existing capture remains supported.

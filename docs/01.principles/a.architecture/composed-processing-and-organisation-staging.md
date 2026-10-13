@@ -3,27 +3,25 @@
 > **Status:** AGREED
 > **Scope:** core, Bronze, Silver, configuration, orchestration
 
-> **Replacement proposal, 2026-10-13:** The [metadata-driven journey](metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
-> proposes replacing domain-container/pipeline ownership as the governing capture
-> boundary. This principle remains AGREED and authoritative pending acceptance;
-> staging, storage separation and independently callable stages remain.
+> **Clause supersession, accepted 2026-10-13:** The [metadata-driven journey](metadata-driven-extraction-and-conformance.md#clause-supersessions-and-retained-decisions)
+> replaces domain-container/pipeline ownership as the governing capture boundary and
+> makes technical declarations consumers of authoritative definitions. Staging,
+> storage separation and independently callable stages remain AGREED.
 
 ## Principle
 
-Separate domain dataset containers share a fundamental Python protocol and compose
-shared source metadata. Domain pipelines connect Bronze input dataclasses and Silver
-output dataclasses using Mountainash schema declarations, conformance and relation
-operations. Derive common schema declarations from the models and augment them where
-necessary rather than maintaining parallel field inventories.
+Metadata-defined capture and contextual conformance govern the Bronze-to-Silver
+pathway, using Mountainash schema declarations, conformance and relation operations.
+Compose reusable definitions with independently identified source occurrences under
+[contextual source occurrences](contextual-source-occurrences.md). Domain records
+are useful projections; their fixed inventories do not limit capture. Technical
+declarations consume authoritative definitions and bindings rather than maintaining
+parallel semantic inventories. Existing typed containers and source-table capture
+remain supported; this ownership decision does not implement their replacement.
 
-For historical extensions, [source-defined capture](historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
-refines this boundary: compose reusable metadata definitions with independently
-identified source occurrences. Fixed domain row inventories serve projections rather
-than limiting capture. The existing CR6/CR9 containers remain the implemented form;
-the new physical contracts and their integration require a subsequent design.
-
-Configuration supplies execution settings; domain declarations own models, schemas
-and table identities; operations perform extraction, transformation and storage;
+Configuration supplies execution settings; declarations describe models, schemas
+and technical storage associations using those definitions; operations perform
+extraction, transformation and storage;
 an organisation-scoped session owns workflow sequencing. A small construction function
 assembles the concrete operations using resolved settings and declarations.
 
@@ -49,9 +47,10 @@ whose requirements and behaviour have not yet been defined.
   small owned objects where appropriate; table count follows the actual relationships.
 - Input/output declarations describe the data and its conformance. Do not attach
   validation calls to these transitions. Trust framework arithmetic and casts.
-- Domain declarations are explicit alongside their models, rather than inferred by
-  a shared helper from field names. Named domain results preserve related collections;
-  their declared storage associations supply a shared write/read table inventory.
+- Technical declarations are explicit alongside their models and consume the same
+  authoritative definitions and bindings, rather than inferring financial meaning
+  from field names. Named domain results preserve related collections; their declared
+  storage associations supply a shared write/read table inventory.
 - The session delegates to operations. Storage owns serialization, paths, manifests,
   connections and transactions; domain conformance/reconstruction consumes explicit
   inputs without opening files or database connections. Keep construction separate

@@ -6,18 +6,21 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
 
 ## Categories
 
-- [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
-- [Complete capture across evolving disclosures](a.architecture/historical-disclosure-capture.md): full selected-table capture over changing formats and meanings, and the boundary between local extraction and shared capabilities.
+- [a. Architecture](a.architecture/INDEX.md): capture-and-tag research goals, contextual source occurrences, metadata-driven extraction/conformance, evidence boundaries, multi-domain bundles, rebuildable layers and selective persistence of emergent analysis.
+- [Complete capture across evolving disclosures](a.architecture/historical-disclosure-capture.md): full selected-table capture over changing formats and meanings, with declared physical sourcing and separately owned semantics.
 - [b. Data semantics](b.data-semantics/INDEX.md): layered metric definitions, contextual mappings and correction-safe identity.
 - [c. Extraction and validation](c.extraction-and-validation/INDEX.md): document-led extraction, independently authored golden sets, and validation as a separate, not-yet-defined process.
 - [d. Coding practices](d.coding-practices/INDEX.md): Mountainash-first implementation, explicit library boundaries and capability-gap handling.
 
 ## Supporting material
 
-- Proposed [contextual source occurrences](a.architecture/contextual-source-occurrences.md)
+- [Contextual source occurrences](a.architecture/contextual-source-occurrences.md)
   and [metadata-driven journey](a.architecture/metadata-driven-extraction-and-conformance.md):
-  assessed against captured disclosures; replacement clauses are identified for review.
-  Existing AGREED principles remain authoritative until the proposals are accepted.
+  accepted 2026-10-13, with enacted clause supersessions and continuing constraints
+  recorded in the affected principles. AGREED establishes design authority, not an
+  implemented replacement pipeline; existing capture remains supported.
+- [Metadata-driven extraction design](../04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md):
+  design and disposable spike shape approved; the implementation plan awaits review.
 
 - [Current architecture](../architecture.md): implemented ownership, normalised CR6 tables, staging/master behaviour, provenance limits and verification evidence.
 - [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved design implemented for four-bank CR6, with a completed migration record; additional domains remain design examples.

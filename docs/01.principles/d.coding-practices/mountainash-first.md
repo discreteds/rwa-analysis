@@ -42,8 +42,11 @@ rather than processing in Polars and wrapping the finished result in `ma.relatio
   literal values and keys that the model/library cannot infer. Storage and master
   consume the same declared table inventory rather than repeating field lists.
 - Use named domain outputs and explicit inputs. Separate settings, construction,
-  domain operations and workflow sequencing. Keep source/layout rules in bespoke
-  extractors and financial interpretation in the durable catalogue.
+  domain operations and workflow sequencing. Under the approved
+  [metadata-driven journey](../a.architecture/metadata-driven-extraction-and-conformance.md),
+  source/layout bindings select physical operations, including bespoke code where
+  needed; financial interpretation remains in the durable catalogue. This refines
+  the earlier instruction that layout rules must live in complete bespoke extractors.
 - Prefer composition and concrete functions/components. Add a protocol, base class,
   registry or package only for an actual shared responsibility and caller.
 - Keep full replacement as the normal rebuild. Native transactions own atomic

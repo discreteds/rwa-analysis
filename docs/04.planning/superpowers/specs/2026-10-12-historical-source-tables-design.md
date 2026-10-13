@@ -9,6 +9,15 @@ upstream PR #377 and completing final reviews. The
 [implementation plan](../plans/2026-10-12-historical-source-tables.md) was also
 approved on 2026-10-12 and records the CBA checkpoint evidence and review boundary.
 
+**2026-10-13 ownership supersession:** The approved
+[contextual-occurrence](../../../01.principles/a.architecture/contextual-source-occurrences.md)
+and [metadata-driven processing](../../../01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
+principles replace this specification's bespoke-extractor ownership and field/cell-only
+resolution boundary as the future design direction (§§2–5). Its retained formats,
+source fidelity and delivered behaviour remain compatibility evidence. The
+[replacement design draft](2026-10-13-metadata-driven-extraction-design.md) is not yet
+approved or implemented; the execution history below remains historical evidence.
+
 ## 1. Ask and scope
 
 Capture complete selected historical mortgage tables, preserving changing fields,

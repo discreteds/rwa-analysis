@@ -3,14 +3,20 @@
 > **Status:** AGREED
 > **Scope:** metadata, Bronze, Silver
 
-> **Replacement proposal, 2026-10-13:** [Contextual source occurrences](../a.architecture/contextual-source-occurrences.md#proposed-replacement-and-retained-decisions)
-> broadens the metric-centred governing scope to all occurrence kinds. This principle
-> remains AGREED and authoritative pending acceptance; its financial distinctions,
-> evidence, revisioning and temporal semantics remain.
+> **Clause supersession, accepted 2026-10-13:** [Contextual source occurrences](../a.architecture/contextual-source-occurrences.md#clause-supersessions-and-retained-decisions)
+> broadens the metric-centred governing scope to all occurrence kinds. Financial
+> distinctions, evidence, revisioning, explicit refinements, scales and field-specific
+> temporal semantics remain AGREED.
 
 ## Principle
 
-Metric metadata separates canonical concepts, measurement definitions, reporting definitions and presentation. Published labels map to canonical roles and semantic variants using scoped, versioned evidence. Hierarchical inheritance and overrides are explicit and traceable.
+Reusable definitions and contextual bindings govern tables, fields, rows, columns,
+cells and comments under [contextual source occurrences](../a.architecture/contextual-source-occurrences.md).
+Within that model, metric metadata separates canonical concepts, measurement
+definitions, reporting definitions and presentation. Published labels map to canonical
+roles and semantic variants using scoped, versioned evidence. Inheritance, refinements
+and overrides are explicit and traceable; physical nesting alone does not establish
+semantic precedence.
 
 ## Rationale
 
@@ -26,8 +32,8 @@ Organisations report similar concepts under different labels, while the same lab
 - Reporting definitions establish entity, portfolio, regulatory basis and effective period. Presentation preserves labels, units, scale, precision and missing-value conventions.
 - Conformed financial fields use measure-specific fixed scales: base-unit monetary amounts use `Decimal(16,2)`, rates and other small-valued measures needing eight fractional digits use `Decimal(16,8)`, and actual counts use integers. The researcher agreed this on 2026-10-11: trillion-dollar amounts do not require eight fractional places. Scale belongs to the field contract, not a per-value magnitude heuristic. Bronze retains the original value and displayed precision.
 - Attributes such as geography and currency cut across concept hierarchies and remain reusable rather than generating duplicated branches.
-- Reusable field semantics and shared cell representation types are distinct from
-  published field/cell occurrences. Compose applicable definition revisions and
+- Reusable definitions and shared representation types are distinct from published
+  table, field, row, column, cell and comment occurrences. Compose applicable definition revisions and
   contextual refinements without merging source identities or silently inheriting
   meaning. Labels, positions and evidence remain occurrence-specific. This also
   enables [report-structure research](../a.architecture/historical-disclosure-capture.md#report-structure-as-research-data):

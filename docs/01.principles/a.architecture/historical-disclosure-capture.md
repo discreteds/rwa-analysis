@@ -4,10 +4,10 @@
 > **Scope:** extraction, Bronze, metadata, Silver, downstream analysis
 > **Decision context:** Researcher direction during earlier-period scoping, 2026-10-12.
 
-> **Replacement proposal, 2026-10-13:** [Contextual source occurrences](contextual-source-occurrences.md#proposed-replacement-and-retained-decisions)
-> broadens the occurrence model; the [metadata-driven journey](metadata-driven-extraction-and-conformance.md#proposed-replacement-and-retained-decisions)
-> proposes replacing local-extractor ownership clauses. This principle remains AGREED
-> and authoritative pending acceptance; full capture and structural research remain.
+> **Clause supersession, accepted 2026-10-13:** [Contextual source occurrences](contextual-source-occurrences.md#clause-supersessions-and-retained-decisions)
+> broadens the field/cell model to all occurrence kinds; the [metadata-driven journey](metadata-driven-extraction-and-conformance.md#clause-supersessions-and-retained-decisions)
+> replaces bespoke-extractor ownership of layout and composition with source bindings
+> and selected operations. Full capture and structural research remain AGREED.
 
 ## Principle
 
@@ -50,10 +50,11 @@ and constructing comparable histories are downstream research tasks.
   measure or confined to prose because a current typed row has no suitable field.
   Extend the representation when needed; this principle does not prescribe EAV,
   a universal observation model or a separate schema for every reporting year.
-- Keep PDF layout handling local to the bespoke source extractor: page coordinates,
-  header traversal, transposed sections and document-specific token handling.
-  Semantic differences remain explicit in source metadata and scoped catalogue
-  mappings; they must not disappear inside parser branches.
+- Declare PDF layout handling through source bindings and selected physical operations:
+  page coordinates, header traversal, transposed sections and document-specific token
+  handling can still require bespoke code. Contextual semantics have separate,
+  authoritative definitions and scoped mappings; they must not disappear inside
+  parser branches.
 - Generalise helpers or domain contracts from demonstrated source needs. Share a
   capability when its meaning and behaviour are genuinely common, not merely because
   two reports belong to the same bank or have similarly shaped code. Record the
@@ -67,20 +68,22 @@ and constructing comparable histories are downstream research tasks.
 Researcher clarification following the disposable shape spike, 2026-10-12:
 source-defined tables own capture completeness. Fixed CR6/CR9 rows remain useful
 domain projections, but do not define the allowable fields of a captured table.
-This revises the fixed-row capture direction for historical extensions; production
-still uses the implemented typed contracts until a subsequent design is approved
-and delivered. Preserve existing retained formats and behaviour.
+This revised the fixed-row capture direction for historical extensions. The accepted
+2026-10-13 principles now govern metadata ownership; existing capture remains
+supported. Preserve existing retained formats and behaviour during implementation.
 
 Compose tables from source fields, axes, typed values, temporal bindings,
 qualifications and relationships. Reuse shared representation types and
-evidence-backed semantic definitions across extracts. Each published field and cell
-remains an independently identified source occurrence with its own labels, position,
+evidence-backed semantic definitions across extracts. Each published table, field,
+row, column, cell and comment remains an independently identified source occurrence
+with its own labels, position,
 context and evidence; reuse of a definition does not merge occurrences. Applicable
 definition revisions and contextual refinements remain explicit and traceable.
 Unknown canonical meaning must not prevent retaining or querying a published value.
 
-The physical schema, reusable field-definition sets and complete composition
-interfaces remain subjects of the proposed design. The spike established a small
+The physical schema, reusable definition sets and complete composition
+interfaces are addressed by the [metadata-driven extraction design](../../04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md).
+The historical spike established a small
 capture-to-persistence path, not a complete metadata model or migration.
 
 ## Report structure as research data

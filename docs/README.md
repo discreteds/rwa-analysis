@@ -6,17 +6,20 @@
 - [Current architecture](architecture.md): implementation ownership, data flow,
   normalised storage, publication semantics and known limits.
 - [Principles](01.principles/README.md): durable decisions and their status/maintenance rules.
+- [Contextual source occurrences](01.principles/a.architecture/contextual-source-occurrences.md)
+  and [metadata-driven extraction and conformance](01.principles/a.architecture/metadata-driven-extraction-and-conformance.md):
+  AGREED on 2026-10-13; authoritative ownership and occurrence-model decisions with
+  enacted clause supersessions. The [metadata-driven extraction design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
+  and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
+  awaits review before production work.
+  Principle acceptance does not imply an implemented replacement
+  pipeline; existing capture remains supported.
 - [Mountainash-first coding](01.principles/d.coding-practices/mountainash-first.md):
   library ownership, data boundaries and handling capability gaps.
 - [Agent guidance](../AGENTS.md): starting points and repository working instructions.
 - [Backlog](04.planning/a.backlog/INDEX.md): outstanding work and temporary adaptations.
 
 ## Evidence and design history
-
-- Proposed [contextual source occurrences](01.principles/a.architecture/contextual-source-occurrences.md)
-  and [metadata-driven extraction and conformance](01.principles/a.architecture/metadata-driven-extraction-and-conformance.md):
-  source-backed architectural direction and explicit candidate supersessions, awaiting
-  principle approval. These do not describe an implemented replacement pipeline.
 
 - [Historical source-table design](04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md):
   researcher-approved capture/composition contracts and structural research queries;

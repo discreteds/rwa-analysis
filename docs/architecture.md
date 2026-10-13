@@ -4,6 +4,22 @@ Updated: 2026-10-13. Describes four-bank CR6/CR9 and source-defined historical
 capture. The 2024 historical implementation and documentation merged through PRs
 #13/#14 into `develop` at `7930a3a`; the CR9 baseline merged through PR #9 at `32e5f6a`.
 
+## Approved direction and current implementation
+
+On 2026-10-13 the researcher approved
+[contextual source occurrences](01.principles/a.architecture/contextual-source-occurrences.md)
+and the [metadata-driven journey](01.principles/a.architecture/metadata-driven-extraction-and-conformance.md).
+These supersede extractor/domain-container ownership as the governing target: physical
+sourcing, semantic meaning and context are singly defined metadata consumed across
+capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
+and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
+awaits review; the production replacement is not implemented.
+
+The sections below describe the working pipeline and its retained interfaces. Its
+bespoke extractors, field/cell-oriented catalogue adapters and domain dispatch remain
+operational until an approved migration replaces them. Do not interpret this current
+implementation description as authority to restore superseded ownership constraints.
+
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
 records the approved design and its history. Code declarations own exact fields and
@@ -26,8 +42,8 @@ The application is ordinary Python, with examples and numeric dataframes for res
 
 Historical capture selects the 2023 and 2024 mortgage exposure/backtesting panels
 from CBA, Westpac, NAB and ANZ: 46 dated datasets, 1,148 body cells and 15 numerical
-notes. The 2023 extension is verified on `feature/historical-2023-capture`, with
-independent reviews complete, pending merge. Each report vintage owns separate source occurrences,
+notes. The 2023 extension merged through PR #15 into `develop` at `bd6926b`, after
+independent reviews and verification. Each report vintage owns separate source occurrences,
 including repeated comparative periods.
 NAB main and separately named RBNZ mortgage backtesting populations remain distinct.
 Selected Westpac 2025 CR6/CR9 can be explicitly projected as two source datasets for
