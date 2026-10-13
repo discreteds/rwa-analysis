@@ -15,14 +15,18 @@
 
 - [Historical source-table design](04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md):
   researcher-approved capture/composition contracts and structural research queries;
-  CBA checkpoint implemented on the coding branch, not yet merged. The
+  the four-bank 2024 delivery merged through PRs #13/#14. The
   [implementation plan](04.planning/superpowers/plans/2026-10-12-historical-source-tables.md)
   records the accepted checkpoint, four-bank persisted capture and passing full
   example after consuming Mountainash PR #377; final reviews are complete and
-  checkpoint B is ready. The [implementation lessons](00.ideation/2026-10-13-historical-implementation-lessons.md)
+  checkpoint B was accepted. The [implementation lessons](00.ideation/2026-10-13-historical-implementation-lessons.md)
   record the source-format, metadata and native-ingress findings.
   The [2024 source inventory](00.ideation/2026-10-12-historical-source-inventory.md)
   records selected mortgage panels, measures, qualifications and unresolved meanings.
+
+- [2023 capture continuation](00.ideation/2026-10-13-historical-2023-capture.md):
+  approved four-bank extension, source-vintage distinctions and assessment of shared
+  versus bespoke responsibilities; execution evidence records its delivery status.
 
 - [CR9 implementation lessons](00.ideation/2026-10-12-cr9-implementation-lessons.md):
   observed fixes, reusable design evidence and concrete follow-up candidates.

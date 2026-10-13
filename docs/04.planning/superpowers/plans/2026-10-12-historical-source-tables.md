@@ -5,11 +5,10 @@
 > Tasks are behaviour-sized; the disposable spike is reference only.
 
 Status: **APPROVED by the researcher, 2026-10-12.** Design approved the same day.
-Tasks 1–2 are implemented on `feature/historical-source-tables`; the researcher
-approved continuation after checkpoint A on 2026-10-12. Mountainash item 302 is
-resolved and the consumer pin updated on 2026-10-13: full suite and retained example
-pass. Tasks 3–5 are complete and independently reviewed; checkpoint B is ready for
-researcher review. Code PR #13 and companion documentation PR #14 await merge.
+All five tasks are complete. The researcher accepted checkpoint B and authorised
+merge; code PR #13 and documentation PR #14 merged into `develop` at `7930a3a` on
+2026-10-13. Mountainash item 302 is resolved and its repair is pinned. The dated
+execution entries below preserve the earlier checkpoint and blocker history.
 Researcher authorised
 a fresh coding worktree seeded from `develop` after merging documentation PR #12.
 

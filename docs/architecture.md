@@ -1,8 +1,8 @@
 # Current processing architecture
 
 Updated: 2026-10-13. Describes four-bank CR6/CR9 and source-defined historical
-capture. Historical implementation is verified on `feature/historical-source-tables`
-(PR #13); the CR9 baseline merged through PR #9 at `32e5f6a`.
+capture. The 2024 historical implementation and documentation merged through PRs
+#13/#14 into `develop` at `7930a3a`; the CR9 baseline merged through PR #9 at `32e5f6a`.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
@@ -24,8 +24,11 @@ CR1/CR2 and liquidity remain research/design cases, not implemented domain pipel
 Gold persistence and a reusable NumPy/SciPy capital engine are not implemented.
 The application is ordinary Python, with examples and numeric dataframes for research.
 
-Historical capture selects the 2024 mortgage exposure/backtesting panels from CBA,
-Westpac, NAB and ANZ: 23 dated datasets, 574 body cells and eight numerical notes.
+Historical capture selects the 2023 and 2024 mortgage exposure/backtesting panels
+from CBA, Westpac, NAB and ANZ: 46 dated datasets, 1,148 body cells and 15 numerical
+notes. The 2023 extension is verified on `feature/historical-2023-capture`, with
+independent reviews complete, pending merge. Each report vintage owns separate source occurrences,
+including repeated comparative periods.
 NAB main and separately named RBNZ mortgage backtesting populations remain distinct.
 Selected Westpac 2025 CR6/CR9 can be explicitly projected as two source datasets for
 structural comparison; that is a second view, not additional exposure to aggregate.
@@ -227,8 +230,51 @@ behaviour must be reconciled explicitly with the separate-validation decision.
 
 ## Extending the implementation
 
+### Bespoke extraction and shared interfaces
+
+The extension seam is an explicitly selected script with
+`extract(pdf_path: Path) -> ExtractionBundle`. `run_extractor(script_path, pdf_path)`
+loads that function; `DocumentSelection` supplies the two paths. One source PDF owns
+one bundle. The structural `Dataset` protocol exposes `id` and `metadata`; supported
+concrete dataset types have explicit codec and conformance dispatch. Implementing the
+protocol alone does not register a new persistence format.
+
+| Responsibility | Shared interface | Source-specific decisions |
+|---|---|---|
+| Primitive numbers | `parse_decimal_token`, `ReportedValue` | Missing-reason interpretation, original token, displayed precision and exact evidence |
+| Table construction | `SourceTable`, `TableField`, `SourceCell`, `SourceTableMetadata` | Selected panels, local IDs, orientation, original labels/order and source form |
+| Metadata | `SourceAxisItem`, qualifications, bands, relationships, temporal descriptors/bindings | Header paths, scope/endpoints, applicable definitions, period bounds and uncertainty |
+| Interpretation | Scoped `SourceMappingRevision`, reusable `MeasureRevision`, `compose_field` | Evidence-backed applicability and explicit overrides/corrections |
+| Transport and storage | `disclosure-v3`, `SourceTablePipeline`, existing staging/master | Explicit bundle/catalogue selections and fresh saved output versions |
+
+Direct dataclass construction is the bespoke interface, including non-rectangular
+notes, different row/column roles and per-cell timing. Local constructors can shorten
+repeated assembly, but are not mandatory hooks or a hierarchy of template subclasses.
+PDF geometry and printed-page offsets stay with the document. Extractors do not import
+other dated extractors or obtain semantics through silent template inheritance.
+
+For semantic reuse, source occurrences reference a reviewed measure revision while
+retaining their own evidence. A narrower mapping does **not** implicitly win: explicit
+`overrides_refs` replace the affected attributes/conversions, while `supersedes_refs`
+record replacement of a whole mapping. Conflicting assertions otherwise remain
+conflicting. Source-table mappings select document and dataset occurrences; the
+document date does not substitute for an unknown field measurement date.
+
+Mapping identities must distinguish publication vintage as well as observed period.
+A June/September 2023 panel in a 2023 report and its 2024 comparative are separate
+occurrences, even when their values agree. A new release can select both without
+changing the previously retained release. Neither publication nor master consolidation
+chooses between them on the researcher's behalf.
+
+Review shared-helper opportunities against real consumers. The four 2024 extractors
+already share numeric parsing, composed representation, catalogue resolution and
+persistence. Their similar construction loops also encode differing source meaning;
+moving those loops into a configurable template would not by itself establish reuse.
+Extract a further common operation only when its inputs make evidence, missingness
+and source-specific alternatives explicit and it removes meaningful duplication.
+
 The agreed [historical-capture direction](01.principles/a.architecture/historical-disclosure-capture.md#source-defined-capture-and-composable-metadata)
-is implemented for the selected 2024 reports and explicit Westpac 2025 comparison.
+is implemented for the selected 2023/2024 reports and explicit Westpac 2025 comparison.
 Extend bespoke extraction and independent goldens for additional sources; do not
 assume this selection establishes fifteen-year coverage or cross-vintage equivalence.
 The disposable shape spike remains separate from production implementation.

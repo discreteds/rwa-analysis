@@ -1,0 +1,63 @@
+{
+  "bands": ["0.00%\n<0.11%", "0.11%\n<0.30%", "0.30%\n<0.51%", "0.51%\n<3.49%", "3.49%\n<10.09%", "10.09%\n<100.00%", "Default", "Total"],
+  "bounds": [["0.00", "0.11"], ["0.11", "0.30"], ["0.30", "0.51"], ["0.51", "3.49"], ["3.49", "10.09"], ["10.09", "100.00"], [null, null], [null, null]],
+  "fields": [
+    ["exposure", "Exposure at Default", "$M", "1000000", 0],
+    ["undrawn", "Undrawn commitments (included in above)", "$M", "1000000", 0],
+    ["average_ead", "Average Exposure at Default", "$M", "1000000", 3],
+    ["lgd", "Exposure-weighted average Loss Given Default (%)", "%", "1", 1],
+    ["risk_weight", "Exposure-weighted average risk weight (%)", "%", "1", 1]
+  ],
+  "exposures": [
+    {"date":"2023-09-30", "label":"Sep 23", "page":52, "rows":[
+      ["83,971", "60,151", "36,181", "143,396", "9,820", "1,575", "2,384", "337,478"],
+      ["20,168", "4,140", "1,531", "8,831", "43", "10", "6", "34,729"],
+      ["0.290", "0.363", "0.380", "0.421", "0.373", "0.351", "0.367", "0.364"],
+      ["12.3%", "13.5%", "13.7%", "15.1%", "14.6%", "14.2%", "26.3%", "14.0%"],
+      ["6.3%", "10.1%", "18.4%", "41.9%", "91.9%", "156.2%", "284.0%", "28.5%"]
+    ]},
+    {"date":"2023-03-31", "label":"Mar 23", "page":53, "rows":[
+      ["84,494", "59,576", "35,867", "132,676", "8,463", "1,475", "2,119", "324,670"],
+      ["19,861", "3,048", "889", "6,860", "33", "8", "2", "30,701"],
+      ["0.282", "0.347", "0.362", "0.405", "0.353", "0.337", "0.356", "0.348"],
+      ["11.9%", "13.0%", "13.2%", "14.6%", "13.2%", "13.9%", "25.8%", "13.5%"],
+      ["6.4%", "9.9%", "17.9%", "40.6%", "87.8%", "151.1%", "258.0%", "26.7%"]
+    ]},
+    {"date":"2022-09-30", "label":"Sep 22", "page":54, "rows":[
+      ["88,300", "93,052", "65,417", "156,131", "7,338", "1,568", "2,319", "414,125"],
+      ["22,694", "5,865", "1,486", "9,840", "27", "11", "4", "39,927"],
+      ["0.264", "0.222", "0.301", "0.356", "0.338", "0.334", "0.298", "0.287"],
+      ["19.7%", "17.2%", "19.4%", "20.6%", "20.1%", "20.0%", "19.0%", "19.4%"],
+      ["4.5%", "11.7%", "22.9%", "45.2%", "97.7%", "145.1%", "165.3%", "27.4%"]
+    ]}
+  ],
+  "backtesting": [
+    ["estimated_pd", "Average Estimated PD %", "%", "0.93"],
+    ["actual_pd", "Average Actual PD %", "%", "0.77"],
+    ["ead_ratio", "Average estimated to actual EAD ratio", "ratio", "1.01"],
+    ["estimated_lgd", "Average Estimated LGD %", "%", "18.69"],
+    ["actual_lgd", "Average Actual LGD %", "%", "1.40"]
+  ],
+  "notes": {
+    "restructure": [4, "On 3 January 2023, Australia and New Zealand Banking Group Limited (ANZBGL) established by a scheme of arrangement a non-operating holding company, ANZ Group Holdings Limited (ANZGHL), as the new listed parent holding company of the ANZ Group and implemented a restructure to separate ANZ’s banking and certain non-banking businesses into the ANZ Bank Group and ANZ Non-Bank Group (Restructure). The ANZ Bank Group comprises ANZBGL and the majority of its businesses and subsidiaries that were held in ANZBGL prior to the Restructure. The ANZ Non- Bank Group comprises banking-adjacent businesses developed or acquired by the ANZ Group, to focus on bringing new technology and banking-adjacent services to the ANZ Group’s customers, and a separate service company."],
+    "regulatory-adjustments": [47, "For the wholesale asset class, PD, LGD, M and EAD are used in the calculation of capital and in the collectively assessed provisioning process. For the retail asset class, PD, LGD and EAD are used in the calculation of capital, and PNPL, EANPL and LGNPL are used in the collectively assessed provisioning process. Regulatory and internal expected loss are calculated from the same data sources and starting from the same basis, however there are some differences between the factors used because several aspects of ANZ’s rating system are adjusted in accordance with APRA requirements for regulatory capital purposes. The most significant of these adjustments are the use for regulatory capital purposes of downturn LGDs; the application of regulatory prescribed scalars such as the mortgages scalars of 1.4, 1.7 and 2.5 and the mandatory use of the supervisory slotting approach for project finance."],
+    "framework": [56, "APS 330 Table 9(f) compares internal credit risk estimates used in calculating regulatory capital with realised outcomes by portfolio types. It covers the PD, EAD and LGD estimates for the IRB portfolios."],
+    "capital-reform": [4, "APRA released new bank capital adequacy requirements applying to Australian incorporated registered banks, which are set out in APRA’s Banking Prudential Standard documents. ANZ has implemented these new requirements from 1 January 2023. The new capital adequacy key requirements include changes to APS 110 Capital Adequacy (APS 110), APS 112 Capital Adequacy: Standardised Approach to Credit Risk (APS 112) and APS 113 Capital Adequacy: Internal Ratings- based Approach to Credit Risk (APS 113) with key features of the reforms including: • improving the flexibility of the capital framework, through larger capital buffers that can be used by banks to support lending during periods of stress; • changes to risk weighted assets (RWA) through more risk-sensitive risk weights increasing capital requirements for higher risk lending and decreasing it for lower risks; • changes to loss given default rates (LGD) including approved use of an internal ratings-based (IRB) approved LGD model for mortgage portfolios; • an increase in the IRB scaling factor (from 1.06x to 1.1x); • requirement that IRB ADIs calculate and disclose RWA under the standardised approach and the introduction of a capital floor at 72.5% of standardised RWA; and • use of prescribed New Zealand authority’s equivalent prudential rules for the purpose of calculating the Level 2 regulatory capital requirement."],
+    "report-entity": [4, "This document is prepared for ANZ BH Pty Ltd (ANZ Bank HoldCo) in accordance with Board policy and the APS 330 reporting standard requirements."],
+    "level-2": [4, "The APS 330 disclosure has been prepared on the level 2 basis being ANZ Bank HoldCo as the head of ANZ’s Level 2 banking group following the Restructure (formerly Australia and New Zealand Banking Group Limited for prior years)."],
+    "currency": [5, "Unless otherwise stated, all amounts are rounded to AUD millions."],
+    "comparative-basis": [4, "The revisions to the prudential standards resulted in changes to capital treatments, calculations, and the format of the disclosures from the 31 March 2023 period. Comparative periods reported before March 2023 in this document remain based on the pre 1 January 2023 prudential standards and have not been restated."],
+    "regulatory-basis": [45, "Remains post-January 2023\nIRB Asset Class: Residential Mortgages\nBorrower Type: Exposures secured by residential property\nRating Approach Pre-Jan 2023: AIRB\nRating Approach Post-Jan 2023: AIRB"],
+    "nz-separation": [45, "New from January 2023\nIRB Asset Class: Exposures of New Zealand banking subsidiaries\nBorrower Type: Includes all exposures in all asset classes for New Zealand banking subsidiaries Reported within all pre-January 2023 asset classes as per APS 113.\nRating Approach Pre-Jan 2023: \nRating Approach Post-Jan 2023: AIRB and Supervisory Slotting"],
+    "default-definition": [30, "ANZ uses the following definition of default:  ANZ considers that the customer is unlikely to pay its credit obligations in full, without recourse to actions such as realising security, or  the customer is greater than or equal to 90 days past due on a credit obligation, or  the customer’s overdraft or other revolving facility(ies) have been continuously outside approved limits for 90 or more consecutive days."],
+    "ead-net-offsets": [29, "Unless otherwise stated, throughout this disclosure EAD is net of offsets for credit risk mitigation such as netting and financial collateral."],
+    "pd-definition": [46, "PD is an estimate of the level of the risk of borrower default over a 12-month horizon. Borrower ratings are derived by way of rating models used both at loan origination and for ongoing monitoring."],
+    "ead-definition": [48, "EAD represents the expected outstanding at the time of default, including an estimate of additional drawings prior to default (based on supervisory credit conversion factors), plus post-default drawings that were legally committed to prior to default."],
+    "ead-glossary": [96, "Exposure At Default is defined as the expected facility exposure at the date of default."],
+    "lgd-definition": [46, "LGD is an estimate of the potential economic loss on a credit exposure, incurred as a consequence of obligor default, expressed as a percentage of the facility’s EAD."],
+    "pd-history": [56, "The estimated PD is based on the average of the internally estimated long-run PDs for obligors that are not in default at September of each year over the period of observation being 2018 to 2022. The actual PD is based on the number of defaulted obligors up to September 2023 compared to the total number of obligors measured."],
+    "ead-history": [56, "The EAD ratio compares internally estimated EAD prior to default to realised EAD for defaulted obligors over the period of observation being 2018 to 2023. A ratio greater than 1.0 signifies that on average, the actual defaulted exposures are lower than the estimated exposures at the time of default."],
+    "lgd-history": [56, "The estimated LGD is the downturn LGD for accounts that defaulted at September of each year during the observation period being 2017 to 2021. The actual LGD is based on the average realised losses over the period for the accounts observed at the beginning and defaulted during the observation period. Defaults occurring after September 2022 have been excluded from the analysis to allow sufficient time for workout period."],
+    "lgd-review": [56, "A review of historical LGD data is currently being undertaken and may result in changes to Average Actual LGD numbers detailed above."]
+  }
+}

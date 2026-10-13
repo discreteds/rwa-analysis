@@ -63,7 +63,8 @@ Bronze, conformance and persisted reconstruction.
 
 Downloaded on 2026-10-13 from links in the official archives below. Initial
 text review located the selected mortgage panels; bespoke extraction and independent
-goldens are pending. Page numbers are one-based PDF positions. Publication dates
+goldens now cover the selection. The [2023 execution record](../docs/00.ideation/2026-10-13-historical-2023-capture.md)
+records full persisted proof and final review status. Page numbers are one-based PDF positions. Publication dates
 have not yet been established.
 
 | Organisation | Reporting date | Saved PDF / official source | Located mortgage evidence |

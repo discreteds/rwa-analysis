@@ -1,0 +1,32 @@
+{
+  "bands": ["0<0.1%", "0.1<0.5%", "0.5<2.0%", "2.0<5.0%", "5.0<99.9%", "100%"],
+  "exposures": [
+    {"date":"2023-09-30", "page":50, "labels":["Exposure at default", "Undrawn commitments(1)", "Average exposure at default ($m)(2)", "Exposure-weighted average LGD (%)", "Exposure-weighted average risk-weight (%)(3)"],
+     "rows":[["64,740","204,252","93,365","15,411","12,004","3,300"],["28,441","24,983","3,665","536","316","37"],["0.06","0.36","0.45","0.54","0.42","0.40"],["13.5%","15.3%","17.2%","18.8%","17.8%","22.6%"],["5.8%","13.1%","34.8%","86.9%","139.8%","230.7%"]]},
+    {"date":"2023-03-31", "page":51, "labels":["Exposure at default", "Undrawn commitments(2)(3)", "Average exposure at default ($m)(4)", "Exposure-weighted average LGD (%)", "Exposure-weighted average risk-weight (%)(5)"],
+     "rows":[["65,254","202,607","90,738","14,092","10,936","2,826"],["28,499","24,156","3,606","679","169","37"],["0.06","0.34","0.44","0.48","0.42","0.30"],["13.8%","15.1%","17.1%","18.5%","17.5%","24.3%"],["6.1%","12.9%","34.4%","85.3%","137.6%","237.1%"]]}
+  ],
+  "backtesting": [
+    {"kind":"ii", "date":"2023-09-30", "page":40, "approach":"IRB", "rows":[["0.87","0.91","1.0"],["1.01","0.68","1.0"]]},
+    {"kind":"ii", "date":"2023-03-31", "page":40, "approach":"advanced IRB", "rows":[["0.90","0.91","1.0"],["1.01","0.69","1.0"]]},
+    {"kind":"ii", "date":"2022-09-30", "page":41, "approach":"advanced IRB", "rows":[["0.88","0.93","1.0"],["1.02","0.71","1.0"]]},
+    {"kind":"iii", "date":"2023-09-30", "page":41, "approach":"IRB", "rows":[["20.0","2.0"],["23.7","2.1"]]},
+    {"kind":"iii", "date":"2023-03-31", "page":42, "approach":"advanced IRB", "rows":[["20.0","2.2"],["23.9","2.3"]]},
+    {"kind":"iii", "date":"2022-09-30", "page":42, "approach":"advanced IRB", "rows":[["20.0","2.7"],["24.1","2.6"]]}
+  ],
+  "notes": {
+    "retail-lgd":"Key account variables, such as months exposure held and balance, are identified and modelled to provide an estimate of the probability that a loan that has defaulted would return to full performance (i.e. cure). For accounts that do not cure and are written off, internal recovery data is used to assess the ultimate loss (i.e. initial loss, less recoveries achieved, plus costs of recovery). Adjustments based on external data and expert judgement are made to the LGD to account for a downturn in the economic cycle, and are applied by varying the cure and recovery rates. In Australia, lenders mortgage insurance is generally required for borrowing where the loan-to-valuation ratio is above 80% at origination. Such insurance does not currently influence the retail LGD metrics used. For loans secured by residential property, APRA has mandated the use of a supervisory floor of 10% for RWA purposes.",
+    "undrawn":"Undrawn commitments are included in total exposure shown above.",
+    "undrawn-restated":"Undrawn commitments have been restated from that previously disclosed.",
+    "average-arrangements":"Simple average of exposure by number of arrangements.",
+    "overlay":"RWA overlay adjustments for regulatory prescribed methodology requirements have been excluded from exposure-weighted average risk weights.",
+    "pd-cohort":"The following table provides internal estimates of long-run PD and actual default rates by asset class. Averages of actual and estimated PD are calculated using the cohort that is not in default at the beginning of the reporting period and averaged out over a 10-year observation period.",
+    "ead-comparison":"The ratio of estimated to actual EaD in the following table provides a comparison of EaD for customers that are not in default at the beginning of the reporting period, with EaD at the point of default. A ratio greater than 1.0 signifies that on average, EaD is lower at the point of default than at the beginning of the reporting period.",
+    "lgd-estimate":"The following table compares internal estimates of downturn LGD at the beginning of the year with actual losses.",
+    "lgd-history":"Actual LGD has been calculated using net write-offs from defaults over a 10-year observation period to the reporting date, excluding recent defaults to allow sufficient time to complete the workout of the asset and recognition of any losses. For defaults relating to qualifying revolving retail and other retail, this period is the most recent 12 months and for all other asset classes this period is the most recent two years.",
+    "framework-history":"The revised capital framework has resulted in changes in how exposures are classified by asset class. The following loss experience and risk estimate disclosures are based on prudential requirements prior to the revised capital framework. Loss experience and risk estimate information based on revised capital framework asset classes is being captured from 1 April 2023, and will be disclosed when there is sufficient history under the revised capital framework.",
+    "backtesting-perimeter":"As a significant portion of specialised lending exposures that were subject to supervisory slotting prior to 1 January 2023 are now subject to the advanced or foundation IRB approaches under APRA requirements, risk estimate information for this asset class has been included in Table 5.1.J (ii) Accuracy of risk estimates for Probability of Default and Exposure at Default and Table 5.1.J (iii) Accuracy of risk estimates for Loss Given Default for the Level 2 Group excluding BNZ. In addition, risk estimate information in these tables has been disclosed for the RBNZ regulated banking subsidiary's significant asset classes, being corporate (including SME) and residential mortgages.",
+    "apra-floor":"Estimated downturn LGD subject to APRA imposed regulatory floors.",
+    "rbnz-lgd":"RBNZ prudential rules prescribe LGDs for residential mortgages."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {"id":"anz-fy23-sep23-million","revision_id":"anz-fy23-sep23-million@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2023-09-30","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "evidence_refs":[{"bundle_key":"au/anz/2023-09-30/aps330","document_id":"anz-2023-09-30-aps330","dataset_id":"table9d-2023-09-30","kind":"qualification","ref_id":"currency"}],
+     "conversion":{"source_unit":"$M","source_scale":"1000000","unit_factor":"1000000"}},
+    {"id":"anz-fy23-sep23-percent","revision_id":"anz-fy23-sep23-percent@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2023-09-30","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "conversion":{"source_unit":"%","source_scale":"1","unit_factor":"0.01"}},
+    {"id":"anz-fy23-mar23-million","revision_id":"anz-fy23-mar23-million@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2023-03-31","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "evidence_refs":[{"bundle_key":"au/anz/2023-09-30/aps330","document_id":"anz-2023-09-30-aps330","dataset_id":"table9d-2023-03-31","kind":"qualification","ref_id":"currency"}],
+     "conversion":{"source_unit":"$M","source_scale":"1000000","unit_factor":"1000000"}},
+    {"id":"anz-fy23-mar23-percent","revision_id":"anz-fy23-mar23-percent@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2023-03-31","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "conversion":{"source_unit":"%","source_scale":"1","unit_factor":"0.01"}},
+    {"id":"anz-fy23-sep22-million","revision_id":"anz-fy23-sep22-million@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2022-09-30","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "evidence_refs":[{"bundle_key":"au/anz/2023-09-30/aps330","document_id":"anz-2023-09-30-aps330","dataset_id":"table9d-2022-09-30","kind":"qualification","ref_id":"currency"}],
+     "conversion":{"source_unit":"$M","source_scale":"1000000","unit_factor":"1000000"}},
+    {"id":"anz-fy23-sep22-percent","revision_id":"anz-fy23-sep22-percent@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9d-2022-09-30","template":"Table 9(d)","portfolio":"Residential Mortgage"},
+     "conversion":{"source_unit":"%","source_scale":"1","unit_factor":"0.01"}},
+    {"id":"anz-fy23-backtest-percent","revision_id":"anz-fy23-backtest-percent@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9f-2023-09-30","template":"Table 9(f)","portfolio":"Residential Mortgage"},
+     "conversion":{"source_unit":"%","source_scale":"1","unit_factor":"0.01"}},
+    {"id":"anz-fy23-backtest-ratio","revision_id":"anz-fy23-backtest-ratio@1","created_on":"2026-10-13","effective_from":null,"effective_to":null,
+     "scope":{"document_id":"anz-2023-09-30-aps330","document_date":"2023-09-30","dataset_id":"table9f-2023-09-30","template":"Table 9(f)","portfolio":"Residential Mortgage","field_key":"ead_ratio"},
+     "evidence_refs":[{"bundle_key":"au/anz/2023-09-30/aps330","document_id":"anz-2023-09-30-aps330","dataset_id":"table9f-2023-09-30","kind":"qualification","ref_id":"ead-history"}],
+     "conversion":{"source_unit":"ratio","source_scale":"1","unit_factor":"1"}}
+  ]
+}
