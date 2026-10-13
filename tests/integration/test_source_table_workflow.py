@@ -47,8 +47,10 @@ def test_explicit_legacy_publication_keeps_numeric_and_lexical_views(
     assert source.cells.filter(ma.col("original_text") == "N/A").count_rows() == 14
     assert source.cells.filter(ma.col("value_kind") == "text").count_rows() == 16
     assert source.cells.filter(ma.col("source_count") == 564613).count_rows() >= 1
-    assert source.cells.filter(ma.col("original_text") == "").count_rows() == 5
     key = westpac_bundle.bundle_key + "/cr9-residential-mortgages"
+    assert source.cells.filter(
+        (ma.col("table_id") == key) & (ma.col("original_text") == "")
+    ).count_rows() == 5
     frames = reconstruct_source_tables(source)
     assert frames[key].frame["rating-0"].to_list()[:7] == ["N/A"] * 7
     assert frames[key].frame["column-previous_year_borrower_count"][0] == 564613
