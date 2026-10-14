@@ -30,3 +30,10 @@ The test owns this PDF extraction boundary. Wrong panel selection, dropped metri
 altered labels/tokens, wrong printed pages, broad note scope, borrowed definitions,
 missing temporal roles or collapsed header paths are credible failures not covered
 by other vintages' tests. It invokes the ordinary extractor without test-only seams.
+
+The metadata migration extends this same primary boundary to retained v4 bindings:
+physical field/panel headers must match the reviewed PDF, including nested repeated
+Predicted/Observed labels; the p.57 shared NZ footnote and separate p.56 occurrence
+must retain their actual pages and targets. PDF superscripts are plain digit tokens
+in captured header fragments, while the reviewed field labels retain superscripts.
+The independent JSON values and note transcriptions are unchanged.

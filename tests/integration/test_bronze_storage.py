@@ -112,10 +112,22 @@ def test_legacy_wire_has_no_new_metadata_members(legacy_payload, legacy_bundle):
 @pytest.mark.parametrize(
     "bundle_fixture", ["cba_bundle", "westpac_bundle", "nab_bundle", "anz_bundle"]
 )
-def test_saved_bronze_is_exact_and_immutable(tmp_path, request, bundle_fixture):
+def test_saved_bronze_is_exact_and_immutable(
+    tmp_path, request, bundle_fixture, project_root
+):
     from rwa_analysis.storage.bronze import BronzeStore
 
     bundle = request.getfixturevalue(bundle_fixture)
+    payload = json.loads(
+        (
+            project_root
+            / "tests/fixtures/retained"
+            / (
+                f"{bundle.document.organisation_id}-{bundle.document.document_reporting_date}-disclosure-v2.json"
+            )
+        ).read_text()
+    )
+    assert encode_payload(bundle) == payload
     before = datetime.now(UTC)
     store = BronzeStore(tmp_path / "data/bronze")
     ref = store.save(bundle, "v1", "test-code-revision")

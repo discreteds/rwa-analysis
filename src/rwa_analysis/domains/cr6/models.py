@@ -40,29 +40,6 @@ class Cr6Output:
 
 
 @dataclass(frozen=True)
-class SourceNumbers:
-    """Source-unit numeric projection, also used for selected conversion factors.
-
-    Counts enter the common multiplication as exact Decimal coefficients and
-    return to integer counts in Silver. Source values are never rounded here.
-    """
-
-    observation_id: str
-    on_balance_exposure: Decimal | None
-    off_balance_exposure: Decimal | None
-    average_ccf: Decimal | None
-    ead: Decimal | None
-    average_pd: Decimal | None
-    reported_borrower_count: Decimal | None
-    average_lgd: Decimal | None
-    average_maturity: Decimal | None
-    rwa: Decimal | None
-    rwa_density: Decimal | None
-    regulatory_expected_loss: Decimal | None
-    provisions: Decimal | None
-
-
-@dataclass(frozen=True)
 class RowIdentity:
     silver_revision_id: str
     observation_id: str

@@ -17,7 +17,9 @@ def test_capture_snapshot_and_shared_occurrences_survive_saved_transport(
     from rwa_analysis.extraction.definitions import (
         CapturedFragment,
         CaptureSnapshot,
+        CellBinding,
         ContextDefinition,
+        DomainFieldBinding,
         OccurrenceBinding,
         OccurrenceLink,
         OccurrenceRef,
@@ -41,7 +43,19 @@ def test_capture_snapshot_and_shared_occurrences_survive_saved_transport(
             ),
         ),
         (
-            OccurrenceBinding(field, context_refs=("context@1",)),
+            OccurrenceBinding(
+                field,
+                context_refs=("context@1",),
+                cell=CellBinding(
+                    "same",
+                    "row",
+                    "column",
+                    missing_reason="not_applicable",
+                    missing_tokens=("N/A",),
+                    source_row_role="band",
+                    source_aggregation_scope=("mortgage-block",),
+                ),
+            ),
             OccurrenceBinding(axis),
             OccurrenceBinding(
                 comment,
@@ -61,6 +75,15 @@ def test_capture_snapshot_and_shared_occurrences_survive_saved_transport(
                 name="Retained population",
                 definition="Independent transport definition",
                 category="population",
+            ),
+        ),
+        domain_bindings=(
+            DomainFieldBinding(
+                replace(field, kind="cell"),
+                "cr6",
+                "original-record",
+                "ead",
+                "original-binding",
             ),
         ),
     )

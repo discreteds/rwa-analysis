@@ -42,7 +42,11 @@ def capture(pdf_path, definition, operations):
                     token or None, token, spec.missing_reason, fragment.evidence
                 )
             else:
-                number = parse_decimal_token(token.rstrip("%"))
+                number = (
+                    None
+                    if token in spec.missing_tokens
+                    else parse_decimal_token(token.rstrip("%"))
+                )
                 if spec.value_kind == "integer" and number is not None:
                     number = int(number)
                 precision = (
@@ -72,6 +76,8 @@ def capture(pdf_path, definition, operations):
                     spec.qualification_refs,
                     spec.value_kind,
                     value,
+                    source_row_role=spec.source_row_role,
+                    source_aggregation_scope=spec.source_aggregation_scope,
                 )
             )
 

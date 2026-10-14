@@ -285,3 +285,61 @@ def test_selected_definition_contents_resolve_without_authoring_catalogue(
         LoadedBronze(BronzeRef(old.bundle_key, "proof"), bundle), cat
     ).meanings[target]
     assert meaning.concept_ref == RevisionRef("concept", "population@1")
+
+
+@pytest.mark.parametrize(
+    "point,expected", [("2023-06-30", "selected"), ("2023-06", None), (None, None)]
+)
+def test_retained_v3_uses_measurement_not_report_date(cba_2024_bundle, point, expected):
+    from rwa_analysis.catalogue.models import MappingScope
+    from rwa_analysis.extraction.source_tables import CellTemporalBinding
+    from rwa_analysis.extraction.temporal import TemporalDescriptor
+
+    table = cba_2024_bundle.datasets[0]
+    cell = table.cells[0]
+    table = replace(
+        table,
+        metadata=replace(
+            table.metadata,
+            temporal_descriptors=(
+                TemporalDescriptor(
+                    "measurement",
+                    "Source period",
+                    point=point,
+                    point_status="established" if point else "unresolved",
+                ),
+            ),
+            temporal_bindings=(
+                CellTemporalBinding(cell.id, "measurement", "measurement"),
+            ),
+        ),
+    )
+    bundle = replace(cba_2024_bundle, datasets=(table,))
+    mapping = SourceMappingRevision(
+        id="dated",
+        revision_id="dated@1",
+        created_on=date(2026, 10, 14),
+        effective_from=date(2023, 6, 30),
+        effective_to=date(2023, 6, 30),
+        scope=MappingScope(
+            document_id=bundle.document.document_id,
+            document_date=None,
+            template=None,
+            portfolio=None,
+            dataset_id=table.id,
+            record_id=cell.id,
+        ),
+        attributes=(SemanticAttribute("selected", "established", name="loss_basis"),),
+    )
+    catalogue = CatalogueRelease(
+        "dated",
+        "cr6-v1",
+        date(2026, 10, 14),
+        (MemberSelection("test", "mapping", "dated@1"),),
+        (mapping,),
+    )
+    meaning = resolve.resolve_capture(
+        LoadedBronze(BronzeRef(bundle.bundle_key, "retained-v3"), bundle), catalogue
+    ).meanings[OccurrenceRef(bundle.bundle_key, table.id, "cell", cell.id)]
+    assert meaning.attribute("loss_basis").value == expected
+    assert bundle.schema_version == "disclosure-v3"

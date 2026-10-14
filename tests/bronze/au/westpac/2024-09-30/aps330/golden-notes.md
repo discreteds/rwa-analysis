@@ -36,3 +36,10 @@ supplies dates for historical averages. Regulatory expected loss alone uses the
 panel snapshot date. Annual predictions, cohort anchors and outcome windows have
 distinct temporal roles. Weighting conventions and exact NZ contribution remain
 unresolved.
+
+The metadata migration extends this same primary boundary to actual captured v4
+headers and shared-comment targets. Captured superscripts use the PDF text layer's
+plain `a`/`b`; declared display labels retain `ᵃ`/`ᵇ`. The single p.57 NZ passage
+serves both 2024 panels, while its p.58 repetition is separately captured. Field
+and panel header checks cover all selected panels, including the continuation.
+The independent JSON values and note transcriptions are unchanged.

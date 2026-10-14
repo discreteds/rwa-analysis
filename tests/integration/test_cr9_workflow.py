@@ -50,7 +50,7 @@ def test_real_westpac_mixed_run_reconstructs_persisted_numbers(westpac_session):
         revision="mixed-review",
     )
     bundle = result.bundles[0]
-    assert bundle.schema_version == "disclosure-v2"
+    assert bundle.schema_version == "disclosure-v4"
     output = session.silver.read(result.publication)
     assert output.cr6.observations.count_rows() == 9
     assert output.cr9.observations.count_rows() == 8
@@ -58,7 +58,7 @@ def test_real_westpac_mixed_run_reconstructs_persisted_numbers(westpac_session):
     key = f"{bundle.bundle_key}/{ds.id}"
     first = (
         output.cr9.observations.to_polars()
-        .filter(pl.col("source_record_id") == ds.backtesting_rows[0].record_id)
+        .filter(pl.col("source_record_id") == "band-1")
         .row(0, named=True)
     )
     assert first["historical_annual_default_rate"] == Decimal("0.00060000")
@@ -74,16 +74,21 @@ def test_real_westpac_mixed_run_reconstructs_persisted_numbers(westpac_session):
     table = session.reconstruct(result.publication)[key]
     binding = next(
         b
-        for b in ds.metadata.bindings
-        if b.typed_field_name == "historical_annual_default_rate"
+        for b in bundle.snapshot.domain_bindings
+        if b.ref.scope == ds.id and b.field_key == "historical_annual_default_rate"
     )
     label = next(
         f.source_label
         for f in ds.metadata.published_fields
-        if f.id == binding.published_field_ref
+        if f.id == next(c.field_ref for c in ds.cells if c.id == binding.ref.local_id)
     )
     assert table.height == 8
     assert table[label][0] == Decimal("0.07")
+    assert set(result.tables) == {
+        f"{bundle.bundle_key}/cr6-residential-mortgages",
+        f"{bundle.bundle_key}/cr9-residential-mortgages",
+    }
+    assert output.source_tables.cells.count_rows() == 180
     assert (
         session.silver.read_manifest(result.publication).selection.catalogue
         == CATALOGUE

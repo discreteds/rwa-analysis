@@ -9,13 +9,24 @@ from rwa_analysis.extraction.models import ReportedValue
 from rwa_analysis.storage.bronze import BronzeStore
 
 
-def test_saved_source_tables_preserve_all_metadata(cba_2024_bundle, tmp_path):
+def test_saved_source_tables_preserve_all_metadata(
+    cba_2024_bundle, tmp_path, project_root
+):
+    import json
+
+    from rwa_analysis.extraction.codec import encode_payload
+
     bundle = cba_2024_bundle
     store = BronzeStore(tmp_path)
     ref = store.save(bundle, "transport-proof")
     restored = store.load(ref).bundle
     assert restored == bundle
     assert restored.schema_version == "disclosure-v3"
+    assert encode_payload(restored) == json.loads(
+        (
+            project_root / "tests/fixtures/retained/cba-2024-06-30-disclosure-v3.json"
+        ).read_text()
+    )
 
 
 def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(

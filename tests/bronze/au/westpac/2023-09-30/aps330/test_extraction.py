@@ -30,7 +30,52 @@ def test_complete_westpac_2023_source(project_root):
     path = project_root / "extractions/au/westpac/2023-09-30/aps330/extract.py"
     assert path.exists(), "Westpac September 2023 capture is not implemented"
     bundle = run_extractor(path, project_root / "raw/westpac-2023-09-30-aps330.pdf")
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    captured = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    for scope in ("table9d-2023-09-30", "table9d-2023-03-31", "table9d-2022-09-30"):
+        b = occurrences[scope, "field", "ead"]
+        fragment = captured[b.physical_refs[0].binding_ref, b.physical_refs[0].slot]
+        assert fragment.text == "Exposure at Default"
+        assert fragment.evidence.pdf_page == 44
+    entity = occurrences[None, "comment", "report-entity"]
+    assert len(entity.links) == 6
+    assert (
+        captured[entity.physical_refs[0].binding_ref, "text"].text
+        == golden["notes"]["report-entity"][1]
+    )
+    nz_comments = [
+        b
+        for b in occurrences.values()
+        if b.ref.kind == "comment" and b.ref.local_id == "nz-history"
+    ]
+    assert {
+        (
+            captured[b.physical_refs[0].binding_ref, "text"].evidence.pdf_page,
+            frozenset(link.target.scope for link in b.links),
+        )
+        for b in nz_comments
+    } == {
+        (56, frozenset({"table9f-2023-09-30"})),
+        (57, frozenset({"table9f-2023-03-31", "table9f-2022-09-30"})),
+    }
+    for scope in ("table9f-2023-09-30", "table9f-2023-03-31", "table9f-2022-09-30"):
+        for key in ("predicted_pd", "predicted_lgd"):
+            b = occurrences[scope, "field", key]
+            assert (
+                captured[b.physical_refs[0].binding_ref, b.physical_refs[0].slot].text
+                == "Predicted"
+            )
+        cell_binding = occurrences[scope, "cell", "mortgage/observed_pd"]
+        assert {r.role for r in cell_binding.temporal_roles} == {
+            "history_window",
+            "cohort_anchor",
+            "outcome_window",
+        }
     assert bundle.document.document_reporting_date.isoformat() == "2023-09-30"
     assert bundle.document.source_url == (
         "https://www.westpac.com.au/content/dam/public/wbc/documents/pdf/aw/ic/"
@@ -79,12 +124,18 @@ def test_complete_westpac_2023_source(project_root):
         )
         assert meta.context.source_date_label == expected["label"]
         axes = {a.id: a for a in meta.axes}
+        assert axes["panel"].source_label == expected["label"]
         assert [a.source_label for a in meta.axes if a.axis == "row"] == golden["bands"]
         fields = {f.id: f for f in meta.published_fields}
         cells = {c.id: c for c in table.cells}
         assert len([c for c in table.cells if c.row_ref]) == 72
         for j, (key, label, unit, qs) in enumerate(golden["exposure_fields"]):
             f = fields[key]
+            binding = occurrences[table.id, "field", key]
+            fragment = binding.physical_refs[0]
+            assert captured[
+                fragment.binding_ref, fragment.slot
+            ].text == label.translate(str.maketrans("³⁴", "34"))
             assert (f.source_label, f.source_unit, f.header_path_refs) == (
                 label,
                 unit,
@@ -173,6 +224,9 @@ def test_complete_westpac_2023_source(project_root):
         assert not meta.segmentations
         assert len(table.cells) == 6
         axes = {a.id: a for a in meta.axes}
+        assert axes["panel"].source_label == expected["label"]
+        assert axes["default-rate"].source_label == "Default rate"
+        assert axes["lgd"].source_label == "Loss Given Default"
         assert axes["mortgage"].source_label == "Residential mortgages"
         for c, f, spec, token in zip(
             table.cells,
@@ -182,6 +236,11 @@ def test_complete_westpac_2023_source(project_root):
             strict=True,
         ):
             key, label, unit, path, qs = spec
+            binding = occurrences[table.id, "field", key]
+            fragment = binding.physical_refs[0]
+            assert captured[
+                fragment.binding_ref, fragment.slot
+            ].text == label.translate(str.maketrans("¹²", "12"))
             assert (
                 f.id,
                 f.source_label,

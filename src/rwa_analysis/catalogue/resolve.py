@@ -1,7 +1,6 @@
 """Conjunctive occurrence matching; attribute-level composition and conflicts."""
 
 from dataclasses import dataclass, fields, replace
-from functools import cache
 
 from rwa_analysis.extraction.cr6 import (
     CR6_FIELDS,
@@ -18,7 +17,6 @@ from .models import (
     OccurrenceScope,
     RevisionRef,
     SemanticAttribute,
-    SourceMappingRevision,
     revision_references,
 )
 
@@ -140,37 +138,10 @@ def resolve_field(
         raise ValueError("Record does not belong to dataset")
     occurrence = field_occurrence(dataset, record, field_key)
     observation_date = dataset.metadata.context.observation_date
+    from .occurrences import resolve_occurrence
 
-    @cache
-    def definition_applies(ref):
-        member = catalogue.member(ref)
-        return (
-            (member.effective_from is None or member.effective_from <= observation_date)
-            and (member.effective_to is None or observation_date <= member.effective_to)
-            and all(
-                definition_applies(dependency)
-                for dependency in revision_references(member, include_history=False)
-            )
-        )
-
-    mappings = (
-        m
-        for m in catalogue.members
-        if isinstance(m, SourceMappingRevision)
-        and matches_occurrence(m, occurrence)
-        and (
-            m.scope.observation_from is None
-            or m.scope.observation_from <= observation_date
-        )
-        and (
-            m.scope.observation_to is None or observation_date <= m.scope.observation_to
-        )
-        and (m.effective_from is None or m.effective_from <= observation_date)
-        and (m.effective_to is None or observation_date <= m.effective_to)
-        and all(definition_applies(ref) for ref in m.decision_refs)
-    )
-    return compose_field(
-        catalogue, occurrence.published_field, mappings, definition_applies
+    return resolve_occurrence(
+        catalogue, occurrence, point_for=lambda role: observation_date
     )
 
 

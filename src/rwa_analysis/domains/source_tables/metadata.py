@@ -387,6 +387,7 @@ def source_rows(rows, loaded, table, meanings, catalogue):
             displayed_precision=getattr(value, "displayed_precision", None),
             missing_reason=value.missing_reason,
             source_row_role=c.source_row_role,
+            source_value=str(value.value) if value.value is not None else None,
         )
         references("cell", c.id, "context_refs", c.context_refs, "context")
         references("cell", c.id, "segment_refs", c.segment_refs, "band")

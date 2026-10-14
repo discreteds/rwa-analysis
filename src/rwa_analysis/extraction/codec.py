@@ -14,7 +14,7 @@ from typing import Literal, Union, get_args, get_origin, get_type_hints
 from .cr6 import Cr6Dataset
 from .cr9 import Cr9Dataset
 from .datasets import Dataset, DatasetMetadata, ExtractionBundle
-from .definitions import CapturedBundle
+from .definitions import CapturedBundle, CaptureSnapshot, CellBinding
 from .models import ReportedValue
 from .source_tables import ReportedText, SourceCell, SourceTable
 
@@ -88,6 +88,15 @@ def _convert(value, annotation, path, *, decode, parameters=None, version="cr6-v
     cls = origin or annotation
     if is_dataclass(cls):
         hints = get_type_hints(cls)
+        if cls is CaptureSnapshot and decode:
+            value = {"domain_bindings": [], **value}
+        if cls is CellBinding and decode:
+            value = {
+                "source_row_role": None,
+                "source_aggregation_scope": [],
+                "missing_tokens": [],
+                **value,
+            }
         if cls is SourceCell:
             if decode:
                 value = {

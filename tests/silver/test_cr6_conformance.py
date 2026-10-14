@@ -27,9 +27,14 @@ def catalogue(project_root):
 
 
 def conform(inputs, catalogue):
-    from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
+    from rwa_analysis.domains.cr6.projection import project_cr6
+    from rwa_analysis.domains.source_tables.legacy import domain_bindings
+    from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
 
-    return Cr6Pipeline().conform(inputs, catalogue)
+    return project_cr6(
+        SourceTablePipeline().conform(inputs, catalogue),
+        tuple(b for loaded in inputs for b in domain_bindings(loaded.bundle)),
+    )
 
 
 def observation(org, record="band-1"):
@@ -196,6 +201,42 @@ def test_empty_selection_has_explicit_schemas(catalogue):
         frame.is_empty() and pl.Null not in frame.dtypes
         for frame in (getattr(output, table.member).to_polars() for table in TABLES)
     )
+
+
+def test_projection_consumes_resolved_results_without_recomputing(inputs, catalogue):
+    from rwa_analysis.domains.cr6.projection import project_cr6
+    from rwa_analysis.domains.source_tables.legacy import domain_bindings
+    from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
+
+    source = SourceTablePipeline().conform(inputs[:1], catalogue)
+    ead = ma.col("cell_id") == "band-1/ead"
+    count = ma.col("cell_id") == "band-1/reported_borrower_count"
+    changed = replace(
+        source,
+        meanings=source.meanings.with_columns(
+            ma.when(ead)
+            .then(ma.lit(Decimal("123.45")))
+            .otherwise(ma.col("normalised_amount"))
+            .alias("normalised_amount"),
+            ma.when(count)
+            .then(9007199254740993)
+            .otherwise(ma.col("normalised_count"))
+            .alias("normalised_count"),
+            ma.when(ead | count)
+            .then(ma.lit(Decimal(2)))
+            .otherwise(ma.col("unit_factor"))
+            .alias("unit_factor"),
+        ),
+    )
+    output = project_cr6(changed, domain_bindings(inputs[0].bundle))
+    row = output.observations.filter(ma.col("source_record_id") == "band-1")
+    assert row.item("ead_amount") == Decimal("123.45")
+    assert row.item("reported_entity_count") == 9007199254740993
+    field = output.fields.filter(
+        (ma.col("source_record_id") == "band-1") & (ma.col("field_key") == "ead_amount")
+    )
+    assert field.item("source_value") == "281508"
+    assert Decimal(field.item("unit_factor")) == 2
 
 
 def test_conflicts_retain_alternatives_without_erasing_values(inputs, catalogue):

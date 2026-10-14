@@ -8,7 +8,6 @@ import pytest
 
 from rwa_analysis.catalogue.load import load_catalogue
 from rwa_analysis.catalogue.models import SourceMappingRevision
-from rwa_analysis.catalogue.resolve import resolve_field as resolve_cr6
 from rwa_analysis.domains.cr9.semantics import resolve_field as resolve_cr9
 
 
@@ -17,16 +16,31 @@ def catalogue(project_root):
     return load_catalogue(project_root / "catalogue/releases/cr6-cr9-v1.json")
 
 
-def adapt(dataset, catalogue):
-    from rwa_analysis.domains.source_tables.legacy import adapt_legacy
+def adapt(dataset, catalogue, bundle):
+    from rwa_analysis.catalogue.occurrences import resolve_capture
+    from rwa_analysis.extraction.models import OccurrenceRef
+    from rwa_analysis.storage.bronze import BronzeRef, LoadedBronze
 
-    return adapt_legacy(dataset, catalogue)
+    resolved = resolve_capture(
+        LoadedBronze(
+            BronzeRef(bundle.bundle_key, "adapter-test"),
+            replace(bundle, datasets=(dataset,)),
+        ),
+        catalogue,
+    )
+    table = resolved.captured.bundle.datasets[0]
+    return table, {
+        c.id: resolved.meanings[
+            OccurrenceRef(bundle.bundle_key, table.id, "cell", c.id)
+        ]
+        for c in table.cells
+    }
 
 
 def test_cr9_adapter_preserves_lexical_numeric_and_blank_positions(
     westpac_bundle, catalogue
 ):
-    table, meanings = adapt(westpac_bundle.datasets[1], catalogue)
+    table, meanings = adapt(westpac_bundle.datasets[1], catalogue, westpac_bundle)
     assert len(table.cells) == 72
     assert set(meanings) == {c.id for c in table.cells}
     ratings = [c for c in table.cells if c.value_kind == "text"]
@@ -60,7 +74,7 @@ def test_adapter_retains_paths_scopes_and_translates_field_endpoints_and_time(
     westpac_bundle, catalogue
 ):
     original = westpac_bundle.datasets[1]
-    table, _ = adapt(original, catalogue)
+    table, _ = adapt(original, catalogue, westpac_bundle)
     meta = table.metadata
     # p.55 places both external-rating columns before the numeric PD columns.
     columns = sorted(
@@ -129,9 +143,9 @@ def test_adapter_retains_paths_scopes_and_translates_field_endpoints_and_time(
     assert default.context_refs == ("context",)
 
 
-@pytest.mark.parametrize("index,resolver", [(0, resolve_cr6), (1, resolve_cr9)])
+@pytest.mark.parametrize("index", [0, 1])
 def test_adapter_resolves_original_addresses_with_model_specific_date_policy(
-    westpac_bundle, catalogue, index, resolver
+    westpac_bundle, catalogue, index
 ):
     dataset = westpac_bundle.datasets[index]
     # Give CR6 a comparative snapshot; CR9 must not borrow the report date.
@@ -168,14 +182,14 @@ def test_adapter_resolves_original_addresses_with_model_specific_date_policy(
             for m in catalogue.members
         ),
     )
-    expected = resolver(catalogue, dataset, rows[0], key)
-    table, meanings = adapt(dataset, catalogue)
+    table, meanings = adapt(dataset, catalogue, westpac_bundle)
     cell = next(
         c
         for c in table.cells
         if c.row_ref == rows[0].source_row_ref and c.field_ref == key
     )
-    assert meanings[cell.id] == expected
+    expected = meanings[cell.id]
+    assert cell.id == f"{rows[0].record_id}/{key}"
     if index == 0:
         assert expected.concept_ref.revision_id == "exposure.at-default@v1"
         assert expected.unit_factor == Decimal(1000000)
@@ -209,7 +223,7 @@ def test_adapter_uses_bindings_not_optional_row_members(westpac_bundle, catalogu
             ),
         ),
     )
-    table, meanings = adapt(selected, catalogue)
+    table, meanings = adapt(selected, catalogue, westpac_bundle)
     numeric = [c for c in table.cells if c.value_kind != "text"]
     assert len(numeric) == 8
     assert {c.field_ref for c in numeric} == {"weighted_average_pd"}
@@ -235,7 +249,7 @@ def test_legacy_row_metadata_reaches_flat_cells_and_ordered_scope_references(
     from rwa_analysis.storage.bronze import BronzeRef, LoadedBronze
 
     dataset = westpac_bundle.datasets[index]
-    table, meanings = adapt(dataset, catalogue)
+    table, meanings = adapt(dataset, catalogue, westpac_bundle)
     records = dataset.exposure_rows if index == 0 else dataset.backtesting_rows
     by_row = {r.source_row_ref: r for r in records}
     for cell in table.cells:

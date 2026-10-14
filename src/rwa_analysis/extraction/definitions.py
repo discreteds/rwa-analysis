@@ -68,6 +68,9 @@ class CellBinding:
     qualification_refs: tuple[str, ...] = ()
     value_kind: Literal["decimal", "integer", "text"] = "decimal"
     missing_reason: str | None = None
+    source_row_role: str | None = None
+    source_aggregation_scope: tuple[str, ...] = ()
+    missing_tokens: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -82,12 +85,24 @@ class OccurrenceBinding:
 
 
 @dataclass(frozen=True)
+class DomainFieldBinding:
+    """A source cell's original domain address, without financial definitions."""
+
+    ref: OccurrenceRef
+    domain: Literal["cr6", "cr9"]
+    record_id: str
+    field_key: str
+    binding_ref: str | None = None
+
+
+@dataclass(frozen=True)
 class CaptureSnapshot:
     revision_id: str
     physical: tuple[PhysicalBinding, ...]
     contexts: tuple[ContextDefinition, ...]
     occurrences: tuple[OccurrenceBinding, ...]
     semantic_definitions: tuple[Member, ...] = ()
+    domain_bindings: tuple[DomainFieldBinding, ...] = ()
 
 
 @dataclass(frozen=True)

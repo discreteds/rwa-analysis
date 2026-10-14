@@ -1,7 +1,5 @@
 """Construct concrete components from already resolved execution settings."""
 
-from rwa_analysis.domains.cr6.pipeline import Cr6Pipeline
-from rwa_analysis.domains.cr9.pipeline import Cr9Pipeline
 from rwa_analysis.operations import ConformanceOperation, ExtractionOperation
 from rwa_analysis.settings import OrganisationSettings, ProjectSettings
 from rwa_analysis.storage.bronze import BronzeStore
@@ -14,9 +12,7 @@ def build_session(settings: OrganisationSettings) -> OrganisationSession:
     return OrganisationSession(
         extraction=ExtractionOperation(settings.project_root),
         bronze=BronzeStore(settings.bronze_root),
-        conformance=ConformanceOperation(
-            settings.project_root, Cr6Pipeline(), Cr9Pipeline()
-        ),
+        conformance=ConformanceOperation(settings.project_root),
         silver=SilverStore(
             settings.staging_path,
             settings.manifest_root,

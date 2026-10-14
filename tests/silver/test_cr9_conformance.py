@@ -11,12 +11,18 @@ from rwa_analysis.storage.bronze import BronzeStore
 def conformed_cr9(westpac_bundle, project_root, tmp_path):
     datasets = [d for d in westpac_bundle.datasets if hasattr(d, "backtesting_rows")]
     assert len(datasets) == 1, "Westpac's saved source bundle must include CR9"
-    from rwa_analysis.domains.cr9.pipeline import Cr9Pipeline
+    from rwa_analysis.domains.cr9.projection import project_cr9
+    from rwa_analysis.domains.source_tables.legacy import domain_bindings
+    from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
 
     store = BronzeStore(tmp_path / "bronze")
     ref = store.save(westpac_bundle, "cr9-test")
     catalogue = load_catalogue(project_root / "catalogue/releases/cr6-cr9-v1.json")
-    return Cr9Pipeline().conform((store.load(ref),), catalogue), datasets[0]
+    loaded = store.load(ref)
+    return project_cr9(
+        SourceTablePipeline().conform((loaded,), catalogue),
+        domain_bindings(loaded.bundle),
+    ), datasets[0]
 
 
 def test_westpac_source_measures_and_missing_default_cells(
@@ -34,6 +40,8 @@ def test_westpac_source_measures_and_missing_default_cells(
     assert first["current_year_borrower_count"] == 571083
     assert first["defaulted_borrower_count"] == 385
     assert first["new_defaulted_borrower_count"] == 7
+    # A band owns its entire source reference, including an unknown column.
+    assert first["source_column"] is None
     default = rows.filter(
         pl.col("source_record_id") == dataset.backtesting_rows[-1].record_id
     ).row(0, named=True)
@@ -108,6 +116,87 @@ def test_new_defaults_are_a_field_subset_within_each_row(
         == relationships["child_observation_id"].to_list()
     )
     assert output.relationship_evidence.to_polars().height >= 7
+    assert relationships.filter(
+        pl.col("parent_observation_id").str.ends_with("/band-1")
+    )["relationship_id"].item() == (
+        "au/westpac/2025-09-30/aps330/cr9-residential-mortgages/context/"
+        "new-defaults-band-1/band-1/band-1/new_defaulted_borrower_count"
+    )
+
+
+def test_relationship_endpoints_use_kind_not_local_id_spelling(
+    westpac_bundle, project_root
+):
+    from dataclasses import replace
+
+    from rwa_analysis.domains.cr9.projection import project_cr9
+    from rwa_analysis.domains.source_tables.legacy import adapt_legacy, domain_bindings
+    from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
+    from rwa_analysis.extraction.models import SourceEndpoint
+    from rwa_analysis.storage.bronze import BronzeRef, LoadedBronze
+
+    table = adapt_legacy(westpac_bundle.datasets[1])
+    ids = {c.id: f"opaque-{i}" for i, c in enumerate(table.cells)}
+    # Two fully explicit cells can connect across rows; they need no slash in IDs.
+    original = table.metadata.relationships[0]
+    cross = replace(
+        original,
+        id="cross-cells",
+        scope=(),
+        parent=SourceEndpoint("cell", ids["band-1/weighted_average_pd"]),
+        children=(SourceEndpoint("cell", ids["band-2/weighted_average_pd"]),),
+    )
+    # Conversely, slashes in FIELD IDs do not make cross-row cell endpoints.
+    slash_fields = {
+        "defaulted_borrower_count": "events/total",
+        "new_defaulted_borrower_count": "events/new",
+    }
+    within = replace(
+        original,
+        id="field-subset",
+        scope=(),
+        parent=SourceEndpoint("field", "events/total"),
+        children=(SourceEndpoint("field", "events/new"),),
+    )
+    table = replace(
+        table,
+        cells=tuple(
+            replace(
+                c, id=ids[c.id], field_ref=slash_fields.get(c.field_ref, c.field_ref)
+            )
+            for c in table.cells
+        ),
+        metadata=replace(
+            table.metadata,
+            published_fields=tuple(
+                replace(f, id=slash_fields.get(f.id, f.id))
+                for f in table.metadata.published_fields
+            ),
+            relationships=(cross, within),
+            temporal_bindings=(),
+        ),
+    )
+    bindings = tuple(
+        replace(b, ref=replace(b.ref, local_id=ids[b.ref.local_id]))
+        for b in domain_bindings(westpac_bundle)
+        if b.domain == "cr9"
+    )
+    bundle = replace(westpac_bundle, datasets=(table,), schema_version="disclosure-v3")
+    source = SourceTablePipeline().conform(
+        (LoadedBronze(BronzeRef(bundle.bundle_key, "opaque"), bundle),),
+        load_catalogue(project_root / "catalogue/releases/cr6-cr9-v1.json"),
+    )
+    edges = project_cr9(source, bindings).relationships.to_polars()
+    cross_edges = edges.filter(pl.col("source_relationship_ref") == "cross-cells")
+    assert cross_edges.height == 1
+    assert cross_edges["parent_observation_id"].item().endswith("/band-1")
+    assert cross_edges["child_observation_id"].item().endswith("/band-2")
+    within_edges = edges.filter(pl.col("source_relationship_ref") == "field-subset")
+    assert within_edges.height == 8
+    assert (
+        within_edges["parent_observation_id"].to_list()
+        == within_edges["child_observation_id"].to_list()
+    )
 
 
 def test_reconstruction_preserves_published_measure_column_order(
