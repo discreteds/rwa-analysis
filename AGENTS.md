@@ -25,8 +25,9 @@ and disposable spike shape are approved; the implementation plan was approved on
 sources and catalogue-free CR6/CR9 projections are implemented on
 `feature/metadata-driven-extraction`. Task 7 verifies master-owned occurrence/context
 metadata and complete dependent-row replacement for retained and current captures.
-Final independent correctness/complexity reviews precede PR #18 readiness; do not
-push or merge without authorisation. Preserve retained formats and source identities.
+Final independent correctness/complexity reviews passed with no open findings;
+PR #18 is ready for merge. Merge requires researcher authorisation.
+Preserve retained formats and source identities.
 
 ## Design principles — mandatory
 

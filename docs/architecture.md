@@ -17,7 +17,8 @@ was approved on 2026-10-13. Tasks 1–3 on `feature/metadata-driven-extraction`
 implement the first ANZ 2023 v4 path, accepted at checkpoint A on 2026-10-14. The
 remaining source migrations and CR6/CR9 projections were accepted at checkpoint B
 on 2026-10-14, after 204 tests passed. Task 7 extends master lifecycle evidence;
-final independent correctness and complexity reviews remain pending.
+final independent correctness and complexity reviews passed with no open findings.
+The complete suite passes 205 tests; PR #18 awaits authorised merge.
 
 ### Checkpoint A: ANZ 2023 metadata-owned capture
 

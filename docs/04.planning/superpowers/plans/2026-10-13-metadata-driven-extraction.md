@@ -5,10 +5,10 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **APPROVED — checkpoints A/B accepted; Task 7 delivery reviews pending.** Both checkpoints were accepted on 2026-10-14. The researcher approved the plan,
+Status: **COMPLETE — 205 tests passing; final reviews closed; PR #18 ready for merge.** Both checkpoints were accepted on 2026-10-14. The researcher approved the plan,
 merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
 worktree seeded from `develop` at `2ef55de` on 2026-10-13. Task 7 continuation was
-authorised from clean `957194c`; final independent reviews precede push/PR readiness.
+authorised from clean `957194c`; final independent reviews passed on 2026-10-14.
 Earlier checkpoint records below describe their then-current approval boundaries.
 
 **Goal:** Drive all existing selected four-bank captures and their Bronze-to-Silver
@@ -656,11 +656,11 @@ for their distinct new risks. Update `examples/historical_mortgages.py`, `README
   and comment occurrences are outside that cell baseline.
 - [x] Run the modern example, then the complete suite, Ruff and diff checks. Inspect
   example output roots/run names first. Record commands, retained artifacts and results.
-- [ ] Run independent correctness and complexity reviews. Apply complexity cuts first,
+- [x] Run independent correctness and complexity reviews. Apply scope-preserving complexity cuts first,
   repair in-repo findings, and reproduce/track any required upstream defects without
   an unapproved workaround. An upstream-dependent requirement blocks delivery until
   repaired and verified; do not label it complete with follow-ups.
-- [ ] Open/update one implementation PR to `develop`, with code and documentation
+- [x] Open/update one implementation PR to `develop`, with code and documentation
   together. Offer local checkout synchronisation after authorised merge.
 
 ```bash
@@ -758,6 +758,15 @@ Implementation/test retirement commit: `2633c2a`. Associated documentation is co
 locally with this record. Nothing from Task 7 has been pushed. Independent final
 reviews and PR delivery remain open; there are no known implementation concerns.
 Local checkout synchronisation can follow an authorised merge, not this handoff.
+
+**Final integration closure — 2026-10-14:** independent correctness and complexity
+reviews both passed at `7c7f24b`, with no remaining in-repo or upstream blockers.
+Correctness review independently compared all 82 readback parquet artifacts with
+accepted checkpoint B and confirmed values, dtypes and source-frame ordering. Both
+reviews confirmed that master lifecycle coverage preserves retained/current captures
+and all 49 relations; no cuts or further implementation changes were required.
+All seven tasks are complete. PR #18 targets `develop` and is ready for merge;
+merging and subsequent local checkout synchronisation await researcher instruction.
 
 ### Original execution boundary
 

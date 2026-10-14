@@ -15,7 +15,8 @@
   all twelve selected reports and catalogue-free domain projections are implemented
   on `feature/metadata-driven-extraction`. Task 7 extends master lifecycle evidence
   to shared comments, contexts and every dependent relation. Final independent
-  delivery reviews remain pending. Retained capture formats remain supported.
+  delivery reviews passed; 205 tests pass and PR #18 is ready for merge.
+  Retained capture formats remain supported.
 - [Mountainash-first coding](01.principles/d.coding-practices/mountainash-first.md):
   library ownership, data boundaries and handling capability gaps.
 - [Agent guidance](../AGENTS.md): starting points and repository working instructions.
