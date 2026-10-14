@@ -13,10 +13,16 @@ def test_complete_anz_historical_source(project_root):
         project_root / "extractions/au/anz/2024-09-30/aps330/extract.py",
         project_root / "raw/anz-2024-09-30-aps330.pdf",
     )
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
     assert len(bundle.datasets) == 4
     assert sum(len(t.cells) for t in bundle.datasets) == 125
     assert bundle.document.document_reporting_date.isoformat() == "2024-09-30"
+    captured = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    captured_notes = set()
     for table in bundle.datasets:
         context = table.metadata.context
         assert context.reporting_entity.value == "ANZ BH Pty Ltd (ANZ Bank HoldCo)"
@@ -36,10 +42,28 @@ def test_complete_anz_historical_source(project_root):
         ):
             assert key in notes
         for key in notes.keys() & golden["notes"].keys():
+            captured_notes.add(key)
             page, text = golden["notes"][key]
             assert notes[key].source_text == text
             assert notes[key].evidence[0].pdf_page == page
             assert notes[key].evidence[0].printed_page == str(page - 1)
+        for key in (
+            "report-entity",
+            "level-2",
+            "currency",
+            "suncorp",
+            "regulatory-basis",
+            "default-definition",
+        ):
+            assert [(e.kind, e.id) for e in notes[key].scope] == [("dataset", table.id)]
+            comment = occurrences[(None, "comment", key)]
+            assert any(
+                link.role == "qualifies"
+                and link.target.scope == table.id
+                and link.target.kind == "table"
+                for link in comment.links
+            )
+    assert captured_notes == golden["notes"].keys()
     for table, expected in zip(bundle.datasets[:3], golden["exposures"], strict=True):
         meta = table.metadata
         assert table.id == "table9d-" + expected["date"]
@@ -64,6 +88,17 @@ def test_complete_anz_historical_source(project_root):
             assert f.header_path_refs == ("panel", key)
             assert f.source_reference.row == label
             assert f.source_form == "table_body"
+            # These are PDF fragments, not labels substituted from the declaration.
+            # In particular, the title also contains "Exposure at Default", and
+            # September 2024 wraps the average-EAD heading across two lines.
+            for kind in ("field", "block"):
+                heading = occurrences[(table.id, kind, key)]
+                assert heading.physical_refs
+                location = heading.physical_refs[0]
+                fragment = captured[(location.binding_ref, location.slot)]
+                assert fragment.text == label
+                assert fragment.evidence.pdf_page == expected["page"]
+            assert axes[key].source_label == label
             assert axes[key + "-mortgage"].header_path_refs == ("panel", key)
             assert axes[key + "-mortgage"].source_label == "Residential Mortgage"
             cells = [c for c in table.cells if c.field_ref == key]
@@ -132,6 +167,13 @@ def test_complete_anz_historical_source(project_root):
         key, label, unit, token = spec
         assert (f.id, f.source_label, f.source_unit) == (key, label, unit)
         assert f.header_path_refs == ("panel", key)
+        for kind in ("field", "column"):
+            heading = occurrences[(table.id, kind, key)]
+            assert heading.physical_refs
+            location = heading.physical_refs[0]
+            fragment = captured[(location.binding_ref, location.slot)]
+            assert fragment.text == label
+            assert fragment.evidence.pdf_page == 57
         assert c.field_ref == key and c.row_ref == "mortgage" and c.column_ref == key
         assert c.value.original_text == token
         assert c.value.value == Decimal(token) and c.value.displayed_precision == 2
@@ -140,6 +182,11 @@ def test_complete_anz_historical_source(project_root):
     assert {"pd-history", "ead-history", "lgd-history", "lgd-review"} <= notes.keys()
     assert notes["lgd-review"].scope == ()
     assert notes["lgd-review"].evidence[0].location == "Wholesale Portfolios"
+    assert not occurrences[(None, "comment", "lgd-review")].links
+    assert any(
+        link.role == "evidence" and link.target.local_id == "lgd-review"
+        for link in occurrences[(table.id, "table", table.id)].links
+    )
     fields = {f.id: f for f in meta.published_fields}
     assert fields["actual_lgd"].attributes[0].status == "unresolved"
     for key, field_ids in (
@@ -165,3 +212,13 @@ def test_complete_anz_historical_source(project_root):
         ("mortgage/estimated_lgd", "outcome_window", "default-cutoff"),
         ("mortgage/actual_lgd", "outcome_window", "default-cutoff"),
     }
+    contexts = {c.revision_id: c for c in bundle.snapshot.contexts}
+    for binding in meta.temporal_bindings:
+        occurrence = occurrences[(table.id, "cell", binding.cell_id)]
+        role = next(r for r in occurrence.temporal_roles if r.role == binding.role)
+        retained = next(
+            d
+            for d in contexts[role.context_ref].temporal
+            if d.id == role.descriptor_ref
+        )
+        assert retained == ds[binding.descriptor_ref]

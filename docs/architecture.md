@@ -1,6 +1,6 @@
 # Current processing architecture
 
-Updated: 2026-10-13. Describes four-bank CR6/CR9 and source-defined historical
+Updated: 2026-10-14. Describes four-bank CR6/CR9 and source-defined historical
 capture. The 2024 historical implementation and documentation merged through PRs
 #13/#14 into `develop` at `7930a3a`; the CR9 baseline merged through PR #9 at `32e5f6a`.
 
@@ -14,8 +14,9 @@ sourcing, semantic meaning and context are singly defined metadata consumed acro
 capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
 and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
 was approved on 2026-10-13. Tasks 1–3 on `feature/metadata-driven-extraction`
-implement the first ANZ 2023 v4 path for checkpoint A review. The remaining
-source migrations and CR6/CR9 projections are still planned.
+implement the first ANZ 2023 v4 path, accepted at checkpoint A on 2026-10-14. The
+remaining source migrations and CR6/CR9 projections are in progress as Tasks 4–6;
+checkpoint B acceptance is pending.
 
 ### Checkpoint A: ANZ 2023 metadata-owned capture
 
@@ -45,8 +46,8 @@ ordinary staging writes and readback. Task 7 owns the additional master-removal 
 
 `examples/anz_metadata_capture.py` runs the full 125-cell source, saves v4, deletes
 its disposable copies of the PDF/authoring files and publishes a retained,
-occurrence-targeted comment override from saved Bronze. Checkpoint review is required
-before Tasks 4–7; this example does not establish the remaining migration's completion.
+occurrence-targeted comment override from saved Bronze. Checkpoint A acceptance
+authorises Tasks 4–6; this example does not establish the remaining migration's completion.
 
 The sections below describe the working pipeline and its retained interfaces. Its
 bespoke extractors, field/cell-oriented catalogue adapters and domain dispatch remain

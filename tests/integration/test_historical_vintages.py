@@ -103,7 +103,8 @@ def test_original_and_comparative_survive_joint_publication(
         mapping_sets.append(
             set(
                 source.mapping_refs.filter(
-                    ma.col("observation_id") == row["table_id"] + "/" + cell
+                    (ma.col("observation_id") == row["table_id"] + "/" + cell)
+                    & (ma.col("reference_kind") == "mapping")
                 )
                 .select("mapping_revision_ref")
                 .to_polars()["mapping_revision_ref"]
@@ -111,5 +112,9 @@ def test_original_and_comparative_survive_joint_publication(
         )
     assert all(mapping_sets)
     assert mapping_sets[0].isdisjoint(mapping_sets[1])
+    # Local context revision names may recur; their persisted owner is the bundle.
+    assert set(source.contexts.select("table_id").to_polars()["table_id"]) == {
+        bundle.bundle_key for bundle in result.bundles
+    }
     manifest = session.silver.read_manifest(result.publication)
     assert len(manifest.selection.bronze_refs) == 2

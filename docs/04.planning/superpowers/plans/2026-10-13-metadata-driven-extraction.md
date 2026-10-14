@@ -5,7 +5,7 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **APPROVED — Tasks 1–3 complete; checkpoint A awaiting review.** The researcher approved the plan,
+Status: **APPROVED — checkpoint A accepted 2026-10-14; Tasks 4–6 in progress.** The researcher approved the plan,
 merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
 worktree seeded from `develop` at `2ef55de` on 2026-10-13. Checkpoint A is the
 current execution boundary; Tasks 4–7 await that checkpoint review.
@@ -311,6 +311,24 @@ source review establishes a separately approved interpretation change.
 
 Run: `uv run pytest tests/bronze tests/integration/test_historical_vintages.py -q`
 
+### Task 4 execution evidence
+
+Task 4 execution evidence (2026-10-14, in progress): ANZ 2024 migrated to reviewed
+definitions, physical readers and the thin capture entrypoint. Independent source
+goldens remain unchanged. Source-owner RED was the expected v3/v4 mismatch;
+`/tmp/opencode/anz2024-task4/red.log`. Source/adjacent-vintage GREEN: **2 passed**;
+`/tmp/opencode/anz2024-task4/green.log`. Parent joint-vintage publication: **1 passed**;
+`/tmp/opencode/metadata-task4-anz-joint-green.log`. Both vintages retain 125 cells,
+their original IDs, separate catalogue mappings and bundle-qualified contexts. The
+existing vintage test now distinguishes catalogue mapping references from additional
+context provenance (`reference_kind`); the latter can reuse local revision names.
+The same test checks both persisted bundle owners, preserving its collision coverage.
+
+The pre-modern-migration example retained **36 CR6 / 33 CR9 rows** and eight numeric
+frames at `/tmp/opencode/cr9-four-bank-t_lygdja/`, with actual v2 Bronze and diagnostic
+relation readback. Log: `/tmp/opencode/metadata-checkpoint-b-modern-baseline.log`.
+These artifacts are a compatibility baseline, not generated source expectations.
+
 ## Task 5 — Existing CR6/CR9 outputs become projections of resolved captures
 
 **Files:** Create `domains/cr6/projection.py`, `domains/cr9/projection.py`; refactor
@@ -439,6 +457,13 @@ the design instead of expanding the implementation around a failing shape. Do no
 start coding on the basis of the spike approval alone.
 
 ## Checkpoint A execution record — 2026-10-13
+
+Checkpoint A was accepted by the researcher on **2026-10-14**, following independent
+verification of the exposure-heading repair and the 195-test full suite. Continuation
+of Tasks 4–6 is authorised in the existing worktree on
+`feature/metadata-driven-extraction`, starting at `881bee2`. Draft PR #18 targets
+`develop`. Further commits remain local pending parent review; Task 7 remains behind
+checkpoint B acceptance.
 
 Approval: researcher authorised the complete plan, PR #17 merge/synchronisation and
 the separate worktree. Execution uses `executing-plans` with TDD/test-audit, seeded
