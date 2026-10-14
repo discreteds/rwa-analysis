@@ -495,7 +495,7 @@ Final required verification:
 - `git diff --check`: passed; `/tmp/opencode/metadata-checkpoint-b-diff-check.log`.
 - Changed-document relative file links checked against the checkout.
 
-Final retained examples (supersede early checkpoint-B artifacts):
+Pre-review retained examples (superseded for source fidelity by the repairs below):
 
 - Modern root: `/tmp/opencode/cr9-four-bank-7nr50qvc/`.
   PDF → v4 Bronze → staging/master → **36 CR6 / 33 CR9 rows**, eight numeric frame
@@ -524,9 +524,11 @@ CR6/CR9 observations, contexts, relationship IDs and temporal relations. V4 adds
 explicit source context/row-qualification provenance; no old mapping/evidence assertion
 is lost. Fixed-decimal factors can have additional trailing scale, with unchanged
 numeric values. Log: `/tmp/opencode/metadata-checkpoint-b-modern-comparison-final.log`.
-The final executable parity checks also passed for every source field's payload,
-missingness, address and physical evidence; all original mapping/assertion/evidence
-entries remain present, ignoring provenance ordinals. All eight reconstructed numeric
+The pre-review parity checks passed for the compared numeric fields' payload,
+missingness, address and physical evidence; they did not catch the lexical missingness
+or source-frame ordering defects found in independent review below. All original
+mapping/assertion/evidence entries remain present, ignoring provenance ordinals.
+All eight reconstructed numeric
 frames preserve labels, order and values. Log:
 `/tmp/opencode/metadata-checkpoint-b-final-parity.log`.
 
@@ -538,14 +540,14 @@ Local implementation commits:
 - `efb1a55` — shared resolution/projections, retained fixtures and Westpac historical capture.
 - `41a440c` — four modern migrations, source test support and public examples.
 
-No unresolved implementation or upstream issue was identified. Commits remain local
-for parent review under draft PR #18 targeting `develop`. Checkpoint B acceptance
+The implementation handoff identified no unresolved issue; independent review then
+found the two in-repo source-fidelity defects recorded below. Checkpoint B acceptance
 is pending; Task 7 remains unexecuted.
 
 ### Checkpoint B complexity cuts — 2026-10-14
 
-Researcher authorised these scope-preserving cuts before correctness triage; that
-independent review is still running. Before editing, Python AST comparison confirmed
+The integrating agent accepted these scope-preserving cuts under the approved plan
+before correctness triage. Before editing, Python AST comparison confirmed
 all four modern `window` implementations identical and both CBA historical copies
 of `region`, `line`, `rows` and `bands` identical. They now share their unchanged
 implementations in the existing `extraction/physical.py` owner. The CBA readers have
@@ -585,6 +587,50 @@ Parent's independent pre-cut modern example also passed at
 `/tmp/opencode/metadata-checkpoint-b-parent-example.log`. As requested, the full suite
 is deferred until correctness findings are addressed. This milestone remains local
 and does not advance beyond checkpoint B.
+
+### Checkpoint B correctness repairs — 2026-10-14
+
+Independent review found two in-repo defects, both repaired in `8d7930f`:
+
+- All four modern sources gave rating and numeric columns overlapping positions,
+  interleaving their source-shaped CR9 frames. Numeric positions now follow both
+  rating columns; source-specific numeric order remains intact, including NAB's
+  current-before-previous counts. NAB's separately published rating evidence remains
+  sourced from its own page.
+- Westpac's fourteen printed lexical `N/A` ratings lost `not_applicable`. The declared
+  tag is restored while retaining those tokens and the two distinct default-row
+  `blank_unresolved` ratings.
+
+The independent regressions failed first: four ordering cases and one missingness
+case. The repaired source goldens and persisted four-bank source-frame cases passed
+**17 tests**. Logs: `/tmp/opencode/checkpoint-b-declarations-red-order.log`,
+`/tmp/opencode/checkpoint-b-declarations-red-missingness.log` and
+`/tmp/opencode/checkpoint-b-declarations-green-final.log`.
+
+Earlier checkpoint-B artifacts are historical evidence only for source-shaped column
+ordering and lexical missingness; numeric-domain frames excluded the rating columns
+and therefore could not establish those requirements. Independent re-review closed
+both findings at `8d7930f`, with **5 focused cases passing**. Fresh captures match
+retained v2 source views for values, tokens, missingness, row/field addresses and
+column ordering; NAB's PDF46 rating evidence and PDF61 count ordering remain intact.
+No upstream defect was identified.
+
+Corrected example roots: `/tmp/opencode/cr9-four-bank-78wd0qol/` and
+`/tmp/opencode/historical-mortgages-x5dufviz/`. Both complete paths passed, retaining
+36 CR6 / 33 CR9 rows and eight numeric frames, and 48 historical/comparison tables /
+1,343 source cells including 15 numeric notes. Logs:
+`/tmp/opencode/metadata-checkpoint-b-repaired-modern.log` and
+`/tmp/opencode/metadata-checkpoint-b-repaired-historical.log`.
+
+Final post-repair verification: **204 passed**, 8,260 dependency warnings, in
+546.36 seconds; `/tmp/opencode/metadata-checkpoint-b-repaired-full-tests.log`.
+Ruff and diff checks passed. Fresh-process saved-only reconstruction also passed
+from `/tmp/opencode/cr9-four-bank-78wd0qol/`, retaining 36/33 rows, eight numeric
+frames and 729 source cells without a PDF or authoring directory in that root.
+Log: `/tmp/opencode/metadata-checkpoint-b-repaired-saved-only.log`.
+
+Correctness and complexity reviews are closed with no open findings. Checkpoint B
+is ready for researcher acceptance in draft PR #18; Task 7 remains unstarted.
 
 ## Task 7 — Whole-path evidence, retirement and delivery
 
