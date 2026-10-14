@@ -329,6 +329,15 @@ frames at `/tmp/opencode/cr9-four-bank-t_lygdja/`, with actual v2 Bronze and dia
 relation readback. Log: `/tmp/opencode/metadata-checkpoint-b-modern-baseline.log`.
 These artifacts are a compatibility baseline, not generated source expectations.
 
+CBA 2023/2024 now use the same declaration/physical/thin-entrypoint split. They retain
+129 and 131 cells respectively, including the June-only LGD overlay, source-specific
+scalars and restatement/timing scopes. Independent golden JSON is unchanged. Both
+source tests first failed at v3/v4; source plus joint-vintage GREEN: **3 passed**,
+`/tmp/opencode/cba-task4-historical-green.log`. Parent's first combined historical
+run also passed both CBA sources and their persisted vintage case; that run remains
+RED for Westpac's declared numeric `N/A` until the shared capture parser honours
+declared missingness. Log: `/tmp/opencode/metadata-task4-joint-first.log`.
+
 ## Task 5 — Existing CR6/CR9 outputs become projections of resolved captures
 
 **Files:** Create `domains/cr6/projection.py`, `domains/cr9/projection.py`; refactor

@@ -71,16 +71,16 @@ from the FY24 report's repeated June 2023 comparative. No new canonical measure,
 concept, or implied cross-framework equivalence is introduced. The parent release
 must select these 13 revisions alongside its existing members.
 
-Shared SourceTable, axis/field/cell, temporal and qualification constructors already
-cover this source. `exposure` owns FY23 page parsing, panel-specific footnote markers
-and actual note inventory; `backtesting` owns its row attachments and history windows.
-The extractor does not import another dated extractor. A concrete reuse candidate
-with FY24 is the exposure-grid assembly (five measure blocks, eight bands, totals
-and undrawn subsets), receiving explicit field declarations, panel labels, parsed
-tokens, definitions and qualifications. A smaller candidate is reported-decimal and
-source-reference construction. Any future helper must accept those source-specific
-inputs, especially note inventory, framework and restatement scope, rather than
-inherit them by bank/year. No framework change is required for this delivery.
+The 2026-10-14 migration uses `definition.py` for the reviewed physical parameters,
+table templates, shared contexts, temporal descriptors and occurrence bindings.
+`physical.py` reads only physical text, rows, bands and cropped regions; the thin
+`extract.py` calls shared `run_capture`. Definition-page columns are cropped before
+paragraph selection, standalone exposure headings are line-anchored, and backtesting
+row selection stops before the next table. Original header and comment fragments
+remain in the v4 bundle alongside all 129 cells. Shared comments are captured once;
+physically repeated footnotes retain panel-specific identities. The numeric overlay
+and scaling cells link to their comments. Neither source file imports another dated
+source or a spike. Financial mappings remain in the existing catalogue.
 
 ## Independent verification
 

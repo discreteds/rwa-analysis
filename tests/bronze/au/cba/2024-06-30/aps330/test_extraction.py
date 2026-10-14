@@ -13,13 +13,22 @@ def test_complete_cba_historical_source(project_root):
         project_root / "extractions/au/cba/2024-06-30/aps330/extract.py",
         project_root / "raw/cba-2024-06-30-aps330.pdf",
     )
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    fragments = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    assert len(occurrences[None, "comment", "report-entity"].links) == 5
     assert len(bundle.datasets) == 5
     assert bundle.document.document_reporting_date.isoformat() == "2024-06-30"
     assert sum(len(ds.cells) for ds in bundle.datasets) == 131
     for table, expected in zip(bundle.datasets[:3], golden["exposures"], strict=True):
         assert table.id == "table9d-ii-" + expected["date"]
         meta = table.metadata
+        assert meta.context.evidence[0].pdf_page == 1
+        assert meta.context.evidence[0].printed_page == ""
         assert meta.context.source_date_label == expected["label"]
         assert (
             meta.context.reporting_entity.value
@@ -67,6 +76,9 @@ def test_complete_cba_historical_source(project_root):
                 scale,
             )
             assert field.header_path_refs == ("panel", key)
+            for kind in ("field", "block"):
+                slot = occurrences[table.id, kind, key].physical_refs[0]
+                assert fragments[slot.binding_ref, slot.slot].text == label
             cells = [c for c in table.cells if c.field_ref == key]
             assert [c.value.original_text for c in cells] == tokens
             assert [c.column_ref for c in cells] == [f"band-{i}" for i in range(8)]
@@ -93,6 +105,15 @@ def test_complete_cba_historical_source(project_root):
             assert (c.row_ref, c.column_ref) == (None, None)
             assert c.qualification_refs == (key,)
             assert c.value.original_text == token
+            binding = occurrences[table.id, "cell", key]
+            assert any(
+                link.target == occurrences[table.id, "comment", key].ref
+                for link in binding.links
+            )
+        overlay = occurrences[table.id, "comment", "overlay"]
+        assert [(link.target.kind, link.target.local_id) for link in overlay.links] == [
+            ("field", "lgd")
+        ]
         bands = meta.segmentations[0].bands
         assert [b.source_label for b in bands] == golden["bands"]
         for band, bounds in zip(bands, golden["bounds"], strict=True):
@@ -119,6 +140,15 @@ def test_complete_cba_historical_source(project_root):
     for table, expected in zip(bundle.datasets[3:], golden["backtesting"], strict=True):
         assert table.id == expected["id"]
         assert table.metadata.context.source_title == expected["title"]
+        assert {
+            f.evidence.row
+            for f in bundle.fragments
+            if f.evidence.location == expected["title"] and f.evidence.row is not None
+        } == {
+            "Residential mortgage"
+            if table.id.startswith("table9f-ii-")
+            else "Residential mortgage ²"
+        }
         assert not table.metadata.segmentations
         assert [f.source_label for f in table.metadata.published_fields] == [
             f[1] for f in expected["fields"]
@@ -130,6 +160,10 @@ def test_complete_cba_historical_source(project_root):
             assert cell.value.value == Decimal(token)
             assert cell.value.displayed_precision == precision
             assert cell.value.source_reference.pdf_page == 56
+            binding = occurrences[table.id, "cell", cell.id]
+            assert [r.role for r in binding.temporal_roles] == ["history_window"]
+            header = occurrences[table.id, "field", key].physical_refs[0]
+            assert fragments[header.binding_ref, header.slot].text == label
         notes = {q.id: q for q in table.metadata.qualifications}
         for key in notes.keys() & golden["notes"].keys():
             assert notes[key].source_text == golden["notes"][key]

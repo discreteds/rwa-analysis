@@ -12,12 +12,24 @@ def test_complete_cba_2023_source(project_root):
     path = project_root / "extractions/au/cba/2023-06-30/aps330/extract.py"
     assert path.exists(), "CBA 2023 source capture is not implemented"
     bundle = run_extractor(path, project_root / "raw/cba-2023-06-30-aps330.pdf")
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    fragments = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    # A shared definition is one captured passage, with explicit table targets.
+    entity = occurrences[None, "comment", "report-entity"]
+    assert len(entity.physical_refs) == 1
+    assert len(entity.links) == 5
     assert bundle.document.document_reporting_date.isoformat() == "2023-06-30"
     assert len(bundle.datasets) == 5
     assert [len(t.cells) for t in bundle.datasets] == [42, 41, 41, 2, 3]
     for table in bundle.datasets:
         meta = table.metadata
+        assert meta.context.evidence[0].pdf_page == 1
+        assert meta.context.evidence[0].printed_page == ""
         assert (
             meta.context.reporting_entity.value
             == "CBA and its subsidiaries (the Group)"
@@ -62,6 +74,10 @@ def test_complete_cba_2023_source(project_root):
                 scale,
             )
             assert f.header_path_refs == ("panel", key)
+            for kind in ("field", "block"):
+                binding = occurrences[table.id, kind, key]
+                slot = binding.physical_refs[0]
+                assert fragments[slot.binding_ref, slot.slot].text == label + marker
             assert f.source_reference.row == label + marker
             assert axes[key + "-mortgage"].header_path_refs == ("panel", key)
             cells = [c for c in table.cells if c.field_ref == key]
@@ -114,6 +130,18 @@ def test_complete_cba_2023_source(project_root):
             assert (c.row_ref, c.column_ref) == (None, None)
             assert c.qualification_refs == (key,)
             assert c.value.original_text == token
+            binding = occurrences[table.id, "cell", key]
+            assert any(
+                link.target == occurrences[table.id, "comment", key].ref
+                for link in binding.links
+            )
+        if "overlay" in notes:
+            overlay = occurrences[table.id, "comment", "overlay"]
+            assert [
+                (link.target.kind, link.target.local_id) for link in overlay.links
+            ] == [("field", "lgd")]
+        else:
+            assert (table.id, "comment", "overlay") not in occurrences
         for b, bounds in zip(
             meta.segmentations[0].bands, golden["bounds"], strict=True
         ):
@@ -139,6 +167,11 @@ def test_complete_cba_2023_source(project_root):
         assert table.id == expected["id"]
         meta = table.metadata
         assert meta.context.source_title == expected["title"]
+        assert {
+            f.evidence.row
+            for f in bundle.fragments
+            if f.evidence.location == expected["title"] and f.evidence.row is not None
+        } == {expected["row"]}
         assert not meta.segmentations
         axes = {a.id: a for a in meta.axes}
         assert axes["mortgage"].source_label == expected["row"]
@@ -156,6 +189,10 @@ def test_complete_cba_2023_source(project_root):
             assert c.value.source_reference.pdf_page == 57
             assert c.value.source_reference.row == expected["row"]
             assert "restatement" in c.qualification_refs
+            binding = occurrences[table.id, "cell", c.id]
+            assert [r.role for r in binding.temporal_roles] == ["history_window"]
+            header = occurrences[table.id, "field", key].physical_refs[0]
+            assert fragments[header.binding_ref, header.slot].text == label
         notes = {q.id: q for q in meta.qualifications}
         assert {
             "framework",
