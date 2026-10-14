@@ -1,7 +1,10 @@
-"""CBA PDF → saved Bronze → staging Silver → source-shaped dataframe.
+"""CBA PDF → captured v4 Bronze → staging Silver → source-shaped dataframe.
 
 Run: uv run python -i examples/cba_extraction.py
-Inspect result, bundle, dataset.exposure_rows, or cba.
+Inspect result, bundle.fragments, bundle.snapshot, dataset.cells, or cba.
+The saved snapshot declares CR6/CR9 projections; ratings remain lexical source cells.
+This example uses the configured stores and retained v1 catalogue evidence below;
+choose an unused run_name before running. four_bank_cr9.py is self-contained.
 """
 
 from pathlib import Path

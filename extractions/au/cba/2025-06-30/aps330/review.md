@@ -83,7 +83,7 @@ retained. Subtotal EL retains both conditional definitions.
 
 Run `uv run pytest tests/bronze/au/cba/2025-06-30/aps330 -q` from the project.
 Tests discover the project root by ancestors, so collection does not depend on
-the process working directory. [Extractor](extract.py) returns the typed source
+the process working directory. [Extractor](extract.py) returns the captured source
 bundle; it does not read the golden or create persisted Bronze output versions.
 
 ## CR9 extension — reviewed 2026-10-12
@@ -147,3 +147,16 @@ concepts. Seven exact-document field mappings establish percent/count conversion
 one context mapping supplies the mortgage population, source band role and overlay
 treatment. No date-restricted definition or canonical forward-cohort equivalence
 is asserted. Shared release selection is owned by the integrating session.
+
+## Metadata capture migration — 2026-10-14
+
+The current producer emits `disclosure-v4`, superseding the v2 producer described
+in the extension history above. `definition.py` declares source axes, cells,
+qualifications, temporal roles and original CR6/CR9 domain addresses;
+`physical.py` only reads declared PDF regions and passages. `extract.py` delegates
+assembly to shared capture. The bundle retains 180 cells (164 numeric positions
+and 16 lexical ratings), physical fragments and the executable capture snapshot.
+Shared comments are captured once with explicit applicability links. April–March
+CR9 timing and unresolved PD/weight timing are preserved. The original independent
+goldens remain unchanged; test-only structural views compare complete values and
+metadata alongside direct fragment, rating and binding checks.

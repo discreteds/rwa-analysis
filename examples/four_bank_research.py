@@ -2,6 +2,9 @@
 
 Run: uv run python -i examples/four_bank_research.py
 Inspect publications, master_publication, output and tables.
+The selected v1 Bronze versions must already exist in the configured store.
+Saved v4 inputs carry capture definitions; legacy versions remain readable.
+Conformance and reconstruction use saved evidence without reopening source PDFs.
 """
 
 from pathlib import Path
@@ -38,7 +41,7 @@ for ref in refs:
     candidate = session.conform(
         session.load_bronze((ref,)),
         catalogue=CatalogueSelection(
-            release_path="catalogue/releases/cr6-v1.json",
+            release_path="catalogue/releases/cr6-cr9-v1.json",
             evidence_refs=tuple(other for other in refs if other != ref),
         ),
     )
@@ -56,6 +59,7 @@ master_publication = master.consolidate(
 output = master.store.read(master_publication)
 tables = master.reconstruct(master_publication)
 print(f"Master: {master_publication.database}")
+print(f"CR9 rows: {output.cr9.observations.count_rows()}")
 print(
     f"Observations: {output.cr6.observations.count_rows()}, fields: {output.cr6.fields.count_rows()}, "
     f"mappings: {output.cr6.field_mappings.count_rows()}, relationships: {output.cr6.relationships.count_rows()}"

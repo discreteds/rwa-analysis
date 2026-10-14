@@ -105,3 +105,15 @@ The new bundle uses `disclosure-v2` and includes both datasets. The unchanged CR
 golden is checked through its original wire projection. Catalogue members are in
 `catalogue/{measures,mappings}/nab-cr9-2025-09-30-v1.json`; the parent task owns
 release selection and persisted conformance/bank acceptance.
+
+## Metadata capture migration — 2026-10-14
+
+The current producer emits `disclosure-v4`, replacing the v2 producer described
+above. `definition.py` owns the reviewed source declarations and domain bindings;
+`physical.py` reads only declared regions, grids and passages; `extract.py` invokes
+shared capture. The retained snapshot and fragments cover 180 cells: 164 numeric
+positions and 16 lexical ratings from PDF46. Current-before-previous count order,
+agreement semantics, missing positions, temporal roles and original record/field
+IDs are preserved. Shared comments are captured once with explicit applicability.
+Independent golden files are unchanged; structural test views compare complete
+metadata and values, with additional direct fragment and rating checks.
