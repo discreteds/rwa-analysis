@@ -5,10 +5,11 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **APPROVED — Tasks 4–6 complete; checkpoint B awaiting acceptance.** Checkpoint A was accepted on 2026-10-14. The researcher approved the plan,
+Status: **APPROVED — checkpoints A/B accepted; Task 7 delivery reviews pending.** Both checkpoints were accepted on 2026-10-14. The researcher approved the plan,
 merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
-worktree seeded from `develop` at `2ef55de` on 2026-10-13. Checkpoint A is the
-current execution boundary; Tasks 4–7 await that checkpoint review.
+worktree seeded from `develop` at `2ef55de` on 2026-10-13. Task 7 continuation was
+authorised from clean `957194c`; final independent reviews precede push/PR readiness.
+Earlier checkpoint records below describe their then-current approval boundaries.
 
 **Goal:** Drive all existing selected four-bank captures and their Bronze-to-Silver
 journey from singly defined physical, semantic and contextual metadata.
@@ -629,8 +630,9 @@ from `/tmp/opencode/cr9-four-bank-78wd0qol/`, retaining 36/33 rows, eight numeri
 frames and 729 source cells without a PDF or authoring directory in that root.
 Log: `/tmp/opencode/metadata-checkpoint-b-repaired-saved-only.log`.
 
-Correctness and complexity reviews are closed with no open findings. Checkpoint B
-is ready for researcher acceptance in draft PR #18; Task 7 remains unstarted.
+Correctness and complexity reviews closed with no open findings. The researcher
+accepted checkpoint B and authorised Task 7 on 2026-10-14, starting from `957194c`
+on the existing branch/worktree. Draft PR #18 targets `develop`.
 
 ## Task 7 — Whole-path evidence, retirement and delivery
 
@@ -639,20 +641,20 @@ is ready for researcher acceptance in draft PR #18; Task 7 remains unstarted.
 for their distinct new risks. Update `examples/historical_mortgages.py`, `README.md`,
 `docs/architecture.md`, source reviews and `AGENTS.md` to implemented evidence.
 
-- [ ] Before the final code changes, extend the existing master test to include new
+- [x] Before the final code changes, extend the existing master test to include new
   occurrence/context tables. Prove shared bundle comments remain reachable after
   staging files are removed, and fewer-input rebuilds remove every dependent output.
   Keep its persisted-value mutation proof; do not replace it with Bronze self-comparison.
-- [ ] Run that focused RED, implement missing inventory/readback/reconstruction work,
+- [x] Run that focused RED, implement missing inventory/readback/reconstruction work,
   then GREEN. New all-kind outputs use the same atomic write/read/master associations.
-- [ ] Finish retirement of duplicated metadata/semantic assembly; keep only necessary
+- [x] Finish retirement of duplicated metadata/semantic assembly; keep only necessary
   old wire decoders and address adapters. Do not delete retained PDFs, Bronze or
   independently authored expectations. Do not promote the spike.
-- [ ] Run the full historical example on fresh roots: 48 source datasets / 1,343
+- [x] Run the full historical example on fresh roots: 48 source datasets / 1,343
   source cells, including lexical ratings and published missing positions, remain
   the comparison baseline with the explicit Westpac 2025 views. Additional structural
   and comment occurrences are outside that cell baseline.
-- [ ] Run the modern example, then the complete suite, Ruff and diff checks. Inspect
+- [x] Run the modern example, then the complete suite, Ruff and diff checks. Inspect
   example output roots/run names first. Record commands, retained artifacts and results.
 - [ ] Run independent correctness and complexity reviews. Apply complexity cuts first,
   repair in-repo findings, and reproduce/track any required upstream defects without
@@ -670,6 +672,94 @@ git diff --check
 ```
 
 ## Execution and approval boundary
+
+### Task 7 execution evidence — 2026-10-14
+
+Continued in the authorised existing worktree/branch from clean `957194c` using
+`executing-plans`. No acceptance requirement was cut. Final independent correctness
+and complexity reviews are owned by the parent; this handoff does not authorise
+pushing, marking PR #18 ready, or merging.
+
+**Primary test owner and red/green:** extended the existing source-master lifecycle
+case, parameterised over actual retained v2/v3 inputs and live v4 capture. The
+retained case is preserved. Both compare all 22 source relations at consolidation,
+retain the persisted numeric/qualification mutation proof, reopen master after
+deleting staging databases, and compare every relation across all three inventories
+(49 total) after fewer-input replacement and empty replacement. The current case
+also mutates a bundle-scoped comment in staging and checks that its persisted text,
+links, evidence and common context are reachable from two reconstructed tables.
+Saved Bronze remains loadable after empty publication.
+
+The credible regressions are table-local-only reconstruction (dropping shared
+owners), omission of a declared relation when copying/removing inputs, and
+reconforming Bronze instead of copying persisted results. The existing source test
+used only retained fixtures with no capture contexts; the staging-only all-kind test
+could not catch master lifecycle regressions. No production seam was added.
+
+The first expanded persisted run already passed **2 cases** in 38.72 seconds:
+`/tmp/opencode/metadata-task7-lifecycle-first.log`. Existing inventory and reachability
+code already supplied the required behavior, so no missing production feature was
+invented. A temporary mutation restricted reconstructed metadata to table-local rows;
+the current lifecycle case then failed at the missing persisted shared comment:
+`/tmp/opencode/metadata-task7-lifecycle-mutation-red.log`. This is a **mutation RED**,
+not a claim of a pre-existing defect. The mutation was fully reverted before the
+GREEN run: **5 master tests passed**, 4,154 dependency warnings, 134.02 seconds;
+`/tmp/opencode/metadata-task7-lifecycle-green.log`.
+
+Commands:
+
+```bash
+uv run pytest tests/integration/test_master_consolidation.py -k source_master -q
+# Temporary table-local-only mutation, then restore the original implementation:
+uv run pytest tests/integration/test_master_consolidation.py -k 'source_master and current' -q
+uv run pytest tests/integration/test_master_consolidation.py -q
+uv run python examples/historical_mortgages.py
+uv run python examples/four_bank_cr9.py
+uv run python /tmp/opencode/metadata-checkpoint-b-saved-only.py /tmp/opencode/cr9-four-bank-7xjvwgxv
+```
+
+**Scoped retirement:** removed the historical example's redundant Westpac-only
+`SourceTablePipeline` call and extra catalogue load. All its selected sources now
+produce native v4 relations in ordinary conformance; the second pass duplicated
+interpretation. Full example parity establishes preservation of its complete scope.
+Production resolution already has one composition call in `catalogue/occurrences.py`;
+the CR6/CR9 pipelines and retained semantic adapters delegate to it. Those adapters,
+all four wire formats, source PDFs and independent goldens remain supported. Earlier
+Tasks 4–6 retired dated imperative semantic assembly and old domain metadata bridges.
+No further deletion is needed to satisfy that retirement objective.
+
+**Fresh whole-path evidence:**
+
+- Historical root: `/tmp/opencode/historical-mortgages-tvvxoprc/`; **48 datasets,
+  1,343 source cells, 1,328 body positions and 15 notes**, including the explicit
+  modern Westpac view. Log: `/tmp/opencode/metadata-task7-historical.log`.
+- Modern root: `/tmp/opencode/cr9-four-bank-7xjvwgxv/`; **36 CR6 rows, 33 CR9 rows,
+  eight numeric frames**. Log: `/tmp/opencode/metadata-task7-modern.log`.
+- Fresh-process saved-only master:
+  `/tmp/opencode/cr9-four-bank-7xjvwgxv/saved-only/master.duckdb`; **36/33 rows,
+  eight frames, 729 source cells and eight occurrence kinds** without PDF/authoring
+  directories in the retained root. Log: `/tmp/opencode/metadata-task7-saved-only.log`.
+- All **8 modern and 74 historical readback parquet files** match accepted checkpoint
+  B roots (`cr9-four-bank-78wd0qol`, `historical-mortgages-x5dufviz`) in content and
+  dtype; source-frame row order is preserved. Diagnostic comparisons are not golden
+  expectations. Log: `/tmp/opencode/metadata-task7-output-parity.log`.
+
+No implementation or upstream blocker was found. Documentation records checkpoint B
+acceptance and current evidence; the removed metadata-ingress debt is closed.
+
+**Final verification:** `uv run pytest` completed without a timeout: **205 passed**,
+8,278 dependency warnings, **467.75 seconds**;
+`/tmp/opencode/metadata-task7-full-tests.log`. `uv run ruff check src tests examples extractions`
+and `git diff --check` passed; logs `/tmp/opencode/metadata-task7-ruff.log` and
+`/tmp/opencode/metadata-task7-diff-check.log`. All **126 relative links/anchors** in
+changed Markdown resolve; `/tmp/opencode/metadata-task7-links.log`.
+
+Implementation/test retirement commit: `2633c2a`. Associated documentation is committed
+locally with this record. Nothing from Task 7 has been pushed. Independent final
+reviews and PR delivery remain open; there are no known implementation concerns.
+Local checkout synchronisation can follow an authorised merge, not this handoff.
+
+### Original execution boundary
 
 Independent correctness and complexity reviews completed on 2026-10-13. Complexity
 cuts removed mandatory source-review rewrites and rigid module/collection machinery.

@@ -153,8 +153,10 @@ Checkpoint A's ANZ September 2023 path retains all-kind context metadata.
 Run `uv run python -i examples/anz_metadata_capture.py` for the full 125-cell path
 and a saved-only comment reinterpretation after deleting disposable source copies.
 It prints a fresh retained `/tmp/opencode` root. Checkpoint A was accepted on
-2026-10-14; Tasks 4–6 are complete on the implementation branch, with checkpoint B
-awaiting acceptance.
+2026-10-14, followed by checkpoint B acceptance of all twelve migrations and domain
+projections. Task 7's master lifecycle proof covers retained and current captures:
+shared comments and contexts survive staging deletion, and fewer/empty selections
+replace every dependent relation. Final independent delivery reviews remain pending.
 
 Source reconstruction uses persisted source relations. Existing CR6/CR9 reconstruction
 still uses saved Bronze structure. Preserve all selected inputs and manifests as
@@ -184,7 +186,7 @@ supporting evidence. Domain `contracts.py` files declare twelve CR6 and fifteen 
 tables, associated in `storage/tables.py`. CR9 adds field-level temporal descriptors,
 bindings and evidence and uses flat typed metadata ingress.
 Domain metadata projection uses Mountainash expressions over flat source relations.
-Task 5 removes the earlier recursive `asdict()`/full-inference ingress boundary;
+Task 5 removed the earlier recursive `asdict()`/full-inference ingress boundary;
 its history remains in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
 Validation is separate and remains undefined; it is not invoked by this workflow.
 

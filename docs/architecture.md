@@ -15,8 +15,9 @@ capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-
 and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
 was approved on 2026-10-13. Tasks 1–3 on `feature/metadata-driven-extraction`
 implement the first ANZ 2023 v4 path, accepted at checkpoint A on 2026-10-14. The
-remaining source migrations and CR6/CR9 projections are implemented as Tasks 4–6
-with 200 tests passing; checkpoint B acceptance is pending.
+remaining source migrations and CR6/CR9 projections were accepted at checkpoint B
+on 2026-10-14, after 204 tests passed. Task 7 extends master lifecycle evidence;
+final independent correctness and complexity reviews remain pending.
 
 ### Checkpoint A: ANZ 2023 metadata-owned capture
 
@@ -42,7 +43,10 @@ The source-table inventory adds `occurrences`, `occurrence_links`, `contexts` an
 kind-qualified owners. Shared definitions are retained at bundle scope, with
 explicit references from occurrences. Reconstruction includes reachable shared
 comments and contexts alongside local metadata. The same declared inventory drives
-ordinary staging writes and readback. Task 7 owns the additional master-removal proof.
+ordinary staging writes, readback and master copying. Task 7's lifecycle test covers
+all 49 relations for retained and current captures, including bundle-scoped owners.
+It mutates a persisted value and shared comment, deletes staging databases, and
+checks reconstructed comment/context reachability and fewer/empty-input replacement.
 
 `examples/anz_metadata_capture.py` runs the full 125-cell source, saves v4, deletes
 its disposable copies of the PDF/authoring files and publishes a retained,
@@ -68,7 +72,8 @@ capture declarations are not invented. The shared resolution owner preserves CR6
 observation-date policy, CR9's partial-time policy and v3's explicit field measurement
 dates. Ordinary legacy selections retain their named domain views; explicit source
 views remain available. Historical captures have no domain bindings and stay source-only.
-Checkpoint B verification passed; acceptance is pending. Task 7 remains unexecuted.
+Checkpoint B is accepted. Fresh Task 7 historical and modern runs preserve these
+outputs; final independent delivery reviews remain pending.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
@@ -150,7 +155,8 @@ the dataset protocol is not an automatic multi-domain plugin system.
 `Cr6Dataset` composes `DatasetMetadata` and exposes `exposure_rows`. Its saved
 `cr6-v1` representation retains the earlier `records`/flat-metadata wire shape through
 the codec. Python composition does not require rewriting retained Bronze or goldens.
-New mixed bundles use `disclosure-v2` with explicit domain discriminators.
+Retained mixed bundles use `disclosure-v2` with explicit domain discriminators;
+current declared captures use `disclosure-v4`.
 `Cr9Dataset` composes metadata with `backtesting_rows`; its context deliberately has
 no table-wide observation date. Existing `cr6-v1` output remains readable and retains
 its old wire format. Extraction output names are independent of these wire versions.
@@ -199,7 +205,7 @@ Semantic attributes can remain unresolved or conflicting independently. An unkno
 currency does not negate a known million-to-base-unit conversion. A source amount
 without an established conversion remains accessible in source metadata.
 
-Task 5 removes the earlier recursive `asdict()`/full-record inference bridge in
+Task 5 removed the earlier recursive `asdict()`/full-record inference bridge in
 `domains/cr6/metadata.py`. Source metadata enters as flat declared records, and
 domain projections consume native relations. The
 [removal record](04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
@@ -248,7 +254,8 @@ attributes/evidence/decisions, plus occurrences, occurrence links, contexts and 
 bindings. Ordered reference rows preserve header paths and
 qualified endpoints; the same declarations drive storage and master copying.
 
-`resolve_cell` uses the existing scoped catalogue composer. Definitions can be
+`resolve_capture` uses the existing scoped catalogue composer; the retained
+`resolve_cell` address adapter delegates to the same owner. Definitions can be
 shared while source occurrences and evidence remain separate. Exact unit conversion
 does not imply an established canonical measure. Source Decimal slots use
 `Decimal(16,8)`, conversion factors `Decimal(16,6)`, normalised money `Decimal(16,2)`
@@ -356,6 +363,13 @@ Add domain operations and update explicit composition/storage associations when 
 new domain is approved; do not force stock/flow or liquidity records into CR6.
 
 ## Verification evidence
+
+Task 7 verification on 2026-10-14 passed **205 tests**. Fresh historical and modern
+examples and saved-only reconstruction passed; all 74 historical and eight modern
+readback files match accepted checkpoint B in content/dtype and source-frame order.
+Exact commands, retained roots and logs are in the
+[execution record](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md#task-7-execution-evidence--2026-10-14).
+Final independent delivery reviews remain pending.
 
 The [completed migration record](04.planning/superpowers/plans/2026-10-11-strategic-architecture-migration.md)
 records 114 passing tests and the real CBA/four-bank demonstrations on 2026-10-11.

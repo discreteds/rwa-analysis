@@ -2,24 +2,25 @@
 
 **Type:** techdebt
 
-**Status:** OPEN
+**Status:** CLOSED — removed in the accepted checkpoint B, 2026-10-14.
 
 **Implementation update, 2026-10-14:** Task 5 of the
 [metadata-driven migration](../../superpowers/plans/2026-10-13-metadata-driven-extraction.md)
-removes the former `domains/cr6/metadata.py` bridge. Flat source records enter native
+removed the former `domains/cr6/metadata.py` bridge. Flat source records enter native
 Mountainash relations; CR6/CR9 projections consume those relations directly. The
-four-bank path and saved-only reconstruction have run successfully. Closure awaits
-checkpoint B review; the historical description below explains the removed boundary.
+four-bank path and saved-only reconstruction have run successfully. Checkpoint B
+review closed and the researcher accepted it on 2026-10-14 (204 passing tests).
+The historical description below explains the removed boundary.
 
-**Scheduling:** Deferred during CR9 interface design by researcher decision,
-2026-10-12. The removal objective remains; CR9 is not an ingress-refactoring project.
+**Historical scheduling:** Deferred during CR9 interface design by researcher
+decision, 2026-10-12; subsequently removed by the metadata-driven migration.
 
 **Owner:** rwa-analysis metadata schemas / CR6 domain projection
 
 **Decision:** Researcher explicitly authorised the temporary adaptation while
 requiring its removal after revisiting metadata's need for nested dataclasses.
 
-## Temporary implementation
+## Former temporary implementation
 
 The normalised Silver tables use scalar row models. Existing source metadata and
 catalogue assertions still contain nested dataclasses. At the metadata ingress

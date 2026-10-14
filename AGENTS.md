@@ -21,10 +21,12 @@ The approved [contextual-occurrence](docs/01.principles/a.architecture/contextua
 and [metadata-driven processing](docs/01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
 principles govern the target architecture. Their [design specification](docs/04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
 and disposable spike shape are approved; the implementation plan was approved on
-2026-10-13. Checkpoint A was accepted on 2026-10-14. Tasks 4–6 migrate all twelve
-selected sources and implement catalogue-free CR6/CR9 projections on
-`feature/metadata-driven-extraction`; checkpoint B review is pending. Do not execute
-Task 7 before checkpoint B acceptance. Preserve retained formats and source identities.
+2026-10-13. Checkpoints A and B were accepted on 2026-10-14. All twelve selected
+sources and catalogue-free CR6/CR9 projections are implemented on
+`feature/metadata-driven-extraction`. Task 7 verifies master-owned occurrence/context
+metadata and complete dependent-row replacement for retained and current captures.
+Final independent correctness/complexity reviews precede PR #18 readiness; do not
+push or merge without authorisation. Preserve retained formats and source identities.
 
 ## Design principles — mandatory
 
