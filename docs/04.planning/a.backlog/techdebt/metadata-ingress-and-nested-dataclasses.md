@@ -4,6 +4,13 @@
 
 **Status:** OPEN
 
+**Implementation update, 2026-10-14:** Task 5 of the
+[metadata-driven migration](../../superpowers/plans/2026-10-13-metadata-driven-extraction.md)
+removes the former `domains/cr6/metadata.py` bridge. Flat source records enter native
+Mountainash relations; CR6/CR9 projections consume those relations directly. The
+four-bank path and saved-only reconstruction have run successfully. Closure awaits
+checkpoint B review; the historical description below explains the removed boundary.
+
 **Scheduling:** Deferred during CR9 interface design by researcher decision,
 2026-10-12. The removal objective remains; CR9 is not an ingress-refactoring project.
 

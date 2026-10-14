@@ -39,9 +39,11 @@ uv run python -i examples/cba_extraction.py
 `OrganisationSession.run()` extracts the selected PDF, saves and reloads Bronze,
 conforms with the selected catalogue, publishes staging Silver and returns
 source-shaped numeric dataframes. Inspect `result.tables`, `result.publication`,
-or `result.bundles` for the source metadata. In a dataset, rows are
-`dataset.exposure_rows` (CR6) or `dataset.backtesting_rows` (CR9); descriptors and context
-are under `dataset.metadata`. Store readback exposes named `output.cr6` and `output.cr9`.
+or `result.bundles` for the source metadata. New captures expose source-table
+`dataset.cells` and `dataset.metadata`, plus bundle-level captured fragments and
+definition snapshots. Explicit domain bindings project these cells into named
+`output.cr6` and `output.cr9` relations. Retained legacy datasets still expose
+`exposure_rows` (CR6) or `backtesting_rows` (CR9).
 
 Change `run_name` for another saved extraction. It names a folder, not a schema
 version. Existing Bronze runs (including `v1`) are retained unchanged.
@@ -139,18 +141,20 @@ Inventory presence includes unmapped and blank fields. Numerical notes are query
 cells, excluded from body frames. Reports' changing bands and definitions are retained
 without automatic equivalence, rebanding or imputation.
 
-New source bundles use `disclosure-v3`. Original `cr6-v1` and `disclosure-v2` paths
-remain supported. Ordinary sessions process native source datasets; the example
-explicitly composes `SourceTablePipeline().conform(inputs, catalogue)` to include
-its saved Westpac legacy datasets. Existing numeric frame keys retain their numeric
+All twelve selected source entrypoints now produce `disclosure-v4`, retaining
+physical bindings, captured fragments, contexts and occurrence identities. Original
+`cr6-v1`, `disclosure-v2` and `disclosure-v3` files remain readable. Ordinary sessions
+publish native source relations and declared CR6/CR9 projections. An explicit
+`SourceTablePipeline().conform(inputs, catalogue)` also provides source views of
+retained legacy typed datasets. Existing numeric frame keys retain their numeric
 views; use `reconstruct_source_tables(output.source_tables)` for lexical projections.
 
-The checkpoint-A implementation branch migrates ANZ September 2023 to
-`disclosure-v4`, retaining capture declarations and all-kind context metadata.
+Checkpoint A's ANZ September 2023 path retains all-kind context metadata.
 Run `uv run python -i examples/anz_metadata_capture.py` for the full 125-cell path
 and a saved-only comment reinterpretation after deleting disposable source copies.
-It prints a fresh retained `/tmp/opencode` root. Remaining source migrations await
-checkpoint review; their formats and entrypoints continue to work.
+It prints a fresh retained `/tmp/opencode` root. Checkpoint A was accepted on
+2026-10-14; Tasks 4–6 are complete on the implementation branch, with checkpoint B
+awaiting acceptance.
 
 Source reconstruction uses persisted source relations. Existing CR6/CR9 reconstruction
 still uses saved Bronze structure. Preserve all selected inputs and manifests as
@@ -166,7 +170,8 @@ configured project root, including when working in a notebook elsewhere.
 
 - `composition.py` assembles components from resolved settings.
 - `workflow.py` sequences stages and exposes `run()`.
-- `domains/cr6/` and `domains/cr9/` own typed models, schema declarations, conformance and reconstruction.
+- `domains/source_tables/` resolves and conforms source content with the catalogue.
+- `domains/cr6/` and `domains/cr9/` own typed models, declarations, catalogue-free projections and reconstruction.
 - `storage/` owns source transport, retained selections and DuckDB publication.
 - `catalogue/` retains semantic definitions and scoped interpretations.
 
@@ -178,8 +183,9 @@ related rows for ordered qualifications, mappings, assertions, alternatives and
 supporting evidence. Domain `contracts.py` files declare twelve CR6 and fifteen CR9
 tables, associated in `storage/tables.py`. CR9 adds field-level temporal descriptors,
 bindings and evidence and uses flat typed metadata ingress.
-CR6 metadata projection uses Mountainash expressions. The temporary `asdict()`/full-inference
-ingress boundary is tracked for removal in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
+Domain metadata projection uses Mountainash expressions over flat source relations.
+Task 5 removes the earlier recursive `asdict()`/full-inference ingress boundary;
+its history remains in the [techdebt backlog](docs/04.planning/a.backlog/INDEX.md).
 Validation is separate and remains undefined; it is not invoked by this workflow.
 
 Rebuild manifests retain input references, not copies of all referenced assets.

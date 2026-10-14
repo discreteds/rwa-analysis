@@ -7,6 +7,8 @@ Status: **Design direction and disposable spike shape APPROVED by the researcher
 [implementation plan](../plans/2026-10-13-metadata-driven-extraction.md), including its
 production contract details and checkpoint sequence; Tasks 1–3 are implemented and
 verified and accepted at checkpoint A on 2026-10-14 (195 passing tests).
+Tasks 4–6 are implemented across all twelve selected reports, with 200 tests passing;
+checkpoint B acceptance is pending and Task 7 remains unexecuted.
 The disposable code remains reference only and is not the implementation base.
 
 ## 1. Ask and scope

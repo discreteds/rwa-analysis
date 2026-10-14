@@ -15,8 +15,8 @@ capture and conformance. The [new design](04.planning/superpowers/specs/2026-10-
 and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
 was approved on 2026-10-13. Tasks 1–3 on `feature/metadata-driven-extraction`
 implement the first ANZ 2023 v4 path, accepted at checkpoint A on 2026-10-14. The
-remaining source migrations and CR6/CR9 projections are in progress as Tasks 4–6;
-checkpoint B acceptance is pending.
+remaining source migrations and CR6/CR9 projections are implemented as Tasks 4–6
+with 200 tests passing; checkpoint B acceptance is pending.
 
 ### Checkpoint A: ANZ 2023 metadata-owned capture
 
@@ -49,10 +49,26 @@ its disposable copies of the PDF/authoring files and publishes a retained,
 occurrence-targeted comment override from saved Bronze. Checkpoint A acceptance
 authorises Tasks 4–6; this example does not establish the remaining migration's completion.
 
-The sections below describe the working pipeline and its retained interfaces. Its
-bespoke extractors, field/cell-oriented catalogue adapters and domain dispatch remain
-operational until an approved migration replaces them. Do not interpret this current
-implementation description as authority to restore superseded ownership constraints.
+### Tasks 4–6: complete selected-source migration
+
+All twelve selected reports now enter through a local `definition.py`, `physical.py`
+and thin `extract.py`. Historical source identities, notes and temporal distinctions
+remain unchanged. Modern snapshots additionally retain `DomainFieldBinding` records:
+explicit cell-to-domain record/field addresses, without a second financial definition.
+
+`SourceTablePipeline` resolves captures once. `project_cr6(source_output, bindings)`
+and `project_cr9(source_output, bindings)` consume the resolved relations without a
+catalogue, PDF or source module. Native Mountainash joins and expressions project
+numbers, factors, qualifiers, timing, relationships and interpretation provenance.
+The modern selection retains 36 CR6 rows, 33 CR9 rows and eight numeric frame keys;
+its source view contains 729 cells, including 66 lexical rating positions.
+
+Retained v1/v2 typed data is adapted to original source addresses; missing historical
+capture declarations are not invented. The shared resolution owner preserves CR6's
+observation-date policy, CR9's partial-time policy and v3's explicit field measurement
+dates. Ordinary legacy selections retain their named domain views; explicit source
+views remain available. Historical captures have no domain bindings and stay source-only.
+Checkpoint B verification passed; acceptance is pending. Task 7 remains unexecuted.
 
 The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
@@ -90,13 +106,14 @@ Official PDF + raw/index.md
           |
 Source review + independent golden expectations
           |
-Bespoke extract.py → composed ExtractionBundle
+definition.py + physical.py → thin extract.py → CapturedBundle (v4)
           |
 BronzeStore.save → retained bundle.json → BronzeStore.load
                                              |
 Versioned catalogue release -----------------+
                                              |
-                  Cr6Pipeline / Cr9Pipeline / SourceTablePipeline.conform
+                  shared occurrence resolution / SourceTablePipeline
+                       source relations → CR6/CR9 projections
                                 Mountainash relations
                                              |
                                   SilverCandidate
@@ -115,10 +132,10 @@ Persisted source-table structure + cells → source-oriented numeric/lexical fra
 | [`composition.py`](../src/rwa_analysis/composition.py) | Construct concrete components; construction does not run processing |
 | [`workflow.py`](../src/rwa_analysis/workflow.py) | `OrganisationSession` sequences independently callable stages; `RunResult` returns publication, tables and source bundles |
 | [`operations.py`](../src/rwa_analysis/operations.py) | Run explicitly selected extractors and load the explicitly selected catalogue for conformance |
-| [`extraction/`](../src/rwa_analysis/extraction/) | Source dataclasses, composed metadata, dataset protocol, lossless codec and reusable parsing; each bespoke extractor owns its PDF layout |
+| [`extraction/`](../src/rwa_analysis/extraction/) | Typed declarations/snapshots, explicit physical invocation, captured fragments, source dataclasses and retained codecs |
 | [`catalogue/`](../src/rwa_analysis/catalogue/) | Load and resolve concepts, definitions, scoped mappings, evidence and researcher decisions |
-| [`domains/cr6/`](../src/rwa_analysis/domains/cr6/) | CR6 models, schema/table declarations, Mountainash transformations and source-unit reconstruction |
-| [`domains/cr9/`](../src/rwa_analysis/domains/cr9/) | CR9 typed rows, field-level temporal metadata, source-scoped semantic selection, conformance and reconstruction |
+| [`domains/cr6/`](../src/rwa_analysis/domains/cr6/) | CR6 models, declarations, catalogue-free projection and source-unit reconstruction |
+| [`domains/cr9/`](../src/rwa_analysis/domains/cr9/) | CR9 models, declarations, catalogue-free projection, field-level timing and reconstruction |
 | [`domains/source_tables/`](../src/rwa_analysis/domains/source_tables/) | Source-defined cells/metadata conformance, explicit legacy adaptation and persisted structural reconstruction |
 | [`storage/`](../src/rwa_analysis/storage/) | Bronze transport, paths, manifests, database connections, transactional publication and master consolidation |
 
@@ -163,9 +180,10 @@ scoped descriptor; partial dates, duration and unresolved bounds remain explicit
 Temporal qualifications are projected to affected fields. Source row qualifications
 also follow those fields into Silver.
 
-The shared `compose_field` combines selected meanings. CR6 retains date-aware
-selection; the CR9 adapter selects explicit occurrences and leaves date-restricted
-definitions/mappings unresolved rather than substituting the document date.
+The shared occurrence owner uses `compose_field` to combine selected meanings.
+Retained CR6 uses its observation date; retained CR9 leaves date-restricted
+definitions/mappings unresolved rather than substituting the document date. V4
+resolves explicit occurrence temporal roles. Domain projections never select mappings.
 `cr6-cr9-v1` retains the old release's members and adds source-specific CR9 definitions.
 Counts are not assumed to share one counting convention: NAB establishes agreements,
 while unsupported counting/weighting conventions remain unresolved.
@@ -181,12 +199,11 @@ Semantic attributes can remain unresolved or conflicting independently. An unkno
 currency does not negate a known million-to-base-unit conversion. A source amount
 without an established conversion remains accessible in source metadata.
 
-The approved temporary `asdict()`/full-record Polars inference boundary is isolated
-in `domains/cr6/metadata.py`. Mountainash owns its relational projections. Its
-[removal debt](04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
-requires revisiting nested metadata schemas, not generalising the adapter.
-CR9 uses flat dataclass lists through native relation ingress; this does not remove
-the existing CR6 nested-ingress debt.
+Task 5 removes the earlier recursive `asdict()`/full-record inference bridge in
+`domains/cr6/metadata.py`. Source metadata enters as flat declared records, and
+domain projections consume native relations. The
+[removal record](04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
+retains the original rationale and checkpoint review boundary.
 
 ## Execution, publication and reconstruction
 
@@ -239,11 +256,12 @@ and other numeric scalars `Decimal(16,8)`; counts remain integers. Wider arithme
 precedes conformance. The native model-declared ingress fix in Mountainash PR #377
 is pinned; no source-row reordering or inference-window workaround is used.
 
-Ordinary `ConformanceOperation` selects native source datasets for this output.
-An explicit `SourceTablePipeline().conform(inputs, catalogue)` also adapts selected
-legacy CR6/CR9 datasets. The adapter resolves original addresses/timing first, then
-projects published bindings, lexical rating cells and scoped relationships. The
-candidate's selection contains both actual saved input references.
+Ordinary `ConformanceOperation` resolves all selected inputs once and publishes
+native source datasets plus their declared domain projections. An explicit
+`SourceTablePipeline().conform(inputs, catalogue)` also exposes selected legacy
+CR6/CR9 datasets as source tables. The legacy adapter preserves original addresses,
+published bindings, lexical rating cells and scoped relationships for the shared
+resolution owner. Candidate selections retain their actual saved input references.
 
 `reconstruct_source_tables(output.source_tables)` returns source-shaped frames and
 filtered metadata from persisted relations. It does not reread source numbers from
@@ -284,7 +302,8 @@ behaviour must be reconciled explicitly with the separate-validation decision.
 ### Bespoke extraction and shared interfaces
 
 The extension seam is an explicitly selected script with
-`extract(pdf_path: Path) -> ExtractionBundle`. `run_extractor(script_path, pdf_path)`
+`extract(pdf_path: Path) -> CapturedBundle` for current declarations; retained bespoke
+callers can return `ExtractionBundle`. `run_extractor(script_path, pdf_path)`
 loads that function; `DocumentSelection` supplies the two paths. One source PDF owns
 one bundle. The structural `Dataset` protocol exposes `id` and `metadata`; supported
 concrete dataset types have explicit codec and conformance dispatch. Implementing the
@@ -296,7 +315,7 @@ protocol alone does not register a new persistence format.
 | Table construction | `SourceTable`, `TableField`, `SourceCell`, `SourceTableMetadata` | Selected panels, local IDs, orientation, original labels/order and source form |
 | Metadata | `SourceAxisItem`, qualifications, bands, relationships, temporal descriptors/bindings | Header paths, scope/endpoints, applicable definitions, period bounds and uncertainty |
 | Interpretation | Scoped `SourceMappingRevision`, reusable `MeasureRevision`, `compose_field` | Evidence-backed applicability and explicit overrides/corrections |
-| Transport and storage | `disclosure-v3`, `SourceTablePipeline`, existing staging/master | Explicit bundle/catalogue selections and fresh saved output versions |
+| Transport and storage | `disclosure-v4` plus retained v1/v2/v3 codecs, `SourceTablePipeline`, existing staging/master | Explicit bundle/catalogue selections and fresh saved output versions |
 
 Direct dataclass construction is the bespoke interface, including non-rectangular
 notes, different row/column roles and per-cell timing. Local constructors can shorten

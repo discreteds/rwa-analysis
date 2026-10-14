@@ -5,7 +5,7 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **APPROVED — checkpoint A accepted 2026-10-14; Tasks 4–6 in progress.** The researcher approved the plan,
+Status: **APPROVED — Tasks 4–6 complete; checkpoint B awaiting acceptance.** Checkpoint A was accepted on 2026-10-14. The researcher approved the plan,
 merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
 worktree seeded from `develop` at `2ef55de` on 2026-10-13. Checkpoint A is the
 current execution boundary; Tasks 4–7 await that checkpoint review.
@@ -297,15 +297,15 @@ Update source reviews only when their content or references change.
 conformance branch. Existing selected catalogue members stay authoritative unless
 source review establishes a separately approved interpretation change.
 
-- [ ] For each source, extend the existing independent golden test to enter the new
+- [x] For each source, extend the existing independent golden test to enter the new
   declared path and record RED. Capture all existing cells, structural evidence and
   applicable qualifiers; do not regenerate expected fixtures from new declarations.
-- [ ] Re-express metadata as explicit bindings; retain source-local physical algorithms
+- [x] Re-express metadata as explicit bindings; retain source-local physical algorithms
   where required. Share a reviewed definition by reference, not a previous dated extractor.
   Remove superseded semantic construction from each migrated `extract.py`.
-- [ ] Run that source and its adjacent vintage tests to GREEN. Commit per coherent
+- [x] Run that source and its adjacent vintage tests to GREEN. Commit per coherent
   bank migration, keeping one implementation PR.
-- [ ] Run the joint 2023/2024 publication cases. Preserve the 46 historical datasets,
+- [x] Run the joint 2023/2024 publication cases. Preserve the 46 historical datasets,
   1,148 body cells and 15 numeric notes; internal deduplication of shared evidence
   must not deduplicate published financial occurrences.
 
@@ -313,7 +313,7 @@ Run: `uv run pytest tests/bronze tests/integration/test_historical_vintages.py -
 
 ### Task 4 execution evidence
 
-Task 4 execution evidence (2026-10-14, in progress): ANZ 2024 migrated to reviewed
+Task 4 execution evidence (2026-10-14): ANZ 2024 migrated to reviewed
 definitions, physical readers and the thin capture entrypoint. Independent source
 goldens remain unchanged. Source-owner RED was the expected v3/v4 mismatch;
 `/tmp/opencode/anz2024-task4/red.log`. Source/adjacent-vintage GREEN: **2 passed**;
@@ -345,6 +345,21 @@ fidelity. RED: `/tmp/opencode/nab-task4-red.log` (both producers still v3).
 Source and joint-vintage GREEN: **3 passed**;
 `/tmp/opencode/nab-task4-historical-green.log`. Scoped Ruff and diff checks passed.
 
+The combined historical owner/joint-publication run now passes **12 tests**:
+`/tmp/opencode/metadata-task4-joint-green.log`. Westpac's source tests reproduced
+the shared parser's numeric `N/A` failure after their v3/v4 RED; its declared
+missingness is now honoured before Decimal conversion. Source tests retain all
+237 FY23 and 236 FY24 cells, original tokens, hidden-text selection, floor-transition
+and note/body distinctions. Independent golden JSON remains unchanged.
+
+Early ordinary `examples/historical_mortgages.py` execution succeeded at
+`/tmp/opencode/historical-mortgages-e5tbazuw/`; log
+`/tmp/opencode/metadata-checkpoint-b-historical-early.log`. All eight historical
+reports are v4 and retain **46 datasets, 1,148 body cells and 15 numeric notes**.
+Including the existing explicit Westpac 2025 view, the persisted/reconstructed
+example has **48 tables and 1,343 cells**, nine CR6 rows and eight CR9 rows. This is
+early Task 4 evidence; checkpoint B will rerun the examples after Tasks 5–6 finish.
+
 ## Task 5 — Existing CR6/CR9 outputs become projections of resolved captures
 
 **Files:** Create `domains/cr6/projection.py`, `domains/cr9/projection.py`; refactor
@@ -356,24 +371,24 @@ and `tests/integration/test_cr9_workflow.py` / `test_cr6_tables.py` as their bou
 **Consumes:** Resolved source output plus explicit `DomainFieldBinding` records.
 **Produces:** `project_cr6` / `project_cr9` and preserved `.cr6` / `.cr9` outputs.
 
-- [ ] Author projection regressions before refactoring: NAB arrangement counts versus
+- [x] Author projection regressions before refactoring: NAB arrangement counts versus
   amounts; CR9 lexical ratings/blank positions; partial field timing; explicit
   relationships including within-row subset endpoints. Existing bank goldens supply
   independent expectations, not a self-comparison between two new projections.
-- [ ] Retain representative old-format inputs before migrating their producers. Keep
+- [x] Retain representative old-format inputs before migrating their producers. Keep
   the independently authored v1 fixture and explicit v2/v3 transport fixtures. Existing
   saved files must be readable without source modules or reconstructed fake locators.
-- [ ] Adapt old typed captures into source occurrences with original record/field
+- [x] Adapt old typed captures into source occurrences with original record/field
   addresses. Resolve through the shared owner, retaining old CR6 observation-date and
   CR9 partial-time policies. Missing old capture declarations remain explicitly unknown.
-- [ ] Project resolved numeric values, factors, attributes, timing and evidence into
+- [x] Project resolved numeric values, factors, attributes, timing and evidence into
   named CR6/CR9 relations using native expressions. Projection functions receive no
   catalogue and cannot perform another interpretation pass. Preserve source record
   IDs and public frame keys; never union domain views as extra exposure occurrences.
-- [ ] Keep ordinary legacy selections' existing numeric views and the explicit legacy
+- [x] Keep ordinary legacy selections' existing numeric views and the explicit legacy
   source-view call. New v4 source captures can expose source structure and their declared
   domain projections; historical captures without domain bindings do not acquire CR6/CR9.
-- [ ] Run retained-format, projection and reconstruction cases to GREEN; retire the
+- [x] Run retained-format, projection and reconstruction cases to GREEN; retire the
   redundant old resolution path after its callers use the shared owner. Commit.
 
 ```python
@@ -396,26 +411,136 @@ existing golden test and any changed source-review references; update `examples/
 **Consumes:** Complete shared capture/resolution and domain projections.
 **Produces:** All twelve current source entrypoints on the accepted metadata-owned path.
 
-- [ ] Per bank, pin existing independent CR6/CR9 expectations and record RED for the
+- [x] Per bank, pin existing independent CR6/CR9 expectations and record RED for the
   new path. Separate retained-format fixtures from new capture fixtures so old decoder
   evidence is not lost when `extract.py` begins producing v4.
-- [ ] Declare actual published source content plus explicit domain field/record bindings.
+- [x] Declare actual published source content plus explicit domain field/record bindings.
   Bind each field's units, count basis, qualifiers and temporal roles from its source.
   Preserve lexical ratings and cells missing in the source; do not synthesize numeric
   values to fill optional domain projection slots.
-- [ ] Move only physical mechanics to source-local operations; use shared metadata
+- [x] Move only physical mechanics to source-local operations; use shared metadata
   types/readers already proven. No bank/year condition enters shared conformance.
-- [ ] Run the per-bank source and conformance cases to GREEN. Modern four-bank proof
+- [x] Run the per-bank source and conformance cases to GREEN. Modern four-bank proof
   must retain 36 CR6 rows, 33 CR9 rows and the existing eight numeric frame identities.
   Update example documentation where fresh bundle internals are now source-shaped;
   retained legacy dataset types remain readable unchanged.
-- [ ] Commit each coherent bank migration; present checkpoint B after all four pass.
+- [x] Commit each coherent bank migration; present checkpoint B after all four pass.
 
 Run: `uv run pytest tests/bronze tests/silver/test_cr9_banks.py tests/integration/test_cr9_workflow.py -q`
 
 **Checkpoint B:** inspect a modern domain output beside its source occurrences and
 mapping provenance. Demonstrate that shared definitions drive both, with no second
 bank-specific financial interpretation owner.
+
+### Early modern integration evidence — 2026-10-14
+
+All four modern source goldens passed through v4 (**9 tests**), retaining **729 source
+cells: 663 numeric positions and 66 lexical rating positions**. Original golden JSON
+is unchanged. Log: `/tmp/opencode/metadata-task6-four-bank-iteration.log`.
+The first ordinary modern example passed with **36 CR6 rows, 33 CR9 rows and eight
+numeric frames**; root `/tmp/opencode/cr9-four-bank-o6ce8c0e/`, log
+`/tmp/opencode/metadata-checkpoint-b-modern-first.log`.
+
+Diagnostic comparison against the pre-migration retained run confirms all eight
+frames' identities, labels, ordering and values. Arithmetic reconstruction may expose
+additional trailing Decimal scale from retained conformed factors; persisted domain
+measure types retain their contracts. Log:
+`/tmp/opencode/metadata-checkpoint-b-frame-comparison-first.log`.
+
+The same comparison exposed two in-repo metadata regressions, assigned to their
+owners before final verification: five missing Westpac default-definition cell
+qualifiers, and a CR9 per-column evidence fallback replacing an explicitly null band
+column. All old catalogue mappings, semantic assertions and evidence references remain
+present when comparing without ordinal positions; v4 adds declared context provenance.
+Diagnostic logs: `/tmp/opencode/metadata-checkpoint-b-modern-comparison-first.log`
+and `/tmp/opencode/metadata-checkpoint-b-modern-semantic-delta.log`. These early
+artifacts are not the final checkpoint B deliverable.
+
+### Checkpoint B execution record — 2026-10-14
+
+Tasks 4–6 are complete across **all twelve sources**. No source scope or acceptance
+requirement was cut. All independent source golden JSON files remain unchanged.
+The shared owner resolves source occurrences once; catalogue-free domain projections
+consume those results. Existing standalone domain pipelines delegate to that owner.
+Actual retained v2 inputs for all four modern banks and CBA's v3 input now live in
+`tests/fixtures/retained/`, independent of the migrated producers; the independently
+authored v1 fixture remains. The accepted checkpoint-A v4 file also reloads unchanged
+(four tables, 125 cells, no invented domain bindings).
+The retained v2/v3 fixture payloads were captured from pre-migration extractor blobs
+before replacing their producers; they are transport inputs, not regenerated goldens.
+
+| Primary test owner | Distinct risk and RED | GREEN evidence |
+|---|---|---|
+| Source goldens | Each migrated producer initially returned v2/v3; source fragments, full metadata and all values remain checked against independent expectations | Historical owner/joint run: 12 passed; modern source run: 9 passed; full Bronze suite passed |
+| Shared occurrence resolution | Retained-v3 complete measurement dates initially failed effective selection; partial and absent dates stay unknown | `/tmp/opencode/metadata-task5-v3-date-red.log`; final focused run covers all three cases and original CR6/CR9 policies |
+| Domain projections | 12 existing numerical/semantic cases failed at the missing catalogue-free APIs; additional relationship regressions exposed altered IDs, opaque-cell endpoint loss and a nullable band-column fallback | `/tmp/opencode/metadata-task5-projection-red.log`, `/tmp/opencode/metadata-task5-relationship-red.log`; final focused **145 passed**, `/tmp/opencode/metadata-task5-focused-green.log` |
+| Resolved-input projection boundary | Edited resolved amounts, counts above 2**53 and factors must be consumed rather than recalculated | `/tmp/opencode/metadata-task5-resolved-input-proof.log` |
+| Retained transport and persisted reconstruction | Frozen v1/v2/v3 inputs, old v4 defaults, explicit domain bindings/missing tokens and real publication/readback | Parent source-transport run **6 passed**, `/tmp/opencode/metadata-checkpoint-b-source-transport.log`; old-v4 readback `/tmp/opencode/metadata-checkpoint-b-accepted-v4-readback.log` |
+
+The numeric `N/A` repair uses the source-owned `CellBinding.missing_tokens` tuple;
+`missing_reason` remains a fallback and does not hide present numbers. The Westpac
+default-row qualification regression failed directly at its source owner, then passed
+after explicitly binding the qualifier to its numeric cells:
+`/tmp/opencode/metadata-task6-westpac-qualifier-red.log` and
+`/tmp/opencode/metadata-task6-westpac-qualifier-green.log`. Whole-band evidence
+selection preserves an explicitly null source column. No runtime validators, gates,
+bank-specific shared interpretation or upstream workaround were added.
+
+Final required verification:
+
+- `uv run pytest -q`: **200 passed**, 7,660 dependency warnings, **481.88 seconds**;
+  `/tmp/opencode/metadata-checkpoint-b-full-tests.log`.
+- `uv run ruff check src tests examples extractions`: passed;
+  `/tmp/opencode/metadata-checkpoint-b-ruff.log`.
+- `git diff --check`: passed; `/tmp/opencode/metadata-checkpoint-b-diff-check.log`.
+- Changed-document relative file links checked against the checkout.
+
+Final retained examples (supersede early checkpoint-B artifacts):
+
+- Modern root: `/tmp/opencode/cr9-four-bank-7nr50qvc/`.
+  PDF → v4 Bronze → staging/master → **36 CR6 / 33 CR9 rows**, eight numeric frame
+  identities and **729 source cells** (663 numeric positions, 66 lexical ratings).
+  Log: `/tmp/opencode/metadata-checkpoint-b-modern-final.log`.
+- Historical root: `/tmp/opencode/historical-mortgages-w9k_ayz1/`.
+  All eight historical reports retain **46 datasets, 1,148 body cells and 15 notes**.
+  Including the explicit Westpac 2025 view: **48 tables / 1,343 cells**.
+  Log: `/tmp/opencode/metadata-checkpoint-b-historical-final.log`.
+- Fresh-process saved-only master:
+  `/tmp/opencode/cr9-four-bank-7nr50qvc/saved-only/master.duckdb`.
+  All four retained v4 bundles reconform with no PDF or authoring directory in the
+  retained project root, preserving 36/33 rows, eight frames, 729 cells and all eight
+  occurrence kinds. The proof prints a CBA EAD source meaning beside its domain
+  amount and mapping provenance; both are **281,508,000,000**.
+  Log: `/tmp/opencode/metadata-checkpoint-b-saved-only-final.log`.
+
+Reproduce the saved-only proof:
+
+```bash
+uv run python /tmp/opencode/metadata-checkpoint-b-saved-only.py /tmp/opencode/cr9-four-bank-7nr50qvc
+```
+
+Final diagnostic comparison with the retained pre-migration run shows identical
+CR6/CR9 observations, contexts, relationship IDs and temporal relations. V4 adds
+explicit source context/row-qualification provenance; no old mapping/evidence assertion
+is lost. Fixed-decimal factors can have additional trailing scale, with unchanged
+numeric values. Log: `/tmp/opencode/metadata-checkpoint-b-modern-comparison-final.log`.
+The final executable parity checks also passed for every source field's payload,
+missingness, address and physical evidence; all original mapping/assertion/evidence
+entries remain present, ignoring provenance ordinals. All eight reconstructed numeric
+frames preserve labels, order and values. Log:
+`/tmp/opencode/metadata-checkpoint-b-final-parity.log`.
+
+Local implementation commits:
+
+- `9e01ccd` — checkpoint A acceptance and ANZ 2024 migration.
+- `c96af76` — CBA 2023/2024 migration.
+- `0feee2e` — NAB 2023/2024 migration.
+- `efb1a55` — shared resolution/projections, retained fixtures and Westpac historical capture.
+- `41a440c` — four modern migrations, source test support and public examples.
+
+No unresolved implementation or upstream issue was identified. Commits remain local
+for parent review under draft PR #18 targeting `develop`. Checkpoint B acceptance
+is pending; Task 7 remains unexecuted.
 
 ## Task 7 — Whole-path evidence, retirement and delivery
 
