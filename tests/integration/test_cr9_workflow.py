@@ -9,6 +9,7 @@ import pytest
 from mountainash_data import IbisBackend
 
 from rwa_analysis.composition import build_session
+from rwa_analysis.domains.source_tables.reconstruction import reconstruct_source_tables
 from rwa_analysis.operations import DocumentSelection
 from rwa_analysis.settings import OrganisationSettings
 from rwa_analysis.storage.manifests import CatalogueSelection
@@ -34,6 +35,70 @@ def publish_bundles(session, bundles, revision):
     refs = session.save_bronze(bundles, revision)
     candidate = session.conform(session.load_bronze(refs), catalogue=CATALOGUE)
     return session.publish(candidate, revision)
+
+
+@pytest.mark.parametrize(
+    "org,date,count_columns",
+    [
+        (
+            "cba", "2025-06-30",
+            ("previous_year_borrower_count", "current_year_borrower_count"),
+        ),
+        (
+            "westpac", "2025-09-30",
+            ("previous_year_borrower_count", "current_year_borrower_count"),
+        ),
+        (
+            "nab", "2025-09-30",
+            ("current_year_borrower_count", "previous_year_borrower_count"),
+        ),
+        (
+            "anz", "2025-09-30",
+            ("previous_year_borrower_count", "current_year_borrower_count"),
+        ),
+    ],
+)
+def test_live_cr9_source_frame_preserves_column_order(
+    project_root, tmp_path, org, date, count_columns
+):
+    # PDF CBA60, Westpac55 and ANZ66 put both rating columns before PDs.
+    # NAB61 prints current then previous counts; its ratings are referenced
+    # from PDF46, prepended in the retained source projection (not on PDF61).
+    session = build_session(
+        OrganisationSettings(
+            project_root=project_root,
+            organisation_id=org,
+            bronze_root=tmp_path / "bronze",
+            manifest_root=tmp_path / "manifests",
+            staging_path=tmp_path / f"{org}.duckdb",
+        )
+    )
+    result = session.run(
+        documents=(
+            DocumentSelection(
+                f"extractions/au/{org}/{date}/aps330/extract.py",
+                f"raw/{org}-{date}-aps330.pdf",
+            ),
+        ),
+        catalogue=CATALOGUE,
+        run_name="source-order",
+        revision="source-order",
+    )
+    output = session.silver.read(result.publication)
+    source = reconstruct_source_tables(output.source_tables)
+    frame = source[f"au/{org}/{date}/aps330/cr9-residential-mortgages"].frame
+    assert frame.columns == [
+        "source_row_id",
+        "source_row",
+        "rating-0",
+        "rating-1",
+        "column-weighted_average_pd",
+        "column-arithmetic_average_pd",
+        *(f"column-{name}" for name in count_columns),
+        "column-defaulted_borrower_count",
+        "column-new_defaulted_borrower_count",
+        "column-historical_annual_default_rate",
+    ]
 
 
 def test_real_westpac_mixed_run_reconstructs_persisted_numbers(westpac_session):

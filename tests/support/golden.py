@@ -84,7 +84,8 @@ def assert_westpac_cr9(dataset, golden, cr6_golden):
             else ()
         )
         expected_axes.append(
-            ax("column-" + name, "column", header, i, parents, notes, column=header)
+            # PDF55 places Moody's and S&P before all seven numeric columns.
+            ax("column-" + name, "column", header, i + 2, parents, notes, column=header)
         )
         attrs = []
         if name == "weighted_average_pd":

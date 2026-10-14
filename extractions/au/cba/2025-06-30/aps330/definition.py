@@ -582,7 +582,7 @@ def build():
                 "column-" + key,
                 "column",
                 label,
-                j,
+                j + 2 if cr9 else j,
                 parents,
                 quals,
                 location="CR9" if cr9 else "CR6 header",
