@@ -338,6 +338,13 @@ run also passed both CBA sources and their persisted vintage case; that run rema
 RED for Westpac's declared numeric `N/A` until the shared capture parser honours
 declared missingness. Log: `/tmp/opencode/metadata-task4-joint-first.log`.
 
+NAB 2023/2024 migrated with **16 datasets and 180 cells**, retaining main/RBNZ
+population qualifications, March 2023's undrawn restatement and each vintage's
+distinct cohort/timing declarations. Unchanged independent goldens own source
+fidelity. RED: `/tmp/opencode/nab-task4-red.log` (both producers still v3).
+Source and joint-vintage GREEN: **3 passed**;
+`/tmp/opencode/nab-task4-historical-green.log`. Scoped Ruff and diff checks passed.
+
 ## Task 5 — Existing CR6/CR9 outputs become projections of resolved captures
 
 **Files:** Create `domains/cr6/projection.py`, `domains/cr9/projection.py`; refactor

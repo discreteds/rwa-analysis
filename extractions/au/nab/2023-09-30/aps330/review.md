@@ -7,7 +7,7 @@ Reviewed extracted text and rendered PDF pp.40–42, 50–51 (printed pages two 
 Definitions/perimeter review covered introduction p.4, default p.23, historical
 framework p.38, internal ratings pp.45–47 and glossary pp.76–77.
 
-One PDF yields one `disclosure-v3` bundle with eight separately dated datasets:
+One PDF yields one `disclosure-v4` captured bundle with eight separately dated datasets:
 
 | Source | Dates | Selected body cells |
 |---|---|---:|
@@ -58,22 +58,21 @@ overlays. Undrawn is a subset of exposure within each band, not an additive metr
 - Default evidence is p.23, not a copied FY24 glossary definition. Framework
   transition and RBNZ materiality evidence is p.38, not FY24 wording.
 
-## Reuse and override insight
+## Metadata-owned capture
 
-Existing `SourceTable`, typed cells, scoped qualifications, temporal descriptors
-and primitive Decimal parsing already serve this vintage. No contract or framework
-extension is needed. The extractor imports those shared owners directly.
+`definition.py` declares this vintage's selection, physical parameters, source-table
+templates, contexts and occurrence bindings. `physical.py` reads rows, bands,
+column headers and cropped definition passages, alongside the shared paragraph
+reader. The thin `extract.py` invokes `run_capture`; shared capture owns numeric
+parsing and comment materialisation. No dated extractor supplies definitions.
 
-Concrete future reuse candidates are the metadata constructors (`ref`, `axis`,
-`field`, `cell`) with explicit document/location inputs, and the NAB transposed
-five-measure/six-band assembly. A shared assembly function would need explicit
-field specs, per-panel notes and already parsed row tokens; it must not inherit
-calendar dates, note numbers or financial definitions from another dated extractor.
-The backtesting assembly similarly needs explicit population headings, per-cell
-qualifications and temporal bindings. FY23's absent outcome window and March-only
-restatement demonstrate why these should be ordinary arguments rather than
-year-number switches or template inheritance. This change keeps these candidates
-local; the dated FY24 extractor is neither imported nor modified.
+The snapshot preserves all table, axis, field, cell and comment addresses. Shared
+methodology paragraphs have one physical occurrence with explicit qualification
+links; separately printed floor notes retain their individual panel occurrences.
+Exposure headers are selected after their panel date. Backtesting headers use
+reviewed column boundaries between the panel date and exposure-type line, avoiding
+interleaved text. The glossary's EaD definition and the mortgage definition use
+cropped columns rather than copied prose.
 
 Thirteen conversion mappings use exact document/panel/template/portfolio scopes,
 with `nab-fy23-` identities to distinguish FY24's repeated September 2023 panels.
@@ -87,3 +86,9 @@ Independent source transcription preceded implementation. The focused golden tes
 first failed because the FY23 extractor was absent, then passed against the real
 PDF: eight datasets, 90 body cells, exact tokens/precision, field units, native axes,
 restatement scope, APRA/RBNZ qualifiers and per-cell timing.
+
+Task 4 migration, 2026-10-14: source tests first failed on the old v3 return format,
+then passed through v4 with the independent golden JSON unchanged. The tests also
+check captured headers, explicit comment targets, full source identity, retained
+temporal roles and distinct repeated floor comments. The NAB joint-vintage
+publication test owns catalogue/address separation after saved-Bronze conformance.
