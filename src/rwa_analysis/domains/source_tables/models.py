@@ -73,6 +73,7 @@ class CellRow(TableKey):
     displayed_precision: int | None
     missing_reason: str | None
     source_row_role: str | None = None
+    source_value: str | None = None
 
 
 @dataclass(frozen=True)
@@ -186,21 +187,69 @@ class MeaningRow(TableKey):
 @dataclass(frozen=True)
 class MappingRow(FieldMapping):
     table_id: str
+    owner_kind: str
+    owner_id: str
+    reference_kind: str
 
 
 @dataclass(frozen=True)
 class AttributeRow(FieldAttribute):
     table_id: str
+    owner_kind: str
+    owner_id: str
 
 
 @dataclass(frozen=True)
 class AttributeEvidenceRow(AttributeEvidence):
     table_id: str
+    owner_kind: str
+    owner_id: str
 
 
 @dataclass(frozen=True)
 class AttributeDecisionRow(AttributeDecision):
     table_id: str
+    owner_kind: str
+    owner_id: str
+
+
+@dataclass(frozen=True)
+class OccurrenceRow(TableKey):
+    bundle_key: str
+    output_version: str
+    scope: str | None
+    kind: str
+    local_id: str
+    source_text: str | None
+    capture_revision_id: str
+
+
+@dataclass(frozen=True)
+class OccurrenceLinkRow(TableKey):
+    owner_kind: str
+    owner_id: str
+    position: int
+    role: str
+    target_bundle_key: str
+    target_scope: str | None
+    target_kind: str
+    target_id: str
+    target_output_version: str | None
+
+
+@dataclass(frozen=True)
+class ContextRow(TableKey):
+    context_revision_id: str
+
+
+@dataclass(frozen=True)
+class ContextBindingRow(TableKey):
+    owner_kind: str
+    owner_id: str
+    context_revision_id: str
+    role: str | None
+    descriptor_ref: str | None
+    position: int
 
 
 @dataclass(frozen=True)
@@ -223,3 +272,7 @@ class SourceTableOutput:
     attributes: Relation
     attribute_evidence: Relation
     attribute_decisions: Relation
+    occurrences: Relation
+    occurrence_links: Relation
+    contexts: Relation
+    context_bindings: Relation

@@ -12,7 +12,18 @@ def test_complete_nab_2023_source(project_root):
     path = project_root / "extractions/au/nab/2023-09-30/aps330/extract.py"
     assert path.exists(), "NAB 2023 extractor is not implemented"
     bundle = run_extractor(path, project_root / "raw/nab-2023-09-30-aps330.pdf")
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    assert bundle.bundle_key == "au/nab/2023-09-30/aps330"
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    fragments = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    assert len([b for b in occurrences.values() if b.cell is not None]) == 90
+    assert len(occurrences) == len(bundle.snapshot.occurrences)
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    assert len([b for b in occurrences.values() if b.ref.local_id == "pd-cohort"]) == 1
+    assert len([b for b in occurrences.values() if b.ref.local_id == "apra-floor"]) == 3
     assert len(bundle.datasets) == 8
     assert sum(len(t.cells) for t in bundle.datasets) == 90
     for table, expected in zip(
@@ -23,9 +34,19 @@ def test_complete_nab_2023_source(project_root):
         assert meta.context.currency.value == "AUD"
         assert meta.context.consolidation_scope.value == "Level 2"
         assert meta.context.geography.status == "unresolved"
-        assert table.id.endswith(expected["date"])
+        prefix = (
+            f"table5-1-j-{expected['kind']}-" if "kind" in expected else "table5-3-b-"
+        )
+        assert table.id == prefix + expected["date"]
         axes = {a.id: a for a in meta.axes}
         fields = {f.id: f for f in meta.published_fields}
+        for f in fields.values():
+            binding = occurrences[table.id, "field", f.id]
+            assert binding.physical_refs
+            captured = " ".join(
+                fragments[r.binding_ref, r.slot].text for r in binding.physical_refs
+            )
+            assert " ".join(captured.split()) == f.source_label
         notes = {q.id: q for q in meta.qualifications}
         descriptors = {d.id: d for d in meta.temporal_descriptors}
         tokens = [token for row in expected["rows"] for token in row]
@@ -40,7 +61,12 @@ def test_complete_nab_2023_source(project_root):
             assert c.context_refs == ("context",)
             assert c.value.source_reference.document_id == "nab-2023-09-30-aps330"
         if "kind" not in expected:
-            expected_notes = {"undrawn", "average-arrangements", "overlay", "retail-lgd"}
+            expected_notes = {
+                "undrawn",
+                "average-arrangements",
+                "overlay",
+                "retail-lgd",
+            }
             if expected["date"] == "2023-03-31":
                 expected_notes.add("undrawn-restated")
         else:
@@ -53,6 +79,21 @@ def test_complete_nab_2023_source(project_root):
         assert expected_notes <= notes.keys(), (table.id, expected_notes - notes.keys())
         for key in expected_notes:
             assert notes[key].source_text == golden["notes"][key]
+            comment = (
+                occurrences.get((table.id, "comment", key))
+                or occurrences[None, "comment", key]
+            )
+            assert comment.physical_refs
+            for endpoint in notes[key].scope:
+                kind = {"dataset": "table", "band": "column"}.get(
+                    endpoint.kind, endpoint.kind
+                )
+                assert any(
+                    link.role == "qualifies"
+                    and (link.target.scope, link.target.kind, link.target.local_id)
+                    == (table.id, kind, endpoint.id)
+                    for link in comment.links
+                )
         for f in fields.values():
             assert f.source_form == "table_body"
             assert f.source_reference.pdf_page == expected["page"]
@@ -163,6 +204,11 @@ def test_complete_nab_2023_source(project_root):
                 assert not any(
                     b.role == "outcome_window" for b in meta.temporal_bindings
                 )
+                actual = occurrences[table.id, "cell", "main/actual_pd"]
+                assert {r.role for r in actual.temporal_roles} == {
+                    "history_window",
+                    "cohort_anchor",
+                }
                 assert {
                     (b.role, b.descriptor_ref)
                     for b in meta.temporal_bindings

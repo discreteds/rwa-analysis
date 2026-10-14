@@ -33,6 +33,14 @@ def table(name, model, *keys):
 
 
 TABLES = (
+    table("occurrences", m.OccurrenceRow, "kind", "local_id"),
+    table(
+        "occurrence_links", m.OccurrenceLinkRow, "owner_kind", "owner_id", "position"
+    ),
+    table("contexts", m.ContextRow, "context_revision_id"),
+    table(
+        "context_bindings", m.ContextBindingRow, "owner_kind", "owner_id", "position"
+    ),
     table("tables", m.TableRow),
     table("fields", m.FieldRow, "field_id"),
     table("axes", m.AxisRow, "axis_id"),

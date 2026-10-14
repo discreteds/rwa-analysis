@@ -53,18 +53,6 @@ class SilverObservation(SilverSegment, RowIdentity):
 
 
 @dataclass(frozen=True)
-class ConversionFactors:
-    observation_id: str
-    weighted_average_pd: Decimal | None
-    arithmetic_average_pd: Decimal | None
-    historical_annual_default_rate: Decimal | None
-    previous_year_borrower_count: Decimal | None
-    current_year_borrower_count: Decimal | None
-    defaulted_borrower_count: Decimal | None
-    new_defaulted_borrower_count: Decimal | None
-
-
-@dataclass(frozen=True)
 class SilverContext:
     silver_revision_id: str
     context_id: str

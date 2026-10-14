@@ -17,7 +17,7 @@ contents/context page 2 has no visible printed number.
 | `table9f-2023-03-31` | 57 / 55 | 6 | 0 |
 | `table9f-2022-09-30` | 57 / 55 | 6 | 0 |
 
-One `disclosure-v3` bundle contains 237 cells: 234 body positions and three
+The selected bundle contains 237 cells: 234 body positions and three
 numerical notes. The selected portfolio's source spelling is `Residential
 mortgages`. Separate actual-loss tables and mixed New Zealand aggregate rows are
 outside the selection. No modern CR6 or CR9 rows are manufactured.
@@ -48,8 +48,8 @@ outside the selection. No modern CR6 or CR9 rows are manufactured.
   on historical backtesting cohorts.
 - September 2022 default PD is `N/A`: a decimal-field cell with null numeric
   payload, original token, no displayed precision and `not_applicable` missingness.
-  The shared numeric parser does not recognise N/A; the bespoke `cell` function
-  supplies this source token's meaning before calling the shared parser.
+  The v4 declaration supplies `not_applicable` on this cell's `CellBinding`.
+  Numeric materialisation belongs to shared capture, not the physical reader.
 - Page 44 note 2 states a 25% residential mortgage risk-weight floor at September
   2022, removed under the APRA framework commencing 1 January 2023. It qualifies
   RWA and risk-weight fields across the panels, retaining the complete transition
@@ -80,12 +80,12 @@ outside the selection. No modern CR6 or CR9 rows are manufactured.
 
 ## Bespoke interfaces and reusable responsibilities
 
-The external interface remains `extract(pdf_path) -> ExtractionBundle`; callers
-use the existing SourceTable pipeline without a year-specific workflow. Local
-`exposure(texts, day, label)` and `backtesting(texts, day, label)` own the reviewed
-panels; declarative field specifications and qualification target lists expose
-meaning/scope instead of burying them in numeric parsing. `ref` owns this PDF's
-printed-page offset. No other dated extractor or golden is imported.
+The external interface is the thin `extract(pdf_path)` entrypoint, calling
+`run_capture` with sibling `definition.py` and `physical.py`. The metadata-only
+definition owns SourceTable templates, contexts, temporal roles, qualifications,
+physical parameters and cell bindings. Physical operations return fragments;
+shared capture materialises v4. `ref` owns this PDF's printed-page offset.
+No other dated extractor or golden is imported.
 
 Page 2 contains an obscured annual-report text layer. Its visible Pillar 3 body
 uses the `WFANIQ+Gotham-Light` font subset. The page-specific font selection was
@@ -93,13 +93,12 @@ checked against the render; it avoids corrupting entity, currency and rounding
 evidence with hidden annual-report prose. This is a bespoke layout decision,
 not a shared PDF-library rule.
 
-Demonstrated future helper candidates: constructing source references with an
-explicit printed-page label; assembling decimal cells with an explicit
-source-token missingness map; field/axis constructors with explicit paths and
-qualification IDs; repeated historical timing/total relationships from explicit
-declarations. The 2023/2024 implementations show this common shape, but page
-selection, fonts, note delimiters, source wording and date-dependent scopes must
-remain bespoke. No shared code is changed in this delivery.
+The metadata binds separately repeated physical column headers on all three p.44
+panels. The repeated Predicted/Observed labels are cropped under their actual
+Default rate and Loss Given Default parents on pp.56–57. Common paragraphs are
+captured once. The p.57 footnotes serve two comparative panels, while the separately
+printed p.56 copies retain their own occurrences. Numerical note cells link to
+their comment and retain distinct addresses from body RWA.
 
 ## Catalogue and verification
 
@@ -129,3 +128,14 @@ tables and 237 cells. Readback retained `N/A` as `source_missing`, the floor as
 `/tmp/opencode/westpac-2023-proof-uafrj382`. The session emitted the existing native
 schema type-normalisation diagnostics and completed successfully. Both the 2023
 and 2024 Westpac source tests pass; scoped Ruff checks pass.
+
+## Metadata migration — 2026-10-14
+
+Task 4 source tests were extended before code and failed at the expected v3/v4
+boundary (`/tmp/opencode/westpac-metadata-red.log`). The retained independent JSON
+golden is unchanged. Physical-only diagnostics match all 237 tokens, all comments,
+all body-field headers and panel headings against independent expectations.
+The full 2023 capture currently stops in shared `capture.py` on `N/A`:
+`parse_decimal_token` raises `decimal.InvalidOperation` despite the declared
+`not_applicable` binding. This is a parent-owned shared requirement; no local
+workaround or runtime gate is added. The migration is not yet GREEN.

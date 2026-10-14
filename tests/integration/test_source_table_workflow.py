@@ -14,6 +14,196 @@ from rwa_analysis.settings import OrganisationSettings
 from rwa_analysis.storage.manifests import CatalogueSelection
 
 
+def test_anz_capture_saved_only_noncell_refinement(project_root, tmp_path):
+    """Catch dropped shared metadata and catalogue overrides at DuckDB readback."""
+    import json
+    import shutil
+
+    from rwa_analysis.domains.source_tables.reconstruction import (
+        reconstruct_source_tables,
+    )
+
+    authoring = tmp_path / "authoring"
+    shutil.copytree(project_root / "extractions/au/anz/2023-09-30/aps330", authoring)
+    pdf = tmp_path / "source.pdf"
+    shutil.copyfile(project_root / "raw/anz-2023-09-30-aps330.pdf", pdf)
+    session = build_session(
+        OrganisationSettings(
+            project_root=project_root,
+            organisation_id="anz",
+            bronze_root=tmp_path / "bronze",
+            staging_path=tmp_path / "anz.duckdb",
+            manifest_root=tmp_path / "manifests",
+        )
+    )
+    bundles = session.extract(
+        (DocumentSelection(str(authoring / "extract.py"), str(pdf)),)
+    )
+    assert bundles[0].schema_version == "disclosure-v4"
+    refs = session.save_bronze(bundles, "metadata-proof")
+    inputs = session.load_bronze(refs)
+    selection = CatalogueSelection(
+        release_path="catalogue/releases/historical-mortgages-v2.json"
+    )
+    pub = session.publish(
+        session.conform(inputs, catalogue=selection), revision="original"
+    )
+    source = session.silver.read(pub).source_tables
+    assert source.cells.count_rows() == 125
+    assert source.cells.filter(ma.col("cell_id") == "mortgage/ead_ratio").item(
+        "source_number"
+    ) == Decimal("1.01")
+    comments = source.occurrences.filter(ma.col("kind") == "comment")
+    assert comments.filter(ma.col("local_id") == "report-entity").count_rows() == 1
+    assert (
+        source.occurrence_links.filter(
+            (ma.col("owner_id") == "report-entity") & (ma.col("role") == "qualifies")
+        ).count_rows()
+        == 4
+    )
+    assert (
+        source.contexts.filter(
+            ma.col("context_revision_id") == "anz-2023/common@1"
+        ).count_rows()
+        == 1
+    )
+    assert (
+        source.occurrences.filter(ma.col("local_id") == "matrix/nz/pre").item(
+            "source_text"
+        )
+        == ""
+    )
+    assert (
+        source.occurrences.filter(ma.col("local_id") == "matrix/header/pre").item(
+            "source_text"
+        )
+        == "Rating Approach Pre-Jan 2023"
+    )
+    assert (
+        source.occurrences.filter(ma.col("local_id") == "matrix/header/post").item(
+            "source_text"
+        )
+        == "Rating Approach Post-Jan 2023"
+    )
+    table = "au/anz/2023-09-30/aps330/table9f-2023-09-30"
+    reconstructed = reconstruct_source_tables(source)[table]
+    assert (
+        reconstructed.metadata.occurrences.filter(
+            ma.col("local_id") == "report-entity"
+        ).count_rows()
+        == 1
+    )
+    exposure_metadata = reconstruct_source_tables(source)[
+        "au/anz/2023-09-30/aps330/table9d-2023-09-30"
+    ].metadata
+    assert (
+        exposure_metadata.occurrences.filter(
+            ma.col("local_id") == "lgd-review"
+        ).count_rows()
+        == 0
+    )
+    assert (
+        source.context_bindings.filter(ma.col("role") == "history_window").count_rows()
+        == 5
+    )
+
+    # A real retained release, loaded through ordinary catalogue/session APIs.
+    root = tmp_path / "catalogue"
+    shutil.copytree(project_root / "catalogue", root)
+    release_path = root / "releases/historical-mortgages-v2.json"
+    release = json.loads(release_path.read_text())
+    target = {
+        "bundle_key": "au/anz/2023-09-30/aps330",
+        "scope": None,
+        "kind": "comment",
+        "local_id": "lgd-review",
+    }
+    common = {
+        "created_on": "2026-10-13",
+        "effective_from": None,
+        "effective_to": None,
+        "scope": {"targets": [target]},
+    }
+    mappings = [
+        {
+            **common,
+            "id": "review-interpretation",
+            "revision_id": "review@1",
+            "attributes": [
+                {
+                    "name": "qualification_meaning",
+                    "value": "whole report",
+                    "status": "provisional",
+                }
+            ],
+        },
+        {
+            **common,
+            "id": "review-refinement",
+            "revision_id": "review@2",
+            "attributes": [
+                {
+                    "name": "qualification_meaning",
+                    "value": "wholesale applicability; mortgage unresolved",
+                    "status": "established",
+                }
+            ],
+            "overrides_refs": [{"kind": "mapping", "revision_id": "review@1"}],
+            "evidence_refs": [
+                {
+                    "bundle_key": target["bundle_key"],
+                    "document_id": "anz-2023-09-30-aps330",
+                    "dataset_id": "",
+                    "kind": "comment",
+                    "ref_id": "lgd-review",
+                }
+            ],
+        },
+    ]
+    (root / "refinement.json").write_text(
+        json.dumps({"schema_version": "cr6-v1", "members": mappings})
+    )
+    release["id"] = "anz-refinement"
+    release["selection"].extend(
+        {"path": "refinement.json", "kind": "mapping", "revision_id": m["revision_id"]}
+        for m in mappings
+    )
+    release_path.write_text(json.dumps(release))
+    shutil.rmtree(authoring)
+    pdf.unlink()
+    saved = session.load_bronze(refs)
+    again = session.publish(
+        session.conform(
+            saved, catalogue=CatalogueSelection(release_path=str(release_path))
+        ),
+        revision="refined",
+    )
+    revised = session.silver.read(again).source_tables
+    assert (
+        revised.cells.select("table_id", "cell_id", "source_number").to_dicts()
+        == source.cells.select("table_id", "cell_id", "source_number").to_dicts()
+    )
+    attrs = revised.attributes.filter(
+        (ma.col("owner_kind") == "comment")
+        & (ma.col("owner_id") == "lgd-review")
+        & (ma.col("name") == "qualification_meaning")
+    )
+    assert attrs.item("value_text") == "wholesale applicability; mortgage unresolved"
+    assert (
+        revised.mapping_refs.filter(
+            (ma.col("owner_id") == "lgd-review")
+            & (ma.col("mapping_revision_ref") == "review@2")
+        ).count_rows()
+        == 1
+    )
+    assert (
+        revised.attribute_evidence.filter(ma.col("owner_id") == "lgd-review").item(
+            "kind"
+        )
+        == "comment"
+    )
+
+
 @pytest.mark.parametrize("organisation", ("nab", "anz"))
 def test_historical_population_and_field_time_survive_saved_publication(
     project_root, tmp_path, organisation

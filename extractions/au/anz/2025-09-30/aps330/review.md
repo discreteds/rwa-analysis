@@ -116,3 +116,15 @@ Retained CR6 goldens and old saved versions are unchanged. ANZ-specific catalogu
 assets map supported concepts, units, bands, aggregate role and history exclusions;
 they do not define an inferred annual rate. Parent integration owns release
 selection and persisted conformance/reconstruction evidence.
+
+## Metadata capture migration — 2026-10-14
+
+The current producer emits `disclosure-v4`; the v2 description above records the
+earlier extension. `definition.py` declares all source structure and meaning,
+`physical.py` reads numbered rows, header regions and passages, and `extract.py`
+delegates to shared capture. The retained snapshot binds original CR6/CR9 record
+and field IDs, including the CR9 subtotal. There are 189 source cells: 171 numeric
+positions and 18 lexical rating positions. Comments and Appendix 1 evidence are
+captured once and explicitly scoped. Unknown annual anchors and the five-year
+mortgage history remain unchanged. Complete independent goldens are retained and
+compared through a test-only structural view, with direct physical-fragment checks.

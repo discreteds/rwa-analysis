@@ -6,6 +6,7 @@ from decimal import Decimal
 import pytest
 
 from rwa_analysis.extraction.values import parse_count_token, parse_decimal_token
+from tests.support.captured_golden import assert_capture_bindings, golden_view
 
 
 @pytest.mark.parametrize(
@@ -44,8 +45,10 @@ def test_complete_cba_source_contract():
         root / "extractions/au/cba/2025-06-30/aps330/extract.py", pdf
     )
     expected = json.loads(Path(__file__).with_name("golden.json").read_text())
-    assert bundle.schema_version == "disclosure-v2"
+    assert bundle.schema_version == "disclosure-v4"
     assert len(bundle.datasets) == 2
+    assert_capture_bindings(bundle, 180)
+    bundle = golden_view(bundle)
     assert_golden(
         encode_payload(
             replace(bundle, schema_version="cr6-v1", datasets=bundle.datasets[:1])

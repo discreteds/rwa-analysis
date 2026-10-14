@@ -66,3 +66,29 @@ definition before p.27–28 qualifications were added.
 - Retained proof root: `/tmp/opencode/anz2024-proof-fmsll7ym`.
 
 The parent task owns shared catalogue selection and persisted integration proof.
+
+## Metadata migration — 2026-10-14
+
+Task 4 now uses `definition.py` for reviewed selection, physical parameters,
+contexts and occurrence bindings; `physical.py` supplies physical readers, and
+`extract.py` calls `run_capture`. New output is `disclosure-v4`. The independent
+`golden.json` remains unchanged; all 125 financial cells retain their source IDs.
+
+Rechecked the selected tables and definition pages against this PDF, including
+rendered pp.53 and 57. Exposure heading selection starts after each panel's date
+to avoid the same words in the table title. The p.53 average-EAD heading spans two
+lines; its passage ends at the first Residential Mortgage row. Backtesting headers
+use reviewed column regions. Shared comments retain explicit qualification targets;
+the wholesale LGD review remains unscoped evidence. PD/EAD history 2019–2023, LGD
+history 2018–2022 and the September 2023 cutoff are explicit retained declarations.
+
+The extended source-owner test first failed because output was still v3, then
+passed with v4, checking captured field/block/column headings and retained timing
+in addition to the existing source expectations. Verification:
+
+- `uv run pytest tests/bronze/au/anz/2024-09-30 tests/bronze/au/anz/2023-09-30 -q`: **2 passed**.
+- Focused Ruff and `git diff --check`: passed.
+- RED/GREEN logs: `/tmp/opencode/anz2024-task4/red.log` and
+  `/tmp/opencode/anz2024-task4/green.log`.
+
+No shared-code requirement was identified in this source migration.

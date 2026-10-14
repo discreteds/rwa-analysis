@@ -12,10 +12,25 @@ def test_complete_anz_2023_source(project_root):
     extractor = project_root / "extractions/au/anz/2023-09-30/aps330/extract.py"
     assert extractor.exists(), "2023 source capture is not implemented"
     bundle = run_extractor(extractor, project_root / "raw/anz-2023-09-30-aps330.pdf")
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
     assert len(bundle.datasets) == 4
     assert sum(len(t.cells) for t in bundle.datasets) == 125
     assert bundle.document.document_reporting_date.isoformat() == "2023-09-30"
+    captured = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    field_binding = next(
+        b
+        for b in bundle.snapshot.occurrences
+        if b.ref.scope == "table9f-2023-09-30"
+        and b.ref.kind == "field"
+        and b.ref.local_id == "estimated_pd"
+    )
+    assert field_binding.physical_refs, (
+        "Published headers must be captured, not substituted with declared labels"
+    )
+    location = field_binding.physical_refs[0]
+    assert (
+        captured[(location.binding_ref, location.slot)].text == "Average Estimated PD %"
+    )
     captured_notes = set()
     for table in bundle.datasets:
         meta = table.metadata
@@ -55,6 +70,22 @@ def test_complete_anz_2023_source(project_root):
         assert table.id == "table9d-" + expected["date"]
         assert meta.context.source_date_label == expected["label"]
         axes = {a.id: a for a in meta.axes}
+        # PDF pp.52–54 repeat these words in the title and in the actual block.
+        # Capture must select the standalone heading, not the title's suffix.
+        for kind in ("field", "block"):
+            heading = next(
+                b
+                for b in bundle.snapshot.occurrences
+                if b.ref.scope == table.id
+                and b.ref.kind == kind
+                and b.ref.local_id == "exposure"
+            )
+            location = heading.physical_refs[0]
+            assert (
+                captured[(location.binding_ref, location.slot)].text
+                == "Exposure at Default"
+            )
+        assert axes["exposure"].source_label == "Exposure at Default"
         assert [a.source_label for a in meta.axes if a.axis == "column"] == golden[
             "bands"
         ]

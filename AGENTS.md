@@ -7,7 +7,7 @@ This is a single-user Python disclosure research project using Mountainash for t
 The primary goal is [faithful capture and useful tagging](docs/01.principles/a.architecture/capture-and-tag-for-research.md), not perfect accounting. PDFs provide incomplete evidence by nature. Preserve and tag partial semantics; support explicit assumptions, approximations and imperfect comparisons downstream. Do not demand exhaustive definitions, exact reconciliation or global analytical eligibility before retaining faithfully captured observations. Distinguish actual extraction/structural errors from legitimate research limitations.
 
 The implemented slice includes four-bank mortgage CR6/CR9 and selected 2023/2024 historical
-source tables: bespoke PDF extractors, retained Bronze, a durable semantic catalogue,
+source tables: metadata-defined PDF capture with bespoke physical readers, retained Bronze, a durable semantic catalogue,
 normalised organisation staging Silver, master consolidation and source-shaped
 numeric/lexical dataframe reconstruction. CR1/CR2,
 liquidity and capital analytics remain research/design work rather than production
@@ -20,9 +20,14 @@ proposals; their presence is not authority to restore retired functionality.
 The approved [contextual-occurrence](docs/01.principles/a.architecture/contextual-source-occurrences.md)
 and [metadata-driven processing](docs/01.principles/a.architecture/metadata-driven-extraction-and-conformance.md)
 principles govern the target architecture. Their [design specification](docs/04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
-and disposable spike shape are approved; the implementation plan awaits review.
-This is not an implemented migration. Preserve current extraction entrypoints
-and saved formats until the replacement has been designed, approved and verified.
+and disposable spike shape are approved; the implementation plan was approved on
+2026-10-13. Checkpoints A and B were accepted on 2026-10-14. All twelve selected
+sources and catalogue-free CR6/CR9 projections are implemented on
+`feature/metadata-driven-extraction`. Task 7 verifies master-owned occurrence/context
+metadata and complete dependent-row replacement for retained and current captures.
+Final independent correctness/complexity reviews passed with no open findings;
+PR #18 is ready for merge. Merge requires researcher authorisation.
+Preserve retained formats and source identities.
 
 ## Design principles — mandatory
 
@@ -68,10 +73,10 @@ plans and logical-model examples. Follow its status distinctions before using a 
 ## Source and extraction workflow
 
 - Save acquired PDFs in project-root `raw/` and maintain [raw/index.md](raw/index.md). Keep acquisition simple; do not introduce checksums, registration machinery or file-identity proofs.
-- Scrutinise each PDF with an LLM before defining its capture bindings and physical sourcing. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning. Current bespoke extractors remain the implemented entrypoint pending the approved redesign.
-- One source PDF owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates. Current paths use bespoke extractors; the approved target assigns capture to reviewed metadata bindings and source-specific physical operations where needed.
+- Scrutinise each PDF with an LLM before defining its capture bindings and physical sourcing. Inspect tables, notes, glossaries and applicable definitions; use rendered pages when extracted text loses meaning. Current entrypoints compose source-local `definition.py` and `physical.py` through a thin `extract.py`.
+- One source PDF owns one logical Bronze bundle, potentially containing multiple domains, portfolios, jurisdictions and observation dates. Reviewed metadata binds capture selection and applicability; source-specific operations supply physical mechanics where needed.
 - Implemented paths are `extractions/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/` and `data/bronze/<reporting-jurisdiction>/<org>/<document-date>/<extraction-id>/<output-version>/bundle.json`. Generated Bronze is retained separately and is not automatically present in a fresh checkout/worktree.
-- `run_name` supplies the saved output version, not a code/schema version. Preserve existing versions and their wire format. Python CR6 datasets expose `metadata` and `exposure_rows`; CR9 exposes `metadata` and `backtesting_rows`. Mixed CR6/CR9 bundles use `disclosure-v2`; source-table bundles use `disclosure-v3`. The retained codec still reads/writes the existing `cr6-v1` representation. See the [source extension interfaces](docs/architecture.md#bespoke-extraction-and-shared-interfaces) for bespoke construction and explicit semantic overrides.
+- `run_name` supplies the saved output version, not a code/schema version. Current captures use `disclosure-v4` with `datasets`, a retained definition `snapshot` and physical `fragments`; source datasets expose `cells` and `metadata`. Explicit snapshot domain bindings provide named CR6/CR9 projections. Preserve retained `cr6-v1`/`disclosure-v2`/`disclosure-v3` formats: legacy CR6 datasets still expose `metadata` and `exposure_rows`, and CR9 exposes `metadata` and `backtesting_rows`. See the [source extension interfaces](docs/architecture.md#bespoke-extraction-and-shared-interfaces).
 - Folder jurisdiction/date describe the source disclosure. Dataset context determines exposure geography, regulatory basis and observation date.
 - Preserve labels, values, units, precision, missingness, segmentation and evidence. Unresolved meanings remain explicit; notes and glossaries may establish metric variants.
 - Inspect both table axes and nested headers for meaning. Capture `of which`, parent/child and total relationships, including those established by notes, so downstream aggregation does not double-count parents and subsets. Do not assume displayed children exhaust a parent or are mutually exclusive without evidence.

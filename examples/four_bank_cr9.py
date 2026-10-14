@@ -1,8 +1,10 @@
-"""Capture all four PDFs and reconstruct mixed-domain master from saved stages.
+"""Capture four PDFs as v4 Bronze and reconstruct master from saved stages.
 
 Run: uv run python -i examples/four_bank_cr9.py
 Inspect sessions, results, publications, master_publication, output and tables.
 A fresh temporary output directory is printed and retained on each invocation.
+Each bundle retains its capture snapshot, physical fragments and lexical ratings.
+Declared projections retain 36 CR6 rows, 33 CR9 rows and eight numeric frames.
 """
 
 from pathlib import Path

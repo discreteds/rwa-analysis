@@ -1,14 +1,12 @@
-"""Pure projection of selected typed datasets, using their original resolvers."""
+"""Lossless source/address adaptation of retained typed captures; no interpretation."""
 
 from dataclasses import fields, replace
 
-from rwa_analysis.catalogue.models import CatalogueRelease, FieldMeaning
-from rwa_analysis.catalogue.resolve import resolve_field as resolve_cr6
 from rwa_analysis.domains.cr9.models import COUNTS
-from rwa_analysis.domains.cr9.semantics import resolve_field as resolve_cr9
 from rwa_analysis.extraction.cr6 import Cr6Dataset
 from rwa_analysis.extraction.cr9 import Cr9Dataset
-from rwa_analysis.extraction.models import PublishedField, SourceEndpoint
+from rwa_analysis.extraction.definitions import CapturedBundle, DomainFieldBinding
+from rwa_analysis.extraction.models import OccurrenceRef, PublishedField, SourceEndpoint
 from rwa_analysis.extraction.source_tables import (
     CellTemporalBinding,
     ReportedText,
@@ -30,23 +28,49 @@ CR6_MONEY = {
 }
 
 
-def adapt_legacy(
-    dataset: Cr6Dataset | Cr9Dataset, catalogue: CatalogueRelease
-) -> tuple[SourceTable, dict[str, FieldMeaning]]:
+def domain_bindings(bundle) -> tuple[DomainFieldBinding, ...]:
+    if isinstance(bundle, CapturedBundle):
+        return bundle.snapshot.domain_bindings
+    result = []
+    for ds in bundle.datasets:
+        if isinstance(ds, SourceTable):
+            continue
+        cr6 = isinstance(ds, Cr6Dataset)
+        records = ds.exposure_rows if cr6 else ds.backtesting_rows
+        for binding in ds.metadata.bindings:
+            for row in records:
+                if row.source_row_ref in binding.row_refs:
+                    result.append(
+                        DomainFieldBinding(
+                            OccurrenceRef(
+                                bundle.bundle_key,
+                                ds.id,
+                                "cell",
+                                f"{row.record_id}/{binding.published_field_ref}",
+                            ),
+                            "cr6" if cr6 else "cr9",
+                            row.record_id,
+                            binding.typed_field_name,
+                            binding.id,
+                        )
+                    )
+    return tuple(result)
+
+
+def adapt_legacy(dataset: Cr6Dataset | Cr9Dataset) -> SourceTable:
     """Adapt published bindings and lexical axes without PDF or storage access.
 
     Numeric cell IDs are ``record_id/published_field_id``; lexical cells retain
-    their source axis IDs. Meanings are selected before changing those addresses.
+    their source axis IDs. Domain bindings retain original interpretation addresses.
     """
     meta = dataset.metadata
     cr6 = isinstance(dataset, Cr6Dataset)
     records = dataset.exposure_rows if cr6 else dataset.backtesting_rows
-    resolver = resolve_cr6 if cr6 else resolve_cr9
     counts = {"reported_borrower_count"} if cr6 else set(COUNTS)
     axes = {a.id: a for a in meta.axes}
     records_by_row = {r.source_row_ref: r for r in records}
     published = {f.id: f for f in meta.published_fields}
-    table_fields, cells, meanings, addresses = {}, [], {}, {}
+    table_fields, cells, addresses = {}, [], {}
     row_fields = {}
     for binding in meta.bindings:
         key = binding.typed_field_name
@@ -64,7 +88,6 @@ def adapt_legacy(
         )
         for row_ref in binding.row_refs:
             record = records_by_row[row_ref]
-            meaning = resolver(catalogue, dataset, record, key)
             cell_id = f"{record.record_id}/{field.id}"
             addresses[record.record_id, key] = cell_id
             row_fields[row_ref, field.id] = cell_id
@@ -88,7 +111,6 @@ def adapt_legacy(
                     source_aggregation_scope=record.source_aggregation_scope,
                 )
             )
-            meanings[cell_id] = meaning
 
     # Legacy CR9 lexical values are header occurrences whose paths identify both
     # a body row and a column. Other headers are structure, never extra cells.
@@ -146,7 +168,6 @@ def adapt_legacy(
                     ].source_aggregation_scope,
                 )
             )
-            meanings[axis.id] = FieldMeaning(None, None, (), (), None)
 
     adapted_axes = meta.axes
     if not cr6:
@@ -224,4 +245,4 @@ def adapt_legacy(
             tuple(temporal),
         ),
         tuple(cells),
-    ), meanings
+    )

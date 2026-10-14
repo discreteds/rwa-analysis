@@ -2,6 +2,7 @@
 
 from decimal import Decimal
 
+import pytest
 from mountainash_data import IbisBackend
 
 
@@ -166,8 +167,9 @@ def test_master_owns_cr9_values_temporal_metadata_and_reconstruction(
     ][0] == Decimal("0.07")
 
 
+@pytest.mark.parametrize("capture", ("retained", "current"))
 def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_removal(
-    project_root, tmp_path, cba_2024_bundle, westpac_bundle
+    project_root, tmp_path, cba_2024_bundle, westpac_bundle, capture
 ):
     from dataclasses import replace
 
@@ -182,6 +184,18 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
     )
     from rwa_analysis.settings import OrganisationSettings
     from rwa_analysis.storage.manifests import CatalogueSelection
+    from rwa_analysis.storage.tables import DOMAINS
+
+    if capture == "current":
+        from rwa_analysis.extraction.runner import run_extractor
+
+        cba_2024_bundle, westpac_bundle = (
+            run_extractor(
+                project_root / f"extractions/au/{org}/{date}/aps330/extract.py",
+                project_root / f"raw/{org}-{date}-aps330.pdf",
+            )
+            for org, date in (("cba", "2024-06-30"), ("westpac", "2025-09-30"))
+        )
 
     publications = []
     sessions = []
@@ -204,7 +218,7 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
             release_path=f"catalogue/releases/{release}.json"
         )
         candidate = session.conform(inputs, catalogue=selection)
-        if org == "westpac":
+        if org == "westpac" and capture == "retained":
             candidate = replace(
                 candidate,
                 source_tables=SourceTablePipeline().conform(
@@ -223,6 +237,12 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
             "UPDATE silver.source_qualifications SET source_text = ? WHERE table_id = ? AND qualification_id = ?",
             ["Persisted research correction", cba_key, "pd-horizon"],
         )
+        if capture == "current":
+            db.raw_driver_connection().execute(
+                "UPDATE silver.source_occurrences SET source_text = ? "
+                "WHERE table_id = ? AND kind = 'comment' AND local_id = 'report-entity'",
+                ["Persisted shared comment", cba_2024_bundle.bundle_key],
+            )
     staging = [
         s.silver.read(p).source_tables
         for s, p in zip(sessions, publications, strict=True)
@@ -241,6 +261,8 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
         ), t.member
     for p in publications:
         p.database.unlink()
+    # Reopen master after deletion: no cached staging relation supplies metadata.
+    source = master.store.read(publication).source_tables
     tables = master.reconstruct(publication)
     assert tables[cba_key]["band-0"][2] == Decimal("0.888")
     westpac_key = westpac_bundle.bundle_key + "/cr9-residential-mortgages"
@@ -253,6 +275,31 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
         ).item("source_text")
         == "Persisted research correction"
     )
+    if capture == "current":
+        for member in ("occurrences", "occurrence_links", "contexts", "context_bindings"):
+            assert getattr(source, member).count_rows() > 0
+        reconstructed = reconstruct_source_tables(source)
+        for key in (cba_key, cba_2024_bundle.bundle_key + "/table9d-ii-2023-06-30"):
+            metadata = reconstructed[key].metadata
+            comment = metadata.occurrences.filter(
+                (ma.col("kind") == "comment") & (ma.col("local_id") == "report-entity")
+            )
+            assert comment.item("source_text") == "Persisted shared comment"
+            assert comment.item("scope") is None
+            assert metadata.occurrence_links.filter(
+                (ma.col("owner_id") == "report-entity")
+                & (ma.col("target_scope") == key.rsplit("/", 1)[1])
+            ).count_rows() > 0
+            assert metadata.contexts.filter(
+                ma.col("context_revision_id") == "cba-2024/common@1"
+            ).count_rows() == 1
+            assert metadata.context_bindings.filter(
+                ma.col("context_revision_id") == "cba-2024/common@1"
+            ).count_rows() > 0
+            assert metadata.evidence.filter(
+                (ma.col("owner_kind") == "comment")
+                & (ma.col("owner_id") == "report-entity")
+            ).count_rows() > 0
     # Republish the surviving selection from retained inputs; all removed child rows clear.
     session = sessions[0]
     inputs = session.load_bronze(
@@ -266,16 +313,27 @@ def test_source_master_copies_metadata_replaces_inputs_and_survives_staging_remo
     )
     surviving = session.publish(candidate, revision="cba-again")
     publication = master.consolidate((surviving,), revision="source-cba-only")
-    source = master.store.read(publication).source_tables
-    for t in TABLES:
-        assert all(
-            row["table_id"].startswith(cba_2024_bundle.bundle_key + "/")
-            for row in getattr(source, t.member).to_dicts()
-        ), t.member
-    assert source.cells.count_rows() == 131
+    output = master.store.read(publication)
+    expected = session.silver.read(surviving)
+    # Exact persisted selection covers bundle owners as well as every domain child.
+    for domain, _, inventory in DOMAINS:
+        for t in inventory:
+            actual = getattr(getattr(output, domain), t.member)
+            selected = getattr(getattr(expected, domain), t.member)
+            assert actual.sort(*t.spec.primary_key).to_dicts() == selected.sort(
+                *t.spec.primary_key
+            ).to_dicts(), (domain, t.member)
+    assert output.source_tables.cells.count_rows() == 131
     publication = master.consolidate((), revision="source-empty")
+    empty = master.store.read(publication)
     assert all(
-        getattr(master.store.read(publication).source_tables, t.member).count_rows()
-        == 0
-        for t in TABLES
+        getattr(getattr(empty, domain), t.member).count_rows() == 0
+        for domain, _, inventory in DOMAINS
+        for t in inventory
     )
+    assert master.reconstruct(publication) == {}
+    assert len(
+        session.load_bronze(
+            session.silver.read_manifest(surviving).selection.bronze_refs
+        )
+    ) == 1

@@ -1,7 +1,6 @@
 """Conjunctive occurrence matching; attribute-level composition and conflicts."""
 
 from dataclasses import dataclass, fields, replace
-from functools import cache
 
 from rwa_analysis.extraction.cr6 import (
     CR6_FIELDS,
@@ -15,9 +14,9 @@ from .models import (
     CatalogueRelease,
     FieldMeaning,
     MappingScope,
+    OccurrenceScope,
     RevisionRef,
     SemanticAttribute,
-    SourceMappingRevision,
     revision_references,
 )
 
@@ -65,6 +64,8 @@ def field_occurrence(dataset, record, field_key):
 def matches_occurrence(mapping, occurrence):
     """Conjunctive source identity; temporal applicability belongs to the adapter."""
     scope = mapping.scope
+    if isinstance(scope, OccurrenceScope):
+        return False
     return all(
         getattr(scope, f.name) is None
         or getattr(scope, f.name) == getattr(occurrence.scope, f.name)
@@ -137,41 +138,21 @@ def resolve_field(
         raise ValueError("Record does not belong to dataset")
     occurrence = field_occurrence(dataset, record, field_key)
     observation_date = dataset.metadata.context.observation_date
+    from .occurrences import resolve_occurrence
 
-    @cache
-    def definition_applies(ref):
-        member = catalogue.member(ref)
-        return (
-            (member.effective_from is None or member.effective_from <= observation_date)
-            and (member.effective_to is None or observation_date <= member.effective_to)
-            and all(
-                definition_applies(dependency)
-                for dependency in revision_references(member, include_history=False)
-            )
-        )
-
-    mappings = (
-        m
-        for m in catalogue.members
-        if isinstance(m, SourceMappingRevision)
-        and matches_occurrence(m, occurrence)
-        and (
-            m.scope.observation_from is None
-            or m.scope.observation_from <= observation_date
-        )
-        and (
-            m.scope.observation_to is None or observation_date <= m.scope.observation_to
-        )
-        and (m.effective_from is None or m.effective_from <= observation_date)
-        and (m.effective_to is None or observation_date <= m.effective_to)
-        and all(definition_applies(ref) for ref in m.decision_refs)
-    )
-    return compose_field(
-        catalogue, occurrence.published_field, mappings, definition_applies
+    return resolve_occurrence(
+        catalogue, occurrence, point_for=lambda role: observation_date
     )
 
 
-def compose_field(catalogue, published_field, applicable_mappings, definition_applies):
+def compose_field(
+    catalogue,
+    published_field,
+    applicable_mappings,
+    definition_applies,
+    *,
+    mapping_applicability=None,
+):
     """Compose domain-selected meaning, retaining conflicts and partial knowledge."""
     mappings = sorted(applicable_mappings, key=lambda m: m.revision_id)
     # A correction replaces a whole predecessor mapping for this occurrence.
@@ -191,8 +172,13 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
     candidates = {}
     conversions = []
     for mapping in mappings:
+        applies = (
+            mapping_applicability(mapping)
+            if mapping_applicability
+            else definition_applies
+        )
         attrs = list(mapping.attributes)
-        if mapping.measure_ref and definition_applies(mapping.measure_ref):
+        if mapping.measure_ref and applies(mapping.measure_ref):
             measure = catalogue.member(mapping.measure_ref)
             attrs.extend(measure.attributes)
             attrs.extend(
@@ -210,18 +196,20 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
                     ),
                 ]
             )
-        if mapping.concept_ref and definition_applies(mapping.concept_ref):
+        if mapping.concept_ref and applies(mapping.concept_ref):
             attrs.append(
                 SemanticAttribute(
                     name="concept", value=mapping.concept_ref, status="established"
                 )
             )
         for attr in attrs:
-            if not all(definition_applies(ref) for ref in revision_references(attr)):
+            if not all(applies(ref) for ref in revision_references(attr)):
                 continue
             # Only the mapping's own source support is added; unrelated field
             # qualifiers are not propagated from neighboring measures.
-            if attr.name in ("concept", "measure", "result_unit"):
+            if attr.name in ("concept", "measure", "result_unit") or isinstance(
+                getattr(mapping, "scope", None), OccurrenceScope
+            ):
                 attr = replace(
                     attr,
                     evidence_refs=_unique(attr.evidence_refs + mapping.evidence_refs),
@@ -231,6 +219,7 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
         rule = mapping.conversion
         if (
             rule
+            and published_field is not None
             and published_field.source_unit == rule.source_unit
             and published_field.source_scale == rule.source_scale
         ):
@@ -251,7 +240,10 @@ def compose_field(catalogue, published_field, applicable_mappings, definition_ap
     view = FieldMeaning(
         None,
         None,
-        tuple(RevisionRef("mapping", m.revision_id) for m in mappings),
+        tuple(
+            RevisionRef(getattr(m, "reference_kind", "mapping"), m.revision_id)
+            for m in mappings
+        ),
         attributes,
         factors[0] if len(factors) == 1 else None,
     )

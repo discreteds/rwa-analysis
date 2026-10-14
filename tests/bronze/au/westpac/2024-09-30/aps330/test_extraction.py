@@ -31,7 +31,51 @@ def test_complete_westpac_historical_source(project_root):
     bundle = run_extractor(
         extractor, project_root / "raw/westpac-2024-09-30-aps330.pdf"
     )
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    captured = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    for scope in ("table9d-2024-09-30", "table9d-2024-03-31", "table9d-2023-09-30"):
+        b = occurrences[scope, "field", "ead"]
+        fragment = captured[b.physical_refs[0].binding_ref, b.physical_refs[0].slot]
+        assert fragment.text == "Exposure at Default"
+        assert fragment.evidence.pdf_page == 45
+    entity = occurrences[None, "comment", "report-entity"]
+    assert len(entity.links) == 6
+    nz_comments = [
+        b
+        for b in occurrences.values()
+        if b.ref.kind == "comment" and b.ref.local_id == "nz-history"
+    ]
+    assert {
+        (
+            captured[b.physical_refs[0].binding_ref, "text"].evidence.pdf_page,
+            frozenset(link.target.scope for link in b.links),
+        )
+        for b in nz_comments
+    } == {
+        (57, frozenset({"table9f-2024-09-30", "table9f-2024-03-31"})),
+        (58, frozenset({"table9f-2023-09-30"})),
+    }
+    for scope, page in (
+        ("table9f-2024-09-30", 57),
+        ("table9f-2024-03-31", 57),
+        ("table9f-2023-09-30", 58),
+    ):
+        for key in ("predicted_pd", "predicted_lgd"):
+            b = occurrences[scope, "field", key]
+            fragment = captured[b.physical_refs[0].binding_ref, b.physical_refs[0].slot]
+            assert fragment.text == "Predicted"
+            assert fragment.evidence.pdf_page == page
+        cell_binding = occurrences[scope, "cell", "mortgage/observed_pd"]
+        assert {r.role for r in cell_binding.temporal_roles} == {
+            "history_window",
+            "cohort_anchor",
+            "outcome_window",
+        }
     assert bundle.document.document_reporting_date.isoformat() == "2024-09-30"
     assert len(bundle.datasets) == 6
     assert sum(len(t.cells) for t in bundle.datasets) == 236
@@ -64,12 +108,18 @@ def test_complete_westpac_historical_source(project_root):
         meta = table.metadata
         assert meta.context.source_date_label == expected["label"]
         axes = {a.id: a for a in meta.axes}
+        assert axes["panel"].source_label == expected["label"]
         assert [a.source_label for a in meta.axes if a.axis == "row"] == golden["bands"]
         fields = {f.id: f for f in meta.published_fields}
         body = [c for c in table.cells if c.row_ref is not None]
         assert len(body) == 72
         for j, (key, label, unit) in enumerate(golden["exposure_fields"]):
             field = fields[key]
+            binding = occurrences[table.id, "field", key]
+            fragment = binding.physical_refs[0]
+            assert captured[
+                fragment.binding_ref, fragment.slot
+            ].text == label.translate(str.maketrans("ᵃᵇ", "ab"))
             assert (field.source_label, field.source_unit) == (label, unit)
             assert field.source_scale == (1000000 if unit == "$m" else 1)
             assert field.header_path_refs == ("panel", key)
@@ -159,6 +209,7 @@ def test_complete_westpac_historical_source(project_root):
         assert not meta.segmentations
         assert len(table.cells) == 6
         axes = {a.id: a for a in meta.axes}
+        assert axes["panel"].source_label == expected["label"]
         assert axes["default-rate"].source_label == "Default rate"
         assert axes["lgd"].source_label == "Loss Given Default"
         assert axes["mortgage"].source_label == "Residential Mortgages"
@@ -170,6 +221,11 @@ def test_complete_westpac_historical_source(project_root):
             strict=True,
         ):
             key, label, unit, path = spec
+            binding = occurrences[table.id, "field", key]
+            fragment = binding.physical_refs[0]
+            assert captured[
+                fragment.binding_ref, fragment.slot
+            ].text == label.translate(str.maketrans("ᵃᵇ", "ab"))
             assert (f.id, f.source_label, f.source_unit, list(f.header_path_refs)) == (
                 key,
                 label,

@@ -3,17 +3,30 @@
 from dataclasses import replace
 from decimal import Decimal
 
+import pytest
+
 from rwa_analysis.extraction.models import ReportedValue
 from rwa_analysis.storage.bronze import BronzeStore
 
 
-def test_saved_source_tables_preserve_all_metadata(cba_2024_bundle, tmp_path):
+def test_saved_source_tables_preserve_all_metadata(
+    cba_2024_bundle, tmp_path, project_root
+):
+    import json
+
+    from rwa_analysis.extraction.codec import encode_payload
+
     bundle = cba_2024_bundle
     store = BronzeStore(tmp_path)
     ref = store.save(bundle, "transport-proof")
     restored = store.load(ref).bundle
     assert restored == bundle
     assert restored.schema_version == "disclosure-v3"
+    assert encode_payload(restored) == json.loads(
+        (
+            project_root / "tests/fixtures/retained/cba-2024-06-30-disclosure-v3.json"
+        ).read_text()
+    )
 
 
 def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(
@@ -32,8 +45,9 @@ def test_retained_checkpoint_v3_cells_decode_without_later_legacy_row_metadata(
     assert restored.datasets[0].cells[0].value.original_text == "175,918"
 
 
+@pytest.mark.parametrize("version", ["disclosure-v3", "disclosure-v4"])
 def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
-    cba_2024_bundle, tmp_path
+    cba_2024_bundle, tmp_path, version
 ):
     from rwa_analysis.extraction.source_tables import ReportedText
 
@@ -70,7 +84,18 @@ def test_explicit_payload_kinds_preserve_integer_text_and_missingness(
         metadata=replace(table.metadata, published_fields=tuple(fields)),
     )
     store = BronzeStore(tmp_path)
-    saved = store.save(replace(bundle, datasets=(synthetic,)), "synthetic")
+    selected = replace(bundle, datasets=(synthetic,))
+    if version == "disclosure-v4":
+        from rwa_analysis.extraction.definitions import CapturedBundle, CaptureSnapshot
+
+        selected = CapturedBundle(
+            bundle.document,
+            bundle.bundle_key,
+            bundle.extractor_path,
+            (synthetic,),
+            CaptureSnapshot("typed@1", (), (), ()),
+        )
+    saved = store.save(selected, "synthetic")
     restored = store.load(saved).bundle.datasets[0]
     assert restored == synthetic
     assert type(restored.cells[0].value.value) is int

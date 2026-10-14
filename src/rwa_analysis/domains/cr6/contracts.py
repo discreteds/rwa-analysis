@@ -19,7 +19,6 @@ from .models import (
     FieldMapping,
     FieldQualification,
     RelationshipEvidence,
-    RowIdentity,
     SilverContext,
     SilverField,
     SilverObservation,
@@ -78,9 +77,6 @@ def model_spec(model, *, decimals=None, keys=()):
     return replace(
         spec, fields=augmented, primary_key=list(keys) or None, missing_values=[]
     )
-
-
-IDENTITY_SPEC = model_spec(RowIdentity, keys=("observation_id",))
 
 
 @dataclass(frozen=True)

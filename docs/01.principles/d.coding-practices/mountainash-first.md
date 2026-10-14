@@ -67,11 +67,13 @@ Mountainash Central under its existing owner; do not open GitHub issues without
 researcher approval. A local adaptation requires an explicit reason and researcher
 agreement. Keep it at the affected boundary and track removal under project techdebt.
 
-The existing approved exception is the nested metadata ingress adaptation in
-[`metadata.py`](../../../src/rwa_analysis/domains/cr6/metadata.py): standard-library
-`asdict()` plus full-record Polars inference. It does not move relational work out
-of Mountainash. Its [debt item](../../04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
-requires revisiting source metadata schemas and removing that boundary.
+The earlier approved exception was the nested metadata ingress adaptation in
+`domains/cr6/metadata.py`: standard-library `asdict()` plus full-record Polars
+inference. Task 5 of the metadata-driven migration removes that boundary in favour
+of flat source records and native domain projections. Its
+[debt item](../../04.planning/a.backlog/techdebt/metadata-ingress-and-nested-dataclasses.md)
+retains the rationale and checkpoint review status. This implementation evidence
+does not authorise a new adaptation elsewhere.
 
 ## Numbers, validation and tests
 

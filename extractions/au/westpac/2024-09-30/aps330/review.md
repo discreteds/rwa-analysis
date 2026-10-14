@@ -7,7 +7,7 @@ PDF and printed page numbers are identical. Context comes from pp.2, 7 and 14;
 applicable credit-risk and RWA glossary entries come from pp.113–114. Appendix V
 p.107 identifies the historical disclosures as APS 330 Table 9(d) and 9(f).
 
-One `disclosure-v3` bundle contains six source tables:
+One `disclosure-v4` bundle contains six source tables:
 
 | Dataset IDs | Source | Body cells | Supplementary |
 |---|---|---:|---:|
@@ -75,7 +75,21 @@ first failed because the historical extractor did not exist, then passed against
 the real PDF. A later qualifier-scope assertion caught missing band scope and was
 repaired before delivery. Saved tests require no LLM calls.
 
-This extractor uses shared SourceTable models and primitive decimal parsing only;
-it does not import another bank's extractor or read golden files. No runtime
-validation is added. Catalogue mappings, legacy adaptation and workflow integration
-are owned by the parent task; the identifiers above are the integration interface.
+The thin `extract.py` calls `run_capture` with sibling `definition.py` and
+`physical.py`. Metadata owns the selected SourceTable templates, context/time
+definitions, physical parameters and occurrence bindings. Physical operations
+return original tokens/passages; shared capture assembles the numeric cells.
+No dated extractor or golden file is imported, and no runtime validation is added.
+Catalogue mappings, legacy adaptation and workflow integration remain parent-owned.
+
+Task 4 migration (2026-10-14) preserved all 236 positions and the independent
+JSON golden. The extended source test was RED at the v3/v4 boundary before code
+(`/tmp/opencode/westpac-metadata-red.log`) and GREEN on the real PDF afterward.
+It checks actual physical field/panel headers and shared-versus-repeated comments
+alongside the existing full numeric, lexical, missingness and metadata checks.
+The p.45 header serves all three exposure panels; p.57 headers serve both 2024
+backtesting panels, while p.58 has separate nested headers and repeated notes.
+The backtesting title is physically captured on p.56, not fabricated on its
+continuation pages. Numerical RWA notes retain comment links and distinct body
+versus note addresses. Joint-vintage verification still requires the parent-owned
+shared `N/A` materialisation repair for the 2023 source.

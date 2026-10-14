@@ -13,6 +13,7 @@ from .models import (
     ConceptRelationshipRevision,
     ConceptRevision,
     InterpretationDecisionRevision,
+    MappingScope,
     MeasureRevision,
     MemberSelection,
     SourceMappingRevision,
@@ -123,8 +124,11 @@ def load_catalogue(release_path: Path) -> CatalogueRelease:
     for selected, member in zip(selection, members, strict=True):
         refs = tuple(revision_references(member))
         for ref in refs:
-            cat.member(ref)
-        graph[selected.revision_id] = tuple(r.revision_id for r in refs)
+            if ref.kind != "context":
+                cat.member(ref)
+        graph[selected.revision_id] = tuple(
+            r.revision_id for r in refs if r.kind != "context"
+        )
         for attribute in getattr(member, "attributes", ()):
             for assertion in attribute.assertions():
                 if attribute.name == "result_unit" and assertion.value is not None:
@@ -167,6 +171,8 @@ def load_catalogue(release_path: Path) -> CatalogueRelease:
     for member in members:
         if isinstance(member, SourceMappingRevision):
             for ref in member.overrides_refs:
+                if not isinstance(member.scope, MappingScope):
+                    continue
                 target = cat.member(ref)
                 if not member.scope.narrows(target.scope) or not (
                     member.evidence_refs or member.decision_refs

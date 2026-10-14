@@ -3,28 +3,30 @@
 import mountainash as ma
 import polars as pl
 
-from rwa_analysis.extraction.source_tables import SourceTable
+from rwa_analysis.catalogue.occurrences import resolve_capture
+from rwa_analysis.extraction.definitions import CapturedBundle
+from rwa_analysis.extraction.models import OccurrenceRef
 
 from .contracts import DECLARATIONS, TABLES, relation
-from .legacy import adapt_legacy
-from .metadata import source_rows
+from .metadata import capture_rows, source_rows
 from .models import SourceTableOutput
-from .semantics import resolve_cell
 
 
 class SourceTablePipeline:
     def conform(self, inputs, catalogue) -> SourceTableOutput:
         rows = {t.member: [] for t in TABLES}
         for loaded in inputs:
-            for table in loaded.bundle.datasets:
-                if isinstance(table, SourceTable):
-                    meanings = {
-                        c.id: resolve_cell(catalogue, loaded.bundle, table, c)
-                        for c in table.cells
-                    }
-                else:
-                    table, meanings = adapt_legacy(table, catalogue)
-                source_rows(rows, loaded, table, meanings, catalogue)
+            resolved = resolve_capture(loaded, catalogue)
+            for table in resolved.captured.bundle.datasets:
+                meanings = {
+                    c.id: resolved.meanings[
+                        OccurrenceRef(loaded.bundle.bundle_key, table.id, "cell", c.id)
+                    ]
+                    for c in table.cells
+                }
+                source_rows(rows, resolved.captured, table, meanings, catalogue)
+            if isinstance(loaded.bundle, CapturedBundle):
+                capture_rows(rows, resolved)
         output = {name: relation(name, values) for name, values in rows.items()}
         if rows["cells"]:
             cells = output["cells"].select(

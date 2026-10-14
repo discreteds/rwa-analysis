@@ -80,3 +80,16 @@ count, or the history denominator/event/exit conventions; those stay unknown.
 
 The existing PDF extractor now returns CR6 and CR9 in one `disclosure-v2`
 bundle. Save under a new output version; retained `cr6-v1` remains unchanged.
+
+## Metadata capture migration — 2026-10-14
+
+The current producer emits `disclosure-v4`, superseding the v2 description above.
+`definition.py` declares source structure, interpretation, timing and original
+domain addresses; `physical.py` reads grids, regions and column-aware passages;
+`extract.py` delegates to shared capture. The snapshot and physical fragments
+retain 180 cells: 164 numeric positions and 16 lexical ratings (including printed
+`N/A` and blank default ratings). June-2024 PD/weight precision is preserved.
+Shared comments are captured once. The default-row qualification is explicitly
+declared on numeric cells as well as the row; projection need not infer scope.
+The independent goldens remain unchanged, with complete structural comparisons
+and direct fragment, rating and default-row applicability regression checks.

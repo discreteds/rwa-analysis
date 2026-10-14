@@ -1,5 +1,6 @@
-"""Real extractor inputs shared by downstream boundary tests, never expectations."""
+"""Retained wire inputs and live extraction helpers; never generated expectations."""
 
+import json
 import shutil
 from pathlib import Path
 
@@ -195,29 +196,41 @@ def _extract(org, document_date):
     return run_extractor(script, pdf)
 
 
+def _retained(org, document_date, version="disclosure-v2"):
+    """Baseline wire inputs retained before migration; PDF goldens are separate."""
+    from rwa_analysis.extraction.codec import decode_payload
+
+    path = (
+        Path(__file__).parent
+        / "fixtures/retained"
+        / f"{org}-{document_date}-{version}.json"
+    )
+    return decode_payload(json.loads(path.read_text()))
+
+
 @pytest.fixture(scope="session")
 def cba_bundle():
-    return _extract("cba", "2025-06-30")
+    return _retained("cba", "2025-06-30")
 
 
 @pytest.fixture(scope="session")
 def cba_2024_bundle():
-    return _extract("cba", "2024-06-30")
+    return _retained("cba", "2024-06-30", "disclosure-v3")
 
 
 @pytest.fixture(scope="session")
 def westpac_bundle():
-    return _extract("westpac", "2025-09-30")
+    return _retained("westpac", "2025-09-30")
 
 
 @pytest.fixture(scope="session")
 def nab_bundle():
-    return _extract("nab", "2025-09-30")
+    return _retained("nab", "2025-09-30")
 
 
 @pytest.fixture(scope="session")
 def anz_bundle():
-    return _extract("anz", "2025-09-30")
+    return _retained("anz", "2025-09-30")
 
 
 @pytest.fixture

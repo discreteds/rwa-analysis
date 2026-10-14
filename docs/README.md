@@ -11,9 +11,12 @@
   AGREED on 2026-10-13; authoritative ownership and occurrence-model decisions with
   enacted clause supersessions. The [metadata-driven extraction design](04.planning/superpowers/specs/2026-10-13-metadata-driven-extraction-design.md)
   and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
-  awaits review before production work.
-  Principle acceptance does not imply an implemented replacement
-  pipeline; existing capture remains supported.
+  was approved on 2026-10-13. Checkpoints A and B were accepted on 2026-10-14;
+  all twelve selected reports and catalogue-free domain projections are implemented
+  on `feature/metadata-driven-extraction`. Task 7 extends master lifecycle evidence
+  to shared comments, contexts and every dependent relation. Final independent
+  delivery reviews passed; 205 tests pass and PR #18 is ready for merge.
+  Retained capture formats remain supported.
 - [Mountainash-first coding](01.principles/d.coding-practices/mountainash-first.md):
   library ownership, data boundaries and handling capability gaps.
 - [Agent guidance](../AGENTS.md): starting points and repository working instructions.

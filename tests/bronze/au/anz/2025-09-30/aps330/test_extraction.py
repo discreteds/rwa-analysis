@@ -5,6 +5,7 @@ from pathlib import Path
 
 from rwa_analysis.extraction.codec import encode_payload
 from rwa_analysis.extraction.runner import run_extractor
+from tests.support.captured_golden import assert_capture_bindings, golden_view
 from tests.support.golden import assert_golden
 
 
@@ -20,13 +21,15 @@ def test_complete_anz_source_contract():
         root / "extractions/au/anz/2025-09-30/aps330/extract.py", pdf
     )
     expected = json.loads(Path(__file__).with_name("golden.json").read_text())
+    assert bundle.schema_version == "disclosure-v4"
+    assert_capture_bindings(bundle, 189)
+    bundle = golden_view(bundle)
     assert_golden(
         encode_payload(
             replace(bundle, schema_version="cr6-v1", datasets=bundle.datasets[:1])
         ),
         expected,
     )
-    assert bundle.schema_version == "disclosure-v2"
     assert len(bundle.datasets) == 2
     dataset = bundle.datasets[1]
     golden = json.loads(Path(__file__).with_name("golden-cr9.json").read_text())

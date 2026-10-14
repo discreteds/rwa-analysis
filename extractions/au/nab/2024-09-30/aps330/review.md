@@ -6,7 +6,7 @@ pp.76–77. Printed page numbering is PDF page minus two.
 
 ## Selected scope and interfaces
 
-`extract(pdf_path) -> ExtractionBundle` returns `disclosure-v3`, eight `SourceTable`
+`extract(pdf_path) -> CapturedBundle` returns `disclosure-v4`, eight `SourceTable`
 datasets and 90 body cells:
 
 - `table5-3-b-2024-09-30`, `table5-3-b-2024-03-31`: 30 cells each, five measures
@@ -56,6 +56,15 @@ backtesting populations is manufactured.
 
 ## Catalogue handoff and verification
 
+`definition.py` owns reviewed source-table templates, contexts, physical parameters
+and occurrence bindings. `physical.py` returns only source fragments; `extract.py`
+is a thin call to shared `run_capture`. Headers and comments are captured from
+the PDF, including cropped multi-column glossary definitions. Backtesting field
+headers use reviewed column geometry. Exposure headers are selected after the
+panel date, and the population heading excludes the adjacent percent-unit columns.
+Shared methodology text is captured once; repeated floor/materiality notes retain
+their separate printed panel occurrences and explicit targets.
+
 `catalogue/mappings/nab-historical-2024-v1.json` contains only source-scoped unit
 conversions: million AUD to base units, percentages to fractions and dimensionless
 EAD ratios unchanged. Canonical financial equivalence and uncertain conventions
@@ -64,3 +73,10 @@ are not invented. Parent integration owns release inclusion and persisted proof.
 Independent source-authored goldens cover all 90 cells and the distinguishing
 metadata. The complete source test was observed failing before implementation,
 then green. No runtime validation or shared-file changes were introduced.
+
+Task 4 migration, 2026-10-14: source tests first failed on the old v3 return format,
+then passed through v4 with the independent golden JSON unchanged. Extended
+assertions cover actual header fragments, required note presence, qualification
+targets, complete source identities and the unresolved dates of the retained
+12-month PD outcome window. The NAB joint-vintage publication test owns
+catalogue/address separation after saved-Bronze conformance.

@@ -3,9 +3,15 @@
 Date: 2026-10-13.
 
 Status: **Design direction and disposable spike shape APPROVED by the researcher,
-2026-10-13.** Production implementation is not yet authorised. The
-[implementation plan](../plans/2026-10-13-metadata-driven-extraction.md) develops the
-remaining contract details for review; the disposable code is reference only.
+2026-10-13.** The researcher subsequently approved production implementation under the
+[implementation plan](../plans/2026-10-13-metadata-driven-extraction.md), including its
+production contract details and checkpoint sequence; Tasks 1–3 are implemented and
+verified and accepted at checkpoint A on 2026-10-14 (195 passing tests).
+Tasks 4–6 are implemented across all twelve selected reports, with 204 tests passing;
+checkpoint B was accepted on 2026-10-14. Task 7's lifecycle and whole-path evidence
+is recorded in the plan; final independent delivery reviews passed with no open
+findings (205 passing tests). PR #18 awaits authorised merge.
+The disposable code remains reference only and is not the implementation base.
 
 ## 1. Ask and scope
 
@@ -136,13 +142,13 @@ Proposed conceptual calls (not existing public APIs):
 
 ```text
 physical_operation(document, physical_binding) -> captured fragments
-capture(document, extraction_definition, selected_definitions, supplied_operations)
+capture(document, extraction_definition, supplied_operations)
     -> captured bundle
 conform(saved_bundles, selected_interpretations) -> Silver candidate
 ```
 
-`selected_definitions` supplies the referenced physical/context declarations and any
-catalogue definitions used by capture. Construction loads those explicit selections;
+The extraction definition's snapshot supplies the selected physical/context declarations
+and any catalogue definitions used by capture. Construction loads those explicit selections;
 capture does not resolve references through an implicit current catalogue. Their
 serialisable revisions supply the retained snapshot described below.
 

@@ -4,6 +4,7 @@ from pathlib import Path
 
 from rwa_analysis.extraction.codec import encode_payload
 from rwa_analysis.extraction.runner import run_extractor
+from tests.support.captured_golden import assert_capture_bindings, golden_view
 from tests.support.golden import assert_golden
 
 
@@ -19,7 +20,36 @@ def test_complete_westpac_source_contract():
         root / "extractions/au/westpac/2025-09-30/aps330/extract.py", pdf
     )
     expected = json.loads(Path(__file__).with_name("golden.json").read_text())
-    assert bundle.schema_version == "disclosure-v2"
+    assert bundle.schema_version == "disclosure-v4"
+    assert_capture_bindings(bundle, 180)
+    cr9_table = bundle.datasets[1]
+    # PDF55: seven mortgage bands print N/A in both agency columns;
+    # the default band's two empty windows have a different missingness meaning.
+    ratings = {
+        (cell.row_ref, cell.column_ref): (
+            cell.value.original_text,
+            cell.value.missing_reason,
+        )
+        for cell in cr9_table.cells
+        if cell.value_kind == "text"
+    }
+    assert ratings == {
+        (f"band-{band}", f"rating-{agency}"): (
+            ("N/A", "not_applicable") if band < 8 else ("", "blank_unresolved")
+        )
+        for band in range(1, 9)
+        for agency in range(2)
+    }
+    # The printed default row qualifies each numeric value, including fields
+    # whose own headings do not mention default. Projection reads cell scope.
+    for cell in cr9_table.cells:
+        if cell.value_kind != "text":
+            expected_default = cell.row_ref == "band-8" or cell.field_ref in {
+                "defaulted_borrower_count",
+                "new_defaulted_borrower_count",
+            }
+            assert ("default-definition" in cell.qualification_refs) == expected_default
+    bundle = golden_view(bundle)
     assert len(bundle.datasets) == 2
     assert_golden(
         encode_payload(

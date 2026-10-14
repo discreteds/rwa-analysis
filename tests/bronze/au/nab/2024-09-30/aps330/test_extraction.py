@@ -12,7 +12,18 @@ def test_complete_nab_historical_source(project_root):
     path = project_root / "extractions/au/nab/2024-09-30/aps330/extract.py"
     assert path.exists(), "NAB historical extractor is not implemented"
     bundle = run_extractor(path, project_root / "raw/nab-2024-09-30-aps330.pdf")
-    assert bundle.schema_version == "disclosure-v3"
+    assert bundle.schema_version == "disclosure-v4"
+    assert bundle.bundle_key == "au/nab/2024-09-30/aps330"
+    occurrences = {
+        (b.ref.scope, b.ref.kind, b.ref.local_id): b
+        for b in bundle.snapshot.occurrences
+    }
+    fragments = {(f.binding_ref, f.slot): f for f in bundle.fragments}
+    assert len([b for b in occurrences.values() if b.cell is not None]) == 90
+    assert len(occurrences) == len(bundle.snapshot.occurrences)
+    assert all(b.ref.bundle_key == bundle.bundle_key for b in occurrences.values())
+    assert len([b for b in occurrences.values() if b.ref.local_id == "pd-cohort"]) == 1
+    assert len([b for b in occurrences.values() if b.ref.local_id == "apra-floor"]) == 3
     assert len(bundle.datasets) == 8
     assert sum(len(t.cells) for t in bundle.datasets) == 90
     for table, expected in zip(
@@ -23,7 +34,10 @@ def test_complete_nab_historical_source(project_root):
         assert meta.context.currency.value == "AUD"
         assert meta.context.consolidation_scope.value == "Level 2"
         assert meta.context.geography.status == "unresolved"
-        assert table.id.endswith(expected["date"])
+        prefix = (
+            f"table5-1-j-{expected['kind']}-" if "kind" in expected else "table5-3-b-"
+        )
+        assert table.id == prefix + expected["date"]
         axes = {a.id: a for a in meta.axes}
         notes = {q.id: q for q in meta.qualifications}
         fields = {f.id: f for f in meta.published_fields}
@@ -45,6 +59,12 @@ def test_complete_nab_historical_source(project_root):
             assert f.source_form == "table_body"
             assert f.result_kind == ("money" if unit == "$m" else "scalar")
             assert f.source_reference.pdf_page == expected["page"]
+            binding = occurrences[table.id, "field", f.id]
+            assert binding.physical_refs
+            captured = " ".join(
+                fragments[r.binding_ref, r.slot].text for r in binding.physical_refs
+            )
+            assert " ".join(captured.split()) == label + marker
         descriptors = {d.id: d for d in meta.temporal_descriptors}
         tokens = [token for row in expected["rows"] for token in row]
         assert [c.value.original_text for c in table.cells] == tokens
@@ -56,8 +76,38 @@ def test_complete_nab_historical_source(project_root):
             assert c.value.source_reference.pdf_page == expected["page"]
             assert c.value.source_reference.printed_page == str(expected["page"] - 2)
             assert c.context_refs == ("context",)
-        for key in notes.keys() & golden["notes"].keys():
-            assert notes[key].source_text == golden["notes"][key]
+            assert c.value.source_reference.document_id == "nab-2024-09-30-aps330"
+        required_notes = (
+            {"undrawn", "average-arrangements", "overlay", "retail-lgd"}
+            if "kind" not in expected
+            else {"framework-history", "rbnz-materiality"}
+            | (
+                {"pd-cohort", "ead-comparison"}
+                if expected["kind"] == "ii"
+                else {"lgd-estimate", "lgd-history", "apra-floor", "rbnz-lgd"}
+            )
+        )
+        if "kind" not in expected and expected["page"] == 50:
+            required_notes.add("pd-model-change")
+        assert required_notes <= notes.keys()
+        for key in required_notes:
+            if key in golden["notes"]:
+                assert notes[key].source_text == golden["notes"][key]
+            comment = (
+                occurrences.get((table.id, "comment", key))
+                or occurrences[None, "comment", key]
+            )
+            assert comment.physical_refs
+            for endpoint in notes[key].scope:
+                kind = {"dataset": "table", "band": "column"}.get(
+                    endpoint.kind, endpoint.kind
+                )
+                assert any(
+                    link.role == "qualifies"
+                    and (link.target.scope, link.target.kind, link.target.local_id)
+                    == (table.id, kind, endpoint.id)
+                    for link in comment.links
+                )
         if "kind" not in expected:
             assert list(fields) == [
                 "exposure",
@@ -153,6 +203,16 @@ def test_complete_nab_historical_source(project_root):
                     b.role == "outcome_window" and b.cell_id == "main/actual_pd"
                     for b in meta.temporal_bindings
                 )
+                outcome = descriptors["pd-outcome"]
+                assert outcome.duration_amount == Decimal(12)
+                assert outcome.duration_unit == "month"
+                assert outcome.start is outcome.end is None
+                actual = occurrences[table.id, "cell", "main/actual_pd"]
+                assert {r.role for r in actual.temporal_roles} == {
+                    "history_window",
+                    "cohort_anchor",
+                    "outcome_window",
+                }
                 assert {
                     (b.role, b.descriptor_ref)
                     for b in meta.temporal_bindings
