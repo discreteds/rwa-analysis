@@ -542,6 +542,50 @@ No unresolved implementation or upstream issue was identified. Commits remain lo
 for parent review under draft PR #18 targeting `develop`. Checkpoint B acceptance
 is pending; Task 7 remains unexecuted.
 
+### Checkpoint B complexity cuts — 2026-10-14
+
+Researcher authorised these scope-preserving cuts before correctness triage; that
+independent review is still running. Before editing, Python AST comparison confirmed
+all four modern `window` implementations identical and both CBA historical copies
+of `region`, `line`, `rows` and `bands` identical. They now share their unchanged
+implementations in the existing `extraction/physical.py` owner. The CBA readers have
+unambiguous names: `cropped_text_region`, `line_match_groups`, `anchored_prefix_rows`
+and `line_band_matches`. Each dated CBA module retains its original operation keys
+in `OPERATIONS`; each modern module imports `window` directly.
+
+| Cut | Affected requirement | Retained means of satisfying it |
+|---|---|---|
+| Four identical modern windows → one shared function | Complete four-bank numeric/lexical capture, headers, missing positions and evidence | Function AST unchanged; source-local grid selection, tolerances, multiline choices, geometry and evidence assembly unchanged; all four existing source goldens pass |
+| Two identical CBA historical reader sets → four shared functions | Both historical vintages' full cells, notes, qualifiers, temporal scopes and identities | Function ASTs unchanged except names; dated operation keys and independent declarations unchanged; both existing source goldens pass |
+
+No acceptance scope, test, source definition or qualifier was removed. No framework,
+cross-dated import or test seam was added. Production diff: **115 additions / 219
+deletions**, net **104 lines removed**. AST checks also verified the existing shared
+paragraph reader and every remaining modern source-local function are unchanged.
+
+- AST before: `/tmp/opencode/metadata-checkpoint-b-cuts-ast-before.log`.
+- AST after: `/tmp/opencode/metadata-checkpoint-b-cuts-ast-after.log`.
+- Affected existing source goldens: **11 passed**, 21.13 seconds;
+  `/tmp/opencode/metadata-checkpoint-b-cuts-goldens.log`.
+- Modern example: **36 CR6 / 33 CR9 rows**, eight numeric frames;
+  `/tmp/opencode/cr9-four-bank-ua5crtx6/`, log
+  `/tmp/opencode/metadata-checkpoint-b-cuts-modern.log`.
+- Historical example: **48 tables / 1,343 cells / 15 notes**, retaining the complete
+  historical 46-dataset / 1,148-body-cell scope plus explicit modern comparison;
+  `/tmp/opencode/historical-mortgages-k4hhft37/`, log
+  `/tmp/opencode/metadata-checkpoint-b-cuts-historical.log`.
+- All **8 modern and 74 historical readback parquet files** match the preceding
+  checkpoint outputs in content and dtype, with source-frame row order preserved;
+  `/tmp/opencode/metadata-checkpoint-b-cuts-output-parity.log`.
+- Ruff and diff checks passed; `/tmp/opencode/metadata-checkpoint-b-cuts-ruff.log`
+  and `/tmp/opencode/metadata-checkpoint-b-cuts-diff-check.log`.
+
+Parent's independent pre-cut modern example also passed at
+`/tmp/opencode/cr9-four-bank-19fld1e4/`; log
+`/tmp/opencode/metadata-checkpoint-b-parent-example.log`. As requested, the full suite
+is deferred until correctness findings are addressed. This milestone remains local
+and does not advance beyond checkpoint B.
+
 ## Task 7 — Whole-path evidence, retirement and delivery
 
 **Files:** Extend existing `tests/integration/test_master_consolidation.py`,

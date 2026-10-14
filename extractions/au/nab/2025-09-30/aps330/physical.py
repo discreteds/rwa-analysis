@@ -4,21 +4,7 @@ import itertools
 from dataclasses import replace
 
 from rwa_analysis.extraction.definitions import CapturedFragment
-
-
-def window(words, left, right, top, bottom, multiline=False):
-    lines = []
-    selected = (
-        w for w in words if left <= w["x0"] < right and top <= w["top"] < bottom
-    )
-    for word in sorted(selected, key=lambda w: (w["top"], w["x0"])):
-        if not lines or abs(word["top"] - lines[-1][0]["top"]) > 1:
-            lines.append([])
-        lines[-1].append(word)
-    return ("\n" if multiline else " ").join(
-        " ".join(w["text"] for w in sorted(line, key=lambda w: w["x0"]))
-        for line in lines
-    )
+from rwa_analysis.extraction.physical import window
 
 
 def region(document, binding):
