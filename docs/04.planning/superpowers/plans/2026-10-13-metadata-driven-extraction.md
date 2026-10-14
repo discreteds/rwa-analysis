@@ -498,8 +498,8 @@ cell projection of resolved captures. Existing source-table qualifications are
 materialised compatibility views of singly captured passages.
 
 No required upstream defect has been reproduced. Existing Mountainash declaration
-warnings and Ibis/Polars deprecation warnings remain visible. Checkpoint A awaits
-the parent's independent reviews and researcher acceptance; nothing has been pushed.
+warnings and Ibis/Polars deprecation warnings remain visible. Independent reviews
+are closed following the repair below; checkpoint A awaits researcher acceptance.
 
 ### Approved complexity cut
 
@@ -509,7 +509,8 @@ and physical-operation loading remain separate. No alternate mode was introduced
 The ANZ independent golden, saved-only refinement workflow and snapshot transport
 tests passed (**3 passed**); focused Ruff and diff checks passed. The parent also
 verified the example at `/tmp/opencode/anz-metadata-checkpoint-a-8w4smvvg/` and recorded
-the `develop` baseline as **181 passed**. Correctness review remains pending.
+the `develop` baseline as **181 passed**. The subsequent correctness finding and
+its closure are recorded below.
 
 ### Correctness repair: exposure heading selection
 
@@ -552,3 +553,10 @@ warnings, in 204.17 seconds. `uv run ruff check src tests examples extractions`
 and `git diff --check` passed. The regression and full-suite evidence preserve the
 entire checkpoint scope; the earlier complexity cut removed only duplicate argument
 plumbing, with selected definition contents still supplied by the retained snapshot.
+
+Independent correctness re-review confirmed the repair across all three panels,
+including the captured field/block fragments and persisted labels. No findings remain
+open. Tasks 1–3 are complete for checkpoint A; Tasks 4–7 remain unstarted pending
+researcher acceptance of this checkpoint. The implementation PR remains draft for
+the complete approved migration, rather than treating this checkpoint as its delivery
+boundary.
