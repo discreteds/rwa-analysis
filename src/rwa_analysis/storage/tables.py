@@ -1,4 +1,4 @@
-"""Explicit associations for the two supported domains' declared Silver tables."""
+"""Declared Silver inventories for domain projections and source tables."""
 
 from rwa_analysis.domains.cr6.contracts import TABLES as CR6_TABLES
 from rwa_analysis.domains.cr6.models import Cr6Output

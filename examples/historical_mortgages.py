@@ -7,15 +7,13 @@ Every invocation retains a fresh output directory.
 """
 
 import json
-from dataclasses import fields, replace
+from dataclasses import fields
 from pathlib import Path
 from tempfile import mkdtemp
 
 import mountainash as ma
 
-from rwa_analysis.catalogue.load import load_catalogue
 from rwa_analysis.composition import build_consolidator, build_session
-from rwa_analysis.domains.source_tables.pipeline import SourceTablePipeline
 from rwa_analysis.domains.source_tables.reconstruction import reconstruct_source_tables
 from rwa_analysis.operations import DocumentSelection
 from rwa_analysis.settings import OrganisationSettings, ProjectSettings
@@ -27,7 +25,6 @@ print(f"Retained output directory: {data_root}", flush=True)
 selection = CatalogueSelection(
     release_path="catalogue/releases/historical-mortgages-v2.json"
 )
-catalogue = load_catalogue(root / selection.release_path)
 sessions, publications = {}, []
 for org, dates in (
     ("cba", ("2023-06-30", "2024-06-30")),
@@ -55,10 +52,6 @@ for org, dates in (
     )
     inputs = session.load_bronze(session.save_bronze(bundles, "historical-review"))
     candidate = session.conform(inputs, catalogue=selection)
-    if org == "westpac":
-        candidate = replace(
-            candidate, source_tables=SourceTablePipeline().conform(inputs, catalogue)
-        )
     publication = session.publish(candidate, revision=f"{org}-historical-review")
     sessions[org] = session
     publications.append(publication)
