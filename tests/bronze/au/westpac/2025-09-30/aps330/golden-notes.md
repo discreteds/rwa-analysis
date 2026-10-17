@@ -1,5 +1,14 @@
 # Independent Westpac expectations
 
+## Adjustment extension — 2026-10-17
+
+`golden-adjustments.json` independently transcribes p.6's $1bn non-retail RWA
+overlay, p.15's $500m capital overlay, and p.10's subsequent-event amounts: $500m
+capital removal, $6,250m RWA reduction and approximately 17bp CET1 increase. The
+October event is not assigned September's reporting date. No reported mortgage
+overlay or zero is invented. See the
+[source review](../../../../../../extractions/au/westpac/2025-09-30/aps330/review.md).
+
 Authored 2026-10-10 directly from the saved September 2025 PDF, before the
 Westpac extractor. Visually inspected rendered pp. 48–49 at 150 dpi and the
 portfolio/program-managed/glossary definitions on pp. 33, 47 and 98. Read report

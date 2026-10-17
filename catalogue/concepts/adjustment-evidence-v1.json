@@ -1,0 +1,35 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [
+    {
+      "id": "capital.requirement",
+      "revision_id": "capital.requirement@v1",
+      "created_on": "2026-10-17",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Required capital amount",
+      "definition": "A monetary capital requirement, including a disclosed additional capital charge. Distinct from risk-weighted assets; no implicit conversion between the two.",
+      "category": "quantity"
+    },
+    {
+      "id": "ratio.reported-share",
+      "revision_id": "ratio.reported-share@v1",
+      "created_on": "2026-10-17",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Reported share",
+      "definition": "A source-reported proportion of an explicitly labelled total, with numerator and denominator retained in the source context.",
+      "category": "quantity"
+    },
+    {
+      "id": "capital.cet1-ratio-change",
+      "revision_id": "capital.cet1-ratio-change@v1",
+      "created_on": "2026-10-17",
+      "effective_from": null,
+      "effective_to": null,
+      "name": "Change in CET1 capital ratio",
+      "definition": "A disclosed change in the CET1 capital ratio, distinct from its level; direction, estimate status and effective date remain source-specific.",
+      "category": "quantity"
+    }
+  ]
+}

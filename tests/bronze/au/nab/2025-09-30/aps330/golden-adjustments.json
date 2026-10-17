@@ -1,0 +1,12 @@
+{
+  "credit-overlay": ["4.8", "1000000000", 13, "credit_rwa_overlay", "2025-09-30"],
+  "rbnz-credit-overlay": ["2.3", "1000000000", 13, "credit_rwa_overlay", "2025-09-30"],
+  "corporate-credit-overlay": ["2.1", "1000000000", 13, "credit_rwa_overlay", "2025-09-30"],
+  "mortgage-overview-ead": ["429,996", "1000000", 13, "reported_total", "2025-09-30"],
+  "mortgage-overview-ccr-ead": ["-", "1000000", 13, "reported_total", "2025-09-30"],
+  "mortgage-overview-total-ead": ["429,996", "1000000", 13, "reported_total", "2025-09-30"],
+  "mortgage-overview-rwa": ["112,064", "1000000", 13, "reported_total", "2025-09-30"],
+  "mortgage-overview-ccr-rwa": ["-", "1000000", 13, "reported_total", "2025-09-30"],
+  "mortgage-overview-total-rwa": ["112,064", "1000000", 13, "reported_total", "2025-09-30"],
+  "group-output-floor": ["2,284", "1000000", 13, "group_output_floor", "2025-09-30"]
+}

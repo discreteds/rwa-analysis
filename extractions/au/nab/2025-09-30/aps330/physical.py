@@ -4,7 +4,7 @@ import itertools
 from dataclasses import replace
 
 from rwa_analysis.extraction.definitions import CapturedFragment
-from rwa_analysis.extraction.physical import window
+from rwa_analysis.extraction.physical import line_match_groups, window
 
 
 def region(document, binding):
@@ -61,4 +61,4 @@ def grid(document, binding):
     return tuple(result)
 
 
-OPERATIONS = {"region": region, "passage": passage, "grid": grid}
+OPERATIONS = {"region": region, "passage": passage, "grid": grid, "line": line_match_groups}

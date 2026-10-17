@@ -1,0 +1,11 @@
+{
+  "id": "adjustment-evidence-v1",
+  "schema_version": "cr6-v1",
+  "created_on": "2026-10-17",
+  "selection": [
+    {"path":"concepts/adjustment-evidence-v1.json","kind":"concept","revision_id":"capital.requirement@v1"},
+    {"path":"concepts/adjustment-evidence-v1.json","kind":"concept","revision_id":"ratio.reported-share@v1"},
+    {"path":"concepts/adjustment-evidence-v1.json","kind":"concept","revision_id":"capital.cet1-ratio-change@v1"},
+    {"path":"decisions/anz-2025-aggregate-overlay-v1.json","kind":"decision","revision_id":"agreed.anz-2025-aggregate-overlay@v1"}
+  ]
+}

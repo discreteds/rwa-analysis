@@ -1,5 +1,10 @@
 # ANZ September 2025 mortgage CR6 and CR9 source review
 
+The [2026-10-17 adjustment evidence](../../../../../docs/00.ideation/2026-10-17-rwa-adjustment-capture.md)
+records the new numerical capture and researcher-approved CR6 **aggregate** overlay
+link. It supersedes the unresolved aggregate treatment below; band allocation remains
+unresolved.
+
 ## Inspection and selection
 
 Directly inspected rendered PDF / printed **p. 57**, **p. 6**, **p. 23** and

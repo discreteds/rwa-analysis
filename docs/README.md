@@ -24,6 +24,10 @@
 
 ## Evidence and design history
 
+- [2025 adjustment capture](00.ideation/2026-10-17-rwa-adjustment-capture.md): selected
+  monetary notes and overview rows, source classifications, approved ANZ aggregate
+  applicability and the separately retained derived NAB bridge.
+
 - [Historical source-table design](04.planning/superpowers/specs/2026-10-12-historical-source-tables-design.md):
   researcher-approved capture/composition contracts and structural research queries;
   the four-bank 2024 delivery merged through PRs #13/#14. The

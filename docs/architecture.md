@@ -1,6 +1,6 @@
 # Current processing architecture
 
-Updated: 2026-10-14. Describes four-bank CR6/CR9 and source-defined historical
+Updated: 2026-10-17. Describes four-bank CR6/CR9 and source-defined historical
 capture. The 2024 historical implementation and documentation merged through PRs
 #13/#14 into `develop` at `7930a3a`; the CR9 baseline merged through PR #9 at `32e5f6a`.
 
@@ -81,6 +81,29 @@ The [principles](01.principles/README.md) own durable decisions. The
 [strategic specification](04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md)
 records the approved design and its history. Code declarations own exact fields and
 physical table names; this guide explains how to use and extend that implementation.
+
+### Supplementary adjustment evidence
+
+The four 2025 definitions now compose source-local `adjustments.py` declarations
+with the existing numerical-note contracts. `extraction/numerical_notes.py` expands
+explicit physical passages and typed observation declarations into the existing
+snapshot types; physical readers remain separately selected. The `rwa-adjustments`
+selection groups 38 source observations (9 CBA, 14 ANZ, 10 NAB, 5 Westpac), including
+supporting total rows and separately dated comparatives/events. It is not a new
+published bank table or a new storage domain.
+
+Classification is a resolved `qualification_meaning` attribute; quantity concepts
+distinguish RWA, required capital, reported shares and CET1-ratio changes. Portfolio
+labels are source field attributes. Explicit unit mappings, note text, source axes,
+dates and occurrence links are retained in the existing source relations. Common
+report entity/currency evidence is reused without inheriting mortgage/AIRB scope
+onto group or operational-risk amounts.
+
+The researcher-approved ANZ decision qualifies aggregate CR6 RWA/density, leaving
+band allocation unresolved. `examples/rwa_adjustments.py` reads master and retains
+NAB's $50m difference separately with calculation/input provenance. The existing
+mutable-publication limits below still apply. See the
+[source evidence and decision record](00.ideation/2026-10-17-rwa-adjustment-capture.md).
 
 ## Supported scope
 

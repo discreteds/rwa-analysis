@@ -3,6 +3,8 @@
 import itertools
 from datetime import date
 from decimal import Decimal
+from pathlib import Path
+from runpy import run_path
 
 from rwa_analysis.catalogue.models import EvidenceRef
 from rwa_analysis.catalogue.models import SemanticAttribute as Assertion
@@ -936,4 +938,4 @@ def build():
     )
 
 
-DEFINITION = build()
+DEFINITION = run_path(str(Path(__file__).with_name("adjustments.py")))["extend"](build())

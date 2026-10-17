@@ -4,7 +4,8 @@ Run: uv run python -i examples/four_bank_cr9.py
 Inspect sessions, results, publications, master_publication, output and tables.
 A fresh temporary output directory is printed and retained on each invocation.
 Each bundle retains its capture snapshot, physical fragments and lexical ratings.
-Declared projections retain 36 CR6 rows, 33 CR9 rows and eight numeric frames.
+Declared projections retain 36 CR6 rows, 33 CR9 rows and eight domain frames.
+Four additional source selections retain 38 adjustment/supporting observations.
 """
 
 from pathlib import Path

@@ -1,5 +1,9 @@
 # Westpac September 2025 mortgage CR6 source review
 
+For the subsequently approved non-retail and operational-overlay capture, including
+the separately dated October removal, see the
+[2026-10-17 adjustment evidence](../../../../../docs/00.ideation/2026-10-17-rwa-adjustment-capture.md).
+
 Reviewed 2026-10-10 from [saved PDF](../../../../../raw/westpac-2025-09-30-aps330.pdf).
 Scope: all twelve columns and nine rows of the p. 48 A-IRB Residential Mortgages
 block, plus applicable definitions. PDF and printed page 48 agree.
