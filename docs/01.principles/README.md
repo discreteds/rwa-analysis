@@ -24,7 +24,7 @@ Read [PRINCIPLES.md](PRINCIPLES.md) for status definitions, ownership and mainte
    accepted at checkpoint A. Checkpoint B was also accepted on 2026-10-14, covering
    all twelve selected reports and named domain projections (204 passing tests).
    Task 7 adds master lifecycle evidence; final independent delivery reviews passed,
-   with 205 tests passing and PR #18 ready for merge.
+   with 205 tests passing. PR #18 merged into `develop` on 2026-10-14 (`e1e9245`).
 
 - [Current architecture](../architecture.md): implemented ownership, normalised CR6 tables, staging/master behaviour, provenance limits and verification evidence.
 - [Strategic processing architecture](../04.planning/superpowers/specs/2026-10-11-strategic-architecture-design.md): approved design implemented for four-bank CR6, with a completed migration record; additional domains remain design examples.

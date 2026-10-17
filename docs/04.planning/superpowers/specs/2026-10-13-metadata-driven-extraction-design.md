@@ -10,7 +10,7 @@ verified and accepted at checkpoint A on 2026-10-14 (195 passing tests).
 Tasks 4–6 are implemented across all twelve selected reports, with 204 tests passing;
 checkpoint B was accepted on 2026-10-14. Task 7's lifecycle and whole-path evidence
 is recorded in the plan; final independent delivery reviews passed with no open
-findings (205 passing tests). PR #18 awaits authorised merge.
+findings (205 passing tests). PR #18 merged into `develop` on 2026-10-14 at `e1e9245`.
 The disposable code remains reference only and is not the implementation base.
 
 ## 1. Ask and scope
