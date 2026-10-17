@@ -152,6 +152,7 @@ def test_real_westpac_mixed_run_reconstructs_persisted_numbers(westpac_session):
     assert set(result.tables) == {
         f"{bundle.bundle_key}/cr6-residential-mortgages",
         f"{bundle.bundle_key}/cr9-residential-mortgages",
+        f"{bundle.bundle_key}/rwa-adjustments",
     }
     assert output.source_tables.cells.count_rows() == 185
     assert (

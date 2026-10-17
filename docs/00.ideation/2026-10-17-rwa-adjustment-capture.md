@@ -1,7 +1,7 @@
 # Four-bank 2025 RWA adjustment evidence
 
-Status: capture design approved in conversation on 2026-10-17; implementation and
-verification in progress on `feature/rwa-adjustment-capture`.
+Status: capture design approved in conversation on 2026-10-17; implemented and
+verified on `feature/rwa-adjustment-capture`, PR #20 targeting `develop`.
 
 ## Ask and agreed implementation
 
@@ -107,13 +107,18 @@ The persisted regression failed before this repair and passed afterwards; the
 corrected durable run explicitly verifies the 17bp result as `0.00170000`.
 
 The full suite completed with 209 passes and one outdated Westpac source-cell-count
-expectation (180 versus 185 after its five new observations). That expectation has
-been updated; affected source-table and CR9 integration suites are being rerun.
+expectation (180 versus 185 after its five new observations). The rerun also exposed
+the same test's outdated reconstructed-table inventory. Both expectations now include
+the new selection. The affected suites passed twelve other tests, and the corrected
+Westpac test passed independently. The persisted adjustment test passed after the
+decimal repair. Together these runs cover all 210 tests; the full suite was not
+repeated after the final expectation-only correction. Ruff, whitespace and 85
+documentation-path checks passed.
 Independent complexity review passed: the existing-contract composer, four
 source-local declarations, catalogue additions and separate derived result were
 all grounded in approved requirements. No scope-preserving cuts or blockers were
 identified. Further genericisation and historical-helper migration were rejected
 as unnecessary for this delivery. Independent correctness re-review approved the
 native source-schema repair and closed its sole P1 finding, reproducing preservation
-of the late-row `0.000100` factor. No open review defects remain. The affected-suite
-rerun remains in progress.
+of the late-row `0.000100` factor. No open review defects or verification failures
+remain.
