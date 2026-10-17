@@ -3,6 +3,7 @@
 import mountainash as ma
 import polars as pl
 from mountainash.core.dtypes import DecimalDtype
+from mountainash.pydata.ingress.pydata_ingress import PydataIngress
 from mountainash.typespec.converters import to_polars_schema
 
 from rwa_analysis.domains.cr6.contracts import TableDeclaration, model_spec
@@ -89,7 +90,9 @@ DECLARATIONS = {t.member: t for t in TABLES}
 def relation(name, rows=()):
     spec = DECLARATIONS[name].spec
     return (
-        ma.relation(list(rows)).conform(spec)
+        ma.relation(
+            PydataIngress.convert(list(rows), source_spec=spec, inline_conform=False)
+        ).conform(spec)
         if rows
         else ma.relation(pl.DataFrame(schema=to_polars_schema(spec)))
     )

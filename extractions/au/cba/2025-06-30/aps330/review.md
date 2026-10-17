@@ -1,5 +1,8 @@
 # CBA 30 June 2025 — mortgage CR6/CR9 source review
 
+For the subsequently approved floor and overview-row capture, see the
+[2026-10-17 adjustment evidence](../../../../../docs/00.ideation/2026-10-17-rwa-adjustment-capture.md).
+
 Reviewed 2026-10-10 with the PDF skill, directly against the
 [saved disclosure](../../../../../raw/cba-2025-06-30-aps330.pdf).
 

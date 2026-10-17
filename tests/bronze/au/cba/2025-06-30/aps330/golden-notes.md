@@ -1,5 +1,15 @@
 # Independent CBA expectations
 
+## Adjustment extension — 2026-10-17
+
+`golden-adjustments.json` independently transcribes the current $2.4bn floor and
+all eight cells of the p.18 AIRB mortgage overview row from the saved PDF. The row
+and footnote placement were rendered and inspected. Entries preserve tokens,
+million/billion/percentage scales, distinct June/December dates and classification.
+The full footnote also retains comparative `$nil` as contextual text. The fixture
+was not generated from the extractor or its declarations. See the
+[source review](../../../../../../extractions/au/cba/2025-06-30/aps330/review.md).
+
 Authored 2026-10-10 directly from `raw/cba-2025-06-30-aps330.pdf`, before the
 contract, codec or extractor existed. Page 55 was rendered at 140 dpi and visually
 read, including all twelve columns, nine rows and three notes. The financial

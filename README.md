@@ -114,6 +114,26 @@ The workflow assumes sequential staging writes followed by consolidation.
 The demonstrated selection contains 36 observations, 432 fields, 1,296 mapping
 references and 32 source relationships. Each reconstructed table has nine rows.
 
+## 2025 adjustment evidence
+
+```bash
+uv run python -i examples/rwa_adjustments.py
+```
+
+The four existing 2025 bundles also capture **38 supplementary observations**:
+identified RWA/capital adjustments and supporting overview rows. Source tokens,
+scales, dates, classifications, portfolio scope, comments and applicability links
+are retained in Bronze and the existing source-table Silver/master relations.
+Original CR6/CR9 projections still contain 36/33 rows.
+
+The example prints its retained directory and master DuckDB path. Its `research/`
+directory contains `adjustment-observations.parquet` from persisted readback and
+`nab-mortgage-rwa-bridge.json`: the separately classified $50m derived difference,
+with input identities and revisions. No derived amount is inserted into Bronze.
+ANZ's aggregate overlay inclusion has a retained researcher decision; no band
+allocation is inferred. Westpac's October removal is dated separately from its
+September capital overlay. See the [source review and decisions](docs/00.ideation/2026-10-17-rwa-adjustment-capture.md).
+
 ## Historical source tables
 
 ```bash
@@ -123,8 +143,9 @@ uv run python -i examples/historical_mortgages.py
 This starts from the tracked PDFs and retains a fresh `/tmp/opencode` directory.
 The 2023 and 2024 reports each contribute 23 dated datasets and 574 body positions;
 their numerical notes contribute seven and eight observations respectively. The
-explicit modern Westpac projection adds two datasets and 180 cells, for **48 source
-datasets and 1,343 cells** in master. The example selects
+modern Westpac capture adds its two mortgage datasets and 180 cells, plus five
+supplementary adjustment observations, for **49 source datasets and 1,348 cells**
+in master. The example selects
 `catalogue/releases/historical-mortgages-v2.json`; the earlier v1 release is retained.
 
 Original observations and later comparatives remain distinct source occurrences.
