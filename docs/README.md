@@ -13,9 +13,9 @@
   and disposable spike shape are approved. The [implementation plan](04.planning/superpowers/plans/2026-10-13-metadata-driven-extraction.md)
   was approved on 2026-10-13. Checkpoints A and B were accepted on 2026-10-14;
   all twelve selected reports and catalogue-free domain projections are implemented
-  on `feature/metadata-driven-extraction`. Task 7 extends master lifecycle evidence
+  and merged into `develop` through PR #18 on 2026-10-14 (`e1e9245`). Task 7 extends master lifecycle evidence
   to shared comments, contexts and every dependent relation. Final independent
-  delivery reviews passed; 205 tests pass and PR #18 is ready for merge.
+  delivery reviews passed; final verification recorded 205 passing tests.
   Retained capture formats remain supported.
 - [Mountainash-first coding](01.principles/d.coding-practices/mountainash-first.md):
   library ownership, data boundaries and handling capability gaps.

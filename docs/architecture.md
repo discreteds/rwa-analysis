@@ -18,7 +18,8 @@ implement the first ANZ 2023 v4 path, accepted at checkpoint A on 2026-10-14. Th
 remaining source migrations and CR6/CR9 projections were accepted at checkpoint B
 on 2026-10-14, after 204 tests passed. Task 7 extends master lifecycle evidence;
 final independent correctness and complexity reviews passed with no open findings.
-The complete suite passes 205 tests; PR #18 awaits authorised merge.
+Final verification recorded 205 passing tests. PR #18 merged into `develop` on
+2026-10-14 at `e1e9245`.
 
 ### Checkpoint A: ANZ 2023 metadata-owned capture
 

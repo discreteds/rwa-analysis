@@ -5,7 +5,7 @@
 > Use `test-audit` when authoring/changing tests. Tasks are behaviour-sized, not
 > micro-steps. Independent correctness and complexity reviews precede delivery.
 
-Status: **COMPLETE — 205 tests passing; final reviews closed; PR #18 ready for merge.** Both checkpoints were accepted on 2026-10-14. The researcher approved the plan,
+Status: **COMPLETE AND MERGED — PR #18 merged into `develop` on 2026-10-14 at `e1e9245`; final verification recorded 205 passing tests and closed reviews.** Both checkpoints were accepted on 2026-10-14. The researcher approved the plan,
 merged PR #17 and authorised the separate `feature/metadata-driven-extraction`
 worktree seeded from `develop` at `2ef55de` on 2026-10-13. Task 7 continuation was
 authorised from clean `957194c`; final independent reviews passed on 2026-10-14.
@@ -765,8 +765,13 @@ Correctness review independently compared all 82 readback parquet artifacts with
 accepted checkpoint B and confirmed values, dtypes and source-frame ordering. Both
 reviews confirmed that master lifecycle coverage preserves retained/current captures
 and all 49 relations; no cuts or further implementation changes were required.
-All seven tasks are complete. PR #18 targets `develop` and is ready for merge;
-merging and subsequent local checkout synchronisation await researcher instruction.
+All seven tasks are complete. The researcher authorised merging PR #18, which merged
+into `develop` on 2026-10-14 at `e1e9245`; the base checkout was synchronised.
+
+**Post-merge housekeeping — 2026-10-17:** removed the clean metadata-migration
+worktree and its merged local/remote feature branch after researcher authorisation.
+Retained research outputs and older spike worktrees remain available. Earlier
+checkpoint handoff statements below are historical, not outstanding delivery work.
 
 ### Original execution boundary
 
