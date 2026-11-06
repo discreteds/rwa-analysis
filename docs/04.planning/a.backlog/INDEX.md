@@ -11,7 +11,7 @@ Evidence acquisition and research questions with a defined analytical use live u
 |---|---|---|
 | [Mortgage distribution evidence and calculation inputs](research/mortgage-distribution-evidence.md) | OPEN | Gather composition, market-share and actual default-outcome evidence; join scoped observations and explicit assumptions into distribution-constraining calculations. |
 | [Cross-bank disclosure table catalogue](research/cross-bank-disclosure-table-catalogue.md) | IN PROGRESS | Initial all-domain location matrix and CR6–CR9/CR8 comparisons available; deepen per-panel semantics and prioritise extraction. |
-| [Semantic-layer schemas, generated models and library adoption](research/semantic-layer-schema-and-library-options.md) | OPEN | Evaluate generated dataclasses, StructureMap integration and standard semantic vocabularies; umbrella for separately linked deep dives, with no migration yet approved. |
+| [Semantic-layer structure, standards and library adoption](research/semantic-layer-schema-and-library-options.md) | OPEN | Choose the target structure that maps diverse formats and disclosure generations to the same fields; standards (EBA DPM/XBRL, SKOS, PROV, SDMX) and generated models as candidates; StructureMap as a persistence note. No migration approved. |
 
 ## Techdebt
 
