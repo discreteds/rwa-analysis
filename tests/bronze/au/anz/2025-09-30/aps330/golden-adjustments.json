@@ -1,0 +1,16 @@
+{
+  "mortgage-pd-overlay": ["3.1", "1000000000", 19, "mortgage_pd_overlay", "2025-09-30"],
+  "mortgage-overview-ead": ["373,535", "1000000", 19, "reported_total", "2025-09-30"],
+  "mortgage-overview-ccr-ead": ["-", "1000000", 19, "reported_total", "2025-09-30"],
+  "mortgage-overview-total-ead": ["373,535", "1000000", 19, "reported_total", "2025-09-30"],
+  "mortgage-overview-rwa": ["94,135", "1000000", 19, "reported_total", "2025-09-30"],
+  "mortgage-overview-ccr-rwa": ["-", "1000000", 19, "reported_total", "2025-09-30"],
+  "mortgage-overview-total-rwa": ["94,135", "1000000", 19, "reported_total", "2025-09-30"],
+  "group-output-floor": ["3,499", "1000000", 19, "group_output_floor", "2025-09-30"],
+  "operational-rwa-overlay": ["12.5", "1000000000", 17, "operational_rwa_overlay", "2025-09-30"],
+  "operational-capital-overlay": ["1", "1000000000", 17, "operational_capital_overlay", "2025-09-30"],
+  "operational-rwa-overlay-june": ["12.5", "1000000000", 17, "operational_rwa_overlay", "2025-06-30"],
+  "operational-capital-overlay-june": ["1", "1000000000", 17, "operational_capital_overlay", "2025-06-30"],
+  "operational-rwa-overlay-march": ["9.4", "1000000000", 17, "operational_rwa_overlay", "2025-03-31"],
+  "operational-capital-overlay-march": ["750", "1000000", 17, "operational_capital_overlay", "2025-03-31"]
+}

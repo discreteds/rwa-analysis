@@ -46,9 +46,9 @@ def test_complete_cba_source_contract():
     )
     expected = json.loads(Path(__file__).with_name("golden.json").read_text())
     assert bundle.schema_version == "disclosure-v4"
-    assert len(bundle.datasets) == 2
     assert_capture_bindings(bundle, 180)
     bundle = golden_view(bundle)
+    assert len(bundle.datasets) == 2
     assert_golden(
         encode_payload(
             replace(bundle, schema_version="cr6-v1", datasets=bundle.datasets[:1])

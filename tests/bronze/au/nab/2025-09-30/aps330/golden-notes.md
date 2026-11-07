@@ -1,5 +1,15 @@
 # Independent NAB golden
 
+## Adjustment extension — 2026-10-17
+
+`golden-adjustments.json` independently transcribes PDF p.13 / printed p.11:
+three overlay amounts, all six mortgage overview cells and the group output floor.
+The page was rendered to inspect the table and footnote. CCR dashes remain missing;
+$2.3bn and $2.1bn are non-exhaustive components of the $4.8bn credit overlay.
+The $50m mortgage bridge is deliberately absent from this source golden: it is a
+calculated difference between two stored disclosures. See the
+[source review](../../../../../../extractions/au/nab/2025-09-30/aps330/review.md).
+
 Authored 2026-10-10 before the NAB extractor existed. Direct rendered PDF 49 / printed 47 supplied all nine rows and twelve column positions. PDF 48 / printed 46 supplied CR6 definitions and the A-IRB heading; PDF 4 / printed 2 supplied entity, currency, rounding, regulation and consolidation context. The cover and acquisition index supplied document metadata. See the [source review](../../../../../../extractions/au/nab/2025-09-30/aps330/review.md).
 
 The author manually transcribed the complete 9×12 token matrix and source prose into an isolated, one-off JSON authoring script. That script imported neither the extractor nor the codec/models/parser, read no other bank's fixture and consumed no extractor output. It only expanded these reviewed literals into the existing wire schema. `golden.json` was saved before the first test run and before any source-specific production code. Ordinary tests read only this saved JSON.

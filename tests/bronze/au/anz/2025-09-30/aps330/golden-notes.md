@@ -1,5 +1,15 @@
 # ANZ September 2025 independent source contract
 
+## Adjustment extension — 2026-10-17
+
+`golden-adjustments.json` independently transcribes p.19's mortgage overlay, full
+six-position overview row and group output floor, plus all six dated RWA/capital
+amounts in p.17 footnote 3. Rendered p.19 confirms footnote 2 belongs to the AIRB
+mortgage row. CCR dashes remain missing. The approved aggregate CR6 applicability
+is a researcher decision, separately tested through persisted metadata; it does
+not change the original source golden or establish a band allocation. See the
+[source review](../../../../../../extractions/au/anz/2025-09-30/aps330/review.md).
+
 Authored before the bespoke extractor, from direct rendered inspection of PDF /
 printed pp. 57, 6, 23 and 116, supported by source text on pp. 1, 7, 36, 54 and 60.
 All nine rows and twelve field positions were manually transcribed; no extractor

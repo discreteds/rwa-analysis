@@ -1,5 +1,8 @@
 # NAB September 2025 mortgage CR6/CR9 source review
 
+For the subsequently approved overlay, overview-row and group-floor capture, see
+the [2026-10-17 adjustment evidence](../../../../../docs/00.ideation/2026-10-17-rwa-adjustment-capture.md).
+
 Reviewed 2026-10-10 directly from the saved [PDF](../../../../../raw/nab-2025-09-30-aps330.pdf), before writing the extractor. Rendered PDF pages 48 and 49 (printed 46 and 47) and page 4 (printed 2); also inspected the cover, summary PDF 13 / printed 11 and CMS2 PDF 18 / printed 16. The source-specific golden was independently transcribed from these pages, not from extractor output or another bank's fixture.
 
 ## Selected structure

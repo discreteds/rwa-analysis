@@ -1,0 +1,20 @@
+{
+  "schema_version": "cr6-v1",
+  "members": [{
+    "id": "agreed.anz-2025-aggregate-overlay",
+    "revision_id": "agreed.anz-2025-aggregate-overlay@v1",
+    "created_on": "2026-10-17",
+    "effective_from": null,
+    "effective_to": null,
+    "interpretation": "The September 2025 AIRB residential mortgage CR6 subtotal includes the $3.1 billion mortgage PD-model overlay explicitly included in the overview mortgage total. No band allocation is inferred.",
+    "rationale": "PDF page 19 explicitly attaches the overlay to the AIRB mortgage row. Portfolio, reporting date, EAD $373,535m and RWA $94,135m match the CR6 subtotal on page 57; page 23 supplies corroborating CMS2 evidence.",
+    "decision_context": "Researcher selected Accept aggregate link during the adjustment capture interview, allowing aggregate subtraction while keeping band allocation unknown. This is a researcher-approved cross-table interpretation, not a CR6 source quotation.",
+    "authority_refs": ["researcher:adjustment-capture-interview-2026-10-17"],
+    "decision_date": "2026-10-17",
+    "evidence_refs": [
+      {"bundle_key":"au/anz/2025-09-30/aps330","document_id":"anz-2025-09-30-aps330","dataset_id":"rwa-adjustments","kind":"comment","ref_id":"mortgage-pd-overlay@1"},
+      {"bundle_key":"au/anz/2025-09-30/aps330","document_id":"anz-2025-09-30-aps330","dataset_id":"rwa-adjustments","kind":"cell","ref_id":"mortgage-overview-rwa"},
+      {"bundle_key":"au/anz/2025-09-30/aps330","document_id":"anz-2025-09-30-aps330","dataset_id":"cr6-residential-mortgages","kind":"cell","ref_id":"portfolio-aggregate/rwa"}
+    ]
+  }]
+}

@@ -16,14 +16,16 @@ from rwa_analysis.extraction.temporal import TemporalBinding
 
 def assert_capture_bindings(bundle, cell_count):
     """Protect physical evidence, lexical positions and original domain addresses."""
-    assert sum(len(t.cells) for t in bundle.datasets) == cell_count
+    domain_ids = {b.ref.scope for b in bundle.snapshot.domain_bindings}
+    domain_tables = tuple(t for t in bundle.datasets if t.id in domain_ids)
+    assert sum(len(t.cells) for t in domain_tables) == cell_count
     slots = {(f.binding_ref, f.slot): f for f in bundle.fragments}
     bindings = {b.ref: b for b in bundle.snapshot.occurrences}
     for binding in bindings.values():
         for link in binding.links:
             assert link.target in bindings, (binding.ref, link.target)
     numeric = {
-        (t.id, c.id) for t in bundle.datasets for c in t.cells if c.value_kind != "text"
+        (t.id, c.id) for t in domain_tables for c in t.cells if c.value_kind != "text"
     }
     assert {
         (b.ref.scope, b.ref.local_id) for b in bundle.snapshot.domain_bindings
@@ -33,7 +35,7 @@ def assert_capture_bindings(bundle, cell_count):
         assert b.ref.local_id == b.record_id + "/" + b.field_key
         assert b.ref.scope == b.domain + "-residential-mortgages"
         assert b.binding_ref == "binding-" + b.field_key
-    for table in bundle.datasets:
+    for table in domain_tables:
         local = {
             b.ref.local_id: b
             for b in bindings.values()
@@ -83,7 +85,10 @@ def assert_capture_bindings(bundle, cell_count):
 def golden_view(bundle):
     """Rearrange actual cells/metadata for the old comparators, without interpretation."""
     datasets = []
+    domain_ids = {b.ref.scope for b in bundle.snapshot.domain_bindings}
     for table in bundle.datasets:
+        if table.id not in domain_ids:
+            continue
         cr9 = table.id.startswith("cr9")
         m = table.metadata
         numeric = tuple(f for f in m.published_fields if f.value_kind != "text")
