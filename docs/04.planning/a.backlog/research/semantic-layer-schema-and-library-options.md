@@ -96,8 +96,8 @@ and updates its row with conclusion and evidence.
 
 | Topic | Question | Deep dive / status |
 |---|---|---|
-| Target-field design across disclosure generations | Express mortgage EAD and average PD from a ~2013–2015 disclosure, a 2018–2022 disclosure and 2025 CR6 (PDF and APS 330 workbook) in the current model, informed by EBA DPM dimensions and SKOS-style relationships. Which target fields hold across all generations, and where are explicit cross-regime relationships required? | Next; oldest generation ~2013–2015 selected 2026-11-06 |
-| APS 330 quantitative workbooks | What do the published CSV/Excel files contain, and do they support cross-format mapping goldens against our PDF captures? | Not started |
+| Target-field design across disclosure generations | Express mortgage EAD and average PD from a ~2013–2015 disclosure, a later Table 9d(ii) disclosure (June 2024 used) and 2025 CR6 (PDF and APS 330 workbook) in the current model, informed by EBA DPM dimensions. Which target fields hold across all generations, and where are explicit cross-regime relationships required? | [CBA deep dive, 2026-11-20](../../../00.ideation/2026-11-20-target-fields-across-generations.md): PDF and workbook converge on all 108 positions. Current measures are bank/template-specific and historical EAD is unmapped. Recommends DPM-style property + controlled qualifiers inside our own catalogue. Three researcher questions open. |
+| APS 330 quantitative workbooks | What do the published CSV/Excel files contain, and do they support cross-format mapping goldens against our PDF captures? | CBA June 2025 inspected in the deep dive: values and displayed precision match, notes absent. Other banks not started |
 | Schema ownership and generated dataclasses | LinkML and `linkml-runtime` versus current dataclass-first declarations: what handwritten definitions, loaders or documentation would disappear? | Not started; official documentation reviewed |
 | Concepts and terminology | SKOS (RDFLib if RDF interchange is useful): how do stable IDs, labels, definitions and scoped interpretations map? | Not started |
 | Evidence, decisions and derivations | PROV-O / Python `prov`: which provenance structures can use standard terms without parallel authoritative records? | Not started |
@@ -180,9 +180,9 @@ the existing implementation is a valid outcome.
 ## Decision boundaries and next step
 
 No schema, wire-format, storage-engine or dependency migration is authorised here.
-The next investigation is **target-field design across disclosure generations**
-(first deep-dive row). Acquire the required ~2013–2015 disclosure through the normal
-[raw index](../../../../raw/index.md) workflow.
+The first deep dive is complete (first deep-dive row). Next: researcher answers to its
+three open questions, then a design decision on shared target fields with controlled
+qualifiers before any implementation plan.
 
 Keep the result in a separate deep dive: recommendation, demonstrated behaviour,
 remaining gaps and precise replacement boundary. If adoption is recommended, obtain

@@ -79,6 +79,17 @@ comparative panels must retain their own scope and qualifications rather than in
 the latest panel's definition. Repeated 2023 observations in the 2024 reports remain
 separate source occurrences; this discovery does not establish equivalence.
 
+## Target-field deep dive — 2026-11-20
+
+Downloaded on 2026-11-20 from official CBA URLs for the
+[target-field deep dive](../docs/00.ideation/2026-11-20-target-fields-across-generations.md).
+Exploratory sources: no bespoke extractor or golden exists for them. Page numbers are one-based PDF positions.
+
+| Organisation | Reporting date | Saved file / official source | Located mortgage evidence |
+|---|---|---|---|
+| CBA | 2014-06-30 | [Saved PDF](cba-2014-06-30-aps330.pdf) · [Official PDF](https://www.commbank.com.au/content/dam/commbank/about-us/shareholders/pdfs/results/pillar-3-basel-iii-30-june-2014.pdf) | Table 9d(ii), PDF pp.43–45: June 2014, December 2013 and June 2013 panels, bands across columns. Table 7i, PDF pp.18–20: on/off-balance totals. Table 6b–6f, PDF p.10: portfolio RWA with the 1.06 scaling factor as a separate line; SME retail mortgages move out of residential mortgage from June 2014. |
+| CBA | 2025-06-30 | [Saved workbook](cba-2025-06-30-aps330-quantitative.xlsx) · [Official XLSX](https://www.commbank.com.au/content/dam/commbank-assets/investors/docs/results/fy25/basel-iii-pillar-3%E2%80%93quantitative-information-30-june-2025.xlsx) | APS 330 quantitative workbook for the [saved June 2025 PDF](cba-2025-06-30-aps330.pdf); 47 sheets. Sheet `CR6`, rows 31–39: residential mortgage block. No footnotes or notes. |
+
 ## Official archives
 
 - [CBA Pillar 3 capital disclosures](https://www.commbank.com.au/about-us/investors/regulatory-disclosure/pillar-3-capital-disclosures.html). The headings use CBA financial years: the December 2025 report is filed under 2026, while the “2025 Half Year” report covers December 2024.
@@ -86,7 +97,7 @@ separate source occurrences; this discovery does not establish equivalence.
 - [NAB regulatory disclosures](https://www.nab.com.au/about-us/shareholder-centre/regulatory-disclosures). March/September detailed reports; December 2025 is labelled 2026 First Quarter.
 - [ANZ regulatory disclosures](https://www.anz.com/shareholder/centre/reporting/regulatory-disclosure/). March/September detailed reports, supplementary template-change explanations and historical restatement notices.
 
-All four archives also link quantitative Excel files. Those links were observed during discovery; the workbooks have not been downloaded or inspected in this spike.
+All four archives also link quantitative Excel files. Only CBA June 2025 has been downloaded and inspected (above).
 
 ## Review status
 
